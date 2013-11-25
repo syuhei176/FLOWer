@@ -1,0 +1,77 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>エディタ</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+      <link rel='stylesheet' href='/stylesheets/lib/w2ui-1.2.min.css' />
+  </head>
+  <style>
+
+  </style>
+  <body>
+              <svg id="svg" width="1024px" height="1024px" style="user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
+      
+      <script src="/js/lib/jquery-1.10.2.min.js"></script>
+      <script src="/js/lib/underscore-min.js"></script>
+      <script src="/js/lib/backbone-min.js"></script>
+      <script src="/js/lib/w2ui-1.2.min.js"></script>
+      <script src="/js/lib/snap.svg-min.js"></script>
+      <script src="/js/lib/socket.io.min.js"></script>
+      <script src="/js/lib/jarty.js"></script>
+      <script src="/js/dev/yourcanvas.js"></script>
+      <script src="/js/dev/value.js"></script>
+      <script src="/js/dev/node.js"></script>
+      <script src="/js/dev/primitive.js"></script>
+      <script src="/js/dev/input.js"></script>
+      <script src="/js/dev/logic.js"></script>
+      <script src="/js/dev/memory.js"></script>
+      <script src="/js/dev/connection.js"></script>
+      <script src="/js/dev/role.js"></script>
+      <script src="/js/dev/diagram.js"></script>
+    <script>
+        $(function () {
+        	var snap = Snap("#svg");
+        	
+        	var diagram = new yourcanvas.Diagram(snap);
+        	function stop() {
+        		diagram.clear();
+        		diagram.stop();
+        	}
+        	function run() {
+        		diagram.run();
+        	}
+        	var mode = "edit";
+        	var con_tool = snap.rect(0, 0, 100, 100);
+        	con_tool.attr({
+        	    fill: "#00ff00",
+        	    stroke: "#000",
+        	    strokeWidth: 5
+        	});
+        	con_tool.click(function(){
+        		if(mode == "edit") {
+        			mode = "run";
+        			run();
+                	con_tool.attr({
+                	    fill: "#ff0000",
+                	    stroke: "#000",
+                	    strokeWidth: 5
+                	});
+        		}else{
+        			mode = "edit";
+        			stop();
+                	con_tool.attr({
+                	    fill: "#00ff00",
+                	    stroke: "#000",
+                	    strokeWidth: 5
+                	});
+        		}
+        	})
+
+          });
+        //w2ui['layout'].content('top', 'This is some content set manually')
+        </script>
+  </body>
+</html>
+

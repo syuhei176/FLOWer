@@ -1,0 +1,30 @@
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>update action</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>update action</h1>
+    <form action="/action/update" method="post">
+    	<input type="hidden" name="id" value="<%=doc._id%>" />      
+      
+    	<div><span>user_id</span><input type="text" name="user_id" value="<%=doc.user_id%>" /></div>      
+      
+      
+    	<div><span>type</span><input type="text" name="type" value="<%=doc.type%>" /></div>      
+      
+      
+    	<div><span>stage_no</span><input type="number" name="stage_no" value="<%=doc.stage_no%>" /></div>      
+      
+      
+    	<div><span>wave</span><input type="number" name="wave" value="<%=doc.wave%>" /></div>      
+      
+      
+    	<div><span>gold</span><input type="number" name="gold" value="<%=doc.gold%>" /></div>      
+      
+    	<input type="submit" value="update"/>
+    </form>
+  </body>
+</html>

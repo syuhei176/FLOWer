@@ -1,0 +1,33 @@
+ 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>update score</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>update score</h1>
+    <form action="/score/update" method="post">
+    	<input type="hidden" name="id" value="<%=doc._id%>" />      
+      
+    	<div><span>score</span><input type="text" name="score" value="<%=doc.score%>" /></div>      
+      
+      
+    	<div><span>type</span><input type="text" name="type" value="<%=doc.type%>" /></div>      
+      
+      
+    	<div><span>date</span><input type="text" name="date" value="<%=doc.date%>" /></div>      
+      
+      
+    	<div><span>score_id</span><input type="text" name="score_id" value="<%=doc.score_id%>" /></div>      
+      
+      
+    	<div><span>user_id</span><input type="text" name="user_id" value="<%=doc.user_id%>" /></div>      
+      
+      
+    	<div><span>user_name</span><input type="text" name="user_name" value="<%=doc.user_name%>" /></div>      
+      
+    	<input type="submit" value="update"/>
+    </form>
+  </body>
+</html>
