@@ -2,7 +2,6 @@ module.paths.push("/usr/local/lib/node_modules");
 var mongodb = require("mongodb"),
 	bcrypt = require('bcrypt'),
 	crypto = require('crypto'),
-    md5sum = crypto.createHash('md5'),
 	Seq = require('seq'),
 	BSON = mongodb.BSONPure,
     genid = require("../server/genid"),
@@ -11,41 +10,53 @@ var mongodb = require("mongodb"),
 var salt = bcrypt.genSaltSync(10);
 
 module.exports = {
-	register : function(req, res) {
-		var email = req.param("email");
-		var password = req.param("password");
-        register(email, password, function(err, result) {
-            res.redirect("/login");
+	edit : function(req, res){
+	    Seq()
+        .seq(function() {
+            genid.genid(this);
+        })
+        .seq(function(uid) {
+    	    res.render('editor.ejs', {editorinfo : {key : req.param('key')}, element_key_header : uid});
         });
 	},
-	login : function(req, res) {
-		var email = req.param("email");
-		var password = req.param("password");
-        login(email, password, function(err, result) {
-            if(result.success) {
-                req.session.user = result.user;
-                res.redirect("/chat");
-            }else{
-                res.send("false");
-            }
-        });
-	},
-    get_userinfo : get_userinfo,
-	get_userinfos : function(req, res) {
-		var user_ids = req.param("user_ids");
-        get_userinfos(user_ids, function(err, userinfos) {
-            res.send(JSON.stringify(userinfos));
-        });
-	},
-    get_group : get_group,
 	create_project : function(req, res) {
-		
+        if(req.session && req.session.user) {
+            var user = req.session.user;
+            var name = req.param("name");
+            create_project(user, name, function(err, result) {
+            	res.send(JSON.stringify(result));
+            });
+        }else{
+            res.redirect("/login");
+        }
+	},
+	save_all : function(editor_key, data, cb) {
+		save_all(editor_key, data, cb);
+	},
+	get_all : function(editor_key, cb) {
+		get_all(editor_key, cb);
 	},
 	update_project : function(req, res) {
-		
+        if(req.session && req.session.user) {
+            var user = req.session.user;
+            var name = req.param("name");
+            update_project(user, name, function(err, result) {
+                res.redirect("/editor/edit/" + result.editorinfo.key);
+            });
+        }else{
+            res.redirect("/login");
+        }
 	},
 	delete_project : function(req, res) {
-		
+        if(req.session && req.session.user) {
+            var user = req.session.user;
+            var key = req.param("key");
+            delete_project(user, key, function(err, result) {
+                res.redirect("/editor/edit/");
+            });
+        }else{
+            res.redirect("/login");
+        }
 	},
 	create_group : function(req, res) {
         if(req.session && req.session.user) {
@@ -65,47 +76,60 @@ module.exports = {
 
 
 var account_collection_name = "account";
-var group_collection_name = "groupinfo";
+var editor_collection_name = "editor";
 
-function register(email, password, cb) {
-    console.log(email, password);
-	var collection = new mongodb.Collection(dbinterface, account_collection_name);
+
+function create_project(user, name, cb) {
+	var collection = new mongodb.Collection(dbinterface, editor_collection_name);
     var doc = {};
-    doc.email = email;
-    doc.password = bcrypt.hashSync(password, salt)
-    collection.insert(doc, function() {
-        cb(null, true);
-    });
-}
-
-function login(email, password, cb) {
-    console.log(email, password);
-	var collection = new mongodb.Collection(dbinterface, account_collection_name);
+    doc.owner_id = user.id
+    doc.name = name
     Seq()
         .seq(function() {
-            collection.find({email: email}, {limit:1}).toArray(this);
+            genid.genid(this);
         })
-        .seq(function(docs) {
-            var result = {success:false};
-            if(docs.length == 0) {
-                cb(null, result);
-            }
-            var account = docs[0];
-            if(bcrypt.compareSync(password, account.password)) {
-                result.success = true;
-                result.user = {
-                    id : account._id
-                }
-            }
-            cb(null, result);
+        .seq(function(uid) {
+            var md5sum = crypto.createHash('md5');
+            md5sum.update(uid);
+            doc.key = md5sum.digest('hex');
+            collection.insert(doc, function() {
+                cb(null, {editorinfo : { key : doc.key}});
+            });
+        });
+}
+function save_all(editor_key, data, cb) {
+	var collection = new mongodb.Collection(dbinterface, editor_collection_name);
+    Seq()
+        .seq(function(uid) {
+        	collection.update({key: editor_key},
+        			{$set: {model : data}},
+        			{safe:true,multi:false,upsert:false}, this);
+        })
+        .seq(function() {
+        	cb();
         });
 }
 
-function create_group(user, group_name, cb) {
-	var collection = new mongodb.Collection(dbinterface, group_collection_name);
+function get_all(editor_key, cb) {
+	var collection = new mongodb.Collection(dbinterface, editor_collection_name);
+    Seq()
+    .seq(function() {
+    	collection.find({key : editor_key}, {model : 1}, {limit:1}).toArray(this);
+    })
+    .seq(function(docs) {
+    	if(docs.length == 0) {
+    		cb(null, null);
+    	}else{
+    		cb(null, docs[0]);
+    	}
+    })
+}
+
+function update_project(user, name, cb) {
+	var collection = new mongodb.Collection(dbinterface, editor_collection_name);
     var doc = {};
     doc.owner_id = user.id
-    doc.name = group_name
+    doc.name = name
     Seq()
         .seq(function() {
             genid.genid(this);
@@ -113,11 +137,25 @@ function create_group(user, group_name, cb) {
         .seq(function(uid) {
             md5sum.update(uid);
             doc.key = md5sum.digest('hex');
-            collection.insert(doc, function() {
-                cb(null, {groupinfo : { key : doc.key}});
-            });
+        	collection.update({_id:new BSON.ObjectID(id)},
+        			{$set: doc},
+        			{safe:true,multi:false,upsert:false}, this);
+        })
+        .seq(function() {
+            res.redirect("/scores")
         });
 }
+function delete_project(user, key, cb) {
+	var collection = new mongodb.Collection(dbinterface, editor_collection_name);
+    Seq()
+        .seq(function() {
+            collection.remove({key : key}, this);
+        })
+        .seq(function() {
+        	cb(null);
+        });
+}
+
 
 function get_userinfo(user, cb) {
 	var collection = new mongodb.Collection(dbinterface, account_collection_name);

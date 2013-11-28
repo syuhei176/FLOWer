@@ -1,8 +1,7 @@
 var express = require('express')
   , app = express()
   , routes = require('./routes')
-  , action = require('./routes/action')
-  , score = require('./routes/score')
+  , dashboard = require('./routes/dashboard')
   , http = require('http')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server)
@@ -12,7 +11,8 @@ var express = require('express')
 
 var MongoStore = require('connect-mongo')(express);
 
-var rchat = require("./server/rchat");
+var account = require("./server/account");
+var editor = require("./server/editor");
 
 
 var dbinterface = require("./server/db");
@@ -58,23 +58,25 @@ app.configure('development', function(){
 });
 
 
-
+//Top Page
 app.get('/', routes.index);
-app.get('/edit/:key', routes.editor);
 app.get('/chat/:groupkey', routes.chat);
 app.get('/login', routes.login);
 app.get('/register', routes.register);
-app.get('/create-group', routes.create_group);
-app.get('/getuserinfos', rchat.get_userinfos);
+app.get('/getuserinfos', account.get_userinfos);
 
+app.post('/login', account.login);
+app.post('/register', account.register);
 
+//Dashboard
+app.get('/dashboard', dashboard.dashboard);
+app.get('/editor/list', dashboard.editorlist);
 
-app.post('/login', rchat.login);
-app.post('/register', rchat.register);
-app.post('/create-group', rchat.create_group);
-
-
-
+//Editor
+app.get('/editor/edit/:key', editor.edit);
+app.post('/editor/create', editor.create_project);
+app.post('/editor/update', editor.update_project);
+app.post('/editor/delete', editor.delete_project);
 
 io.configure(function () {
 	io.set('log level', 1);
@@ -94,27 +96,32 @@ function authorization(handshakeData, callback) {
 }
 
 
-var chat = io.sockets
+var chat = io
+.of("/editor-socket")
 .authorization(authorization)
 .on('connection', function (socket) {
     //クライアント側からのイベントを受け取る。
     socket.on('join', function (msg) {
-    	socket.join("g" + msg.group_id);
+    	socket.join("g" + msg.editor_key);
     });
-    
-    socket.on('message', function (msg) {
-    	var room_name = "g" + msg.group_id;
+    socket.on('saveall', function (msg) {
+    	editor.save_all(msg.editor_key, msg.data, function() {
+    		
+    	});
+    });
+    socket.on('update', function (msg) {
+    	var room_name = "g" + msg.editor_key;
         //socket.emit('result', msg);
         console.log(socket.handshake.user.id);
-        rchat.send_message(socket.handshake.user, msg.group_id, msg.message, msg.reply_target, function(err, result_msg) {
+        editor.send_message(socket.handshake.user, msg.group_id, msg.message, msg.reply_target, function(err, result_msg) {
             chat.in(room_name).emit("msg_broadcast", result_msg);
         });
         //socket.broadcast.emit('msg_broadcast', msg);
     });
-    socket.on('getmessages', function (msg) {
-        rchat.get_messages(msg.group_id, function(err, messages) {
-            socket.emit('recvmessages', {messages : messages});
-        });
+    socket.on('getall', function (msg) {
+    	editor.get_all(msg.editor_key, function(err, model) {
+            socket.emit('getall', model);
+    	})
     });
     
     socket.on('disconnect', function() {

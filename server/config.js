@@ -1,5 +1,5 @@
 module.exports.db = {
-		name : "rchat",
+		name : "retro",
 		user : "user",
 		pass: "pass",
 		host : "127.0.0.1",

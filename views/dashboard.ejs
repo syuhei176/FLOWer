@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard Retro</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+
+    </style>
+  </head>
+  <body>
+  
+  <div class="container clearfix">
+  <div class="grid first">
+    <div>
+    </div>
+  </div>
+  <div class="grid6 first">
+      <img src="/images/logo.png" />
+  </div>
+  <div class="grid2">
+      	<a id="create-editor-btn" class="button button-circle" href="#">Get Started!!</a>
+  </div>
+  <div class="grid6 first">
+      <div id="editor-list">
+      </div>
+  </div>
+  </div>
+  <div class="grid first">&copy;<a href="http://technicalrockstars.co.jp">Technical Rockstars, Inc.</a></div>
+      <script src="/js/lib/jquery-1.10.2.min.js"></script>
+      <script src="/js/lib/underscore-min.js"></script>
+      <script src="/js/lib/backbone-min.js"></script>
+      <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+      
+    <script>
+        $(function() {
+          $("#create-editor-btn").click(function() {
+        	  $.post("/editor/create", {name : "Untitled Editor"}, function(result) {
+        		  window.location.href = "/editor/edit/" + result.editorinfo.key;
+        	  }, "json");
+          });
+          var template = Hogan.compile($("#editor-template").html());
+          $.get("/editor/list", {}, function(data) {
+        	  var html = render_editorlist(data);
+        	  $("#editor-list").html(html);
+          }, "json");
+          function render_editorlist(editorlist) {
+        	  editorlist = _.map(editorlist, function(editor) {
+        		  return template.render(editor);
+        	  });
+    		  console.log(editorlist);
+        	  return editorlist.join('');
+          }
+        })
+    </script>
+    <script id="editor-template" type="text/underscore">
+	<div><a href="/editor/edit/{{key}}">{{name}}</a></div>
+    </script>
+  </body>
+</html>
+
