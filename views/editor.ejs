@@ -4,14 +4,12 @@
 <html>
   <head>
     <title>エディタ</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
       <link rel='stylesheet' href='/stylesheets/lib/w2ui-1.2.min.css' />
   </head>
   <style>
-
   </style>
   <body>
-              <svg id="svg" width="1024px" height="1024px" style="user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
+  	<svg id="svg" width="1024px" height="1024px" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
       
       <script src="/js/lib/jquery-1.10.2.min.js"></script>
       <script src="/js/lib/underscore-min.js"></script>
@@ -20,55 +18,90 @@
       <script src="/js/lib/snap.svg-min.js"></script>
       <script src="/js/lib/socket.io.min.js"></script>
       <script src="/js/lib/jarty.js"></script>
-      <script src="/js/dev/yourcanvas.js"></script>
+      
+      <script src="/js/dev/retro.js"></script>
       <script src="/js/dev/value.js"></script>
       <script src="/js/dev/node.js"></script>
       <script src="/js/dev/primitive.js"></script>
       <script src="/js/dev/input.js"></script>
       <script src="/js/dev/logic.js"></script>
       <script src="/js/dev/memory.js"></script>
+      <script src="/js/dev/actuator.js"></script>
       <script src="/js/dev/connection.js"></script>
       <script src="/js/dev/role.js"></script>
       <script src="/js/dev/diagram.js"></script>
+      <script src="/js/dev/retro-client.js"></script>
+      <script src="/js/dev/idGenerator.js"></script>
     <script>
         $(function () {
-        	var snap = Snap("#svg");
+        	$("#svg").attr("width", window.innerWidth - 30);
+        	window.idgenerator = retro.IDGenerator("<%=element_key_header%>");
+			function init_diagram(model) {
+	        	var snap = Snap("#svg");
+	        	var diagram = new retro.Diagram(snap, model.model);
+	        	var control_group = snap.g();
+	        	function stop() {
+	        		diagram.clear();
+	        		diagram.stop();
+	        	}
+	        	function run() {
+	        		diagram.run();
+	        	}
+	        	var mode = "edit";
+	        	Snap.load("/images/play.svg", function (f) {
+	        		var g = f.select("svg");
+	            	g.click(function(){
+	            		window.retroClient.exporter();
+	            		if(mode == "edit") {
+	            			mode = "run";
+	            			run();
+	            			g.select("polygon[fill='#ffffff']").attr({
+	                    	    fill: "#ff0000"
+	                    	});
+	            		}else{
+	            			mode = "edit";
+	            			stop();
+	            			g.select("polygon[fill='#ff0000']").attr({
+	                    	    fill: "#ffffff"
+	                    	});
+	            		}
+	            	});
+	        		control_group.append(g);
+	        	});
+	        	Snap.load("/images/create.svg", function (f) {
+	        		var g = f.select("g");
+	        		g.transform("translate("+100+","+0+")");
+	            	g.click(function(){
+	            		var id = idgenerator.genNewId();
+	            		diagram.create_node(new retro.Logic(id, diagram, 200, 200, [{
+	                		name : "input",
+	                		type : "number"
+	                	}],[{
+	                		name : "output",
+	                		type : "number"
+	                	}], "logic", function(input){
+	                		var p1 = input["input"].getParam();
+	                		if(p1) {
+	                    		return {output : new retro.Value(snap, Number(p1.getValue()))};
+	                		}else{
+	                			return null;
+	                		}
+	                	}, "そのまま"));
+	            	});
+	        		control_group.append(g);
+	        	});
+	        	$(window).scroll(function(){
+	        		control_group.transform("translate("+0+","+$(window).scrollTop()+")");
+	        	});
+	        	return diagram;
+        	}
         	
-        	var diagram = new yourcanvas.Diagram(snap);
-        	function stop() {
-        		diagram.clear();
-        		diagram.stop();
-        	}
-        	function run() {
-        		diagram.run();
-        	}
-        	var mode = "edit";
-        	var con_tool = snap.rect(0, 0, 100, 100);
-        	con_tool.attr({
-        	    fill: "#00ff00",
-        	    stroke: "#000",
-        	    strokeWidth: 5
-        	});
-        	con_tool.click(function(){
-        		if(mode == "edit") {
-        			mode = "run";
-        			run();
-                	con_tool.attr({
-                	    fill: "#ff0000",
-                	    stroke: "#000",
-                	    strokeWidth: 5
-                	});
-        		}else{
-        			mode = "edit";
-        			stop();
-                	con_tool.attr({
-                	    fill: "#00ff00",
-                	    stroke: "#000",
-                	    strokeWidth: 5
-                	});
-        		}
-        	})
-
+        	
+        	var retroClient = new retro.RetroClient("<%=editorinfo.key%>");
+        	retroClient.init(init_diagram);
+        	
+        	window.retroClient = retroClient;
+        	
           });
         //w2ui['layout'].content('top', 'This is some content set manually')
         </script>

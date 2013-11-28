@@ -1,53 +1,39 @@
 (function(){
-	function Memory(diagram, x, y, inputs, outputs, shape) {
-		yourcanvas.Node.apply( this, arguments );
+	function Memory(id, diagram, x, y, inputs, outputs, shape) {
+		retro.Node.apply( this, arguments );
 		var self = this;
-		var th = 2 * Math.PI / (inputs.length + outputs.length)
-		for(var i=0;i < inputs.length;i++) {
-			this.input[inputs[i].name] = new yourcanvas.Role(self, "input", -60 * Math.cos(th*i), 60 * Math.sin(th*i), inputs[i].name);
-		}
-		for(var i=0;i < outputs.length;i++) {
-			var j = i + inputs.length;
-			this.output.push(new yourcanvas.Role(self, "output", -60 * Math.cos(th*j), 60 * Math.sin(th*j)));
-		}
+		this.input["enter"] = new retro.Role(self, "input", 0, 30, "enter");
+		this.input["flush"] = new retro.Role(self, "input", 60, 0, "flush");
+		
+		this.output.push(new retro.Role(self, "output", 150, 30));
 
 		this.memories = [];
 	}
-	Memory.prototype =  new yourcanvas.Node();
+	Memory.prototype =  new retro.Node();
 	
 	Memory.prototype.execute2 = function() {
 		var self = this;
 		var snap = this.diagram.snap;
-		var _can_exe = true;
-		for(var i in this.input) {
-			if(this.input[i].getParam() == null) {
-				_can_exe = false;
+		
+		var param = this.input.enter.getParam();
+		if(param) {
+			var v = new retro.Value(snap, param.value);
+			this.input.enter.clearParam();
+			v.setPosition((self.getX() + 120 - this.memories.length * 30), (self.getY() + 30));
+			this.memories.push(v);
+		}else{
+			var flush = this.input.flush.getParam();
+			if(flush) {
+				var v = this.memories.shift();
+				if(v) {
+					for(var i=0;i < this.output.length;i++) {
+						if(this.output[i]) this.output[i].setParam(v);
+					}
+					this.input.flush.clearParam();
+				}
 			}
 		}
-		if(_can_exe == false || this.input.length == 0) {
-			return false;
-		}
-		var param = this.input.enter.getParam();
-		for(var i in this.input) {
-			this.input[i].clearParam();
-		}
-		var group = snap.group();
-		var circle = snap.circle(0, 0, 20);
-		circle.attr({
-    	    fill: "#77ffff",
-    	    stroke: "#fff",
-    	    strokeWidth: 5
-    	});
-		var text = snap.text(-10, 0, param.value);
-		group.append(circle);
-		group.append(text);
 		
-		group.transform("translate("+(self.getX() + 150 - this.memories.length * 30)+","+(self.getY())+")");
-		
-		this.memories.push({
-			value : param.value,
-			group : group
-		})
 		
 		/*
 		var output = {
@@ -59,8 +45,15 @@
 		}
 		*/
 	}
+	
+	Memory.prototype.exporter = function() {
+		var exported = retro.Node.prototype.exporter.call( this, arguments );
+		exported.meta = "Memory";
+		return exported;
+	}
+
 
 	
-	window.yourcanvas.Memory = Memory;
+	window.retro.Memory = Memory;
 	
 }())

@@ -1,3 +1,4 @@
+var Seq = require("seq");
 var rchat = require("../server/rchat");
 
 /*
@@ -5,13 +6,12 @@ var rchat = require("../server/rchat");
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+	var user = null;
+    if(req.session && req.session.user) {
+    	user = req.session.user;
+    }
+	res.render('index', { user: user });
 };
-
-exports.editor = function(req, res){
-    res.render('editor.ejs', { });
-}
-
 
 exports.chat = function(req, res){
     if(req.session && req.session.user) {
@@ -48,6 +48,3 @@ exports.login = function(req, res){
     res.render('login', { title: 'Express' });
 };
 
-exports.create_group = function(req, res){
-    res.render('create_group', { title: 'Express' });
-};
