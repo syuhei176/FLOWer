@@ -139,10 +139,14 @@
         		name : "output",
         		type : "number"
         	}], "button");
+        	var actuator = new retro.Actuator(idgenerator.genNewId(), this, 450, 200, [{
+        		name : "string",
+        		type : "number"
+        	}],[], {});
         	var device = new retro.Device(idgenerator.genNewId(), this, 500, 150, [],[{
         		name : "output",
         		type : "number"
-        	}], {w:320,h:480,shape:"rect"});
+        	}], {w:320,h:480,shape:"rect",image:"tablet"});
         	var memory1 = new retro.Memory(idgenerator.genNewId(), this, 350, 300, [{
     			name : "enter",
     			type : "number"
@@ -169,6 +173,7 @@
         	this.nodes.push(button1);
         	this.nodes.push(button2);
         	this.nodes.push(button3);
+        	this.nodes.push(actuator);
         	this.nodes.push(device);
         	this.nodes.push(memory1);
     	}
