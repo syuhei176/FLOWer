@@ -35,6 +35,22 @@
 		}
 	}
 	
+	Actuator.prototype.clone = function(id) {
+		var inputs = [];
+		var outputs = [];
+		for(var key in this.input) {
+			inputs.push({
+				name : key
+			});
+		}
+		for(var key in this.output) {
+			outputs.push({
+				name : key
+			});
+		}
+		return new retro.Actuator(id, this.diagram, this.bound.x, this.bound.y, inputs, outputs, {});
+	}
+	
 	Actuator.prototype.exporter = function() {
 		var exported = retro.Node.prototype.exporter.call( this, arguments );
 		exported.meta = "Actuator";

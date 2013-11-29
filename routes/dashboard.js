@@ -22,7 +22,7 @@ module.exports.editorlist = function(req, res){
         Seq()
         .seq(function() {
             var collection = new mongodb.Collection(dbinterface, "editor");
-            collection.find({owner_id : String(user.id)}, {key : 1, name : 1}, {limit:1}).toArray(this);
+            collection.find({owner_id : String(user.id)}, {key : 1, name : 1}, {limit:10}).toArray(this);
         })
         .seq(function(docs) {
         	res.send(JSON.stringify(docs));

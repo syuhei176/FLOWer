@@ -73,15 +73,21 @@
     	coll.mousedown(function(e, x, y) {
     		if(self.mousedown) self.mousedown(e, x, y);
     	});
-
+    	
     	coll.mouseup(function(e, x, y) {
     		self.refresh();
     		if(self.mouseup) self.mouseup();
     		self.config_btn.attr({
     			"visibility" : "visible"
     		});
+    		self.copy_btn.attr({
+    			"visibility" : "visible"
+    		});
     		setTimeout(function() {
         		self.config_btn.attr({
+        			"visibility" : "hidden"
+        		});
+        		self.copy_btn.attr({
         			"visibility" : "hidden"
         		});
     		}, 3000)
@@ -99,6 +105,18 @@
     		g.transform("translate("+60+","+-30+")");
     		self.config_btn = g;
     	});
+    	Snap.load("/images/copy.svg", function (f) {
+    		var g = f.select("g");
+        	self.group.append(g);
+        	g.mouseup(function(e, x, y) {
+        		self.copy();
+        	});
+    		g.attr({
+    			"visibility" : "hidden"
+    		});
+    		g.transform("translate("+60+","+0+")");
+    		self.copy_btn = g;
+    	});
 	}
 	
 	Node.prototype.clear_execute = function(params) {
@@ -109,6 +127,11 @@
 			if(this.output[i]) this.output[i].clearParam();
 		}
 		
+	}
+	Node.prototype.copy = function() {
+		var self = this;
+		var id = idgenerator.genNewId();
+		self.diagram.create_node(this.clone(id));
 	}
 	Node.prototype.execute = function() {
 		var self = this;

@@ -101,11 +101,11 @@
         		}else if(node.meta == "Actuator") {
         			n = new retro.Actuator(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
         		}else if(node.meta == "Logic") {
-        			n = new retro.Logic(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, new Function("input", "snap", node.logic_function_script), node.name);
-        			n.logic_function_script = node.logic_function_script;
+        			n = new retro.Logic(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, node.logic_function_script, node.name);
+        			//n.logic_function_script = node.logic_function_script;
         		}else if(node.meta == "Memory") {
-        			n = new retro.Memory(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, new Function("input", "snap", node.logic_function_script));
-        			n.logic_function_script = node.logic_function_script;
+        			n = new retro.Memory(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, node.logic_function_script);
+        			//n.logic_function_script = node.logic_function_script;
         		}else if(node.meta == "Primitive") {
         			n = new retro.Primitive(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
         		}else if(node.meta == "Device") {
