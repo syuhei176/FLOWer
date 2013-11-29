@@ -26,6 +26,9 @@
 		return new Value(this.editor, this.value);
 	}
 	Value.prototype.removeSelf = function() {
+		if(this.timerID) {
+			clearInterval(this.timerID);
+		}
 		this.group.remove();
 	}
 	Value.prototype.getValue = function() {
@@ -64,12 +67,12 @@
 		var len = cal_len(this.pos, this.dest);
 		this.vec.x *= 0.1;
 		this.vec.y *= 0.1;
-		var timerID = setInterval(function() {
+		this.timerID = setInterval(function() {
 			var a = self.pos.x + self.vec.x;
 			var b = self.pos.y + self.vec.y;
 			self.setPosition(a, b);
 			if(cal_len(self.pos, self.dest) < 10) {
-				clearInterval(timerID);
+				clearInterval(self.timerID);
 				cb(i);
 			}
 		}, 1000 / 10);

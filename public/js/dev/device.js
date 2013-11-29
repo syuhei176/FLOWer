@@ -64,7 +64,7 @@
 				var rect = snap.rect(0, 0, renderCommand.w, renderCommand.h);
 				rect.transform("translate("+renderCommand.x+","+renderCommand.y+")");
 				rect.attr({
-					fill : renderCommand.fill ? renderCommand.fill : "black";
+					fill : (renderCommand.fill ? renderCommand.fill : "black")
 				});
 				this.renderObject[renderCommand.id] = rect;
 				this.tablet_render_base.append(rect);

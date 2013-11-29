@@ -18,8 +18,18 @@
 			});
 		}
 
-		this.logic_function = logic_function;
-		this.logic_function_script = cut_first_and_last_line(this.logic_function.toString());
+		if(typeof logic_function == "string") {
+			this.logic_function_script = logic_function;
+			var params = [];
+			for(var i=0;i < inputs.length;i++) {
+				params.push(inputs[i].name);
+			}
+			params.push(this.logic_function_script);
+			this.logic_function = Function.apply(self, params);
+		}else{
+			this.logic_function = logic_function;
+			this.logic_function_script = cut_first_and_last_line(this.logic_function.toString());
+		}
 		function cut_first_and_last_line(str) {
 			var lines = str.split("\n");
 			return lines.slice(1, lines.length - 1).join("\n");
@@ -130,6 +140,22 @@
 	
 	Logic.prototype.set_logic = function(inputs, script) {
 		
+	}
+	
+	Logic.prototype.clone = function(id) {
+		var inputs = [];
+		var outputs = [];
+		for(var key in this.input) {
+			inputs.push({
+				name : key
+			});
+		}
+		for(var key in this.output) {
+			outputs.push({
+				name : key
+			});
+		}
+		return new retro.Logic(id, this.diagram, this.bound.x, this.bound.y, inputs, outputs, {}, this.logic_function_script, this.name);
 	}
 	
 	Logic.prototype.exporter = function() {

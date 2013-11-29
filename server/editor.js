@@ -92,9 +92,20 @@ function create_project(user, name, cb) {
             var md5sum = crypto.createHash('md5');
             md5sum.update(uid);
             doc.key = md5sum.digest('hex');
-            collection.insert(doc, function() {
-                cb(null, {editorinfo : { key : doc.key}});
-            });
+            collection.insert(doc, this);
+        })
+        .seq(function() {
+        	var collection = new mongodb.Collection(dbinterface, account_collection_name);
+        	var query = {_id : new BSON.ObjectID(String(user.id))};
+        	var update = {};
+        	var has_project = {
+        			key : doc.key
+        	}
+        	update = {$push:{projects:has_project}};
+        	collection.update(query, update, {safe:true,multi:false,upsert:true}, this);
+        })
+        .seq(function() {
+            cb(null, {editorinfo : { key : doc.key}});
         });
 }
 function save_all(editor_key, data, cb) {

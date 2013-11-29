@@ -101,11 +101,11 @@
         		}else if(node.meta == "Actuator") {
         			n = new retro.Actuator(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
         		}else if(node.meta == "Logic") {
-        			n = new retro.Logic(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, new Function("input", "snap", node.logic_function_script), node.name);
-        			n.logic_function_script = node.logic_function_script;
+        			n = new retro.Logic(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, node.logic_function_script, node.name);
+        			//n.logic_function_script = node.logic_function_script;
         		}else if(node.meta == "Memory") {
-        			n = new retro.Memory(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, new Function("input", "snap", node.logic_function_script));
-        			n.logic_function_script = node.logic_function_script;
+        			n = new retro.Memory(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {}, node.logic_function_script);
+        			//n.logic_function_script = node.logic_function_script;
         		}else if(node.meta == "Primitive") {
         			n = new retro.Primitive(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
         		}else if(node.meta == "Device") {
@@ -152,16 +152,19 @@
     				}], [{
     	    			name : "output",
     	    			type : "number"
-    				}], "memory", function(input) {
-    		if(input["flush"].getParam()) {
-    			return input["source"].getParam();
-    		}else{
-        		if(input["enter"].getParam()) {
-        			
-        		}
-    			return null;
-    		}
-    	});
+    				}], "memory", "if(enter) {"+
+        			  "var v = new retro.Value(this.diagram.editor, enter.getValue());"+
+        			  "v.setPosition((this.getX() + 120 - this.memories.length * 30), (this.getY() + 30));"+
+        			  "this.memories.push(v);"+
+        			"}else{"+
+        			  "var flush = this.input.flush.getParam();"+
+        			  "if(flush) {"+
+        			    "var v = this.memories.shift();"+
+        			    "if(v) {"+
+        			      "return {output : v.getValue()}"+
+        			    "}"+
+        			  "}"+
+        			"}");
 
         	this.nodes.push(button1);
         	this.nodes.push(button2);
