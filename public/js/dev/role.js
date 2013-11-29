@@ -11,8 +11,8 @@
 		this.parent = parent;
 		this.type = type;
 		this.connection = [];
-		this.group = this.parent.diagram.snap.group();
-		var snap = this.parent.diagram.snap;
+		var snap = this.parent.diagram.editor.snap;
+		this.group = snap.group();
     	var graphic = snap.circle(0, 0, 30);
     	this.graphic = graphic;
     	var text_element = snap.text(-20, 0, text);
@@ -110,10 +110,18 @@
 		this.group.remove();
 	}
 	
+	Role.prototype.getURI = function() {
+		return this.parent.id + "." + this.name;
+	}
+	
 	Role.prototype.exporter = function() {
-		
+		var cons = [];
+		for(var i=0;i < this.connection.length;i++) {
+			cons.push(this.connection[i].target.getURI());
+		}
 		return {
-			name : this.name
+			name : this.name,
+			connections : cons
 		}
 	}
 	

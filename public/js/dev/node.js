@@ -8,7 +8,7 @@
 		this.id = id;
 		this.diagram = diagram;
 		this.input = {};
-		this.output = [];
+		this.output = {};
 		var option = _option || {};
 		
 		this.bound = {
@@ -17,47 +17,43 @@
 				w : option.w ? option.w : 60,
 				h : option.h ? option.h : 60
 		}
-		var snap = this.diagram.snap;
+		var snap = this.diagram.editor.snap;
 		this.group = snap.g();
-		var coll = snap.circle(0, 0, this.bound.w);
+		this.graphic_group = snap.g();
+		var coll = null;
+    	if(option.shape == "rect") {
+    		coll = snap.rect(0, 0, this.bound.w, this.bound.h);
+    	}else{
+    		coll = snap.circle(0, 0, this.bound.w);
+    	}
     	var graphic = null;
     	this.shape = option.shape;
-    	/*
-    	if(shape == "button") {
-    		graphic = snap.rect(0, 0, 120, 60, 12, 12);
-    	}else if(shape == "logic") {
-    		graphic = snap.circle(0, 0, 60);
-    	}else if(shape == "output") {
-    		graphic = snap.circle(0, 0, 60);
-    	}else if(shape == "primitive") {
-    		graphic = snap.circle(0, 0, 50);
-    	}else if(shape == "memory") {
-    		graphic = snap.rect(0, 0, 150, 60, 2, 2);
-    	}else if(shape == "display") {
-    		graphic = snap.rect(0, 0, 150, 80);
-    	}else{
-    		graphic = snap.circle(0, 0, 60);
-    	}
-    	*/
-		graphic = snap.circle(0, 0, this.bound.w);
     	coll.attr({
     	    fill: "#ffffff",
     	    "fill-opacity" : 0,
     	});
-		this.label = diagram.snap.text(0, 0, "");
+		this.label = snap.text(0, 0, "");
 		this.label.attr({
 			"font-size" : "36px"
 		});
-    	this.group.append(graphic);
+		
+    	this.group.append(this.graphic_group);
 		this.group.append(this.label);
     	this.group.append(coll);
     	
+    	if(option.shape == "rect") {
+    		
+    	}else{
+    		graphic = snap.circle(0, 0, this.bound.w);
+        	this.graphic_group.append(graphic);
+        	graphic.attr({
+        	    fill: "#ffffff",
+        	    stroke: "#3297c9",
+        	    strokeWidth: 5
+        	});
+    	}
+    	
 		this.move(x, y);
-    	graphic.attr({
-    	    fill: "#ffffff",
-    	    stroke: "#3297c9",
-    	    strokeWidth: 5
-    	});
     	var prev_pos = {x:0,y:0}
     	coll.drag(function(dx, dy, x, y){
         	self.move_add(dx - prev_pos.x, dy - prev_pos.y);
@@ -74,6 +70,10 @@
     	coll.dblclick(function(e, x, y) {
     		if(self.dblclick) self.dblclick();
     	});
+    	coll.mousedown(function(e, x, y) {
+    		if(self.mousedown) self.mousedown(e, x, y);
+    	});
+
     	coll.mouseup(function(e, x, y) {
     		self.refresh();
     		if(self.mouseup) self.mouseup();

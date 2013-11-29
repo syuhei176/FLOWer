@@ -8,7 +8,7 @@ $(function(){
     
     function RetroClient(editor_key) {
     	this.editor_key = editor_key;
-    	this.diagram = null;
+    	this.editor = null;
     }
     
     RetroClient.prototype.init = function(cb) {
@@ -26,7 +26,7 @@ $(function(){
 				});
 			self.socket.on('getall', function(a) {
 				console.log(a);
-				self.diagram = cb(a);
+				self.editor = cb(a);
 			});
 			self.get_all();
     	});
@@ -55,7 +55,7 @@ $(function(){
     }
     
     RetroClient.prototype.exporter = function() {
-    	this.save_all(this.diagram.exporter());
+    	this.save_all(this.editor.diagram.exporter());
     	
     }
     

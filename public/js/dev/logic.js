@@ -57,13 +57,22 @@
 		$("#button").click(function() {
 			var script = $("#script").val();
 			var title = $("#title").val();
+			var input_names = $('[name="input-name"]');
+			var output_names = $('[name="output-name"]');
 			self.name = title;
 			self.label.attr({
 				"text" : title
 			});
 			if(script) {
+				var params = [];
+				for(var i=0;i < input_names.length;i++) {
+					params.push(input_names[i].value);
+				}
+				params.push(script);
 				self.logic_function_script = script;
-				self.logic_function = new Function("input", "snap", script);
+				self.logic_function = Function.apply(self, params);
+				
+				//new Function("a", "b","c","d", "return a + b;")
 			}else{
 				
 			}
@@ -77,8 +86,6 @@
 			}
 			self.output = {};
 			
-			var input_names = $('[name="input-name"]');
-			var output_names = $('[name="output-name"]');
 			
 			var th = 2 * Math.PI / (input_names.length + output_names.length);
 			var offset =  - Math.PI / 2;
@@ -103,9 +110,13 @@
 	
 	Logic.prototype.execute2 = function() {
 		var self = this;
-		var snap = this.diagram.snap;
 		
-		var result = this.logic_function(this.input, snap);
+		var params = [];
+		for(var key in this.input) {
+			params.push(this.input[key].getParam());
+		}
+		var result = this.logic_function.apply(this, params);
+		console.log(result);
 		if(result == null) {
 			return false;
 		}
@@ -113,10 +124,12 @@
 			this.input[i].clearParam();
 		}
 		for(var key in result) {
-			if(this.output[key]) {
-				this.output[key].setParam(result[key]);
-			}
+			this.output[key].setParam(new retro.Value(self.diagram.editor, result[key]));
 		}
+	}
+	
+	Logic.prototype.set_logic = function(inputs, script) {
+		
 	}
 	
 	Logic.prototype.exporter = function() {

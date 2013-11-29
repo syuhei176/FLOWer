@@ -27,9 +27,12 @@
       <script src="/js/dev/logic.js"></script>
       <script src="/js/dev/memory.js"></script>
       <script src="/js/dev/actuator.js"></script>
+      <script src="/js/dev/subsystem.js"></script>
+      <script src="/js/dev/device.js"></script>
       <script src="/js/dev/connection.js"></script>
       <script src="/js/dev/role.js"></script>
       <script src="/js/dev/diagram.js"></script>
+      <script src="/js/dev/editor.js"></script>
       <script src="/js/dev/retro-client.js"></script>
       <script src="/js/dev/idGenerator.js"></script>
     <script>
@@ -37,63 +40,7 @@
         	$("#svg").attr("width", window.innerWidth - 30);
         	window.idgenerator = retro.IDGenerator("<%=element_key_header%>");
 			function init_diagram(model) {
-	        	var snap = Snap("#svg");
-	        	var diagram = new retro.Diagram(snap, model.model);
-	        	var control_group = snap.g();
-	        	function stop() {
-	        		diagram.clear();
-	        		diagram.stop();
-	        	}
-	        	function run() {
-	        		diagram.run();
-	        	}
-	        	var mode = "edit";
-	        	Snap.load("/images/play.svg", function (f) {
-	        		var g = f.select("svg");
-	            	g.click(function(){
-	            		window.retroClient.exporter();
-	            		if(mode == "edit") {
-	            			mode = "run";
-	            			run();
-	            			g.select("polygon[fill='#ffffff']").attr({
-	                    	    fill: "#ff0000"
-	                    	});
-	            		}else{
-	            			mode = "edit";
-	            			stop();
-	            			g.select("polygon[fill='#ff0000']").attr({
-	                    	    fill: "#ffffff"
-	                    	});
-	            		}
-	            	});
-	        		control_group.append(g);
-	        	});
-	        	Snap.load("/images/create.svg", function (f) {
-	        		var g = f.select("g");
-	        		g.transform("translate("+100+","+0+")");
-	            	g.click(function(){
-	            		var id = idgenerator.genNewId();
-	            		diagram.create_node(new retro.Logic(id, diagram, 200, 200, [{
-	                		name : "input",
-	                		type : "number"
-	                	}],[{
-	                		name : "output",
-	                		type : "number"
-	                	}], "logic", function(input){
-	                		var p1 = input["input"].getParam();
-	                		if(p1) {
-	                    		return {output : new retro.Value(snap, Number(p1.getValue()))};
-	                		}else{
-	                			return null;
-	                		}
-	                	}, "そのまま"));
-	            	});
-	        		control_group.append(g);
-	        	});
-	        	$(window).scroll(function(){
-	        		control_group.transform("translate("+0+","+$(window).scrollTop()+")");
-	        	});
-	        	return diagram;
+				return new retro.Editor("#svg", model.model);
         	}
         	
         	

@@ -5,7 +5,7 @@
 		this.input["enter"] = new retro.Role(self, "input", 0, 30, "enter");
 		this.input["flush"] = new retro.Role(self, "input", 60, 0, "flush");
 		
-		this.output.push(new retro.Role(self, "output", 150, 30));
+		this.output["output"] = new retro.Role(self, "output", 150, 30);
 
 		this.memories = [];
 	}
@@ -17,7 +17,7 @@
 		
 		var param = this.input.enter.getParam();
 		if(param) {
-			var v = new retro.Value(snap, param.value);
+			var v = new retro.Value(self.diagram.editor, param.value);
 			this.input.enter.clearParam();
 			v.setPosition((self.getX() + 120 - this.memories.length * 30), (self.getY() + 30));
 			this.memories.push(v);

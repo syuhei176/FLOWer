@@ -1,15 +1,17 @@
 (function(){
-	function Value(snap, value) {
+	function Value(editor, value) {
 		var self = this;
-		this.snap = snap;
-		this.group = snap.group();
-		this.graphic = snap.circle(0, 0, 20);
+		this.editor = editor;
+		this.snap = editor.getGraphicContext();
+		this.group = this.snap.group();
+		this.graphic = this.snap.circle(0, 0, 20);
 		this.graphic.attr({
     	    fill: "#77ffff",
     	    stroke: "#fff",
     	    strokeWidth: 5
     	});
-		this.text = snap.text(-5, 5, value);
+		this.text = this.snap.text(-5, 5, value);
+		this.setValue(value);
 		
 		this.group.append(this.graphic);
 		this.group.append(this.text);
@@ -18,27 +20,40 @@
 		this.dest = {x:0,y:0};
 		this.vec = {x:0,y:0};
 		this.setPosition(0, 0);
+		this.editor.addValue(this);
 	}
-	Value.prototype.clone = function(v) {
-		return new Value(this.snap, this.value);
+	Value.prototype.clone = function() {
+		return new Value(this.editor, this.value);
 	}
-	Value.prototype.removeSelf = function(v) {
+	Value.prototype.removeSelf = function() {
 		this.group.remove();
 	}
-	Value.prototype.getValue = function(v) {
+	Value.prototype.getValue = function() {
 		return this.value;
 	}
 	Value.prototype.setValue = function(v) {
 		this.value = v;
+		var text = "";
+		if(typeof v == "string") {
+			text = v;
+		}else if(typeof v == "number") {
+			text = v;
+		}else if(typeof v == "bool") {
+			text = v;
+		}else{
+			text = "Object";
+		}
 		this.text.attr({
-			text : v,
+			text : text,
 			'font-family' : 'Comic Sans MS'
 		});
 	}
 	Value.prototype.setPosition = function(x, y) {
 		this.pos.x = x;
 		this.pos.y = y;
-		this.group.transform("translate("+(x)+","+(y)+")");
+		this.group.transform("translate("+(this.pos.x)+","+(this.pos.y)+")");
+	}
+	Value.prototype.refreshAnimation = function() {
 	}
 	Value.prototype.setDestination = function(x, y, cb, i) {
 		var self = this;
@@ -57,7 +72,7 @@
 				clearInterval(timerID);
 				cb(i);
 			}
-		}, 1000 / 20);
+		}, 1000 / 10);
 		function cal_len(p1, p2) {
 			var xx = p2.x - p1.x;
 			var yy = p2.y - p1.y;

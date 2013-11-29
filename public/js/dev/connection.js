@@ -1,13 +1,19 @@
 (function(){
    	function Connection(diagram, source, target) {
    		var self = this;
+		for(var i=0;i < source.connection.length;i++) {
+			if(source.connection[i].target.getURI() == target.getURI()) {
+				return;
+			}
+		}
    		this.diagram = diagram;
 		this.source = source;
 		this.target = target;
 		this.source.connection.push(this);
 		this.target.connection.push(this);
 		
-		this.graphic = this.diagram.snap.line(0, 0, 0, 0);
+		var snap = this.diagram.editor.getGraphicContext();
+		this.graphic = snap.line(0, 0, 0, 0);
 		this.graphic.attr({
     	    fill: "#bada55",
     	    stroke: "#000",

@@ -21,7 +21,7 @@
 		var self = this;
 		var snap = this.diagram.snap;
 		for(var i=0;i < self.output.length;i++) {
-			self.output[i].setParam(new retro.Value(snap, this.value));
+			self.output[i].setParam(new retro.Value(self.diagram.editor, this.value));
 		}
 	}
 	
