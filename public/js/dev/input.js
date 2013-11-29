@@ -13,7 +13,7 @@
 	Input.prototype =  new retro.Node();
 	
 	Input.prototype.dblclick = function() {
-		this.value = JSON.parse(window.prompt("値を入力してください。",this.value));
+		this.value = JSON.parse(window.prompt("値を入力してください。", JSON.stringify(this.value)));
 		if(this.value) {
 			this.label.attr({
 				text : this.value
@@ -53,6 +53,7 @@
 	Input.prototype.exporter = function() {
 		var exported = retro.Node.prototype.exporter.call( this, arguments );
 		exported.meta = "Sensor";
+		exported.value = this.value;
 		return exported;
 	}
 

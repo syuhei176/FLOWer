@@ -126,8 +126,8 @@
 			params.push(this.input[key].getParam());
 		}
 		var result = this.logic_function.apply(this, params);
-		console.log(result);
-		if(result == null) {
+		
+		if(!result) {
 			return false;
 		}
 		for(var i in this.input) {

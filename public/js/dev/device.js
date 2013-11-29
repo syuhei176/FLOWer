@@ -61,7 +61,7 @@
 			var renderCommand = render.getValue();
 			var snap = this.diagram.editor.getGraphicContext();
 			if(renderCommand.cmd == "create") {
-				var rect = snap.rect(0, 0, renderCommand.w, renderCommand.h);
+				var rect = snap.rect(0, 0, renderCommand.w || 30, renderCommand.h || 30);
 				rect.transform("translate("+renderCommand.x+","+renderCommand.y+")");
 				rect.attr({
 					fill : (renderCommand.fill ? renderCommand.fill : "black")

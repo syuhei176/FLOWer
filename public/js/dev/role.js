@@ -82,10 +82,7 @@
 				var v = value.clone();
 				v.setPosition(self.getX(), self.getY());
 				this.connection[i].setParam(v);
-				v.setDestination(self.connection[i].target.getX(), self.connection[i].target.getY(), function(i) {
-					//相手のinputに届いたら
-					self.connection[i].target.setParam(v);
-				}, i);
+				v.setDestination(self.connection[i].target.getX(), self.connection[i].target.getY(), self.connection[i].target);
 			}
 			value.removeSelf();
 		}else if(this.type == "input"){

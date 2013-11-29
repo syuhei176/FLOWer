@@ -98,6 +98,7 @@
         		var n = null;
         		if(node.meta == "Sensor") {
         			n = new retro.Input(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
+        			n.value = node.value;
         		}else if(node.meta == "Actuator") {
         			n = new retro.Actuator(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
         		}else if(node.meta == "Logic") {
