@@ -12,9 +12,10 @@
 			this.output[outputs[i].name] = new retro.Role(self, "output", 60 * Math.cos(th*j + offset), 60 * Math.sin(th*j + offset), outputs[i].name);
 		}
 		
-		if(name) {
+		this.name = name;
+		if(this.name) {
 			self.label.attr({
-				"text" : name
+				"text" : this.name
 			});
 		}
 
@@ -25,7 +26,11 @@
 				params.push(inputs[i].name);
 			}
 			params.push(this.logic_function_script);
-			this.logic_function = Function.apply(self, params);
+			try {
+				this.logic_function = Function.apply(self, params);
+			}catch(e) {
+				this.logic_function = undefined;
+			}
 		}else{
 			this.logic_function = logic_function;
 			this.logic_function_script = cut_first_and_last_line(this.logic_function.toString());
