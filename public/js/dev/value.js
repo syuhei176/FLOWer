@@ -44,7 +44,7 @@
 		}else if(typeof v == "bool") {
 			text = v;
 		}else{
-			text = "Object";
+			text = JSON.stringify(v);
 		}
 		this.text.attr({
 			text : text,

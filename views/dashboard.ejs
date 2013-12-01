@@ -20,9 +20,22 @@
   <div class="grid2">
       	<a id="create-editor-btn" class="button button-circle" href="#">Get Started!!</a>
   </div>
-  <div class="grid6 first">
-      <div id="editor-list">
+  <div class="grid2 first">
+    <div>
+      <div>
+      最近
       </div>
+      <div>
+      共有中
+      </div>
+      <div>
+      ゴミ箱
+      </div>
+    </div>
+  </div>
+  <div class="grid6">
+  	<ul id="editor-list" class="list-group">
+  	</ul>
   </div>
   </div>
   <div class="grid first">&copy;<a href="http://technicalrockstars.co.jp">Technical Rockstars, Inc.</a></div>
@@ -53,7 +66,9 @@
         })
     </script>
     <script id="editor-template" type="text/underscore">
-	<div><a href="/editor/edit/{{key}}">{{name}}</a></div>
+	<li class="list-group-item">
+		<div><a href="/editor/edit/{{key}}" target="_blank">{{name}}</a></div>
+	</li>
     </script>
   </body>
 </html>

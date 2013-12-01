@@ -29,7 +29,14 @@
 		this.stdout_group = this.diagram.editor.getGraphicContext().g();
 		this.group.append(this.stdout_group);
 		
-		var lines = result.getValue().split("\n");
+		var lines = [];
+		if(typeof result.getValue() == "string") {
+			lines = result.getValue().split("\n");
+		}else if(typeof result.getValue() == "object") {
+			lines[0] = JSON.stringify(result.getValue());
+		}else{
+			lines[0] = result.getValue();
+		}
 		for(var i=0;i < lines.length;i++) {
 			var line_text = snap.text(0, i * 20, lines[i]);
 			this.stdout_group.append(line_text);
