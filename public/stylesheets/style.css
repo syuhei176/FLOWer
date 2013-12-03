@@ -245,3 +245,29 @@ a.list-group-item.active .list-group-item-text {
 .panel .list-group .list-group-item:last-child {
   border-bottom: 0;
 }
+
+.icon-base {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-top: 1px;
+	*margin-right: .3em;
+	line-height: 24px;
+	vertical-align: text-top;
+	background-image: url("/images/icons.png");
+	/*background-position: 32px 32px;*/
+	background-repeat: no-repeat;
+}
+.icon-list {
+	background-position: 0      0;
+}
+.icon-url {
+	background-position: -24px      0;
+}
+.icon-public {
+	background-position: -48px      0;
+}
+
+
+	
+	

@@ -38,28 +38,97 @@
       
     <script>
         $(function() {
+        	//モデル定義
+        	//エディタリスト
+        	function EditorList() {
+        		this.collection = [];
+        	}
+        	EditorList.prototype.set = function(data) {
+        		for(var i=0;i < data.length;i++) {
+        			var e = new Editor(data[i]);
+        			this.collection.push(e);
+        		}
+        	}
+        	EditorList.prototype.get = function(key) {
+            	for(var i=0;i < this.collection.length;i++) {
+            		if(this.collection[i].get("key") == key) {
+            			return this.collection[i];
+            		}
+            	}
+            	return null;
+        	}
+        	EditorList.prototype.toJSON = function() {
+        		var json_text = [];
+            	for(var i=0;i < this.collection.length;i++) {
+            		json_text.push(this.collection[i].toJSON());
+            	}
+            	return json_text;
+        	}
+        	//エディタ
+        	function Editor(model) {
+        		this.model = model;
+        		this.init = function(data) {
+        			if(data.visibility == "list") {
+            			data.visibility_text = "非公開";
+            			data.visibility_class = "icon-list";
+        			}else if(data.visibility == "public") {
+            			data.visibility_text = "公開";
+            			data.visibility_class = "icon-public";
+        			}
+        		}
+        		this.init(this.model);
+        	}
+        	Editor.prototype.get = function(k) {
+        		return this.model[k];
+        	}
+        	Editor.prototype.set = function(k, v) {
+        		this.model[k] = v;
+        		this.init(this.model);
+        	}
+        	Editor.prototype.toJSON = function() {
+            	return this.model;
+        	}
+        	var editorList = new EditorList();
+        	
+        	//プロジェクト作成
           $("#create-editor-btn").click(function() {
         	  $.post("/editor/create", {name : "Untitled Editor"}, function(result) {
         		  window.location.href = "/editor/edit/" + result.editorinfo.key;
         	  }, "json");
           });
+        	//プロジェクトリスト
           var template = Hogan.compile($("#editor-template").html());
           $.get("/editor/list", {}, function(data) {
-        	  var html = render_editorlist(data);
+        	  editorList.set(data);
+        	  var html = render_editorlist(editorList.toJSON());
         	  $("#editor-list").html(html);
+        	  $('[name="share-btn"]').click(function() {
+        		  var self = $(this);
+        		  var editor = editorList.get($(this).data('cid'));
+        		  var vis = "public";
+        		  if(editor.get('visibility') == "list") {
+        			  vis = "public";
+        		  }else{
+        			  vis = "list";
+        		  }
+            	  $.post("/editor/update", {key : editor.get('key'), visibility : vis}, function(result) {
+            		  self.find('i').removeClass(editor.get('visibility_class'));
+            		  editor.set('visibility', vis);
+            		  self.find('i').addClass(editor.get('visibility_class'));
+            	  }, "json");
+        	  });
           }, "json");
           function render_editorlist(editorlist) {
         	  editorlist = _.map(editorlist, function(editor) {
         		  return template.render(editor);
         	  });
-    		  console.log(editorlist);
         	  return editorlist.join('');
           }
         })
     </script>
     <script id="editor-template" type="text/underscore">
 	<li class="list-group-item">
-		<div><a href="/editor/edit/{{key}}" target="_blank">{{name}}</a></div>
+		<div><a href="/editor/edit/{{key}}" target="_blank">{{name}}</a><button name="share-btn" data-cid="{{key}}"><i class="icon-base {{visibility_class}}"></i></button></div>
 	</li>
     </script>
   </body>

@@ -37,7 +37,7 @@ module.exports.editorlist = function(req, res){
         	}
             var collection = new mongodb.Collection(dbinterface, "editor");
         	var query = { key : { $in : has_projects }};
-            collection.find(query, {key : 1, name : 1}, {limit:10}).toArray(this);
+            collection.find(query, {key : 1, name : 1, visibility : 1}, {limit:10}).toArray(this);
         })
         .seq(function(docs) {
         	res.send(JSON.stringify(docs));
