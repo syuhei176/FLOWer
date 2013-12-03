@@ -1,3 +1,4 @@
+module.paths.push("/usr/local/lib/node_modules");
 var mongodb = require("mongodb"),
 	bcrypt = require('bcrypt'),
 	crypto = require('crypto'),
