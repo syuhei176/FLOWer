@@ -40,3 +40,13 @@ module.exports.editorlist = function(req, res){
         });
     }
 };
+
+//
+module.exports.dashboard = function(req, res){
+	
+}
+
+function () {
+	
+}
+
