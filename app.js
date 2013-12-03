@@ -2,7 +2,7 @@ var express = require('express')
   , app = express()
   , routes = require('./routes')
   , dashboard = require('./routes/dashboard')
-  , editor = require('./routes/editor')
+  , routes_editor = require('./routes/editor')
   , http = require('http')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server)
@@ -13,6 +13,7 @@ var express = require('express')
 var MongoStore = require('connect-mongo')(express);
 
 var account = require("./server/account");
+var editor_controller = require('./server/editor')
 
 
 var dbinterface = require("./server/db");
@@ -73,14 +74,11 @@ app.get('/dashboard', dashboard.dashboard);
 app.get('/editor/list', dashboard.editorlist);
 
 //権限のあるプロジェクトを開く
-app.get('/editor/edit/:key', editor.edit);
-//自分のスペースにコピー
-app.get('/editor/copy/:key', editor.edit);
-
-app.post('/editor/create', editor.create_project);
-app.post('/editor/update', editor.update_project);
-app.post('/editor/delete', editor.delete_project);
-app.post('/editor/copy', editor.copy_project);
+app.get('/editor/edit/:key', routes_editor.edit);
+app.post('/editor/create', routes_editor.create_project);
+app.post('/editor/update', routes_editor.update_project);
+app.post('/editor/delete', routes_editor.delete_project);
+app.post('/editor/copy', routes_editor.copy_project);
 
 io.configure(function () {
 	io.set('log level', 1);
@@ -109,7 +107,7 @@ var chat = io
     	socket.join("g" + msg.editor_key);
     });
     socket.on('saveall', function (msg) {
-    	editor.save_all(msg.editor_key, msg.data, function() {
+    	editor_controller.save_all(msg.editor_key, msg.data, function() {
     		
     	});
     });
@@ -123,7 +121,7 @@ var chat = io
         //socket.broadcast.emit('msg_broadcast', msg);
     });
     socket.on('getall', function (msg) {
-    	editor.get_all(msg.editor_key, function(err, model) {
+    	editor_controller.get_all(msg.editor_key, function(err, model) {
             socket.emit('getall', model);
     	})
     });

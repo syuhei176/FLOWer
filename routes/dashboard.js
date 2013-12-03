@@ -2,6 +2,7 @@ var mongodb = require("mongodb"),
 	crypto = require('crypto'),
 	Seq = require('seq'),
 	BSON = mongodb.BSONPure,
+    account_controller = require("../server/account"),
     genid = require("../server/genid"),
 	dbinterface = require("../server/db").getMongoDBInstance();
 	
@@ -11,7 +12,10 @@ module.exports.dashboard = function(req, res){
     	var user = req.session.user;
         Seq()
         .seq(function() {
-        	res.render('dashboard', { user: user });
+        	account_controller.get_userinfo(user, this);
+        })
+        .seq(function(account) {
+        	res.render('dashboard', { account: account });
         });
     }
 };
