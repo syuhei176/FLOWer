@@ -17,8 +17,6 @@ class Diagram{
 	public var timerID : TimerID;
 	public var editor : Editor;
 
-
-
 	public function new(editor, ?model){
 		this.editor = editor;
 		this.mode = STOP;

@@ -1,36 +1,15 @@
 package retro.pub;
 
-
-enum PortType{
-	Input;
-	Output;
-}
-
 class Port{
 	public var parent : Job;
-	public var type : PortType;
-	public var text : String;
+	public var type : RetroType;
+	public var value : Dynamic;
+	public var name : String;
 	public var connection : Array<Port>;
-	public var value : RetroTypeValue;
 
-	public function new(parent, type, text){
+	public function new(parent, type, name){
 		this.parent = parent;
 		this.type = type;
-		this.text = text;
-		this.connection = [];
+		this.name = name;
 	}
-
-	public function setParam(value){
-		switch ( this.type) {
-			case Input:
-			
-			case Output:
-		}
-
-	}
-
-	public function getParam(value){
-		return this.value;
-	}
-
 }
