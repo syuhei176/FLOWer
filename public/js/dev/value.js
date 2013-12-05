@@ -44,7 +44,7 @@
 		}else if(typeof v == "bool") {
 			text = v;
 		}else{
-			text = "Object";
+			text = JSON.stringify(v);
 		}
 		this.text.attr({
 			text : text,
@@ -58,7 +58,7 @@
 	}
 	Value.prototype.refreshAnimation = function() {
 	}
-	Value.prototype.setDestination = function(x, y, cb, i) {
+	Value.prototype.setDestination = function(x, y, target_port) {
 		var self = this;
 		this.dest.x = x;
 		this.dest.y = y;
@@ -73,7 +73,7 @@
 			self.setPosition(a, b);
 			if(cal_len(self.pos, self.dest) < 10) {
 				clearInterval(self.timerID);
-				cb(i);
+				target_port.setParam(self);
 			}
 		}, 1000 / 10);
 		function cal_len(p1, p2) {

@@ -36,7 +36,7 @@
             	}],[{
             		name : "output",
             		type : "number"
-            	}], "logic", function(snap, input){
+            	}], "logic", function(input){
         			if(input) {
         				return {output : input.getValue()}
         			}

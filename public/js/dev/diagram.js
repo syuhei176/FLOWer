@@ -98,6 +98,7 @@
         		var n = null;
         		if(node.meta == "Sensor") {
         			n = new retro.Input(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
+        			n.value = node.value;
         		}else if(node.meta == "Actuator") {
         			n = new retro.Actuator(node.id, self, node.bound.x, node.bound.y, node.input, node.output, {});
         		}else if(node.meta == "Logic") {
@@ -139,10 +140,14 @@
         		name : "output",
         		type : "number"
         	}], "button");
+        	var actuator = new retro.Actuator(idgenerator.genNewId(), this, 450, 200, [{
+        		name : "string",
+        		type : "number"
+        	}],[], {});
         	var device = new retro.Device(idgenerator.genNewId(), this, 500, 150, [],[{
         		name : "output",
         		type : "number"
-        	}], {w:320,h:480,shape:"rect"});
+        	}], {w:320,h:480,shape:"rect",image:"tablet"});
         	var memory1 = new retro.Memory(idgenerator.genNewId(), this, 350, 300, [{
     			name : "enter",
     			type : "number"
@@ -152,20 +157,24 @@
     				}], [{
     	    			name : "output",
     	    			type : "number"
-    				}], "memory", function(input) {
-    		if(input["flush"].getParam()) {
-    			return input["source"].getParam();
-    		}else{
-        		if(input["enter"].getParam()) {
-        			
-        		}
-    			return null;
-    		}
-    	});
+    				}], "memory", "if(enter) {"+
+        			  "var v = new retro.Value(this.diagram.editor, enter.getValue());"+
+        			  "v.setPosition((this.getX() + 120 - this.memories.length * 30), (this.getY() + 30));"+
+        			  "this.memories.push(v);"+
+        			"}else{"+
+        			  "var flush = this.input.flush.getParam();"+
+        			  "if(flush) {"+
+        			    "var v = this.memories.shift();"+
+        			    "if(v) {"+
+        			      "return {output : v.getValue()}"+
+        			    "}"+
+        			  "}"+
+        			"}");
 
         	this.nodes.push(button1);
         	this.nodes.push(button2);
         	this.nodes.push(button3);
+        	this.nodes.push(actuator);
         	this.nodes.push(device);
         	this.nodes.push(memory1);
     	}

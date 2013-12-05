@@ -7,6 +7,8 @@
 		for(var i=0;i < inputs.length;i++) {
 			this.input[inputs[i].name] = new retro.Role(self, "input", 60 * Math.cos(th*i + offset), 60 * Math.sin(th*i + offset), inputs[i].name);
 		}
+		this.stdout_group = diagram.editor.getGraphicContext().g();
+		this.group.append(this.stdout_group);
 	}
 	
 	Actuator.prototype =  new retro.Node();
@@ -14,17 +16,31 @@
 	
 	Actuator.prototype.execute2 = function() {
 		var self = this;
-		var snap = this.diagram.snap;
-		
+		var snap = this.diagram.editor.getGraphicContext();
 		
 		var result = this.input.string.getParam();
 		if(result == null) {
 			return false;
 		}
 		
-		this.label.attr({
-			text : result.getValue()
-		});
+		if(this.stdout_group) {
+			this.stdout_group.remove();
+		}
+		this.stdout_group = this.diagram.editor.getGraphicContext().g();
+		this.group.append(this.stdout_group);
+		
+		var lines = [];
+		if(typeof result.getValue() == "string") {
+			lines = result.getValue().split("\n");
+		}else if(typeof result.getValue() == "object") {
+			lines[0] = JSON.stringify(result.getValue());
+		}else{
+			lines[0] = result.getValue();
+		}
+		for(var i=0;i < lines.length;i++) {
+			var line_text = snap.text(0, i * 20, lines[i]);
+			this.stdout_group.append(line_text);
+		}
 		
 		for(var i in this.input) {
 			this.input[i].clearParam();
