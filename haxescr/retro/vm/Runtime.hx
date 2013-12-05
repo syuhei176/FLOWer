@@ -45,16 +45,15 @@ class Runtime{
 			//条件を満たしていれば（例えばInputParamsがすべて到着している場合）、Workerを実行
 			//非同期でworkerを動かす、プロセス作成
 			worker.execute(function(result:retro.vm.Value) {
-			
+				//実行後、アウトプットから接続されているジョブからWorkerを作成し、workers_queueに入れる
+				var workers = worker.getNextWorkers();
+				for(var w in workers) {
+					w.setParameter(result);
+					workers_queue.push(w);
+				}
+				//実行済みのworkerを削除
+				//worker.delete()
 			});
-			//実行後、アウトプットから接続されているジョブからWorkerを作成し、workers_queueに入れる
-			var workers = worker.getNextWorkers();
-			for(var w in workers) {
-				w.setParameter(result);
-				workers_queue.push(w);
-			}
-			//実行済みのworkerを削除
-			//worker.delete()
 		}else{
 			//条件を満たしていなければ、workerをworkers_queueに戻す
 			workers_queue.push(worker);
