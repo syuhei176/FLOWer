@@ -1,9 +1,7 @@
 package retro.pub;
 
-import Value.RetroType;
+import retro.pub.Value.RetroType;
 
 class Worker{
-	public inputParams : Array<RetroType>;
-	public outputParams : Array<RetroType>;
 
 }

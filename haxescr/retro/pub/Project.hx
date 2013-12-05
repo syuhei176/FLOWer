@@ -6,9 +6,12 @@ class Project{
 	}
 
 	public static function newOpen(){
-		var diagram = new Diagram();
-		
 		var project = new Project();
+		var diagram = new Diagram();
+		project.diagram = diagram;
+
+		var job = new Job();
+
 
 	}
 }
