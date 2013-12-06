@@ -1,7 +1,7 @@
 package retro.pub;
 
 class Value{
-	private var type : RetroType;
+	public var type : RetroType;
 	private var value : Dynamic;
 
 	public function new(?_type, ?_value){

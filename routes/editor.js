@@ -89,6 +89,7 @@ module.exports = {
 	}
 }
 
+var account_collection_name = "account";
 var editor_collection_name = "editor";
 
 function create_project(user, name, model, cb) {

@@ -1,9 +1,25 @@
 package retro.pub;
 
-class Editor{
-	public var diagram : Diagram;
+import retro.pub.IdGenerator;
+import snap.Snap;
 
-	public function new(diagram){
-		this.diagram = diagram;
+class Editor{
+	public var project : Project;
+	public var IdGenerator : retro.pub.IDGenerator;
+	public var snap:Snap;
+	public function new(id_header){
+		this.snap = new Snap("#svg");
+		this.IdGenerator = retro.pub.IDGenerator.getInstance(id_header);
+	}
+	public function setProject(project) {
+		this.project = project;
+	}
+	public static function create(editorkey, id_header){
+		var client = new RetroClient(editorkey);
+		client.init(function(data) {
+			var editor = new Editor(id_header);
+			var project = new Project(editor, data);
+			editor.setProject(project);
+		});
 	}
 }

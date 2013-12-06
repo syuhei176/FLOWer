@@ -1,2 +1,2 @@
 -main Main
--js bin/sample.js
+-js ../public/js/bin/main.js

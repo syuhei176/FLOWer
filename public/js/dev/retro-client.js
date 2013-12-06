@@ -2,10 +2,6 @@ $(function(){
 
     var socket = null;
     
-	var RetroApplication = Backbone.Model.extend({
-    });
-    var retroApplication = new RetroApplication({});
-    
     function RetroClient(editor_key) {
     	this.editor_key = editor_key;
     	this.editor = null;
@@ -13,7 +9,7 @@ $(function(){
     
     RetroClient.prototype.init = function(cb) {
     	var self = this;
-    	retroApplication.set("editor_key", this.editor_key);
+    	
         this.socket = io.connect('http://'+location.hostname + "/editor-socket", {
 			'reconnect': true,
 			'reconnection delay': 500,
@@ -22,7 +18,7 @@ $(function(){
     	this.socket.on('connect', function() {
     		console.log('connected');
 			self.socket.emit('join', {
-				editor_key : retroApplication.get("editor_key")
+				editor_key : self.editor_key
 				});
 			self.socket.on('getall', function(a) {
 				console.log(a);
@@ -59,7 +55,7 @@ $(function(){
     	
     }
     
-    window.retro.RetroClient = RetroClient;
+    window.RetroClient = RetroClient;
     /*
     window.init_editor = function(editor_key) {
             function getuser() {

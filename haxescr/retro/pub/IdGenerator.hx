@@ -6,17 +6,17 @@ typedef EditorKey = String;
 class IDGenerator{
 	private var uniqueEditorKey : EditorKey;
 	private var counter : Int;
-	private var idGen : IDGenerator; 
+	private static var idGen : IDGenerator; 
 
-	private function new(){
-		this.uniqueEditorKey = "";
+	private function new(uniqueEditorKey){
+		this.uniqueEditorKey = uniqueEditorKey;
 	}
 
-	public function getInstance(){
-		if( this.idGen == null ){
-			this.idGen = new IDGenerator();
+	public static function getInstance(uniqueEditorKey){
+		if( idGen == null ){
+			idGen = new IDGenerator(uniqueEditorKey);
 		}
-		return this.idGen;
+		return idGen;
 	}
 
 	public function genID(){

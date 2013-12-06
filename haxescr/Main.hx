@@ -1,10 +1,16 @@
 package;
 
-import retro.pub.Project;
+import retro.pub.Editor;
 
+@:expose
 class Main{
 	public static function main(){
-		Project.newOpen();
+		var load = function(editorkey, id_header){
+			Editor.create(editorkey, id_header);
+		};
+	}
+	public static function init(editorkey, id_header){
+			Editor.create(editorkey, id_header);
 	}
 }
 

@@ -20,7 +20,7 @@ class Diagram{
 	public function new(editor, ?model){
 		this.editor = editor;
 		this.mode = STOP;
-		this.jobs = new Array<Jobs>();
+		this.jobs = new Array<Job>();
 		this.importer(model);
 	}
 
@@ -33,9 +33,6 @@ class Diagram{
 	}
 
 	public function clear(){
-		for( job in this.jobs ){
-			job.clear_execute();
-		}
 	}
 
 	public function stop(){
@@ -45,7 +42,7 @@ class Diagram{
 	public function run(){
 		this.mode = RUN;
 	}
-
+	
 	public function getJob(id){
 		for( job in this.jobs ){
 			if(job.id == id){
@@ -55,18 +52,25 @@ class Diagram{
 		return null;
 	}
 
-	public function getPort(uri){
+	public function getPort(uri:String){
 		var ids = uri.split(".");
 		for( job in this.jobs ){
 			if( job.id == ids[0] ){
-				return job.inputs[ids[1]];
+				return job.getInputPort(ids[1]);
 			}
 		}
 		return null;
 	}
 
 	public function importer(?model){
-				
+		var nodes : Array<Dynamic> = model.nodes;
+		if(nodes == null) {
+			jobs.push(new Logic(this.editor));
+		}else{
+			for( i in nodes ) {
+				trace(i);
+			}
+		}
 	}
 	
 	public function exporter(){

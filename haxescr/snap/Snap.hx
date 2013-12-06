@@ -121,11 +121,14 @@ extern class Snap {
 	public function ellipse(x:Float, y:Float, rx:Float, ry:Float):SnapElement;
 	public function filter(filstr:String):SnapElement;
 	public function fragment(varargs:Dynamic):SnapFragment;
-	inline public function group(self:Snap, elements:Array<Dynamic>):SnapElement {
+	public function group():SnapElement;
+	/*
+	inline public function group(self:Snap, ?elements:Array<Dynamic>):SnapElement {
 		var e123 = elements;
 		var me123 = self;
 		return untyped __js__("me123.group.apply(me123, e123)");
 	}
+	*/
 	public function gradient(gradientstr:String):SnapElement;
 	public function image(src:String, x:Float, y:Float, width:Float, height:Float):SnapElement;
 	public function line(x1:Float, y1:Float, x2:Float, y2:Float):SnapElement;
