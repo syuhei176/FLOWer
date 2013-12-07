@@ -7,6 +7,17 @@ import retro.pub.Port;
 import retro.pub.InputPort;
 import retro.pub.OutputPort;
 
+/*
+	Class Name:OutputPortView
+	
+	Event
+	-onConnect:入力ポートとコネクトされたときに呼ばれるハンドラ
+	-onDisconnect:入力ポートとディスコネクトされたときに呼ばれるハンドラ
+	Method
+	-connect:入力ポートとつなぐ
+	-getPos:グローバル座標を取得
+	-getLocalPos:ローカル座標を取得
+*/
 class OutputPortView{
 
 	public var pos : Point2D;
@@ -66,7 +77,7 @@ class OutputPortView{
 			l(s, e);
 		}
 	}
-	public function connect(a) {
+	public function connect(a:InputPortView) {
 		var pathView = new PathView(this.editor, this, a);
 		this.views.push(pathView);
 		a.views.push(pathView);

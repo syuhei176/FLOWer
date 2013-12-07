@@ -8,6 +8,15 @@ import retro.pub.InputPort;
 import retro.pub.OutputPort;
 import retro.pub.Job;
 
+/*
+	Class Name:JobView
+	
+	Event
+	Method
+	-addInputPortView:入力ポートを追加する
+	-addOutputPortView:出力ポートを追加する
+	-getPos:グローバル座標を取得
+*/
 class JobView{
 
 	public var pos : Point2D;

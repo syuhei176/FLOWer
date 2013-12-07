@@ -7,6 +7,13 @@ import retro.pub.Port;
 import retro.pub.InputPort;
 import retro.pub.OutputPort;
 
+/*
+	Class Name:PathView
+	
+	Event
+	-onRemove:パスが削除されたときに呼ばれる
+	Method
+*/
 class PathView{
 
 	public var graphic:SnapElement;
