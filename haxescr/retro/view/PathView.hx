@@ -11,11 +11,14 @@ class PathView{
 
 	public var graphic:SnapElement;
 	
-	public var source:PortView;
-	public var target:PortView;
+	public var source:OutputPortView;
+	public var target:InputPortView;
 	private var editor:Editor;
 	
+	private var onRemoveListeners:Array<PathView->InputPort->Void>;
+	
 	public function new(editor, source_port, target_port) {
+		this.onRemoveListeners = new Array<PathView->InputPort->Void>();
 		this.editor = editor;
 		this.source = source_port;
 		this.target = target_port;
@@ -27,8 +30,24 @@ class PathView{
     	    strokeWidth: 5
     	});
     	
+    	this.graphic.drag(function(dx, dy, x, y) {
+    		if(dx + dy > 3) {
+		    	this.fireOnRemove(this, this.target.port);
+    			this.graphic.remove();
+    		}
+    	});
+    	
     	this.refresh();
     	
+	}
+	
+	public function onRemove(listener) {
+		this.onRemoveListeners.push(listener);
+	}
+	public function fireOnRemove(a, b) {
+		for(l in this.onRemoveListeners) {
+			l(a, b);
+		}
 	}
 	
 	public function refresh() {

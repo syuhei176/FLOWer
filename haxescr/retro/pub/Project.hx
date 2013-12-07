@@ -6,4 +6,8 @@ class Project{
 		trace(model);
 		this.diagram = new Diagram(editor, model.model);
 	}
+	
+	public function exporter(){
+		diagram.exporter();
+	}
 }

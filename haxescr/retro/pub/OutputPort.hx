@@ -8,10 +8,14 @@ class OutputPort extends retro.pub.Port {
 	
 	public function new(parent, type, name){
 		super(parent, type, name);
+		this.connection = new Array<InputPort>();
 	}
 	
 	public function connectToInputPort(port:InputPort) {
 		this.connection.push(port);
+	}
+	public function disconnectToInputPort(port:InputPort) {
+		this.connection.remove(port);
 	}
 	
 	public function setValue(value) {

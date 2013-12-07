@@ -65,9 +65,9 @@ class Diagram{
 	public function importer(?model){
 		var nodes : Array<Dynamic> = model.nodes;
 		if(nodes == null) {
-			jobs.push(new Logic(this.editor));
-			jobs.push(new Logic(this.editor));
-			jobs.push(new Logic(this.editor));
+			this.jobs.push(new Logic(this.editor));
+			this.jobs.push(new Logic(this.editor));
+			this.jobs.push(new Logic(this.editor));
 		}else{
 			for( i in nodes ) {
 				trace(i);
@@ -76,6 +76,6 @@ class Diagram{
 	}
 	
 	public function exporter(){
-			
+		return (this.jobs);
 	}
 }

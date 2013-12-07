@@ -2,7 +2,8 @@ package retro.pub;
 
 import retro.pub.IdGenerator;
 import retro.view.Thema;
-import retro.view.PortView;
+import retro.view.InputPortView;
+import retro.view.OutputPortView;
 import snap.Snap;
 
 class Editor{
@@ -11,8 +12,8 @@ class Editor{
 	public var snap:Snap;
 	public var thema:Thema;
 	//ラバーバンド
-	public var start : PortView;
-	public var end : PortView;
+	public var start : OutputPortView;
+	public var end : InputPortView;
 	
 	public function new(id_header){
 		this.thema = new Thema();
@@ -30,6 +31,7 @@ class Editor{
 	public function setEnd(end) {
 		this.end = end;
 		this.connect();
+		project.exporter();
 	}
 	
 	public function connect() {

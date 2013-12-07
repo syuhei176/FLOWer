@@ -28,11 +28,17 @@ class Job{
 	
 	public function addInputPort(port : InputPort) {
 		this.inputPorts.push(port);
-		this.jobView.addPortView(port);
+		var portView = this.jobView.addInputPortView(port);
 	}
 	public function addOutputPort(port : OutputPort) {
 		this.outputPorts.push(port);
-		this.jobView.addPortView(port);
+		var portView = this.jobView.addOutputPortView(port);
+		portView.onConnect(function(s, e) {
+			s.connectToInputPort(e);
+		});
+		portView.onDisconnect(function(s, e) {
+			s.disconnectToInputPort(e);
+		});
 	}
 	
 	public function act(cb){

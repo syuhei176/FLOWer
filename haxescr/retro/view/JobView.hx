@@ -4,6 +4,8 @@ import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
 import retro.pub.Port;
+import retro.pub.InputPort;
+import retro.pub.OutputPort;
 import retro.pub.Job;
 
 class JobView{
@@ -17,10 +19,12 @@ class JobView{
 	
 	public var job:Job;
 	public var editor:Editor;
-	private var portviews:Array<PortView>;
+	private var inputportviews:Array<InputPortView>;
+	private var outputportviews:Array<OutputPortView>;
 	
 	public function new(editor, job) {
-		this.portviews = new Array<PortView>();
+		this.inputportviews = new Array<InputPortView>();
+		this.outputportviews = new Array<OutputPortView>();
 		this.editor = editor;
 		this.job = job;
 		this.group = editor.snap.group();
@@ -54,24 +58,39 @@ class JobView{
 	}
 	
 	//ポートビューを作成
-	public function addPortView(port : Port) {
-		var portView = new PortView(this, port);
+	public function addInputPortView(port : InputPort) {
+		var portView = new InputPortView(this, port);
 		this.group.append(portView.group);
-		this.portviews.push(portView);
+		this.inputportviews.push(portView);
 		this.cal();
+		return portView;
+	}
+	public function addOutputPortView(port : OutputPort) {
+		var portView = new OutputPortView(this, port);
+		this.group.append(portView.group);
+		this.outputportviews.push(portView);
+		this.cal();
+		return portView;
 	}
 	
 	public function cal() {
-		var th = 2*Math.PI / this.portviews.length;
+		var th = 2*Math.PI / (this.inputportviews.length + this.outputportviews.length);
 		var thh:Float = 0;
-		for(pv in this.portviews) {
+		for(pv in this.inputportviews) {
+			pv.setPos(60*Math.cos(thh), 60*Math.sin(thh));
+			thh += th;
+		}
+		for(pv in this.outputportviews) {
 			pv.setPos(60*Math.cos(thh), 60*Math.sin(thh));
 			thh += th;
 		}
 	}
 	
 	public function refresh() {
-		for(portView in this.portviews) {
+		for(portView in this.inputportviews) {
+			portView.refresh();
+		}
+		for(portView in this.outputportviews) {
 			portView.refresh();
 		}
 	}
