@@ -66,6 +66,8 @@ class Diagram{
 		var nodes : Array<Dynamic> = model.nodes;
 		if(nodes == null) {
 			jobs.push(new Logic(this.editor));
+			jobs.push(new Logic(this.editor));
+			jobs.push(new Logic(this.editor));
 		}else{
 			for( i in nodes ) {
 				trace(i);

@@ -245,11 +245,11 @@ extern class SnapElement {
 	public function insertBefore(el:SnapElement):SnapElement;
 	public function insertAfter(el:SnapElement):SnapElement;
 	public function marker(x:Float, y:Float, width:Float, height:Float, refX:Float, refY:Float):Dynamic;
-	public function mousedown(handler:Event->Void):SnapElement;
+	public function mousedown(handler:Event->Int->Int->Void):SnapElement;
 	public function mousemove(handler:Event->Void):SnapElement;
 	public function mouseout(handler:Event->Void):SnapElement;
 	public function mouseover(handler:Event->Void):SnapElement;
-	public function mouseup(handler:Event->Void):SnapElement;
+	public function mouseup(handler:Event->Int->Int->Void):SnapElement;
 	public function parent():SnapElement;
 	public function pattern(x:Float, y:Float, width:Float, height:Float):SnapElement;
 	public function prepend(el:SnapElement):SnapElement;

@@ -16,7 +16,7 @@ class JobView{
 	public var coll:SnapElement;
 	
 	public var job:Job;
-	private var editor:Editor;
+	public var editor:Editor;
 	private var portviews:Array<PortView>;
 	
 	public function new(editor, job) {
@@ -46,7 +46,7 @@ class JobView{
     		this.prev_pos.setX(0);
     		this.prev_pos.setY(0);
     	}, function(x, y) {
-    	
+    		this.refresh();
     	});
 		
 		this.group.append(this.graphic);
@@ -55,7 +55,7 @@ class JobView{
 	
 	//ポートビューを作成
 	public function addPortView(port : Port) {
-		var portView = new PortView(this.editor, port);
+		var portView = new PortView(this, port);
 		this.group.append(portView.group);
 		this.portviews.push(portView);
 		this.cal();
@@ -70,6 +70,12 @@ class JobView{
 		}
 	}
 	
+	public function refresh() {
+		for(portView in this.portviews) {
+			portView.refresh();
+		}
+	}
+	
 	public function addPos(x, y) {
 		pos.setX(pos.getX() + x);
 		pos.setY(pos.getY() + y);
@@ -79,6 +85,10 @@ class JobView{
 		pos.setX(x);
 		pos.setY(y);
 		this.group.transform("translate(" + pos.getX() + "," + pos.getY() + ")");
+	}
+	
+	public function getPos() {
+		return pos;
 	}
 	
 	public static function main(){

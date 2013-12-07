@@ -19,13 +19,19 @@ class Job{
 			this.id = editor.IdGenerator.genID();
 		}
 		this.inputPorts = new Array<InputPort>();
+		this.outputPorts = new Array<OutputPort>();
 		this.jobView = new JobView(editor, this);
 		this.addInputPort(new InputPort(this, RetroType.RString, "input1"));
 		this.addInputPort(new InputPort(this, RetroType.RString, "input2"));
+		this.addOutputPort(new OutputPort(this, RetroType.RString, "output2"));
 	}
 	
 	public function addInputPort(port : InputPort) {
 		this.inputPorts.push(port);
+		this.jobView.addPortView(port);
+	}
+	public function addOutputPort(port : OutputPort) {
+		this.outputPorts.push(port);
 		this.jobView.addPortView(port);
 	}
 	

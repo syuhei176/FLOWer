@@ -19,7 +19,7 @@ class Point2D {
 	public function setY(y) {
 		this.y = y;
 	}
-	static public function add(p1, p2) {
+	static public function add(p1:Point2D, p2:Point2D) {
 		return new Point2D(p1.x + p2.x, p1.y + p2.y);
 	}
 	static public function sub(p1, p2) {
