@@ -232,7 +232,7 @@ extern class SnapElement {
 	public function click(handler:Event->Void):SnapElement;
 	public function clone():SnapElement;
 	public function data(key:String, ?value :Dynamic):Dynamic;
-	public function drag(?onmove:Event->Void, ?onstart:Event->Void, ?onend:Event->Void,
+	public function drag(?onmove:Float->Float->Float->Float->Void, ?onstart:Float->Float->Void, ?onend:Float->Float->Void,
 		                 ?mcontext:Dynamic, ?scontext:Dynamic, ?econtext:Dynamic):Void;
 	public function dblclick(handler:Event->Void):SnapElement;
 	public function getBBox(): Dynamic;
