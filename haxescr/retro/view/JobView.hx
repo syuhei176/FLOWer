@@ -1,7 +1,10 @@
 package retro.view;
 
 import snap.Snap;
+import retro.pub.Editor;
 import retro.pub.Point2D;
+import retro.pub.Port;
+import retro.pub.Job;
 
 class JobView{
 
@@ -12,9 +15,14 @@ class JobView{
 	public var graphic:SnapElement;
 	public var coll:SnapElement;
 	
+	public var job:Job;
+	private var editor:Editor;
+	private var portviews:Array<PortView>;
 	
-	
-	public function new(editor) {
+	public function new(editor, job) {
+		this.portviews = new Array<PortView>();
+		this.editor = editor;
+		this.job = job;
 		this.group = editor.snap.group();
 		this.graphic = editor.snap.circle(0, 0, 80);
 		var coll = editor.snap.circle(0, 0, 80);
@@ -27,8 +35,8 @@ class JobView{
 		this.prev_pos = new Point2D(0, 0);
 		this.setPos(100, 100);
 		coll.attr({
-    	    fill: "#ffff00",
-    	    "fill-opacity" : 0.1,
+    	    fill: "#ffffff",
+    	    "fill-opacity" : 0,
     	});
 		coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
@@ -44,6 +52,24 @@ class JobView{
 		this.group.append(this.graphic);
 		this.group.append(coll);
 	}
+	
+	//ポートビューを作成
+	public function addPortView(port : Port) {
+		var portView = new PortView(this.editor, port);
+		this.group.append(portView.group);
+		this.portviews.push(portView);
+		this.cal();
+	}
+	
+	public function cal() {
+		var th = 2*Math.PI / this.portviews.length;
+		var thh:Float = 0;
+		for(pv in this.portviews) {
+			pv.setPos(60*Math.cos(thh), 60*Math.sin(thh));
+			thh += th;
+		}
+	}
+	
 	public function addPos(x, y) {
 		pos.setX(pos.getX() + x);
 		pos.setY(pos.getY() + y);

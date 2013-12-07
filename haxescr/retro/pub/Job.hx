@@ -12,13 +12,21 @@ class Job{
 	public var worker : Worker;
 	public var jobView : JobView;
 	
-	public function new(editor, ?id){
+	public function new(editor:Editor, ?id){
 		if(id != null) {
 			this.id = id;
 		}else{
 			this.id = editor.IdGenerator.genID();
 		}
-		this.jobView = new JobView(editor);
+		this.inputPorts = new Array<InputPort>();
+		this.jobView = new JobView(editor, this);
+		this.addInputPort(new InputPort(this, RetroType.RString, "input1"));
+		this.addInputPort(new InputPort(this, RetroType.RString, "input2"));
+	}
+	
+	public function addInputPort(port : InputPort) {
+		this.inputPorts.push(port);
+		this.jobView.addPortView(port);
 	}
 	
 	public function act(cb){
