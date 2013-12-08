@@ -73,6 +73,7 @@ class JobView{
     		this.prev_pos.setY(0);
     	}, function(x, y) {
     		this.refresh();
+			this.diagramView.start_step();
     	});
 		
 		this.group.append(this.graphic);
@@ -105,12 +106,21 @@ class JobView{
 		var th = 2*Math.PI / (this.inputportviews.length + this.outputportviews.length);
 		var thh:Float = 0;
 		for(pv in this.inputportviews) {
-			pv.setPos(60*Math.cos(thh), 60*Math.sin(thh));
+			pv.setR(thh);
 			thh += th;
 		}
 		for(pv in this.outputportviews) {
-			pv.setPos(60*Math.cos(thh), 60*Math.sin(thh));
+			pv.setR(thh);
 			thh += th;
+		}
+	}
+	
+	public function step() {
+		for(portView in this.inputportviews) {
+			portView.step();
+		}
+		for(portView in this.outputportviews) {
+			portView.step();
 		}
 	}
 	

@@ -1,0 +1,84 @@
+package retro.view;
+
+import snap.Snap;
+import retro.pub.Editor;
+import retro.pub.Point2D;
+import retro.model.Port;
+import retro.model.InputPort;
+import retro.model.OutputPort;
+import retro.controller.DiagramController;
+
+/*
+	Class Name:PortView
+	
+	Method
+	-getPos:グローバル座標を取得
+	-getLocalPos:ローカル座標を取得
+*/
+class PortView{
+	//力学
+	public var th:Float;
+	public var pos : Point2D;
+	public var velocity : Float;
+	
+	public var group:SnapElement;
+	public var graphic:SnapElement;
+	public var coll:SnapElement;
+	public var jobView:JobView;
+	public var views : Array<PathView>;
+	
+	public var diagramController:DiagramController;
+	private var editor:Editor;
+	private var snap:Snap;
+	private var thema:Thema;
+	
+	public function new(diagramController, jobview, snap, thema) {
+		this.diagramController = diagramController;
+		this.views = new Array<PathView>();
+		this.jobView = jobview;
+		this.snap = snap;
+		this.thema = thema;
+		
+		this.group = snap.group();
+		this.graphic = snap.circle(0, 0, 30);
+		this.coll = snap.circle(0, 0, 30);
+		this.th = 0;
+		this.pos = new Point2D(0, 0);
+		this.velocity = 0;
+		this.setPos(100, 100);
+		this.coll.attr({
+    		   fill: "#ffffff",
+    		   "fill-opacity" : 0,
+    	});
+    	
+		this.group.append(this.graphic);
+		this.group.append(coll);
+	}
+	
+	public function refresh() {
+		for(pathView in this.views) {
+			pathView.refresh();
+		}
+	}
+	
+	public function addPos(x, y) {
+		pos.setX(pos.getX() + x);
+		pos.setY(pos.getY() + y);
+		this.group.transform("translate(" + pos.getX() + "," + pos.getY() + ")");
+	}
+	public function setR(th:Float) {
+		this.th = th;
+		this.setPos(60*Math.cos(this.th), 60*Math.sin(this.th));
+	}
+	public function setPos(x, y) {
+		pos.setX(x);
+		pos.setY(y);
+		this.group.transform("translate(" + pos.getX() + "," + pos.getY() + ")");
+	}
+	public function getPos() {
+		return Point2D.add(pos, this.jobView.getPos());
+	}
+	public function getLocalPos() {
+		return pos;
+	}
+}

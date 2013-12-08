@@ -57,7 +57,10 @@ class PathView{
 	}
 	
 	public function onDisconnect(o, i) {
+		if(this.target.port != i) return;
     	this.graphic.remove();
+    	this.source.views.remove(this);
+    	this.target.views.remove(this);
 	}
 	
 	public function refresh() {
