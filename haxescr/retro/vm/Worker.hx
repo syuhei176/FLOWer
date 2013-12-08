@@ -1,8 +1,9 @@
-package retro.pub;
+package retro.vm;
 
 import retro.pub.RetroType;
 import retro.model.Job;
 import retro.model.Port;
+import retro.vm.Value;
 
 class Worker{
 	private var job:Job;
@@ -14,7 +15,7 @@ class Worker{
 	public function act(cb) {
 		//スレッドを起動して実行する
 		var script_result = new ScriptResult();
-		script_result.set("output", new retro.pub.Value());
+		script_result.set("output", new Value());
 		cb(script_result);
 		for(p in this.job.outputPorts) {
 			var v = script_result.get(p.name);
@@ -52,7 +53,7 @@ class ScriptResult{
 
 class ScriptReturnValue{
 	public var portname : String;
-	public var value : retro.pub.Value;
+	public var value : Value;
 	public function new(portname, value) {
 		this.portname = portname;
 		this.value = value;

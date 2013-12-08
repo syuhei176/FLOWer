@@ -1,4 +1,6 @@
-package retro.pub;
+package retro.vm;
+
+import retro.pub.RetroType;
 
 class Value{
 	public var type : RetroType;

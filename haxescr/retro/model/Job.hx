@@ -4,7 +4,7 @@ import retro.pub.IdGenerator;
 import retro.view.JobView;
 import retro.pub.Editor;
 import retro.pub.RetroType;
-import retro.pub.Worker;
+import retro.vm.Worker;
 
 class Job{
 	private var id : ID;
