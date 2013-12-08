@@ -48,8 +48,16 @@ class DiagramController implements Controller{
 		job.addInputPort(new InputPort(job, RetroType.RString, "input"));
 		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
 	}
-	public function addLogic(logic:Logic) {
-		diagram.jobs.push(logic);
+	public function addLogic_1i1o() {
+		var id = this.editor.IdGenerator.genID();
+		var job = new Logic(id);
+		diagram.addJob(job);
+		job.addInputPort(new InputPort(job, RetroType.RString, "input"));
+		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
+	}
+	public function addLogic(id) {
+		var job = new Logic(id);
+		diagram.addJob(job);
 	}
 	public function removeJob(job:Job) {
 		diagram.jobs.remove(job);
@@ -61,6 +69,8 @@ class DiagramController implements Controller{
 	public function setRubberbandEnd(port:InputPort) {
 		this.end = port;
 		this.start.connectToInputPort(this.end);
+		trace(this.start);
+		trace(this.end);
 	}
 	//ポートの接続解除
 	static public function disconnect(oport:OutputPort, iport:InputPort) {

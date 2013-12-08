@@ -7,7 +7,7 @@ import retro.pub.RetroType;
 import retro.pub.Worker;
 
 class Job{
-	public var id : ID;
+	private var id : ID;
 	public var type : RetroType;
 	public var inputPorts : Array<InputPort>;
 	public var outputPorts : Array<OutputPort>;
@@ -19,7 +19,6 @@ class Job{
 	
 	// 実行を移譲
 	public var worker : Worker;
-	public var jobView : JobView;
 	
 	public function new(id){
 		this.id = id;
