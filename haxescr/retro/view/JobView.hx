@@ -3,10 +3,11 @@ package retro.view;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
-import retro.pub.Port;
-import retro.pub.InputPort;
-import retro.pub.OutputPort;
-import retro.pub.Job;
+import retro.model.Port;
+import retro.model.InputPort;
+import retro.model.OutputPort;
+import retro.model.Job;
+import retro.controller.JobController;
 
 /*
 	Class Name:JobView
@@ -26,22 +27,27 @@ class JobView{
 	public var graphic:SnapElement;
 	public var coll:SnapElement;
 	
-	public var job:Job;
-	public var editor:Editor;
+	public var jobController:JobController;
 	private var inputportviews:Array<InputPortView>;
 	private var outputportviews:Array<OutputPortView>;
 	
-	public function new(editor, job) {
+	public function new(jobController) {
 		this.inputportviews = new Array<InputPortView>();
 		this.outputportviews = new Array<OutputPortView>();
-		this.editor = editor;
-		this.job = job;
-		this.group = editor.snap.group();
-		this.graphic = editor.snap.circle(0, 0, 80);
-		var coll = editor.snap.circle(0, 0, 80);
+		this.jobController = jobController;
+		
+		var job = this.jobController.getJob();
+		job.onInputPortAdded(addInputPortView);
+		job.onOutputPortAdded(addOutputPortView);
+		
+		var snap = this.jobController.getEditor().snap;
+		var thema = this.jobController.getEditor().thema;
+		this.group = snap.group();
+		this.graphic = snap.circle(0, 0, 80);
+		var coll = snap.circle(0, 0, 80);
 		this.graphic.attr({
-				fill: editor.thema.main_color,
-				stroke: editor.thema.line_color,
+				fill: thema.main_color,
+				stroke: thema.line_color,
 				strokeWidth: 4
 				});
 		this.pos = new Point2D(0, 0);
@@ -68,14 +74,18 @@ class JobView{
 	
 	//ポートビューを作成
 	public function addInputPortView(port : InputPort) {
-		var portView = new InputPortView(this, port);
+		var snap = this.jobController.getEditor().snap;
+		var thema = this.jobController.getEditor().thema;
+		var portView = new InputPortView(this, port, snap, thema);
 		this.group.append(portView.group);
 		this.inputportviews.push(portView);
 		this.cal();
 		return portView;
 	}
 	public function addOutputPortView(port : OutputPort) {
-		var portView = new OutputPortView(this, port);
+		var snap = this.jobController.getEditor().snap;
+		var thema = this.jobController.getEditor().thema;
+		var portView = new OutputPortView(this, port, snap, thema);
 		this.group.append(portView.group);
 		this.outputportviews.push(portView);
 		this.cal();

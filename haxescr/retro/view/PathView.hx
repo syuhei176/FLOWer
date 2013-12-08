@@ -3,9 +3,9 @@ package retro.view;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
-import retro.pub.Port;
-import retro.pub.InputPort;
-import retro.pub.OutputPort;
+import retro.model.Port;
+import retro.model.InputPort;
+import retro.model.OutputPort;
 
 /*
 	Class Name:PathView

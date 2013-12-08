@@ -1,6 +1,6 @@
-package retro.pub;
+package retro.model;
 
-class InputPort extends retro.pub.Port {
+class InputPort extends Port {
 	public var connection : Array<OutputPort>;
 	
 	public function new(parent, type, name){

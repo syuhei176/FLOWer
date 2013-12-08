@@ -3,9 +3,9 @@ package retro.view;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
-import retro.pub.Port;
-import retro.pub.InputPort;
-import retro.pub.OutputPort;
+import retro.model.Port;
+import retro.model.InputPort;
+import retro.model.OutputPort;
 
 /*
 	Class Name:OutputPortView
@@ -33,16 +33,15 @@ class OutputPortView{
 	private var onConnectionListeners:Array<OutputPort->InputPort->Void>;
 	private var onDisconnectionListeners:Array<OutputPort->InputPort->Void>;
 	
-	public function new(jobview, port) {
+	public function new(jobview, port, snap, thema) {
 		this.views = new Array<PathView>();
 		this.onConnectionListeners = new Array<OutputPort->InputPort->Void>();
 		this.onDisconnectionListeners = new Array<OutputPort->InputPort->Void>();
 		this.jobView = jobview;
-		this.editor = this.jobView.editor;
 		this.port = port;
-		this.group = editor.snap.group();
-		this.graphic = editor.snap.circle(0, 0, 30);
-		var coll = editor.snap.circle(0, 0, 30);
+		this.group = snap.group();
+		this.graphic = snap.circle(0, 0, 30);
+		var coll = snap.circle(0, 0, 30);
 		this.pos = new Point2D(0, 0);
 		this.setPos(100, 100);
 		coll.attr({
@@ -50,12 +49,12 @@ class OutputPortView{
     		   "fill-opacity" : 0,
     	});
 			this.graphic.attr({
-    		    fill: this.editor.thema.output_color,
-				stroke: editor.thema.line_color,
+    		    fill: thema.output_color,
+				stroke: thema.line_color,
 				strokeWidth: 4
 			});
 			coll.mousedown(function(e, x, y) {
-				this.editor.setStart(this);
+				//this.editor.setStart(this);
 			});
 		
 		this.group.append(this.graphic);

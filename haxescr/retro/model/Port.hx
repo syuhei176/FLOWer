@@ -1,4 +1,6 @@
-package retro.pub;
+package retro.model;
+
+import retro.pub.RetroType;
 
 class Port{
 	public var parent : Job;

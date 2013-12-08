@@ -1,9 +1,9 @@
-package retro.pub;
+package retro.model;
 
 import haxe.Timer;
 import retro.view.PathView;
 
-class OutputPort extends retro.pub.Port {
+class OutputPort extends Port {
 	public var connection : Array<InputPort>;
 	
 	public function new(parent, type, name){
