@@ -10,6 +10,7 @@ class IDGenerator{
 
 	private function new(uniqueEditorKey){
 		this.uniqueEditorKey = uniqueEditorKey;
+		this.counter = 0;
 	}
 
 	public static function getInstance(uniqueEditorKey){
