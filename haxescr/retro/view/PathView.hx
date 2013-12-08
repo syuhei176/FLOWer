@@ -3,9 +3,10 @@ package retro.view;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
-import retro.pub.Port;
-import retro.pub.InputPort;
-import retro.pub.OutputPort;
+import retro.model.Port;
+import retro.model.InputPort;
+import retro.model.OutputPort;
+import retro.controller.DiagramController;
 
 /*
 	Class Name:PathView
@@ -20,16 +21,24 @@ class PathView{
 	
 	public var source:OutputPortView;
 	public var target:InputPortView;
-	private var editor:Editor;
+	
+	private var diagramController:DiagramController;
+	private var snap:Snap;
+	private var thema:Thema;
 	
 	private var onRemoveListeners:Array<PathView->InputPort->Void>;
 	
-	public function new(editor, source_port, target_port) {
+	public function new(diagramController, source_port, target_port, snap, thema) {
 		this.onRemoveListeners = new Array<PathView->InputPort->Void>();
-		this.editor = editor;
+		this.diagramController = diagramController;
 		this.source = source_port;
 		this.target = target_port;
-		this.graphic = editor.snap.line(0, 0, 0, 0);
+		this.snap = snap;
+		this.thema = thema;
+		//モデルの変更を監視
+		this.source.port.onDisconnected(this.onDisconnect);
+		
+		this.graphic = this.snap.line(0, 0, 0, 0);
 		
 		this.graphic.attr({
     	    fill: "#bada55",
@@ -39,8 +48,7 @@ class PathView{
     	
     	this.graphic.drag(function(dx, dy, x, y) {
     		if(dx + dy > 3) {
-		    	this.fireOnRemove(this, this.target.port);
-    			this.graphic.remove();
+    			DiagramController.disconnect(this.source.port, this.target.port);
     		}
     	});
     	
@@ -48,17 +56,11 @@ class PathView{
     	
 	}
 	
-	public function onRemove(listener) {
-		this.onRemoveListeners.push(listener);
-	}
-	public function fireOnRemove(a, b) {
-		for(l in this.onRemoveListeners) {
-			l(a, b);
-		}
+	public function onDisconnect(o, i) {
+    	this.graphic.remove();
 	}
 	
 	public function refresh() {
-		trace('r');
 		var xx = this.target.getPos().getX() - this.source.getPos().getX();
 		var yy = this.target.getPos().getY() - this.source.getPos().getY();
 		var len = Math.sqrt(xx * xx + yy * yy);

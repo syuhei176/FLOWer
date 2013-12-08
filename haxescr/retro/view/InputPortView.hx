@@ -3,9 +3,10 @@ package retro.view;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
-import retro.pub.Port;
-import retro.pub.InputPort;
-import retro.pub.OutputPort;
+import retro.model.Port;
+import retro.model.InputPort;
+import retro.model.OutputPort;
+import retro.controller.DiagramController;
 
 class InputPortView{
 
@@ -17,19 +18,20 @@ class InputPortView{
 	public var jobView:JobView;
 	public var views : Array<PathView>;
 	
+	public var diagramController:DiagramController;
 	public var port:InputPort;
 	private var editor:Editor;
 	private var onConnectionListeners:Array<OutputPort->InputPort->Void>;
 	
-	public function new(jobview, port) {
+	public function new(diagramController, jobview, port, snap, thema) {
+		this.diagramController = diagramController;
 		this.views = new Array<PathView>();
 		this.onConnectionListeners = new Array<OutputPort->InputPort->Void>();
 		this.jobView = jobview;
-		this.editor = this.jobView.editor;
 		this.port = port;
-		this.group = editor.snap.group();
-		this.graphic = editor.snap.circle(0, 0, 30);
-		var coll = editor.snap.circle(0, 0, 30);
+		this.group = snap.group();
+		this.graphic = snap.circle(0, 0, 30);
+		var coll = snap.circle(0, 0, 30);
 		this.pos = new Point2D(0, 0);
 		this.setPos(100, 100);
 		coll.attr({
@@ -37,12 +39,12 @@ class InputPortView{
     		   "fill-opacity" : 0,
     	});
 			this.graphic.attr({
-    		    fill: this.editor.thema.input_color,
-				stroke: editor.thema.line_color,
+    		    fill: thema.input_color,
+				stroke: thema.line_color,
 				strokeWidth: 4
 			});
 			coll.mouseup(function(e, x, y) {
-				this.editor.setEnd(this);
+				this.diagramController.setRubberbandEnd(this.port);
 			});
 		
 		this.group.append(this.graphic);

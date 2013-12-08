@@ -1,4 +1,6 @@
-package retro.pub;
+package retro.model;
+
+import retro.pub.RetroType;
 
 class Port{
 	public var parent : Job;
@@ -10,5 +12,12 @@ class Port{
 		this.parent = parent;
 		this.type = type;
 		this.name = name;
+	}
+	
+	public function getName() {
+		return this.name;
+	}
+	public function getParentJob() {
+		return this.parent;
 	}
 }

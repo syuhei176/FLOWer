@@ -3,9 +3,10 @@ package retro.view;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
-import retro.pub.Port;
-import retro.pub.InputPort;
-import retro.pub.OutputPort;
+import retro.model.Port;
+import retro.model.InputPort;
+import retro.model.OutputPort;
+import retro.controller.DiagramController;
 
 /*
 	Class Name:OutputPortView
@@ -28,21 +29,26 @@ class OutputPortView{
 	public var jobView:JobView;
 	public var views : Array<PathView>;
 	
+	public var diagramController:DiagramController;
 	public var port:OutputPort;
 	private var editor:Editor;
-	private var onConnectionListeners:Array<OutputPort->InputPort->Void>;
-	private var onDisconnectionListeners:Array<OutputPort->InputPort->Void>;
+	private var snap:Snap;
+	private var thema:Thema;
 	
-	public function new(jobview, port) {
+	public function new(diagramController, jobview, port, snap, thema) {
+		this.diagramController = diagramController;
 		this.views = new Array<PathView>();
-		this.onConnectionListeners = new Array<OutputPort->InputPort->Void>();
-		this.onDisconnectionListeners = new Array<OutputPort->InputPort->Void>();
 		this.jobView = jobview;
-		this.editor = this.jobView.editor;
 		this.port = port;
-		this.group = editor.snap.group();
-		this.graphic = editor.snap.circle(0, 0, 30);
-		var coll = editor.snap.circle(0, 0, 30);
+		this.snap = snap;
+		this.thema = thema;
+		
+		//モデルの変更を監視
+		this.port.onConnected(this.OnConnected);
+		
+		this.group = snap.group();
+		this.graphic = snap.circle(0, 0, 30);
+		var coll = snap.circle(0, 0, 30);
 		this.pos = new Point2D(0, 0);
 		this.setPos(100, 100);
 		coll.attr({
@@ -50,42 +56,23 @@ class OutputPortView{
     		   "fill-opacity" : 0,
     	});
 			this.graphic.attr({
-    		    fill: this.editor.thema.output_color,
-				stroke: editor.thema.line_color,
+    		    fill: thema.output_color,
+				stroke: thema.line_color,
 				strokeWidth: 4
 			});
 			coll.mousedown(function(e, x, y) {
-				this.editor.setStart(this);
+				this.diagramController.setRubberbandStart(this.port);
 			});
 		
 		this.group.append(this.graphic);
 		this.group.append(coll);
 	}
-	public function onConnect(listener) {
-		this.onConnectionListeners.push(listener);
-	}
-	public function onDisconnect(listener) {
-		this.onDisconnectionListeners.push(listener);
-	}
-	public function fireOnConnection(s, e) {
-		for(l in this.onConnectionListeners) {
-			l(s, e);
-		}
-	}
-	public function fireOnDisconnection(s, e) {
-		for(l in this.onDisconnectionListeners) {
-			l(s, e);
-		}
-	}
-	public function connect(a:InputPortView) {
-		var pathView = new PathView(this.editor, this, a);
+	
+	public function OnConnected(o:OutputPort, i:InputPort) {
+		var inputView = this.jobView.diagramView.getInputPortView(i);
+		var pathView = new PathView(this.diagramController, this, inputView, this.snap, this.thema);
 		this.views.push(pathView);
-		a.views.push(pathView);
-		this.fireOnConnection(this.port, a.port);
-		pathView.onRemove(function(pathView, a) {
-			this.views.remove(pathView);
-			this.fireOnDisconnection(this.port, a);
-		});
+		inputView.views.push(pathView);
 	}
 	public function refresh() {
 		for(pathView in this.views) {

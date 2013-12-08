@@ -1,11 +1,11 @@
 package retro.pub;
 
 import retro.pub.RetroType;
-import retro.pub.Job;
-import retro.pub.Port;
+import retro.model.Job;
+import retro.model.Port;
 
 class Worker{
-	private var job:retro.pub.Job;
+	private var job:Job;
 	public function new(job){
 		this.job = job;
 	}

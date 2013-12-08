@@ -1,4 +1,4 @@
-package retro.pub;
+package retro.model;
 
 class Actuator extends Job{
 
