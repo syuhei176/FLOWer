@@ -3,6 +3,12 @@ package retro.model;
 import haxe.Timer;
 import retro.view.PathView;
 
+/*
+	OutputPortクラス（Model）
+	Event
+	-onConnected:入力ポートとコネクトされたときに呼ばれるハンドラ
+	-onDisconnected:入力ポートとディスコネクトされたときに呼ばれるハンドラ
+*/
 class OutputPort extends Port {
 	public var connection : Array<InputPort>;
 	

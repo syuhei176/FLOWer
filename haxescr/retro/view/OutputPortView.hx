@@ -11,11 +11,7 @@ import retro.controller.DiagramController;
 /*
 	Class Name:OutputPortView
 	
-	Event
-	-onConnect:入力ポートとコネクトされたときに呼ばれるハンドラ
-	-onDisconnect:入力ポートとディスコネクトされたときに呼ばれるハンドラ
 	Method
-	-connect:入力ポートとつなぐ
 	-getPos:グローバル座標を取得
 	-getLocalPos:ローカル座標を取得
 */
@@ -68,6 +64,9 @@ class OutputPortView{
 		this.group.append(coll);
 	}
 	
+	/*
+		OutputPortからInputPortまで接続されたときに呼ばれる
+	*/
 	public function OnConnected(o:OutputPort, i:InputPort) {
 		var inputView = this.jobView.diagramView.getInputPortView(i);
 		var pathView = new PathView(this.diagramController, this, inputView, this.snap, this.thema);

@@ -41,10 +41,11 @@ class JobView{
 		this.diagramController = diagramController;
 		this.jobController = jobController;
 		this.diagramView = diagramView;
+		
 		//modelの変更を監視
 		var job = this.jobController.getJob();
-		job.onInputPortAdded(addInputPortView);
-		job.onOutputPortAdded(addOutputPortView);
+		job.onInputPortAdded(OnAddInputPortView);
+		job.onOutputPortAdded(OnAddOutputPortView);
 		
 		var snap = this.jobController.getEditor().snap;
 		var thema = this.jobController.getEditor().thema;
@@ -78,8 +79,8 @@ class JobView{
 		this.group.append(coll);
 	}
 	
-	//ポートビューを作成
-	public function addInputPortView(port : InputPort) {
+	//Model変更時に呼ばれるリスナー
+	public function OnAddInputPortView(port : InputPort) {
 		var snap = this.jobController.getEditor().snap;
 		var thema = this.jobController.getEditor().thema;
 		var portView = new InputPortView(this.diagramController, this, port, snap, thema);
@@ -88,7 +89,9 @@ class JobView{
 		this.cal();
 		return portView;
 	}
-	public function addOutputPortView(port : OutputPort) {
+	
+	//Model変更時に呼ばれるリスナー
+	public function OnAddOutputPortView(port : OutputPort) {
 		var snap = this.jobController.getEditor().snap;
 		var thema = this.jobController.getEditor().thema;
 		var portView = new OutputPortView(this.diagramController, this, port, snap, thema);

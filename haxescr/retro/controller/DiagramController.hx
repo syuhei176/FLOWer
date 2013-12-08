@@ -33,11 +33,14 @@ class DiagramController implements Controller{
 		return diagram;
 	}
 	
+	//Jobを追加
 	public function addJob() {
 		var id = this.editor.IdGenerator.genID();
 		var job = new Job(id);
 		diagram.addJob(job);
 	}
+	
+	//始めから入出力ポートがあるJobを追加
 	public function addJob_1i1o() {
 		var id = this.editor.IdGenerator.genID();
 		var job = new Job(id);
@@ -59,6 +62,7 @@ class DiagramController implements Controller{
 		this.end = port;
 		this.start.connectToInputPort(this.end);
 	}
+	//ポートの接続解除
 	static public function disconnect(oport:OutputPort, iport:InputPort) {
 		oport.disconnectToInputPort(iport);
 	}

@@ -24,6 +24,7 @@ class DiagramView{
 		diagram.onJobAdded(this.OnJobAdded);
 	}
 	
+	//モデルが変更されたときに呼ばれるリスナー
 	public function OnJobAdded(job:Job) {
 		this.jobViews.push(
 			new JobView(
