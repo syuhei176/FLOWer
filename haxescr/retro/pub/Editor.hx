@@ -8,6 +8,7 @@ import retro.view.OutputPortView;
 import retro.view.ProjectView;
 import retro.controller.ProjectController;
 import retro.controller.ImportController;
+import retro.controller.ExportController;
 import snap.Snap;
 
 class Editor{
@@ -40,7 +41,7 @@ class Editor{
 			var projectController = new ProjectController(editor, project);
 			editor.setProjectController(projectController);
 			//ビューを作成
-			var projectView = new ProjectView(projectController);
+			var projectView = new ProjectView(projectController, new ExportController(editor, project));
 			editor.setProjectView(projectView);
 			//インポートを実行
 			var importController = new ImportController(editor, project);

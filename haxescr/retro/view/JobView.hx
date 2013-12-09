@@ -46,6 +46,7 @@ class JobView{
 		var job = this.jobController.getJob();
 		job.onInputPortAdded(OnAddInputPortView);
 		job.onOutputPortAdded(OnAddOutputPortView);
+		job.onPosChanged(OnPosChanged);
 		
 		var snap = this.jobController.getEditor().snap;
 		var thema = this.jobController.getEditor().thema;
@@ -74,6 +75,7 @@ class JobView{
     	}, function(x, y) {
     		this.refresh();
 			this.diagramView.start_step();
+    		this.jobController.changePos(this.pos.getX(), this.pos.getY());
     	});
 		
 		this.group.append(this.graphic);
@@ -164,6 +166,10 @@ class JobView{
 			}
 		}
 		return null;
+	}
+	
+	public function OnPosChanged(x:Float, y:Float) {
+		this.setPos(x, y);
 	}
 	
 }

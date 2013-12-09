@@ -22,6 +22,10 @@ class JobController implements Controller{
 		return this.job;
 	}
 	
+	public function changePos(x:Float, y:Float) {
+		this.job.setPos(x, y);
+	}
+	
 	public function addInputPort(name:String) {
 		var port = new InputPort(this.job, RetroType.RString, name);
 		this.job.addInputPort(port);

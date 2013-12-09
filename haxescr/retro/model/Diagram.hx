@@ -42,6 +42,10 @@ class Diagram{
 		return null;
 	}
 	
+	public function getJobs() {
+		return this.jobs;
+	}	
+	
 	public function onJobAdded(listener) {
 		this.onJobAddedListeners.push(listener);
 	}

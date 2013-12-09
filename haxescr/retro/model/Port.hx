@@ -14,6 +14,10 @@ class Port{
 		this.name = name;
 	}
 	
+	public function getURI() {
+		return this.parent.getId() + "." + this.getName();
+	}
+	
 	public function getName() {
 		return this.name;
 	}

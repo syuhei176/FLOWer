@@ -5,6 +5,7 @@ import retro.pub.Editor;
 import retro.model.Diagram;
 import retro.controller.ProjectController;
 import retro.controller.DiagramController;
+import retro.controller.ExportController;
 
 class ProjectView{
 	public var group:SnapElement;
@@ -12,8 +13,10 @@ class ProjectView{
 	private var onButtonListeners:Array<Int->Void>;
 	private var diagramView : DiagramView;
 	private var control_group : SnapElement;
-	public function new(projectController) {
+	private var exportController : ExportController;
+	public function new(projectController, exportController) {
 		this.projectController = projectController;
+		this.exportController = exportController;
 		var snap = this.projectController.getEditor().snap;
 		var project = this.projectController.getProject();
 		project.onDiagramAdded(this.OnDiagramAdded);
@@ -36,6 +39,7 @@ class ProjectView{
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+200+","+0+")");
         	g.click(function(e){
+        		trace(this.exportController.do_export());
         	});
         	this.control_group.append(g);
     	});

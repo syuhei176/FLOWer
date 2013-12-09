@@ -4,18 +4,23 @@ import retro.pub.IdGenerator;
 import retro.view.JobView;
 import retro.pub.Editor;
 import retro.pub.RetroType;
+import retro.pub.Point2D;
 import retro.vm.Worker;
 
 class Job{
+
+	//モデル
 	private var id : ID;
-	public var type : RetroType;
 	public var inputPorts : Array<InputPort>;
 	public var outputPorts : Array<OutputPort>;
+	private var pos : Point2D;
 	
+	//モデルの変更を伝えるためのリスナー
 	private var onInputPortAddedListeners:Array<InputPort->Void>;
 	private var onOutputPortAddedListeners:Array<OutputPort->Void>;
 	private var onInputPortRemovedListeners:Array<InputPort->Void>;
 	private var onOutputPortRemovedListeners:Array<OutputPort->Void>;
+	private var onPosChangedListeners:Array<Float->Float->Void>;
 	
 	// 実行を移譲
 	public var worker : Worker;
@@ -24,14 +29,34 @@ class Job{
 		this.id = id;
 		this.inputPorts = new Array<InputPort>();
 		this.outputPorts = new Array<OutputPort>();
+		this.pos = new Point2D(0, 0);
 		this.onInputPortAddedListeners = new Array<InputPort->Void>();
 		this.onOutputPortAddedListeners = new Array<OutputPort->Void>();
 		this.onInputPortRemovedListeners = new Array<InputPort->Void>();
 		this.onOutputPortRemovedListeners = new Array<OutputPort->Void>();
+		this.onPosChangedListeners = new Array<Float->Float->Void>();
 	}
 	
 	public function getId() {
 		return this.id;
+	}
+	
+	public function setPos(x:Float, y:Float) {
+		this.fireOnPosChangedListeners(x, y);
+		this.pos.setX(x);
+		this.pos.setY(y);
+	}
+	
+	public function getPos() {
+		return this.pos;
+	}
+	
+	public function getInputPorts() {
+		return this.inputPorts;
+	}
+	
+	public function getOutputPorts() {
+		return this.outputPorts;
 	}
 	
 	public function addInputPort(port : InputPort) {
@@ -104,6 +129,16 @@ class Job{
 	private function fireOnOutputPortRemovedListeners(j) {
 		for(l in this.onOutputPortRemovedListeners) {
 			l(j);
+		}
+	}
+	
+	public function onPosChanged(listener) {
+		this.onPosChangedListeners.push(listener);
+	}
+	
+	private function fireOnPosChangedListeners(x, y) {
+		for(l in this.onPosChangedListeners) {
+			l(x, y);
 		}
 	}
 }

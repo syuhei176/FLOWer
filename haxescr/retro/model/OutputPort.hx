@@ -22,6 +22,10 @@ class OutputPort extends Port {
 		this.onDisconnectedListeners = new Array<OutputPort->InputPort->Void>();
 	}
 	
+	public function getConnections() {
+		return this.connection;
+	}
+	
 	public function connectToInputPort(port:InputPort) {
 		this.fireOnConnectedListeners(this, port);
 		this.connection.push(port);
