@@ -14,6 +14,7 @@ class ProjectView{
 	private var diagramView : DiagramView;
 	private var control_group : SnapElement;
 	private var exportController : ExportController;
+	
 	public function new(projectController, exportController) {
 		this.projectController = projectController;
 		this.exportController = exportController;
@@ -24,13 +25,6 @@ class ProjectView{
 		this.control_group = snap.group();
     	Snap.load("/images/play.svg", function (f) {
     		var g:SnapElement = f.select("svg");
-        	g.click(function(e){
-        	});
-        	this.control_group.append(g);
-    	});
-    	Snap.load("/images/create.svg", function (f) {
-    		var g:SnapElement = f.select("g");
-    		g.transform("translate("+100+","+0+")");
         	g.click(function(e){
         	});
         	this.control_group.append(g);

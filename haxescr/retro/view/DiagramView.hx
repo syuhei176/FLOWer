@@ -16,7 +16,11 @@ class DiagramView{
 	private var diagramController:DiagramController;
 	private var onButtonListeners:Array<Int->Void>;
 	private var jobViews:Array<JobView>;
+	private var control_group:SnapElement;
+	
+	//力学
 	private var timer:Timer = null;
+	private var energy:Float = 0;
 	
 	public function new(diagramController) {
 		this.jobViews = new Array<JobView>();
@@ -24,16 +28,27 @@ class DiagramView{
 		var diagram = this.diagramController.getDiagram();
 		//モデルの変更を監視
 		diagram.onJobAdded(this.OnJobAdded);
+		/*
+		this.control_group = snap.group();
+		Snap.load("/images/create.svg", function (f) {
+    		var g:SnapElement = f.select("g");
+    		g.transform("translate("+100+","+0+")");
+        	g.click(function(e){
+        		
+        	});
+        	this.control_group.append(g);
+    	});
+    	*/
+		
 	}
 	
 	public function start_step() {
 		if(this.timer == null) {
 			this.timer = new Timer(80);
-			var counter = 0;
 			this.timer.run = function() {
-				this.step();
-				counter++;
-				if(counter > 1000) {
+				var energy = this.step();
+				trace(energy);
+				if(energy < 1) {
 					this.timer.stop();
 					this.timer = null;
 				}
@@ -42,9 +57,11 @@ class DiagramView{
 	}
 	
 	public function step() {
+		var energy:Float = 0;
 		for(jv in this.jobViews) {
-			jv.step();
+			energy += jv.step();
 		}
+		return energy;
 	}
 	
 	//モデルが変更されたときに呼ばれるリスナー

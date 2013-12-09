@@ -42,4 +42,10 @@ class Point2D {
 		p1.x *= t;
 		p1.y *= t;
 	}
+	public function distance() {
+		return Math.sqrt(this.distanceSq());
+	}
+	public function distanceSq() {
+		return this.getX() * this.getX();
+	}
 }

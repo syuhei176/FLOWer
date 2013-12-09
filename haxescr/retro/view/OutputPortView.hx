@@ -43,24 +43,34 @@ class OutputPortView extends PortView{
 		inputView.views.push(pathView);
 	}
 	
-	public function step() {
+	public function step():Float {
 		if(this.views.length == 0) {
-			return;
+			return 0;
 		}
 		var force:Point2D = new Point2D(0, 0);
-		for(pathView in this.views) {
-			Point2D.addToSelf(force, Point2D.sub(pathView.target.getPos(), this.getPos()));
+		for(ipv in this.jobView.getInputPortViews()) {
+			var coulomb = Point2D.sub(this.getPos(), ipv.getPos());
+			var r = coulomb.distanceSq();
+			if(r == 0) r = 0.1;
+			Point2D.timesToSelf(coulomb, 1/r*150);
+			Point2D.addToSelf(force, coulomb);
 		}
-		Point2D.timesToSelf(force, 0.01);
-		var n = new Point2D(-Math.sin(this.th), Math.cos(this.th));
-		//n.normalized();
-		this.velocity += (force.getX() * n.getX() + force.getY() * n.getY()) / 100;
-		
-		if(this.velocity > Math.PI / 90) this.velocity = Math.PI / 90;
-		if(this.velocity < -Math.PI / 90) this.velocity = -Math.PI / 90;
-		this.th += this.velocity;
-		this.setR(this.th);
+		/*
+		for(opv in this.jobView.getOutputPortViews()) {
+			Point2D.addToSelf(force, Point2D.sub(this.getPos(), opv.getPos()));
+		}
+		*/
+		for(pathView in views) {
+			var attraction = Point2D.sub(pathView.target.getPos(), this.getPos());
+			var r = attraction.distance();
+			if(r > 100) r = 100;
+			Point2D.timesToSelf(attraction, r/120);
+			Point2D.addToSelf(force, attraction);
+		}
+		Point2D.timesToSelf(force, 1);
+		this.step_by_force(force);
 		this.refresh();
+		return this.velocity * this.velocity * 100;
 	}
 
 }

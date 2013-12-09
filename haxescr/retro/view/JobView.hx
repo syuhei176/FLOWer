@@ -51,8 +51,8 @@ class JobView{
 		var snap = this.jobController.getEditor().snap;
 		var thema = this.jobController.getEditor().thema;
 		this.group = snap.group();
-		this.graphic = snap.circle(0, 0, 80);
-		var coll = snap.circle(0, 0, 80);
+		this.graphic = snap.circle(0, 0, 60);
+		var coll = snap.circle(0, 0, 60);
 		this.graphic.attr({
 				fill: thema.main_color,
 				stroke: thema.line_color,
@@ -118,12 +118,14 @@ class JobView{
 	}
 	
 	public function step() {
+		var energy:Float = 0;
 		for(portView in this.inputportviews) {
-			portView.step();
+			energy += portView.step();
 		}
 		for(portView in this.outputportviews) {
-			portView.step();
+			energy += portView.step();
 		}
+		return energy;
 	}
 	
 	public function refresh() {
@@ -166,6 +168,13 @@ class JobView{
 			}
 		}
 		return null;
+	}
+	
+	public function getInputPortViews() {
+		return this.inputportviews;
+	}
+	public function getOutputPortViews() {
+		return this.outputportviews;
 	}
 	
 	public function OnPosChanged(x:Float, y:Float) {
