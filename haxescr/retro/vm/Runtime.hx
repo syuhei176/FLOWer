@@ -12,7 +12,7 @@ import haxe.Timer;
 class Runtime{
 	private var app : Application;
 	private var job_queue : Array<retro.pub.Job>;
-	private var valuemediums : Array<ValueMedium>;
+	private var valueCarriers : Array<ValueCarrier>;
 	public function new(app:Application) {
 		this.app = app;
 	}
@@ -43,8 +43,8 @@ class Runtime{
 				var sr = script_result.get(p.name);
 				for(c in p.connection) {
 					//c.setValue(sr.value);
-					var valuemedium = new ValueMedium(sr.value, p, c);
-					valuemediums.push(valuemedium);
+					var valuemedium = new ValueCarrier(sr.value, p, c);
+					valueCarriers.push(valuemedium);
 				}
 			}
 		});
@@ -54,8 +54,8 @@ class Runtime{
 	//ステップ実行
 	public function run_step() {
 		//job_queueから次に実行するWorkerを取得
-		for(valuemedium in valuemediums) {
-			var port = valuemedium.step();
+		for(valueCarrier in valueCarriers) {
+			var port = valueCarrier.step();
 			if(port != null) {
 				port.parent.act(function(script_result) {
 					//出力ポート分ループ
@@ -64,8 +64,8 @@ class Runtime{
 						//コネクションの先の分ループ
 						for(c in p.connection) {
 							//c.setValue(sr.value);
-							var valuemedium = new ValueMedium(sr.value, p, c);
-							valuemediums.push(valuemedium);
+							var newValueCarrier = new ValueCarrier(sr.value, p, c);
+							valueCarriers.push(newValueCarrier);
 						}
 					}
 				});
@@ -74,7 +74,7 @@ class Runtime{
 	}
 }
 
-class ValueMedium {
+class ValueCarrier {
 	public var value:retro.pub.Value;
 	public var srcPort : retro.pub.OutputPort;
 	public var destPort : retro.pub.InputPort;
