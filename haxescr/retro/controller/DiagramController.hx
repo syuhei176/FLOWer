@@ -7,6 +7,8 @@ import retro.model.Job;
 import retro.model.Logic;
 import retro.model.InputPort;
 import retro.model.OutputPort;
+import retro.core.JobComponent;
+import retro.library.Add;
 
 /*
 	DiagramController
@@ -55,6 +57,21 @@ class DiagramController implements Controller{
 		job.addInputPort(new InputPort(job, RetroType.RString, "input"));
 		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
 	}
+	public function addJobFromLibrary() {
+		var id = this.editor.IdGenerator.genID();
+		var jobComponent:JobComponent = new Add();
+		var job = new Job(id, jobComponent);
+		diagram.addJob(job);
+		/*
+		for(jobComponent) {
+			job.addInputPort(new InputPort(job, RetroType.RString, "input"));
+		}
+		for(jobComponent) {
+			job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
+		}
+		*/
+	}
+	
 	public function addLogic(id) {
 		var job = new Logic(id);
 		diagram.addJob(job);

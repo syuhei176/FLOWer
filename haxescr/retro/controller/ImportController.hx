@@ -31,7 +31,7 @@ class ImportController implements Controller {
 			this.import_diagram(diagramController, model.model);
 		}else{
 			//初めてエディタを開いた場合
-			diagramController.addJob_1i1o();
+			diagramController.addJobFromLibrary();
 			diagramController.addJob_1i1o();
 			diagramController.addJob_1i1o();
 		}

@@ -6,6 +6,7 @@ import retro.pub.Editor;
 import retro.pub.RetroType;
 import retro.pub.Point2D;
 import retro.vm.Worker;
+import retro.core.JobComponent;
 
 class Job{
 
@@ -14,6 +15,7 @@ class Job{
 	public var inputPorts : Array<InputPort>;
 	public var outputPorts : Array<OutputPort>;
 	private var pos : Point2D;
+	private var prototype : JobComponent;
 	
 	//モデルの変更を伝えるためのリスナー
 	private var onInputPortAddedListeners:Array<InputPort->Void>;
@@ -25,8 +27,9 @@ class Job{
 	// 実行を移譲
 	public var worker : Worker;
 	
-	public function new(id){
+	public function new(id, ?jobComponent){
 		this.id = id;
+		this.prototype = jobComponent;
 		this.inputPorts = new Array<InputPort>();
 		this.outputPorts = new Array<OutputPort>();
 		this.pos = new Point2D(0, 0);
