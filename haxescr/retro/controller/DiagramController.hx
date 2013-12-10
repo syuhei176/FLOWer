@@ -5,6 +5,7 @@ import retro.pub.RetroType;
 import retro.model.Diagram;
 import retro.model.Job;
 import retro.model.Logic;
+import retro.model.SymbolicLink;
 import retro.model.InputPort;
 import retro.model.OutputPort;
 import retro.core.JobComponent;
@@ -60,7 +61,7 @@ class DiagramController implements Controller{
 	public function addJobFromLibrary() {
 		var id = this.editor.IdGenerator.genID();
 		var jobComponent:JobComponent = new Add();
-		var job = new Job(id, jobComponent);
+		var job = new SymbolicLink(id, jobComponent);
 		diagram.addJob(job);
 		/*
 		for(jobComponent) {

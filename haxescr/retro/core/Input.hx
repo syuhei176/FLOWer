@@ -11,6 +11,9 @@ class Input {
 		this.type = type;
 	}
 	
+	public function getName() {
+		return this.name;
+	}
 	public function getType() {
 		return this.type;
 	}

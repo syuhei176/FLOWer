@@ -66,13 +66,18 @@ class DiagramView{
 	
 	//モデルが変更されたときに呼ばれるリスナー
 	public function OnJobAdded(job:Job) {
-		this.jobViews.push(
-			new JobView(
-				this.diagramController,
-				new JobController(
-					this.diagramController.getEditor(),
-					job),
-				this));
+		var jobView = new JobView(this.diagramController,
+							new JobController(
+								this.diagramController.getEditor(),
+								job),
+							this);
+		for(ip in job.getInputPorts()) {
+			jobView.OnAddInputPortView(ip);
+		}
+		for(op in job.getOutputPorts()) {
+			jobView.OnAddOutputPortView(op);
+		}
+		this.jobViews.push(jobView);
 	}
 	
 	public function getOutputPortView(port:OutputPort) {

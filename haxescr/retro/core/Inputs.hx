@@ -22,4 +22,8 @@ class Inputs {
 		}
 		return null;
 	}
+	
+	public function getArray() {
+		return this.inputs;
+	}
 }

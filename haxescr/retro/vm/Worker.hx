@@ -17,7 +17,7 @@ class Worker{
 		var script_result = new ScriptResult();
 		script_result.set("output", new Value());
 		cb(script_result);
-		for(p in this.job.outputPorts) {
+		for(p in this.job.getOutputPorts()) {
 			var v = script_result.get(p.name);
 			if(v != null) {
 				p.setValue(v);

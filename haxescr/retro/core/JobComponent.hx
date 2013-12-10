@@ -6,8 +6,8 @@ import retro.core.Result;
 
 interface JobComponent {
 	private var name:String;
-	private var inputs:Inputs;
-	private var outputs:Outputs;
+	public var inputs:Inputs;
+	public var outputs:Outputs;
 	
 	public function onInputRecieved(params:Params):Result;
 }

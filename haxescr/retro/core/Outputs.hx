@@ -22,6 +22,10 @@ class Outputs {
 		}
 		return null;
 	}
+	
+	public function getArray() {
+		return this.outputs;
+	}
 }
 
 class Output {
@@ -35,5 +39,9 @@ class Output {
 	
 	public function getType() {
 		return this.type;
+	}
+	
+	public function getName() {
+		return this.name;
 	}
 }

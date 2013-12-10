@@ -9,8 +9,8 @@ import retro.pub.RetroType;
 
 class Add implements JobComponent {
 	private var name:String;
-	private var inputs:Inputs;
-	private var outputs:Outputs;
+	public var inputs:Inputs;
+	public var outputs:Outputs;
 	
 	public function new() {
 		this.name = "Add";
