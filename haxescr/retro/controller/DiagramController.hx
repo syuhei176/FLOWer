@@ -4,12 +4,14 @@ import retro.pub.Editor;
 import retro.pub.RetroType;
 import retro.model.Diagram;
 import retro.model.Job;
+import retro.model.EntryJob;
 import retro.model.Logic;
 import retro.model.SymbolicLink;
 import retro.model.InputPort;
 import retro.model.OutputPort;
 import retro.core.JobComponent;
 import retro.library.Add;
+import retro.library.Through;
 
 /*
 	DiagramController
@@ -58,27 +60,28 @@ class DiagramController implements Controller{
 		job.addInputPort(new InputPort(job, RetroType.RString, "input"));
 		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
 	}
-	public function addJobFromLibrary() {
-		var id = this.editor.IdGenerator.genID();
-		var jobComponent:JobComponent = new Add();
-		var job = new SymbolicLink(id, jobComponent);
-		diagram.addJob(job);
-		/*
-		for(jobComponent) {
-			job.addInputPort(new InputPort(job, RetroType.RString, "input"));
-		}
-		for(jobComponent) {
-			job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
-		}
-		*/
+	private function base_addJob(jobComponent:JobComponent) {
+		diagram.addJob(new SymbolicLink(this.editor.IdGenerator.genID(), jobComponent));
+	}
+	public function addJobFromLibrary_Add() {
+		this.base_addJob(new Add());
+	}
+	public function addJobFromLibrary_Through() {
+		this.base_addJob(new Through());
 	}
 	
+	public function addEntryJob() {
+		var id = this.editor.IdGenerator.genID();
+		var job = new EntryJob(id);
+		diagram.addJob(job);
+		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
+	}
 	public function addLogic(id) {
 		var job = new Logic(id);
 		diagram.addJob(job);
 	}
 	public function removeJob(job:Job) {
-		diagram.jobs.remove(job);
+		diagram.getJobs().remove(job);
 	}
 	
 	public function setRubberbandStart(port:OutputPort) {

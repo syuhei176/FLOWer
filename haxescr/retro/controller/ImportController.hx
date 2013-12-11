@@ -5,6 +5,8 @@ import retro.model.Project;
 import retro.model.Diagram;
 import retro.model.Job;
 import retro.model.Logic;
+import retro.library.Add;
+import retro.library.Through;
 
 /*
 	ImportController
@@ -31,9 +33,11 @@ class ImportController implements Controller {
 			this.import_diagram(diagramController, model.model);
 		}else{
 			//初めてエディタを開いた場合
-			diagramController.addJobFromLibrary();
-			diagramController.addJob_1i1o();
-			diagramController.addJob_1i1o();
+			diagramController.addJobFromLibrary_Add();
+			diagramController.addJobFromLibrary_Through();
+			diagramController.addJobFromLibrary_Through();
+			diagramController.addEntryJob();
+			diagramController.addEntryJob();
 		}
 	}
 	

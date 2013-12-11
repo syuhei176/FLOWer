@@ -2,6 +2,7 @@ package retro.model;
 
 import retro.core.JobComponent;
 import retro.pub.RetroType;
+import retro.vm.Worker;
 
 class SymbolicLink extends Job{
 
@@ -20,5 +21,9 @@ class SymbolicLink extends Job{
 	
 	public function getPrototype() {
 		return this.prototype;
+	}
+	
+	override function getWorker() {
+		return new Worker(this, this.prototype.onInputRecieved);
 	}
 }

@@ -8,6 +8,7 @@ import retro.model.Job;
 import retro.model.Port;
 import retro.model.InputPort;
 import retro.model.OutputPort;
+import retro.model.ValueCarrier;
 import retro.controller.DiagramController;
 import retro.controller.JobController;
 
@@ -16,6 +17,7 @@ class DiagramView{
 	private var diagramController:DiagramController;
 	private var onButtonListeners:Array<Int->Void>;
 	private var jobViews:Array<JobView>;
+	private var valueCarrierViews:Array<ValueCarrierView>;
 	private var control_group:SnapElement;
 	
 	//力学
@@ -24,10 +26,14 @@ class DiagramView{
 	
 	public function new(diagramController) {
 		this.jobViews = new Array<JobView>();
+		this.valueCarrierViews = new Array<ValueCarrierView>();
 		this.diagramController = diagramController;
 		var diagram = this.diagramController.getDiagram();
 		//モデルの変更を監視
 		diagram.onJobAdded(this.OnJobAdded);
+		diagram.onValueCarrierAdded(this.OnValueCarrierAdded);
+		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
+		
 		/*
 		this.control_group = snap.group();
 		Snap.load("/images/create.svg", function (f) {
@@ -78,6 +84,19 @@ class DiagramView{
 			jobView.OnAddOutputPortView(op);
 		}
 		this.jobViews.push(jobView);
+	}
+	
+	public function OnValueCarrierAdded(valueCarrier:ValueCarrier) {
+		valueCarrierViews.push(new ValueCarrierView(this.diagramController.getEditor(), valueCarrier, this));
+	}
+	
+	public function OnValueCarrierRemoved(valueCarrier:ValueCarrier) {
+		for(vcv in valueCarrierViews) {
+			if(vcv.valueCarrier == valueCarrier) {
+				vcv.remove();
+				valueCarrierViews.remove(vcv);
+			}
+		}
 	}
 	
 	public function getOutputPortView(port:OutputPort) {

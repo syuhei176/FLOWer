@@ -1,6 +1,7 @@
 package retro.core;
 
 import retro.pub.RetroType;
+import retro.model.Value;
 import retro.core.Input;
 
 class Params {
@@ -12,25 +13,30 @@ class Params {
 	}
 	public function get(name) {
 		for(param in params) {
-		if(param.input.name == name) {
+		if(param.name == name) {
 			return param;
 		}
 		}
 		return null;
 	}
+	public function add(name, value) {
+		this.params.push(new Param(name, value));
+	}
 }
 
 class Param {
-	public var input:Input;
-	public var value:Dynamic;
+	public var name:String;
+	public var value:Value;
 	
-	public function new() {
+	public function new(name, value) {
+		this.name = name;
+		this.value = value;
 	}
 	
 	public function isEmpty() {
-		return false;
+		return value == null;
 	}
 	public function getValue() {
-		return this.value;
+		return this.value.value;
 	}
 }

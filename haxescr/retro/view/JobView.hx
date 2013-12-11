@@ -65,6 +65,10 @@ class JobView{
     	    fill: "#ffffff",
     	    "fill-opacity" : 0,
     	});
+		coll.mousedown(function(e, x, y){
+			var runTime = this.jobController.getEditor().getRuntime();
+			runTime.invoke_entry(this.jobController.getJob());
+		});
 		coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
         	this.prev_pos.setX(dx);

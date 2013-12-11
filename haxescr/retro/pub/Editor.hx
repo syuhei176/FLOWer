@@ -1,5 +1,6 @@
 package retro.pub;
 
+import snap.Snap;
 import retro.pub.IdGenerator;
 import retro.model.Project;
 import retro.view.Thema;
@@ -9,7 +10,7 @@ import retro.view.ProjectView;
 import retro.controller.ProjectController;
 import retro.controller.ImportController;
 import retro.controller.ExportController;
-import snap.Snap;
+import retro.vm.Runtime;
 
 class Editor{
 	public var projectController : ProjectController;
@@ -17,6 +18,8 @@ class Editor{
 	public var IdGenerator : retro.pub.IDGenerator;
 	public var snap:Snap;
 	public var thema:Thema;
+	
+	private var runtime:Runtime;
 	
 	public function new(id_header){
 		this.thema = new Thema();
@@ -32,6 +35,11 @@ class Editor{
 		this.projectView = projectView;
 	}
 	
+	
+	public function getRuntime() {
+	  	this.runtime = new retro.vm.Runtime(this.projectController.getProject().getRootDiagram());
+	  	return this.runtime;
+	}
 	public static function create(editorkey, id_header){
 		var client = new RetroClient(editorkey);
 		client.init(function(data) {

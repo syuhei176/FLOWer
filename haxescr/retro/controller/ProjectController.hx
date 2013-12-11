@@ -4,10 +4,12 @@ import retro.pub.Editor;
 import retro.model.Project;
 import retro.model.Diagram;
 import retro.view.DiagramView;
+import retro.vm.Runtime;
 
 class ProjectController implements Controller{
 	private var editor:Editor;
 	private var project:Project;
+	private var runtime:Runtime;
 	public function new(editor, project){
 		this.editor = editor;
 		this.project = project;
@@ -28,6 +30,19 @@ class ProjectController implements Controller{
 		this.project.setRootDiagram(diagram);
 	}
 	
+	public function run() {
+		if(this.runtime == null) {
+			this.runtime = new Runtime(this.project.getRootDiagram());
+		}
+	  	this.runtime.run();
+	}
+	
+	public function stop() {
+		if(this.runtime == null) {
+			this.runtime = new Runtime(this.project.getRootDiagram());
+		}
+	  	this.runtime.stop();
+	}
 	//Diagram Controller
 	
 	//Job Controller

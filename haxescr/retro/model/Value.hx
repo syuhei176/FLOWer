@@ -1,10 +1,10 @@
-package retro.vm;
+package retro.model;
 
 import retro.pub.RetroType;
 
 class Value{
 	public var type : RetroType;
-	private var value : Dynamic;
+	public var value : Dynamic;
 
 	public function new(?_type, ?_value){
 		this.type = _type;

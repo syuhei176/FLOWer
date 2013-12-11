@@ -1,10 +1,10 @@
 package retro.vm;
 
-import retro.pub.Diagram;
+import retro.model.Diagram;
 
 //Flowerで作成されたアプリケーションを表すクラス
 class Application{
-	public var diagram:retro.pub.Diagram = null;
+	public var diagram:Diagram = null;
 	public function new() {
 	}
 	

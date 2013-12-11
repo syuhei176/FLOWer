@@ -7,6 +7,8 @@ import retro.pub.RetroType;
 import retro.pub.Point2D;
 import retro.vm.Worker;
 import retro.core.JobComponent;
+import retro.core.Params;
+import retro.core.Result;
 
 class Job{
 
@@ -77,11 +79,22 @@ class Job{
 		this.outputPorts.remove(port);
 	}
 	
-	public function act(cb){
-		if(this.worker == null) {
-			this.worker = new Worker(this);
+	public function getParams() {
+		var params = new Params();
+		for(p in inputPorts) {
+			var value = null;
+			if(p.getValueCarrier()!=null) {
+				value = p.getValueCarrier().getValue();
+			}
+			params.add(p.getName(), value);
 		}
-		this.worker.act(cb);
+		return params;
+	}
+	
+	public function getWorker(){
+		return new Worker(this, function(params:Params) {
+			return new Result();
+		});
 	}
 	
 	public function getInputPort(name:String) {
