@@ -16,8 +16,8 @@ class InputPortView extends PortView{
 		super(diagramController, jobview, snap, thema);
 		this.port = port;
 		this.graphic.attr({
-			fill: thema.input_color,
-			stroke: thema.line_color,
+			fill: thema.bg_color,
+			stroke: thema.base_color,
 			strokeWidth: 4
 		});
 		this.coll.mouseup(function(e, x, y) {

@@ -41,8 +41,7 @@ class PathView{
 		this.graphic = this.snap.line(0, 0, 0, 0);
 		
 		this.graphic.attr({
-    	    fill: "#bada55",
-    	    stroke: "#000",
+    	    stroke: thema.path_color,
     	    strokeWidth: 5
     	});
     	

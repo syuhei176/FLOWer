@@ -24,8 +24,8 @@ class OutputPortView extends PortView{
 		//モデルの変更を監視
 		this.port.onConnected(this.OnConnected);
 		this.graphic.attr({
-			fill: thema.output_color,
-			stroke: thema.line_color,
+			fill: thema.base_color,
+			stroke: thema.base_color,
 			strokeWidth: 4
 		});
 		this.coll.mousedown(function(e, x, y) {

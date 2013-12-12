@@ -55,11 +55,12 @@ class JobView{
 		var coll = snap.circle(0, 0, 60);
 		var text = snap.text(-40, 100, job.getName());
 		text.attr({
-			"font-size" : "24px"
+			"font-size" : "24px",
+			fill : thema.font_color
 		});
 		this.graphic.attr({
-				fill: thema.main_color,
-				stroke: thema.line_color,
+				fill: thema.bg_color,
+				stroke: thema.base_color,
 				strokeWidth: 4
 				});
 		this.pos = new Point2D(0, 0);
