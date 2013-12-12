@@ -7,7 +7,7 @@ import retro.core.Outputs;
 import retro.core.Result;
 import retro.pub.RetroType;
 
-class Add implements JobComponent {
+class Times implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
@@ -32,4 +32,7 @@ class Add implements JobComponent {
 		return result;
 	}
 
+	public function getModuleName() {
+		return "core.Times";
+	}
 }

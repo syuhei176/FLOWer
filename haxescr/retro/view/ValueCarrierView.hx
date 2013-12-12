@@ -22,7 +22,6 @@ class ValueCarrierView {
 		this.valueCarrier = valueCarrier;
 		this.diagramView = diagramView;
 		this.valueCarrier.onStep(OnStep);
-		this.valueCarrier.onStep(OnStep);
 		this.count = 0;
 		
 		var snap = editor.snap;

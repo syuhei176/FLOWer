@@ -32,4 +32,7 @@ class Filter implements JobComponent {
 		return result;
 	}
 
+	public function getModuleName() {
+		return "core.Filter";
+	}
 }

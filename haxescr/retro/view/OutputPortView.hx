@@ -52,7 +52,7 @@ class OutputPortView extends PortView{
 			var coulomb = Point2D.sub(this.getPos(), ipv.getPos());
 			var r = coulomb.distanceSq();
 			if(r == 0) r = 0.1;
-			Point2D.timesToSelf(coulomb, 1/r*150);
+			Point2D.timesToSelf(coulomb, 1/r*140);
 			Point2D.addToSelf(force, coulomb);
 		}
 		/*

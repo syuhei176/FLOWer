@@ -20,11 +20,13 @@ class Editor{
 	public var thema:Thema;
 	
 	private var runtime:Runtime;
+	private var retroClient:RetroClient;
 	
-	public function new(id_header){
+	public function new(id_header, retroClient){
 		this.thema = new Thema();
 		this.snap = new Snap("#svg");
 		this.IdGenerator = retro.pub.IDGenerator.getInstance(id_header);
+		this.retroClient = retroClient;
 	}
 	
 	public function setProjectController(projectController) {
@@ -35,15 +37,18 @@ class Editor{
 		this.projectView = projectView;
 	}
 	
+	public function save_all(data) {
+		this.retroClient.save_all(data);
+	}
 	
 	public function getRuntime() {
 	  	this.runtime = new retro.vm.Runtime(this.projectController.getProject().getRootDiagram());
 	  	return this.runtime;
 	}
 	public static function create(editorkey, id_header){
-		var client = new RetroClient(editorkey);
-		client.init(function(data) {
-			var editor = new Editor(id_header);
+		var retroClient = new RetroClient(editorkey);
+		retroClient.init(function(data) {
+			var editor = new Editor(id_header, retroClient);
 			var project = new Project();
 			//コントローラを作成
 			var projectController = new ProjectController(editor, project);

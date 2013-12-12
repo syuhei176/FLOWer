@@ -70,6 +70,15 @@ class DiagramController implements Controller{
 		this.base_addJob(new Through());
 	}
 	
+	public function addJobByJob(job:Job) {
+		diagram.addJob(job);
+	}
+	public function addEntryJobByJob(entry:EntryJob) {
+		diagram.addJob(entry);
+		entry.addOutputPort(new OutputPort(entry, RetroType.RString, "output"));
+	}
+	
+	
 	public function addEntryJob() {
 		var id = this.editor.IdGenerator.genID();
 		var job = new EntryJob(id);
@@ -88,10 +97,13 @@ class DiagramController implements Controller{
 		this.start = port;
 	}
 	public function setRubberbandEnd(port:InputPort) {
-		this.end = port;
-		this.start.connectToInputPort(this.end);
-		trace(this.start);
-		trace(this.end);
+		if(this.start == null) {
+			return false;
+		}else{
+			this.end = port;
+			this.start.connectToInputPort(this.end);
+			return true;
+		}
 	}
 	//ポートの接続解除
 	static public function disconnect(oport:OutputPort, iport:InputPort) {

@@ -30,4 +30,7 @@ class Through implements JobComponent {
 		return result;
 	}
 
+	public function getModuleName() {
+		return "core.Through";
+	}
 }

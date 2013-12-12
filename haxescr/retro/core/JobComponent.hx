@@ -10,4 +10,5 @@ interface JobComponent {
 	public var outputs:Outputs;
 	
 	public function onInputRecieved(params:Params):Result;
+	public function getModuleName():String;
 }

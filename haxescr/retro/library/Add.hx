@@ -31,5 +31,10 @@ class Add implements JobComponent {
 		result.set("output", (input1.getValue() + input2.getValue()));
 		return result;
 	}
+	
+	public function getModuleName() {
+		return "core.Add";
+	}
+	
 
 }
