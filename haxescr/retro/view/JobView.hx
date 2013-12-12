@@ -53,6 +53,10 @@ class JobView{
 		this.group = snap.group();
 		this.graphic = snap.circle(0, 0, 60);
 		var coll = snap.circle(0, 0, 60);
+		var text = snap.text(-40, 100, job.getName());
+		text.attr({
+			"font-size" : "24px"
+		});
 		this.graphic.attr({
 				fill: thema.main_color,
 				stroke: thema.line_color,
@@ -83,6 +87,7 @@ class JobView{
     	});
 		
 		this.group.append(this.graphic);
+		this.group.append(text);
 		this.group.append(coll);
 	}
 	

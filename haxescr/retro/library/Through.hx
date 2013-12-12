@@ -8,7 +8,7 @@ import retro.core.Result;
 import retro.pub.RetroType;
 
 class Through implements JobComponent {
-	private var name:String;
+	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	

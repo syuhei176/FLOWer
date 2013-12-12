@@ -7,13 +7,13 @@ import retro.core.Outputs;
 import retro.core.Result;
 import retro.pub.RetroType;
 
-class Add implements JobComponent {
+class Filter implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
 	public function new() {
-		this.name = "Add";
+		this.name = "Filter";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("input1", RetroType.RNumber);
@@ -28,7 +28,7 @@ class Add implements JobComponent {
 			return null;
 		}
 		var result = new Result();
-		result.set("output", (input1.getValue() + input2.getValue()));
+		result.set("output", (input1.getValue() * input2.getValue()));
 		return result;
 	}
 

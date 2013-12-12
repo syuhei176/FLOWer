@@ -13,7 +13,7 @@ class Add implements JobComponent {
 	public var outputs:Outputs;
 	
 	public function new() {
-		this.name = "Add";
+		this.name = "Times";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("input1", RetroType.RNumber);
@@ -28,7 +28,7 @@ class Add implements JobComponent {
 			return null;
 		}
 		var result = new Result();
-		result.set("output", (input1.getValue() + input2.getValue()));
+		result.set("output", (input1.getValue() * input2.getValue()));
 		return result;
 	}
 

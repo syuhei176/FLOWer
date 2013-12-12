@@ -44,6 +44,10 @@ class Job{
 		return this.id;
 	}
 	
+	public function getName() {
+		return "";
+	}
+	
 	public function setPos(x:Float, y:Float) {
 		this.fireOnPosChangedListeners(x, y);
 		this.pos.setX(x);

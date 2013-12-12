@@ -23,6 +23,10 @@ class SymbolicLink extends Job{
 		return this.prototype;
 	}
 	
+	override function getName() {
+		return this.prototype.name;
+	}
+	
 	override function getWorker() {
 		return new Worker(this, this.prototype.onInputRecieved);
 	}

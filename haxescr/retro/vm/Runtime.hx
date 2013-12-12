@@ -44,12 +44,14 @@ class Runtime{
 	}
 	
 	public function stop() {
-		trace("aaaaaaa");
 		this.timer.stop();
 	}
 	
 	//エントリを起こす
 	public function invoke_entry(entry:Job) {
+		if(Type.getClassName(Type.getClass(entry)) != "retro.model.EntryJob") {
+			return false;
+		}
 		var worker = entry.getWorker();
 		worker.act(null, function(script_result:Result) {
 			for(p in entry.getOutputPorts()) {
