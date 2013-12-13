@@ -11,12 +11,14 @@ class InputPort extends Port {
 	private var onSetValueListeners:Array<ValueCarrier->Void>;
 	private var onUseValueListeners:Array<Void->Void>;
 	private var onSetConstantValueListeners:Array<Value->Void>;
+	private var onRemoveConstantValueListeners:Array<Void->Void>;
 	
 	public function new(parent, type, name){
 		super(parent, type, name);
 		this.onSetValueListeners = new Array<ValueCarrier->Void>();
 		this.onUseValueListeners = new Array<Void->Void>();
 		this.onSetConstantValueListeners = new Array<Value->Void>();
+		this.onRemoveConstantValueListeners = new Array<Void->Void>();
 	}
 	
 	public function setValueCarrier(value:ValueCarrier) {
@@ -26,6 +28,10 @@ class InputPort extends Port {
 	
 	public function getValueCarrier():ValueCarrier {
 		return this.value;
+	}
+	
+	public function getConstantValue() {
+		return this.constantValue;
 	}
 	
 	public function getValue():Value {
@@ -52,6 +58,12 @@ class InputPort extends Port {
 		this.fireOnSetConstantValueListeners(this.constantValue);
 	}
 	
+	//定数を削除
+	public function removeConstant() {
+		this.constantValue = null;
+		this.fireOnRemoveConstantValueListeners();
+	}
+	
 	public function onSetValue(listener) {
 		this.onSetValueListeners.push(listener);
 	}
@@ -62,6 +74,10 @@ class InputPort extends Port {
 	
 	public function onSetConstantValue(listener) {
 		this.onSetConstantValueListeners.push(listener);
+	}
+	
+	public function onRemoveConstantValue(listener) {
+		this.onRemoveConstantValueListeners.push(listener);
 	}
 	
 	private function fireOnSetValueListeners(v) {
@@ -78,6 +94,11 @@ class InputPort extends Port {
 	private function fireOnSetConstantValueListeners(v) {
 		for(l in this.onSetConstantValueListeners) {
 			l(v);
+		}
+	}
+	private function fireOnRemoveConstantValueListeners() {
+		for(l in this.onRemoveConstantValueListeners) {
+			l();
 		}
 	}
 }

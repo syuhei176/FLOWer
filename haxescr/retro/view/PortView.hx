@@ -85,7 +85,7 @@ class PortView{
 	public function step_by_force(force:Point2D) {
 		var n = new Point2D(-Math.sin(this.th), Math.cos(this.th));
 		this.velocity += (force.getX() * n.getX() + force.getY() * n.getY()) / 200;
-		this.velocity *= 0.9;
+		this.velocity *= 0.7;
 		if(this.velocity > Math.PI / 30) this.velocity = Math.PI / 30;
 		if(this.velocity < -Math.PI / 30) this.velocity = -Math.PI / 30;
 		this.th += this.velocity;

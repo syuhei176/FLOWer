@@ -68,6 +68,11 @@ class ExportController implements Controller {
 	public function import_outputport(inputport:InputPort) {
 		var inputport_model:Dynamic = {};
 		inputport_model.name = inputport.getName();
+		if(inputport.getConstantValue() != null) {
+			inputport_model.constant = {};
+			inputport_model.constant.type = inputport.getConstantValue().type;
+			inputport_model.constant.value = inputport.getConstantValue().value;
+		}
 		return inputport_model;
 	}
 	

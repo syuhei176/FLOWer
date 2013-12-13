@@ -226,6 +226,16 @@ class JobView{
 	public function getOutputPortViews() {
 		return this.outputportviews;
 	}
+	public function getPortViews() {
+		var portViews = new Array<PortView>();
+		for(ipv in this.inputportviews) {
+			portViews.push(ipv);
+		}
+		for(opv in this.outputportviews) {
+			portViews.push(opv);
+		}
+		return portViews;
+	}
 	
 	public function OnPosChanged(x:Float, y:Float) {
 		this.setPos(x, y);

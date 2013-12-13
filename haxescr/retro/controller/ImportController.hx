@@ -7,6 +7,7 @@ import retro.model.Job;
 import retro.model.EntryJob;
 import retro.model.Logic;
 import retro.model.SymbolicLink;
+import retro.model.Value;
 import retro.core.JobComponent;
 
 /*
@@ -63,12 +64,19 @@ class ImportController implements Controller {
 	
 	public function import_job(model:Dynamic, diagram:Diagram) {
 		var ops:Array<Dynamic> = model.outputports;
+		var ips:Array<Dynamic> = model.inputports;
 		for(op in ops) {
 			var start = diagram.getOutputPort(model.id + "." + op.name);
 			var cons:Array<Dynamic> = op.connections;
 			for(con in cons) {
 				var end = diagram.getInputPort(con);
 				start.connectToInputPort(end);
+			}
+		}
+		for(ip in ips) {
+			var inputPort = diagram.getInputPort(model.id + "." + ip.name);
+			if(ip.constant) {
+				inputPort.setConstant(new Value(ip.constant.type, ip.constant.value));
 			}
 		}
 	}

@@ -22,6 +22,7 @@ class InputPortView extends PortView{
 		super(diagramController, jobview, snap, thema);
 		this.port = port;
 		this.port.onSetConstantValue(OnSetConstant);
+		this.port.onRemoveConstantValue(OnRemoveConstant);
 		
 		this.graphic.attr({
 			fill: thema.bg_color,
@@ -44,7 +45,7 @@ class InputPortView extends PortView{
 				//set constant
 				var v = window.prompt("","");
 				if(v != null) {
-					port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+					this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
 				}
 			}
 		});
@@ -52,25 +53,20 @@ class InputPortView extends PortView{
 	
 	public function step():Float {
 		if(this.views.length == 0) {
-			return 0;
+			//return 0;
 		}
 		var force:Point2D = new Point2D(0, 0);
-		/*
-		for(ipv in this.jobView.getInputPortViews()) {
-			Point2D.addToSelf(force, Point2D.sub(this.getPos(), ipv.getPos()));
-		}
-		*/
-		for(opv in this.jobView.getOutputPortViews()) {
+		for(opv in this.jobView.getPortViews()) {
 			var coulomb = Point2D.sub(this.getPos(), opv.getPos());
 			var r = coulomb.distanceSq();
-			if(r == 0) r = 0.1;
-			Point2D.timesToSelf(coulomb, 1/r*140);
+			if(r == 0) r = 0.01;
+			Point2D.timesToSelf(coulomb, 1/r*100);
 			Point2D.addToSelf(force, coulomb);
 		}
-		for(pathView in views) {
+		for(pathView in this.views) {
 			var attraction = Point2D.sub(pathView.source.getPos(), this.getPos());
 			var r = attraction.distance();
-			if(r > 100) r = 100;
+			if(r > 1000) r = 1000;
 			Point2D.timesToSelf(attraction, r/120);
 			Point2D.addToSelf(force, attraction);
 		}
@@ -89,6 +85,15 @@ class InputPortView extends PortView{
 				});
 		this.group.append(this.constantValueGraphic);
 		this.group.append(text);
+		this.constantValueGraphic.drag(function(dx, dy, x, y) {
+			if(dx + dy > 3) {
+				this.port.removeConstant();
+			}
+		});
+	}
+	
+	public function OnRemoveConstant() {
+		this.constantValueGraphic.remove();
 	}
 	
 }

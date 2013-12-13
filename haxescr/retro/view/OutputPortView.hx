@@ -45,25 +45,20 @@ class OutputPortView extends PortView{
 	
 	public function step():Float {
 		if(this.views.length == 0) {
-			return 0;
+			//return 0;
 		}
 		var force:Point2D = new Point2D(0, 0);
-		for(ipv in this.jobView.getInputPortViews()) {
+		for(ipv in this.jobView.getPortViews()) {
 			var coulomb = Point2D.sub(this.getPos(), ipv.getPos());
 			var r = coulomb.distanceSq();
-			if(r == 0) r = 0.1;
-			Point2D.timesToSelf(coulomb, 1/r*140);
+			if(r == 0) r = 0.01;
+			Point2D.timesToSelf(coulomb, 1/r*100);
 			Point2D.addToSelf(force, coulomb);
 		}
-		/*
-		for(opv in this.jobView.getOutputPortViews()) {
-			Point2D.addToSelf(force, Point2D.sub(this.getPos(), opv.getPos()));
-		}
-		*/
-		for(pathView in views) {
+		for(pathView in this.views) {
 			var attraction = Point2D.sub(pathView.target.getPos(), this.getPos());
 			var r = attraction.distance();
-			if(r > 100) r = 100;
+			if(r > 1000) r = 1000;
 			Point2D.timesToSelf(attraction, r/120);
 			Point2D.addToSelf(force, attraction);
 		}
