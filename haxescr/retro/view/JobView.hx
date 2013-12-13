@@ -1,5 +1,6 @@
 package retro.view;
 
+import haxe.Timer;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
@@ -30,6 +31,7 @@ class JobView{
 	public var graphic:SnapElement;
 	public var coll:SnapElement;
 	private var config_graphic:SnapElement;
+	private var config_timer:Timer;
 	
 	public var diagramController:DiagramController;
 	public var jobController:JobController;
@@ -76,6 +78,7 @@ class JobView{
     	    "fill-opacity" : 0,
     	});
 		coll.mousedown(function(e, x, y){
+			this.visible_config_btn();
 			var runTime = this.jobController.getEditor().getRuntime();
 			trace(runTime.isRunning());
 			trace(this.setted_value);
@@ -108,12 +111,24 @@ class JobView{
 					this.setted_value = js.Browser.window.prompt("","");
 				}
         	});
-        	/*
     		g.attr({
     			"visibility" : "hidden"
     		});
-    		*/
     		g.transform("translate("+-80+","+-100+")");
+    		this.config_graphic = g;
+    	});
+	}
+	
+	private function visible_config_btn() {
+		this.config_timer = new Timer(3000);
+		this.config_timer.run = function() {
+	    	this.config_graphic.attr({
+    			"visibility" : "hidden"
+    		});
+    		this.config_timer.stop();
+		}
+    	this.config_graphic.attr({
+    		"visibility" : "visible"
     	});
 	}
 	
