@@ -8,7 +8,7 @@ import retro.core.Result;
 import retro.pub.RetroType;
 
 class Add implements JobComponent {
-	private var name:String;
+	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
@@ -31,5 +31,10 @@ class Add implements JobComponent {
 		result.set("output", (input1.getValue() + input2.getValue()));
 		return result;
 	}
+	
+	public function getModuleName() {
+		return "core.Add";
+	}
+	
 
 }

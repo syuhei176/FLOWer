@@ -1,27 +1,52 @@
 package retro.view;
 
+import haxe.Json.*;
+import js.Browser.*;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
+import retro.pub.RetroType;
 import retro.model.Port;
 import retro.model.InputPort;
 import retro.model.OutputPort;
+import retro.model.Value;
+import retro.model.ValueCarrier;
 import retro.controller.DiagramController;
 
 class InputPortView extends PortView{
 
 	public var port:InputPort;
+	private var constantValueGraphic:SnapElement;
 	
 	public function new(diagramController, jobview, port, snap, thema) {
 		super(diagramController, jobview, snap, thema);
 		this.port = port;
+		this.port.onSetConstantValue(OnSetConstant);
+		
 		this.graphic.attr({
-			fill: thema.input_color,
-			stroke: thema.line_color,
+			fill: thema.bg_color,
+			stroke: thema.base_color,
 			strokeWidth: 4
 		});
+		
+		var text = snap.text(-20, 50, port.getName());
+		text.attr({
+			"font-size" : "18px",
+			fill : thema.font_color
+		});
+		this.group.append(text);
+		
+		
 		this.coll.mouseup(function(e, x, y) {
-			this.diagramController.setRubberbandEnd(this.port);
+			if(this.diagramController.setRubberbandEnd(this.port)) {
+				this.diagramController.clearRubberband();
+			}else{
+				//set constant
+				var v = window.prompt("","");
+				if(v != null) {
+					port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+				}
+			}
 		});
 	}
 	
@@ -39,7 +64,7 @@ class InputPortView extends PortView{
 			var coulomb = Point2D.sub(this.getPos(), opv.getPos());
 			var r = coulomb.distanceSq();
 			if(r == 0) r = 0.1;
-			Point2D.timesToSelf(coulomb, 1/r*150);
+			Point2D.timesToSelf(coulomb, 1/r*140);
 			Point2D.addToSelf(force, coulomb);
 		}
 		for(pathView in views) {
@@ -52,6 +77,18 @@ class InputPortView extends PortView{
 		Point2D.timesToSelf(force, 1);
 		this.step_by_force(force);
 		return this.velocity * this.velocity * 100;
+	}
+	
+	public function OnSetConstant(v) {
+		this.constantValueGraphic = this.snap.circle(0, 0, 24);
+		var text = this.snap.text(0, 0, v.value);
+		this.constantValueGraphic.attr({
+				fill: this.thema.contrast1_color,
+				stroke: this.thema.contrast2_color,
+				strokeWidth: 4
+				});
+		this.group.append(this.constantValueGraphic);
+		this.group.append(text);
 	}
 	
 }

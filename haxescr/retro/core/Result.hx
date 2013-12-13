@@ -8,7 +8,7 @@ class Result{
         public function new() {
                 this.script_result = new Array<ScriptReturnValue>();
         }
-        public function set(portname, value) {
+        public function set(portname, value:Dynamic) {
                 for(sr in this.script_result) {
                         if(sr.portname == portname) {
                                 sr.value = value;

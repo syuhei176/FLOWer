@@ -5,9 +5,10 @@ import retro.core.Outputs;
 import retro.core.Result;
 
 interface JobComponent {
-	private var name:String;
+	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
 	public function onInputRecieved(params:Params):Result;
+	public function getModuleName():String;
 }

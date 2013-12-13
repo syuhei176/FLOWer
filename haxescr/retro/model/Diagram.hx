@@ -43,7 +43,16 @@ class Diagram{
 		return null;
 	}
 
-	public function getPort(uri:String){
+	public function getOutputPort(uri:String){
+		var ids = uri.split(".");
+		for( job in this.jobs ){
+			if( job.getId() == ids[0] ){
+				return job.getOutputPort(ids[1]);
+			}
+		}
+		return null;
+	}
+	public function getInputPort(uri:String){
 		var ids = uri.split(".");
 		for( job in this.jobs ){
 			if( job.getId() == ids[0] ){

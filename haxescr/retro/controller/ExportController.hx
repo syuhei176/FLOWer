@@ -43,8 +43,11 @@ class ExportController implements Controller {
 	}
 	
 	public function export_job(job:Job) {
-		var job_model:Dynamic = {};
-		job_model.id = job.getId();
+		var job_model:Dynamic = job.getJSON();
+		job_model.meta = Type.getClassName(Type.getClass(job));
+		job_model.pos = {};
+		job_model.pos.x = job.getPos().getX();
+		job_model.pos.y = job.getPos().getY();
 		job_model.inputports = [];
 		job_model.outputports = [];
 		for(port in job.getInputPorts()) {

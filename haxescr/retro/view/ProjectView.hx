@@ -47,7 +47,9 @@ class ProjectView{
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+200+","+0+")");
         	g.click(function(e){
-        		trace(this.exportController.do_export());
+        		var exported = this.exportController.do_export();
+        		trace(exported);
+        		this.projectController.getEditor().save_all(exported);
         	});
         	this.control_group.append(g);
     	});

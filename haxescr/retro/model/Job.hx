@@ -44,6 +44,10 @@ class Job{
 		return this.id;
 	}
 	
+	public function getName() {
+		return "";
+	}
+	
 	public function setPos(x:Float, y:Float) {
 		this.fireOnPosChangedListeners(x, y);
 		this.pos.setX(x);
@@ -83,8 +87,8 @@ class Job{
 		var params = new Params();
 		for(p in inputPorts) {
 			var value = null;
-			if(p.getValueCarrier()!=null) {
-				value = p.getValueCarrier().getValue();
+			if(p.getValue()!=null) {
+				value = p.getValue();
 			}
 			params.add(p.getName(), value);
 		}
@@ -99,6 +103,14 @@ class Job{
 	
 	public function getInputPort(name:String) {
 		for(p in inputPorts) {
+			if(name == p.name) {
+				return p;
+			}
+		}
+		return null;
+	}
+	public function getOutputPort(name:String) {
+		for(p in outputPorts) {
 			if(name == p.name) {
 				return p;
 			}
@@ -154,5 +166,11 @@ class Job{
 		for(l in this.onPosChangedListeners) {
 			l(x, y);
 		}
+	}
+	
+	public function getJSON() {
+		var json:Dynamic = {};
+		json.id = this.getId();
+		return json;
 	}
 }

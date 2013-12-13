@@ -22,18 +22,17 @@ class ValueCarrierView {
 		this.valueCarrier = valueCarrier;
 		this.diagramView = diagramView;
 		this.valueCarrier.onStep(OnStep);
-		this.valueCarrier.onStep(OnStep);
 		this.count = 0;
 		
 		var snap = editor.snap;
 		var thema = editor.thema;
 		this.pos = new Point2D(0, 0);
 		this.group = snap.group();
-		this.graphic = snap.circle(0, 0, 30);
+		this.graphic = snap.circle(0, 0, 24);
 		var text = snap.text(0, 0, valueCarrier.getValue().value);
 		this.graphic.attr({
-				fill: thema.value_color,
-				stroke: thema.line_color,
+				fill: thema.contrast1_color,
+				stroke: thema.contrast2_color,
 				strokeWidth: 4
 				});
 		this.group.append(this.graphic);

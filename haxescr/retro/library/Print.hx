@@ -7,13 +7,13 @@ import retro.core.Outputs;
 import retro.core.Result;
 import retro.pub.RetroType;
 
-class Through implements JobComponent {
+class Print implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
 	public function new() {
-		this.name = "Through";
+		this.name = "Print";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("input", RetroType.RNumber);
@@ -31,6 +31,6 @@ class Through implements JobComponent {
 	}
 
 	public function getModuleName() {
-		return "core.Through";
+		return "std.Print";
 	}
 }
