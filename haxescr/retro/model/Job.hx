@@ -1,8 +1,6 @@
 package retro.model;
 
 import retro.pub.IdGenerator;
-import retro.view.JobView;
-import retro.pub.Editor;
 import retro.pub.RetroType;
 import retro.pub.Point2D;
 import retro.vm.Worker;
@@ -96,8 +94,8 @@ class Job{
 	}
 	
 	public function getWorker(){
-		return new Worker(this, function(params:Params) {
-			return new Result();
+		return new Worker(this, function(params:Params, cb) {
+			cb(new Result());
 		});
 	}
 	

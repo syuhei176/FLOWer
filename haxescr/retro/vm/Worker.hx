@@ -9,7 +9,7 @@ import retro.core.Result;
 
 class Worker{
 	private var job:Job;
-	private var func:Params->Result;
+	private var func:Params->(Result->Void)->Void;
 	
 	public function new(job, func){
 		this.job = job;
@@ -19,8 +19,7 @@ class Worker{
 	//実行する
 	public function act(params:Params, cb) {
 		//スレッドを起動して実行する
-		var result:Result = this.func(params);
-		cb(result);
+		this.func(params, cb);
 	}
 }
 

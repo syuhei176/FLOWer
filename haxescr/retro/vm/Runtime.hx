@@ -32,27 +32,25 @@ class Runtime{
 	
 	//実行
 	public function run() {
+		#if cpp
+		while(true) {
+			run_step();
+			Sys.sleep(100);
+		}
+		#else
 		this.timer = new Timer(100);
 		this.timer.run = function() {
 			this.run_step();
 		};
-		//trace(this.app.getName());
-		//fire event
-		//this.invoke_entry("entry id");
-		/*
-			//手続き型言語での疑似並列処理の場合は以下のようになる
-			while(1) {
-				run_step();
-				delay(1);
-			}
-			
-			//並列化可能な言語の場合、Workerごとにスレッドを作成する
-		*/
+		#end
 	}
 	
 	public function stop() {
+		#if cpp
+		#else
 		this.timer.stop();
 		this.timer = null;
+		#end
 	}
 	
 	//エントリを起こす

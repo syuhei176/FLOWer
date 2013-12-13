@@ -1,4 +1,4 @@
-package retro.library;
+package retro.library.core;
 
 import retro.core.JobComponent;
 import retro.core.Inputs;
@@ -22,12 +22,13 @@ class Compare implements JobComponent {
 		this.outputs.add("pass", RetroType.RNumber);
 	}
 	
-	public function onInputRecieved(params:Params) {
+	public function onInputRecieved(params:Params, cb) {
 		var value = params.get("value");
 		var comparison = params.get("comparison");
 		var operator = params.get("operator");
 		if(value.isEmpty() || comparison.isEmpty() || operator.isEmpty()) {
-			return null;
+			cb(null);
+			return;
 		}
 		var pass = false;
 		switch(operator.getValue()) {
@@ -44,11 +45,12 @@ class Compare implements JobComponent {
 			case "le","<=":
 				pass = (value.getValue() <= comparison.getValue());
 			default:
-				return null;
+				cb(null);
+				return;
 		}
 		var result = new Result();
 		result.set("pass", pass);
-		return result;
+		cb(result);
 	}
 
 	public function getModuleName() {

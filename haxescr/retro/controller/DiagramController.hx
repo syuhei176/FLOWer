@@ -10,10 +10,6 @@ import retro.model.SymbolicLink;
 import retro.model.InputPort;
 import retro.model.OutputPort;
 import retro.core.JobComponent;
-import retro.library.Add;
-import retro.library.Through;
-import retro.library.Times;
-import retro.library.Filter;
 
 /*
 	DiagramController
@@ -33,12 +29,13 @@ class DiagramController implements Controller{
 		this.editor = editor;
 		this.diagram = diagram;
 		this.modules = new Array<JobComponent>();
-		this.modules.push(new Add());
-		this.modules.push(new Through());
-		this.modules.push(new Times());
-		this.modules.push(new Filter());
-		this.modules.push(new retro.library.Drop());
-		this.modules.push(new retro.library.Compare());
+		this.modules.push(new retro.library.core.Add());
+		this.modules.push(new retro.library.core.Through());
+		this.modules.push(new retro.library.core.Times());
+		this.modules.push(new retro.library.core.Filter());
+		this.modules.push(new retro.library.core.Drop());
+		this.modules.push(new retro.library.core.Compare());
+		this.modules.push(new retro.library.system.Print());
 	}
 	
 	public function getEditor() {
@@ -80,10 +77,10 @@ class DiagramController implements Controller{
 		diagram.addJob(new SymbolicLink(this.editor.IdGenerator.genID(), jobComponent));
 	}
 	public function addJobFromLibrary_Add() {
-		this.base_addJob(new Add());
+		this.base_addJob(new retro.library.core.Add());
 	}
 	public function addJobFromLibrary_Through() {
-		this.base_addJob(new Through());
+		this.base_addJob(new retro.library.core.Through());
 	}
 	
 	public function addJobByJob(job:Job) {

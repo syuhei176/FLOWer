@@ -9,6 +9,6 @@ interface JobComponent {
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
-	public function onInputRecieved(params:Params):Result;
+	public function onInputRecieved(params:Params, cb:Result->Void):Void;
 	public function getModuleName():String;
 }

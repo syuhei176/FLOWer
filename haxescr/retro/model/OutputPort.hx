@@ -1,8 +1,5 @@
 package retro.model;
 
-import haxe.Timer;
-import retro.view.PathView;
-
 /*
 	OutputPortクラス（Model）
 	Event
@@ -55,14 +52,5 @@ class OutputPort extends Port {
 		}
 	}
 	
-	public function setValue(value) {
-		var timer:Timer = new Timer(1000);
-		timer.run = function() {
-			for(c in this.connection) {
-				c.setValueCarrier(value);
-			}
-		}
-		return;
-	}
 }
 

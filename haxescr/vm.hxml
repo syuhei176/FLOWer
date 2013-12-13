@@ -1,2 +1,12 @@
 -main VMMain
 -js bin/vm.js
+
+--next
+
+-main VMMain
+-cpp bin/vm_cpp
+
+--next
+
+-main VMMain
+-java bin/vm_java
