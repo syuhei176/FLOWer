@@ -44,3 +44,26 @@ module.exports.editorlist = function(req, res){
         });
     }
 };
+
+module.exports.download = function(req, res){
+    if(req.session && req.session.user) {
+    	var user = req.session.user;
+    	var key = req.param("key");
+        Seq()
+        .seq(function() {
+            var collection = new mongodb.Collection(dbinterface, "account");
+            collection.find({_id : new BSON.ObjectID(String(user.id))}, {projects : 1}, {limit : 1}).toArray(this);
+        })
+        .seq(function(docs) {
+            var collection = new mongodb.Collection(dbinterface, "editor");
+        	var query = { key : key};
+            collection.find(query, {}, {limit:1}).toArray(this);
+        })
+        .seq(function(docs) {
+        	var data = docs[0];
+        	res.header('Content-type', 'application/octet-stream;');
+        	res.header('Content-Disposition', 'attachment; filename='+data.name+'.json;');
+        	res.send(data);
+        });
+    }
+};
