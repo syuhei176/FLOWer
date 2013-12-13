@@ -170,7 +170,7 @@ extern class Snap {
 	public function mousemove(handler:Event->Void):Snap;
 	public function mouseout(handler:Event->Void):Snap;
 	public function mouseover(handler:Event->Void):Snap;
-	public function mouseup(handler:Event->Void):Snap;
+	public function mouseup(handler:Event->Int->Int->Void):Snap;
 	public function touchstart(handler:Event->Void):Snap;
 	public function touchmove(handler:Event->Void):Snap;
 	public function touchend(handler:Event->Void):Snap;

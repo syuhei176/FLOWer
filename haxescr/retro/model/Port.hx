@@ -5,7 +5,6 @@ import retro.pub.RetroType;
 class Port{
 	public var parent : Job;
 	public var type : RetroType;
-	public var value : Dynamic;
 	public var name : String;
 
 	public function new(parent, type, name){

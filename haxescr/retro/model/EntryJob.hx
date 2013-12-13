@@ -2,7 +2,7 @@ package retro.model;
 
 class EntryJob extends Job{
 
-	public function new(id, diagram, inputPorts : Array<{ name : String }>, ouputPorts){
+	public function new(id){
 		super(id);
 	}
 }

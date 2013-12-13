@@ -6,13 +6,16 @@ import retro.pub.Editor;
 import retro.pub.RetroType;
 import retro.pub.Point2D;
 import retro.vm.Worker;
+import retro.core.JobComponent;
+import retro.core.Params;
+import retro.core.Result;
 
 class Job{
 
 	//モデル
 	private var id : ID;
-	public var inputPorts : Array<InputPort>;
-	public var outputPorts : Array<OutputPort>;
+	private var inputPorts : Array<InputPort>;
+	private var outputPorts : Array<OutputPort>;
 	private var pos : Point2D;
 	
 	//モデルの変更を伝えるためのリスナー
@@ -39,6 +42,10 @@ class Job{
 	
 	public function getId() {
 		return this.id;
+	}
+	
+	public function getName() {
+		return "";
 	}
 	
 	public function setPos(x:Float, y:Float) {
@@ -76,15 +83,34 @@ class Job{
 		this.outputPorts.remove(port);
 	}
 	
-	public function act(cb){
-		if(this.worker == null) {
-			this.worker = new Worker(this);
+	public function getParams() {
+		var params = new Params();
+		for(p in inputPorts) {
+			var value = null;
+			if(p.getValue()!=null) {
+				value = p.getValue();
+			}
+			params.add(p.getName(), value);
 		}
-		this.worker.act(cb);
+		return params;
+	}
+	
+	public function getWorker(){
+		return new Worker(this, function(params:Params) {
+			return new Result();
+		});
 	}
 	
 	public function getInputPort(name:String) {
 		for(p in inputPorts) {
+			if(name == p.name) {
+				return p;
+			}
+		}
+		return null;
+	}
+	public function getOutputPort(name:String) {
+		for(p in outputPorts) {
 			if(name == p.name) {
 				return p;
 			}
@@ -140,5 +166,11 @@ class Job{
 		for(l in this.onPosChangedListeners) {
 			l(x, y);
 		}
+	}
+	
+	public function getJSON() {
+		var json:Dynamic = {};
+		json.id = this.getId();
+		return json;
 	}
 }

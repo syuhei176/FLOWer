@@ -1,5 +1,6 @@
 package retro.pub;
 
+import retro.core.FlowerClass;
 
 enum RetroType{
 	REmpty;
@@ -9,6 +10,7 @@ enum RetroType{
 	RList(type:RetroType);
 	RTuple(types : Array<RetroType>);
 	RUnknown(id : Int);
+	RClass(type:FlowerClass);
 }
 
 class RetroTypeChecker{

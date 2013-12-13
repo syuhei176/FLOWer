@@ -4,9 +4,16 @@ import retro.pub.Editor;
 import retro.pub.RetroType;
 import retro.model.Diagram;
 import retro.model.Job;
+import retro.model.EntryJob;
 import retro.model.Logic;
+import retro.model.SymbolicLink;
 import retro.model.InputPort;
 import retro.model.OutputPort;
+import retro.core.JobComponent;
+import retro.library.Add;
+import retro.library.Through;
+import retro.library.Times;
+import retro.library.Filter;
 
 /*
 	DiagramController
@@ -20,9 +27,18 @@ class DiagramController implements Controller{
 	public var start : OutputPort;
 	public var end : InputPort;
 	
+	private var modules:Array<JobComponent>;
+	
 	public function new(editor, diagram){
 		this.editor = editor;
 		this.diagram = diagram;
+		this.modules = new Array<JobComponent>();
+		this.modules.push(new Add());
+		this.modules.push(new Through());
+		this.modules.push(new Times());
+		this.modules.push(new Filter());
+		this.modules.push(new retro.library.Drop());
+		this.modules.push(new retro.library.Compare());
 	}
 	
 	public function getEditor() {
@@ -39,7 +55,12 @@ class DiagramController implements Controller{
 		var job = new Job(id);
 		diagram.addJob(job);
 	}
-	
+	public function addSymbolicLink(jobComponent) {
+		var id = this.editor.IdGenerator.genID();
+		var job = new SymbolicLink(id, jobComponent);
+		diagram.addJob(job);
+		return job;
+	}
 	//始めから入出力ポートがあるJobを追加
 	public function addJob_1i1o() {
 		var id = this.editor.IdGenerator.genID();
@@ -55,25 +76,66 @@ class DiagramController implements Controller{
 		job.addInputPort(new InputPort(job, RetroType.RString, "input"));
 		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
 	}
+	private function base_addJob(jobComponent:JobComponent) {
+		diagram.addJob(new SymbolicLink(this.editor.IdGenerator.genID(), jobComponent));
+	}
+	public function addJobFromLibrary_Add() {
+		this.base_addJob(new Add());
+	}
+	public function addJobFromLibrary_Through() {
+		this.base_addJob(new Through());
+	}
+	
+	public function addJobByJob(job:Job) {
+		diagram.addJob(job);
+	}
+	public function addEntryJobByJob(entry:EntryJob) {
+		diagram.addJob(entry);
+		entry.addOutputPort(new OutputPort(entry, RetroType.RString, "output"));
+	}
+	
+	
+	public function addEntryJob() {
+		var id = this.editor.IdGenerator.genID();
+		var job = new EntryJob(id);
+		diagram.addJob(job);
+		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
+	}
 	public function addLogic(id) {
 		var job = new Logic(id);
 		diagram.addJob(job);
 	}
 	public function removeJob(job:Job) {
-		diagram.jobs.remove(job);
+		diagram.getJobs().remove(job);
 	}
 	
 	public function setRubberbandStart(port:OutputPort) {
 		this.start = port;
 	}
 	public function setRubberbandEnd(port:InputPort) {
-		this.end = port;
-		this.start.connectToInputPort(this.end);
-		trace(this.start);
-		trace(this.end);
+		if(this.start == null) {
+			return false;
+		}else{
+			this.end = port;
+			this.start.connectToInputPort(this.end);
+			return true;
+		}
+	}
+	public function clearRubberband() {
+		this.start = null;
+		this.end = null;
 	}
 	//ポートの接続解除
 	static public function disconnect(oport:OutputPort, iport:InputPort) {
 		oport.disconnectToInputPort(iport);
+	}
+	
+	public function getModule(name) {
+		for(m in this.modules) {
+			if(m.getModuleName() == name) {
+				return m;
+			}
+		}
+		return null;
 	}
 }

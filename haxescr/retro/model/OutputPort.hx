@@ -59,7 +59,7 @@ class OutputPort extends Port {
 		var timer:Timer = new Timer(1000);
 		timer.run = function() {
 			for(c in this.connection) {
-				c.setValue(value);
+				c.setValueCarrier(value);
 			}
 		}
 		return;
