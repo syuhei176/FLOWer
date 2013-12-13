@@ -24,9 +24,9 @@ module.exports = {
         login(email, password, function(err, result) {
             if(result.success) {
                 req.session.user = result.user;
-                res.redirect("/chat");
+                res.redirect("");
             }else{
-                res.send("false");
+                res.redirect("/login");
             }
         });
 	},
