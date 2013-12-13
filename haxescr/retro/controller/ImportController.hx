@@ -8,10 +8,6 @@ import retro.model.EntryJob;
 import retro.model.Logic;
 import retro.model.SymbolicLink;
 import retro.core.JobComponent;
-import retro.library.Add;
-import retro.library.Through;
-import retro.library.Times;
-import retro.library.Filter;
 
 /*
 	ImportController
@@ -20,16 +16,10 @@ class ImportController implements Controller {
 	
 	private var editor:Editor;
 	private var project:Project;
-	private var modules:Array<JobComponent>;
 	
 	public function new(editor, project){
 		this.editor = editor;
 		this.project = project;
-		this.modules = new Array<JobComponent>();
-		this.modules.push(new Add());
-		this.modules.push(new Through());
-		this.modules.push(new Times());
-		this.modules.push(new Filter());
 	}
 	
 	public function getProject() {
@@ -60,7 +50,7 @@ class ImportController implements Controller {
 				diagramController.addEntryJobByJob(entry);
 				entry.setPos(j.pos.x, j.pos.y);
 			}else if(j.meta == "retro.model.SymbolicLink"){
-				var jobComponent = this.getModule(j.ref);
+				var jobComponent = diagramController.getModule(j.ref);
 				var job = new SymbolicLink(j.id, jobComponent);
 				diagramController.addJobByJob(job);
 				job.setPos(j.pos.x, j.pos.y);
@@ -81,15 +71,6 @@ class ImportController implements Controller {
 				start.connectToInputPort(end);
 			}
 		}
-	}
-	
-	public function getModule(name) {
-		for(m in this.modules) {
-			if(m.getModuleName() == name) {
-				return m;
-			}
-		}
-		return null;
 	}
 	
 }

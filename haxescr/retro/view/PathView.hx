@@ -42,7 +42,7 @@ class PathView{
 		
 		this.graphic.attr({
     	    stroke: thema.path_color,
-    	    strokeWidth: 5
+    	    strokeWidth: 7
     	});
     	
     	this.graphic.drag(function(dx, dy, x, y) {

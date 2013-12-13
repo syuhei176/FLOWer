@@ -23,6 +23,13 @@ class Runtime{
 		this.diagram = diagram;
 	}
 	
+	public function isRunning():Bool {
+		if(this.timer != null) {
+			return true;
+		}
+		return false;
+	}
+	
 	//実行
 	public function run() {
 		this.timer = new Timer(100);
@@ -45,10 +52,11 @@ class Runtime{
 	
 	public function stop() {
 		this.timer.stop();
+		this.timer = null;
 	}
 	
 	//エントリを起こす
-	public function invoke_entry(entry:Job) {
+	public function invoke_entry(entry:Job, v) {
 		if(Type.getClassName(Type.getClass(entry)) != "retro.model.EntryJob") {
 			return false;
 		}
@@ -56,7 +64,7 @@ class Runtime{
 		worker.act(null, function(script_result:Result) {
 			for(p in entry.getOutputPorts()) {
 				for(c in p.connection) {
-					var newValueCarrier = new ValueCarrier(new Value(RetroType.RNumber, 1), p, c);
+					var newValueCarrier = new ValueCarrier(v, p, c);
 					this.diagram.addValueCarrier(newValueCarrier);
 				}
 			}

@@ -22,7 +22,7 @@ class DiagramView{
 	
 	//力学
 	private var timer:Timer = null;
-	private var energy:Float = 0;
+	private var count:Int = 0;
 	
 	public function new(diagramController) {
 		this.jobViews = new Array<JobView>();
@@ -34,6 +34,20 @@ class DiagramView{
 		diagram.onValueCarrierAdded(this.OnValueCarrierAdded);
 		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
 		
+		var snap = this.diagramController.getEditor().snap;
+		var rect = snap.rect(0, 100, 300, 300);
+		rect.attr({
+			fill: "#f0f0f0",
+		});
+		rect.mouseup(function(e, x, y) {
+			var name = js.Browser.window.prompt("","core.Through");
+			if(name != null) {
+				var jobComponent = this.diagramController.getModule(name);
+				var job = this.diagramController.addSymbolicLink(jobComponent);
+				job.setPos(x, y);
+			}
+		});
+		this.count = 0;
 		/*
 		this.control_group = snap.group();
 		Snap.load("/images/create.svg", function (f) {
@@ -53,10 +67,11 @@ class DiagramView{
 			this.timer = new Timer(80);
 			this.timer.run = function() {
 				var energy = this.step();
-				trace(energy);
-				if(energy < 1) {
+				this.count++;
+				if(energy < 1 || this.count > 100) {
 					this.timer.stop();
 					this.timer = null;
+					this.count = 0;
 				}
 			};
 		}

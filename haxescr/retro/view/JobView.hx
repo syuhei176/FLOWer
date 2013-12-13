@@ -3,10 +3,12 @@ package retro.view;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
+import retro.pub.RetroType;
 import retro.model.Port;
 import retro.model.InputPort;
 import retro.model.OutputPort;
 import retro.model.Job;
+import retro.model.Value;
 import retro.controller.DiagramController;
 import retro.controller.JobController;
 
@@ -27,6 +29,7 @@ class JobView{
 	public var group:SnapElement;
 	public var graphic:SnapElement;
 	public var coll:SnapElement;
+	private var config_graphic:SnapElement;
 	
 	public var diagramController:DiagramController;
 	public var jobController:JobController;
@@ -34,6 +37,8 @@ class JobView{
 	public var diagramView:DiagramView;
 	private var inputportviews:Array<InputPortView>;
 	private var outputportviews:Array<OutputPortView>;
+	
+	private var setted_value:String;
 	
 	public function new(diagramController, jobController, diagramView) {
 		this.inputportviews = new Array<InputPortView>();
@@ -53,7 +58,7 @@ class JobView{
 		this.group = snap.group();
 		this.graphic = snap.circle(0, 0, 60);
 		var coll = snap.circle(0, 0, 60);
-		var text = snap.text(-40, 100, job.getName());
+		var text = snap.text(-40, -100, job.getName());
 		text.attr({
 			"font-size" : "24px",
 			fill : thema.font_color
@@ -72,7 +77,11 @@ class JobView{
     	});
 		coll.mousedown(function(e, x, y){
 			var runTime = this.jobController.getEditor().getRuntime();
-			runTime.invoke_entry(this.jobController.getJob());
+			trace(runTime.isRunning());
+			trace(this.setted_value);
+			//if(runTime.isRunning() && this.setted_value != null) {
+				runTime.invoke_entry(this.jobController.getJob(), new Value(RetroType.RNumber, haxe.Json.parse(this.setted_value)));
+			//}
 		});
 		coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
@@ -90,6 +99,22 @@ class JobView{
 		this.group.append(this.graphic);
 		this.group.append(text);
 		this.group.append(coll);
+    	Snap.load("/images/config.svg", function (f) {
+    		var g = f.select("g");
+        	this.group.append(g);
+        	g.mouseup(function(e, x, y) {
+				var runTime = this.jobController.getEditor().getRuntime();
+				if(!runTime.isRunning()) {
+					this.setted_value = js.Browser.window.prompt("","");
+				}
+        	});
+        	/*
+    		g.attr({
+    			"visibility" : "hidden"
+    		});
+    		*/
+    		g.transform("translate("+-80+","+-100+")");
+    	});
 	}
 	
 	//Model変更時に呼ばれるリスナー

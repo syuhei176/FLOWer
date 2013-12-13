@@ -1,5 +1,7 @@
 package retro.view;
 
+import haxe.Json.*;
+import js.Browser.*;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
@@ -27,12 +29,23 @@ class InputPortView extends PortView{
 			strokeWidth: 4
 		});
 		
+		var text = snap.text(-20, 50, port.getName());
+		text.attr({
+			"font-size" : "18px",
+			fill : thema.font_color
+		});
+		this.group.append(text);
+		
+		
 		this.coll.mouseup(function(e, x, y) {
 			if(this.diagramController.setRubberbandEnd(this.port)) {
-			
+				this.diagramController.clearRubberband();
 			}else{
 				//set constant
-				port.setConstant(new Value(RetroType.RNumber, 1));
+				var v = window.prompt("","");
+				if(v != null) {
+					port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+				}
 			}
 		});
 	}

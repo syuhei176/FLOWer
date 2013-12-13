@@ -36,7 +36,7 @@ class Param {
 	public function isEmpty() {
 		return value == null;
 	}
-	public function getValue() {
+	public function getValue():Dynamic {
 		return this.value.value;
 	}
 }
