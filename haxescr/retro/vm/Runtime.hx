@@ -35,7 +35,7 @@ class Runtime{
 		#if cpp
 		while(true) {
 			run_step();
-			Sys.sleep(100);
+			Sys.sleep(0.05);
 		}
 		#else
 		this.timer = new Timer(100);
@@ -55,9 +55,6 @@ class Runtime{
 	
 	//エントリを起こす
 	public function invoke_entry(entry:Job, v) {
-		if(Type.getClassName(Type.getClass(entry)) != "retro.model.EntryJob") {
-			return false;
-		}
 		var worker = entry.getWorker();
 		worker.act(null, function(script_result:Result) {
 			for(p in entry.getOutputPorts()) {

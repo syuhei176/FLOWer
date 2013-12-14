@@ -63,30 +63,6 @@ class DiagramController implements Controller{
 		diagram.addJob(job);
 		return job;
 	}
-	//始めから入出力ポートがあるJobを追加
-	public function addJob_1i1o() {
-		var id = this.editor.IdGenerator.genID();
-		var job = new Job(id);
-		diagram.addJob(job);
-		job.addInputPort(new InputPort(job, RetroType.RString, "input"));
-		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
-	}
-	public function addLogic_1i1o() {
-		var id = this.editor.IdGenerator.genID();
-		var job = new Logic(id);
-		diagram.addJob(job);
-		job.addInputPort(new InputPort(job, RetroType.RString, "input"));
-		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
-	}
-	private function base_addJob(jobComponent:JobComponent) {
-		diagram.addJob(new SymbolicLink(this.editor.IdGenerator.genID(), jobComponent));
-	}
-	public function addJobFromLibrary_Add() {
-		this.base_addJob(new retro.library.core.Add());
-	}
-	public function addJobFromLibrary_Through() {
-		this.base_addJob(new retro.library.core.Through());
-	}
 	
 	public function addJobByJob(job:Job) {
 		diagram.addJob(job);

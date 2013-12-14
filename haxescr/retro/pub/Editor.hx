@@ -3,11 +3,13 @@ package retro.pub;
 import snap.Snap;
 import retro.pub.IdGenerator;
 import retro.model.Project;
+import retro.model.Diagram;
 import retro.view.Thema;
 import retro.view.InputPortView;
 import retro.view.OutputPortView;
 import retro.view.ProjectView;
 import retro.controller.ProjectController;
+import retro.controller.DiagramController;
 import retro.controller.ImportController;
 import retro.controller.ExportController;
 import retro.vm.Runtime;
@@ -57,8 +59,16 @@ class Editor{
 			var projectView = new ProjectView(projectController, new ExportController(editor, project));
 			editor.setProjectView(projectView);
 			//インポートを実行
-			var importController = new ImportController(editor, project);
-			importController.do_import(data);
+			if(data.model.diagram) {
+				var importController = new ImportController(project);
+				importController.do_import(data);
+			}else{
+				var diagram = new Diagram();
+				project.setRootDiagram(diagram);
+				var diagramController = new DiagramController(editor, diagram);
+				diagramController.addEntryJob();
+				diagramController.addEntryJob();
+			}
 		});
 	}
 }

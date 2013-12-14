@@ -3,10 +3,11 @@
 
 --next
 
--main VMMain
+-main VMMain_cpp
 -cpp bin/vm_cpp
 
 --next
 
--main VMMain
+-main VMMain_cpp
+-debug
 -java bin/vm_java

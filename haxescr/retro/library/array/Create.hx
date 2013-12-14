@@ -1,4 +1,4 @@
-package retro.library.system;
+package retro.library.array;
 
 import retro.core.JobComponent;
 import retro.core.Inputs;
@@ -7,13 +7,13 @@ import retro.core.Outputs;
 import retro.core.Result;
 import retro.pub.RetroType;
 
-class Print implements JobComponent {
+class Create implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
 	public function new() {
-		this.name = "Print";
+		this.name = "Create";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("input", RetroType.RNumber);
@@ -26,17 +26,14 @@ class Print implements JobComponent {
 			cb(null);
 			return;
 		}
-		#if js
-		trace(input.getValue());
-		#else 
-    	Sys.println(input.getValue());
-    	#end
 		var result = new Result();
-		result.set("output", (input.getValue()));
+		result.set("output", []);
 		cb(result);
 	}
-
+	
 	public function getModuleName() {
-		return "system.Print";
+		return "array.Create";
 	}
+	
+
 }

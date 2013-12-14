@@ -79,12 +79,12 @@ class JobView{
     	});
 		coll.mousedown(function(e, x, y){
 			this.visible_config_btn();
-			var runTime = this.jobController.getEditor().getRuntime();
-			trace(runTime.isRunning());
-			trace(this.setted_value);
-			//if(runTime.isRunning() && this.setted_value != null) {
-				runTime.invoke_entry(this.jobController.getJob(), new Value(RetroType.RNumber, haxe.Json.parse(this.setted_value)));
-			//}
+			if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
+				var runTime = this.jobController.getEditor().getRuntime();
+				if(this.setted_value != null) {
+					runTime.invoke_entry(this.jobController.getJob(), new Value(RetroType.RNumber, haxe.Json.parse(this.setted_value)));
+				}
+			}
 		});
 		coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
