@@ -1,10 +1,18 @@
 logic-on-canvas
 ===============
 
+#HOW TO INSTALL
+
+```
+npm install
+```
+
 
 #HOW TO START
 
-node app.js
+```
+npm start
+```
 
 #GRAMMAR
 
