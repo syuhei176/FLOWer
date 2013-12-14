@@ -10,12 +10,21 @@ var mongodb = require("mongodb"),
 module.exports.dashboard = function(req, res){
     if(req.session && req.session.user) {
     	var user = req.session.user;
+    	var device = req.param('device');
+    	var ua = req.headers['user-agent'];
+    	if(!device || (device!="pc" && device!="tablet")) {
+        	if(ua.indexOf('iPad') >= 0) {
+        		device = "tablet";
+        	}else{
+        		device = "pc";
+        	}
+    	}
         Seq()
         .seq(function() {
         	account_controller.get_userinfo(user, this);
         })
         .seq(function(account) {
-        	res.render('dashboard', { account: account });
+        	res.render('dashboard_'+device, { account: account });
         });
     }
 };

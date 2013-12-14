@@ -35,66 +35,16 @@
       <script src="/js/lib/underscore-min.js"></script>
       <script src="/js/lib/backbone-min.js"></script>
       <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
-      
+      <script src="/js/dashboard.js"></script>
     <script>
         $(function() {
-        	//モデル定義
-        	//エディタリスト
-        	function EditorList() {
-        		this.collection = [];
-        	}
-        	EditorList.prototype.set = function(data) {
-        		for(var i=0;i < data.length;i++) {
-        			var e = new Editor(data[i]);
-        			this.collection.push(e);
-        		}
-        	}
-        	EditorList.prototype.get = function(key) {
-            	for(var i=0;i < this.collection.length;i++) {
-            		if(this.collection[i].get("key") == key) {
-            			return this.collection[i];
-            		}
-            	}
-            	return null;
-        	}
-        	EditorList.prototype.toJSON = function() {
-        		var json_text = [];
-            	for(var i=0;i < this.collection.length;i++) {
-            		json_text.push(this.collection[i].toJSON());
-            	}
-            	return json_text;
-        	}
-        	//エディタ
-        	function Editor(model) {
-        		this.model = model;
-        		this.init = function(data) {
-        			if(data.visibility == "list") {
-            			data.visibility_text = "非公開";
-            			data.visibility_class = "icon-list";
-        			}else if(data.visibility == "public") {
-            			data.visibility_text = "公開";
-            			data.visibility_class = "icon-public";
-        			}
-        		}
-        		this.init(this.model);
-        	}
-        	Editor.prototype.get = function(k) {
-        		return this.model[k];
-        	}
-        	Editor.prototype.set = function(k, v) {
-        		this.model[k] = v;
-        		this.init(this.model);
-        	}
-        	Editor.prototype.toJSON = function() {
-            	return this.model;
-        	}
         	var editorList = new EditorList();
         	
         	//プロジェクト作成
           $("#create-editor-btn").click(function() {
-        	  $.post("/editor/create", {name : "Untitled Editor"}, function(result) {
-        		  window.location.href = "/editor/edit/" + result.editorinfo.key;
-        	  }, "json");
+        	  createEditor("Untitled Editor", function(result){
+    			  window.open("/editor/edit/" + result.editorinfo.key);
+        	  });
           });
         	//プロジェクトリスト
           var template = Hogan.compile($("#editor-template").html());
@@ -133,4 +83,3 @@
     </script>
   </body>
 </html>
-
