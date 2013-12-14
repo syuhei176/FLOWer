@@ -4,6 +4,7 @@ import haxe.Timer;
 import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
+import retro.pub.CreateJobDialog;
 import retro.model.Job;
 import retro.model.Port;
 import retro.model.InputPort;
@@ -35,17 +36,26 @@ class DiagramView{
 		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
 		
 		var snap = this.diagramController.getEditor().snap;
-		var rect = snap.rect(0, 100, 300, 300);
+		var rect = snap.rect(0, 100, 1000, 1000);
 		rect.attr({
-			fill: "#f0f0f0",
+			fill: "#f7f7f7",
 		});
 		rect.mouseup(function(e, x, y) {
+			var createJobDialog = new CreateJobDialog();
+			createJobDialog.on(function(pkg, cmp) {
+				var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
+				var job = this.diagramController.addSymbolicLink(jobComponent);
+				job.setPos(100, 100);
+			});
+			createJobDialog.open();
+			/*
 			var name = js.Browser.window.prompt("","core.Through");
 			if(name != null) {
 				var jobComponent = this.diagramController.getModule(name);
 				var job = this.diagramController.addSymbolicLink(jobComponent);
-				job.setPos(x, y);
+				job.setPos(100, 100);
 			}
+			*/
 		});
 		this.count = 0;
 		/*
