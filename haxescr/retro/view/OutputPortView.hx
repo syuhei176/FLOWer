@@ -26,11 +26,18 @@ class OutputPortView extends PortView{
 		this.graphic.attr({
 			fill: thema.base_color,
 			stroke: thema.base_color,
-			strokeWidth: 4
+			strokeWidth: 3
 		});
+		var text = snap.text(-70, 0, port.getName());
+		text.attr({
+			"font-size" : "12px",
+			fill : thema.font_color
+		});
+		this.group.append(text);
 		this.coll.mousedown(function(e, x, y) {
 			this.diagramController.setRubberbandStart(this.port);
 		});
+		this.setPos(160, 0);
 	}
 	
 	/*
@@ -38,7 +45,7 @@ class OutputPortView extends PortView{
 	*/
 	public function OnConnected(o:OutputPort, i:InputPort) {
 		var inputView = this.jobView.diagramView.getInputPortView(i);
-		var pathView = new PathView(this.diagramController, this, inputView, this.snap, this.thema);
+		var pathView = new PathView(this.diagramController, this.jobView.diagramView, this, inputView, this.snap, this.thema);
 		this.views.push(pathView);
 		inputView.views.push(pathView);
 	}

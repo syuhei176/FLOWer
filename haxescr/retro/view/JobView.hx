@@ -58,17 +58,17 @@ class JobView{
 		var snap = this.jobController.getEditor().snap;
 		var thema = this.jobController.getEditor().thema;
 		this.group = snap.group();
-		this.graphic = snap.circle(0, 0, 60);
-		var coll = snap.circle(0, 0, 60);
-		var text = snap.text(-40, -100, job.getName());
+		this.graphic = snap.rect(0, 0, 160, 80);
+		var coll = snap.rect(0, 0, 120, 80);
+		var text = snap.text(10, -10, job.getName());
 		text.attr({
-			"font-size" : "24px",
+			"font-size" : "20px",
 			fill : thema.font_color
 		});
 		this.graphic.attr({
 				fill: thema.bg_color,
 				stroke: thema.base_color,
-				strokeWidth: 4
+				strokeWidth: 3
 				});
 		this.pos = new Point2D(0, 0);
 		this.prev_pos = new Point2D(0, 0);
@@ -95,7 +95,7 @@ class JobView{
     		this.prev_pos.setY(0);
     	}, function(x, y) {
     		this.refresh();
-			this.diagramView.start_step();
+			//this.diagramView.start_step();
     		this.jobController.changePos(this.pos.getX(), this.pos.getY());
     	});
 		
@@ -114,7 +114,7 @@ class JobView{
     		g.attr({
     			"visibility" : "hidden"
     		});
-    		g.transform("translate("+-80+","+-100+")");
+    		g.transform("translate("+-30+","+-40+")");
     		this.config_graphic = g;
     	});
 	}
@@ -139,7 +139,7 @@ class JobView{
 		var portView = new InputPortView(this.diagramController, this, port, snap, thema);
 		this.group.append(portView.group);
 		this.inputportviews.push(portView);
-		this.cal();
+		this.cal2();
 		return portView;
 	}
 	
@@ -150,7 +150,7 @@ class JobView{
 		var portView = new OutputPortView(this.diagramController, this, port, snap, thema);
 		this.group.append(portView.group);
 		this.outputportviews.push(portView);
-		this.cal();
+		this.cal2();
 		return portView;
 	}
 	
@@ -165,6 +165,21 @@ class JobView{
 			pv.setR(thh);
 			thh += th;
 		}
+	}
+	public function cal2() {
+		var h:Int = 20;
+		for(pv in this.inputportviews) {
+			pv.setPos(0, h);
+			h += 40;
+		}
+		h = 20;
+		for(pv in this.outputportviews) {
+			pv.setPos(160, h);
+			h += 40;
+		}
+		this.graphic.attr({
+			height : this.inputportviews.length > this.outputportviews.length ? this.inputportviews.length*40 : this.outputportviews.length*40
+		});
 	}
 	
 	public function step() {

@@ -28,7 +28,7 @@ class PathView{
 	
 	private var onRemoveListeners:Array<PathView->InputPort->Void>;
 	
-	public function new(diagramController, source_port, target_port, snap, thema) {
+	public function new(diagramController, diagramView, source_port, target_port, snap, thema) {
 		this.onRemoveListeners = new Array<PathView->InputPort->Void>();
 		this.diagramController = diagramController;
 		this.source = source_port;
@@ -44,6 +44,7 @@ class PathView{
     	    stroke: thema.path_color,
     	    strokeWidth: 7
     	});
+    	diagramView.path_group.append(this.graphic);
     	
     	this.graphic.drag(function(dx, dy, x, y) {
     		if(dx + dy > 3) {
@@ -69,10 +70,10 @@ class PathView{
 		xx = xx / len;
 		yy = yy / len;
 		this.graphic.attr({
-			x1 : this.source.getPos().getX() + xx*30,
-			y1 : this.source.getPos().getY() + yy*30,
-			x2 : this.target.getPos().getX() - xx*30,
-			y2 : this.target.getPos().getY() - yy*30
+			x1 : this.source.getPos().getX() + xx*20,
+			y1 : this.source.getPos().getY() + yy*20,
+			x2 : this.target.getPos().getX() - xx*20,
+			y2 : this.target.getPos().getY() - yy*20
 		});
 	}
 }

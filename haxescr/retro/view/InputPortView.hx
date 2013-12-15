@@ -27,12 +27,12 @@ class InputPortView extends PortView{
 		this.graphic.attr({
 			fill: thema.bg_color,
 			stroke: thema.base_color,
-			strokeWidth: 4
+			strokeWidth: 3
 		});
 		
-		var text = snap.text(-20, 50, port.getName());
+		var text = snap.text(26, 0, port.getName());
 		text.attr({
-			"font-size" : "18px",
+			"font-size" : "12px",
 			fill : thema.font_color
 		});
 		this.group.append(text);
@@ -49,6 +49,7 @@ class InputPortView extends PortView{
 				}
 			}
 		});
+		this.setPos(0, 0);
 	}
 	
 	public function step():Float {
@@ -76,8 +77,8 @@ class InputPortView extends PortView{
 	}
 	
 	public function OnSetConstant(v) {
-		this.constantValueGraphic = this.snap.circle(0, 0, 24);
-		var text = this.snap.text(0, 0, v.value);
+		this.constantValueGraphic = this.snap.circle(0, 0, 18);
+		var text = this.snap.text(-5, 5, v.value);
 		this.constantValueGraphic.attr({
 				fill: this.thema.contrast1_color,
 				stroke: this.thema.contrast2_color,

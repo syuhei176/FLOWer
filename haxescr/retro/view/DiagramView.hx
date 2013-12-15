@@ -20,7 +20,7 @@ class DiagramView{
 	private var jobViews:Array<JobView>;
 	private var valueCarrierViews:Array<ValueCarrierView>;
 	private var control_group:SnapElement;
-	
+	public var path_group:SnapElement;
 	//力学
 	private var timer:Timer = null;
 	private var count:Int = 0;
@@ -37,6 +37,7 @@ class DiagramView{
 		
 		var snap = this.diagramController.getEditor().snap;
 		var rect = snap.rect(0, 100, 1000, 1000);
+		this.path_group = snap.group();
 		rect.attr({
 			fill: "#f7f7f7",
 		});
