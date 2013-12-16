@@ -35,7 +35,7 @@ class DiagramController implements Controller{
 		this.modules.push(new retro.library.core.Filter());
 		this.modules.push(new retro.library.core.Drop());
 		this.modules.push(new retro.library.core.Compare());
-		this.modules.push(new retro.library.system.Print());
+		this.modules.push(new retro.library.system.Print(editor));
 		this.modules.push(new retro.library.array.Create());
 		this.modules.push(new retro.library.array.Length());
 		this.modules.push(new retro.library.array.Push());

@@ -19,7 +19,7 @@ class ImportController {
 	private var project:Project;
 	private var modules:Array<JobComponent>;
 	
-	public function new(project){
+	public function new(project, editor){
 		this.project = project;
 		this.modules = new Array<JobComponent>();
 		this.modules.push(new retro.library.core.Add());
@@ -28,7 +28,7 @@ class ImportController {
 		this.modules.push(new retro.library.core.Filter());
 		this.modules.push(new retro.library.core.Drop());
 		this.modules.push(new retro.library.core.Compare());
-		this.modules.push(new retro.library.system.Print());
+		this.modules.push(new retro.library.system.Print(editor));
 		this.modules.push(new retro.library.array.Create());
 		this.modules.push(new retro.library.array.Length());
 		this.modules.push(new retro.library.array.Push());

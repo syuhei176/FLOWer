@@ -8,6 +8,7 @@ import retro.view.Thema;
 import retro.view.InputPortView;
 import retro.view.OutputPortView;
 import retro.view.ProjectView;
+import retro.view.ConsoleView;
 import retro.controller.ProjectController;
 import retro.controller.DiagramController;
 import retro.controller.ImportController;
@@ -23,6 +24,7 @@ class Editor{
 	
 	private var runtime:Runtime;
 	private var retroClient:RetroClient;
+	public var consoleView:ConsoleView;
 	
 	public function new(id_header, retroClient){
 		this.thema = new Thema();
@@ -60,7 +62,7 @@ class Editor{
 			editor.setProjectView(projectView);
 			//インポートを実行
 			if(data.model.diagram) {
-				var importController = new ImportController(project);
+				var importController = new ImportController(project, editor);
 				importController.do_import(data);
 			}else{
 				var diagram = new Diagram();
@@ -69,6 +71,7 @@ class Editor{
 				diagramController.addEntryJob();
 				diagramController.addEntryJob();
 			}
+			editor.consoleView = new ConsoleView(editor);
 		});
 	}
 }

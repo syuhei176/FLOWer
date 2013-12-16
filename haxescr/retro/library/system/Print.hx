@@ -5,19 +5,22 @@ import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
 import retro.core.Result;
+import retro.pub.Editor;
 import retro.pub.RetroType;
 
 class Print implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
+	private var editor:Editor;
 	
-	public function new() {
+	public function new(editor) {
 		this.name = "Print";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("input", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
+		this.editor = editor;
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
@@ -27,9 +30,10 @@ class Print implements JobComponent {
 			return;
 		}
 		#if js
+		this.editor.consoleView.println(input.getValue());
 		trace(input.getValue());
 		#else 
-    	Sys.println(input.getValue());
+    	Sys.print(input.getValue());
     	#end
 		var result = new Result();
 		result.set("output", (input.getValue()));
