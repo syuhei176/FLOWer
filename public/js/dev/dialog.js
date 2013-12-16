@@ -1,5 +1,7 @@
 (function(){
-	var packages = {"core":["Through","Add","Times","Filter"],"array":["Create","Length","Push","Get"],"system":["Print"]};
+	var packages = {"core":["Through","Add","Times","Reminder","Filter","Compare","And","Or","Not"],
+			"array":["Create","Length","Push","Pop","Shift","Get"],
+			"system":["Print"]};
 	function CreateJobDialog() {
 		this.listeners = [];
 	}
@@ -21,17 +23,21 @@
 			buttons : '<button id="createjob-btn">OK</button>'
 		});
 		$("#pkg-name").change(function() {
-			var cmps = packages[$("#pkg-name").val()];
-			var cmps_html = [];
-			for(var i=0;i < cmps.length;i++) {
-				cmps_html.push("<option>" + cmps[i] + "</option>");
-			}
-			$("#cmp-name").html(cmps_html.join(''));
+			self.get_component_names($("#pkg-name").val());
 		})
 		$('#createjob-btn').click(function() {
 			self.listeners[0]($("#pkg-name").val(), $("#cmp-name").val());
 			w2popup.close();
 		});
+		self.get_component_names("core");
+	}
+	CreateJobDialog.prototype.get_component_names = function(pkg_name) {
+		var cmps = packages[pkg_name];
+		var cmps_html = [];
+		for(var i=0;i < cmps.length;i++) {
+			cmps_html.push("<option>" + cmps[i] + "</option>");
+		}
+		$("#cmp-name").html(cmps_html.join(''));
 	}
 	window.CreateJobDialog = CreateJobDialog;
 }())

@@ -22,12 +22,16 @@ class ImportController {
 	public function new(project, editor){
 		this.project = project;
 		this.modules = new Array<JobComponent>();
-		this.modules.push(new retro.library.core.Add());
 		this.modules.push(new retro.library.core.Through());
+		this.modules.push(new retro.library.core.Add());
 		this.modules.push(new retro.library.core.Times());
+		this.modules.push(new retro.library.core.Remainder());
 		this.modules.push(new retro.library.core.Filter());
 		this.modules.push(new retro.library.core.Drop());
 		this.modules.push(new retro.library.core.Compare());
+		this.modules.push(new retro.library.core.And());
+		this.modules.push(new retro.library.core.Or());
+		this.modules.push(new retro.library.core.Not());
 		this.modules.push(new retro.library.system.Print(editor));
 		this.modules.push(new retro.library.array.Create());
 		this.modules.push(new retro.library.array.Length());
