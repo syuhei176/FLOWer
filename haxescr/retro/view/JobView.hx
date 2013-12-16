@@ -59,7 +59,7 @@ class JobView{
 		var thema = this.jobController.getEditor().thema;
 		this.group = snap.group();
 		this.graphic = snap.rect(0, 0, 160, 80);
-		var coll = snap.rect(0, 0, 120, 80);
+		this.coll = snap.rect(0, 0, 160, 80);
 		var text = snap.text(10, -10, job.getName());
 		text.attr({
 			"font-size" : "20px",
@@ -178,6 +178,9 @@ class JobView{
 			h += 44;
 		}
 		this.graphic.attr({
+			height : this.inputportviews.length > this.outputportviews.length ? this.inputportviews.length*44 : this.outputportviews.length*44
+		});
+		this.coll.attr({
 			height : this.inputportviews.length > this.outputportviews.length ? this.inputportviews.length*44 : this.outputportviews.length*44
 		});
 	}
