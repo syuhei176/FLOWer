@@ -70,7 +70,6 @@ class DiagramView{
         	this.control_group.append(g);
     	});
     	*/
-		
 	}
 	
 	public function start_step() {
