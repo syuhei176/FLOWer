@@ -36,10 +36,10 @@ class DiagramView{
 		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
 		
 		var snap = this.diagramController.getEditor().snap;
-		var rect = snap.rect(0, 100, 1000, 1000);
+		var rect = snap.rect(100, 0, 100, 100);
 		this.path_group = snap.group();
 		rect.attr({
-			fill: "#f7f7f7",
+			fill: "#f737f7",
 		});
 		rect.mouseup(function(e, x, y) {
 			var createJobDialog = new CreateJobDialog();

@@ -33,7 +33,7 @@ class Print implements JobComponent {
 		this.editor.consoleView.println(input.getValue());
 		trace(input.getValue());
 		#else 
-    	Sys.println(input.getValue());
+    	Sys.print(input.getValue());
     	#end
 		var result = new Result();
 		result.set("output", (input.getValue()));

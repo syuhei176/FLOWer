@@ -15,6 +15,10 @@ module.exports.dashboard = function(req, res){
     	if(!device || (device!="pc" && device!="tablet")) {
         	if(ua.indexOf('iPad') >= 0) {
         		device = "tablet";
+        	}else if(ua.indexOf('iPhone') >= 0) {
+        		device = "tablet";
+        	}else if(ua.indexOf('Android') >= 0) {
+        		device = "tablet";
         	}else{
         		device = "pc";
         	}

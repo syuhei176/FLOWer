@@ -86,18 +86,17 @@ class ConsoleView{
 	
 	public function print(str) {
 		buffer += str;
-		this.current_line++;
-		this.text.attr({
+		this.texts[0].attr({
 			text : buffer
 		});
 		
 	}
 	public function println(str) {
 		buffer += str + "\n";
-		this.text.attr({
+		this.texts[this.current_line].attr({
 			text : buffer
 		});
-		
+		this.current_line++;
 	}
 	
 	public function addPos(x, y) {

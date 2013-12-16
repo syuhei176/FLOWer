@@ -167,18 +167,18 @@ class JobView{
 		}
 	}
 	public function cal2() {
-		var h:Int = 20;
+		var h:Int = 22;
 		for(pv in this.inputportviews) {
 			pv.setPos(0, h);
-			h += 40;
+			h += 44;
 		}
-		h = 20;
+		h = 22;
 		for(pv in this.outputportviews) {
 			pv.setPos(160, h);
-			h += 40;
+			h += 44;
 		}
 		this.graphic.attr({
-			height : this.inputportviews.length > this.outputportviews.length ? this.inputportviews.length*40 : this.outputportviews.length*40
+			height : this.inputportviews.length > this.outputportviews.length ? this.inputportviews.length*44 : this.outputportviews.length*44
 		});
 	}
 	
