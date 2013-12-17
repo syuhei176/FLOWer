@@ -5,22 +5,22 @@ import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
 import retro.core.Result;
-import retro.pub.Editor;
+import retro.core.VirtualDevice;
 import retro.pub.RetroType;
 
 class Scan implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
-	private var editor:Editor;
+	private var virtualDevice:VirtualDevice;
 	
-	public function new(editor) {
+	public function new(virtualDevice) {
 		this.name = "Scan";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("input", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
-		this.editor = editor;
+		this.virtualDevice = virtualDevice;
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
@@ -30,7 +30,7 @@ class Scan implements JobComponent {
 			return;
 		}
 		#if js
-		this.editor.consoleView.scan(function(str:String) {
+		this.virtualDevice.getConsoleDevice().scan(function(str:String) {
 			var result = new Result();
 			result.set("output", str);
 			cb(result);

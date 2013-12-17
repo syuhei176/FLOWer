@@ -20,7 +20,7 @@ class VMMain_cpp {
     	content += fi.readLine();
     }
 	var project = new Project();
-	var importController = new ImportController(project);
+	var importController = new ImportController(project, null);
 	importController.do_import(haxe.Json.parse(content));
   	var runtime = new retro.vm.Runtime(project.getRootDiagram());
   	var job = project.getRootDiagram().getJob(entry_id);

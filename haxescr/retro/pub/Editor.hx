@@ -1,6 +1,7 @@
 package retro.pub;
 
 import snap.Snap;
+import retro.core.VirtualDevice;
 import retro.pub.IdGenerator;
 import retro.model.Project;
 import retro.model.Diagram;
@@ -21,10 +22,10 @@ class Editor{
 	public var IdGenerator : retro.pub.IDGenerator;
 	public var snap:Snap;
 	public var thema:Thema;
+	public var virtualDevice:VirtualDevice;
 	
 	private var runtime:Runtime;
 	private var retroClient:RetroClient;
-	public var consoleView:ConsoleView;
 	
 	public function new(id_header, retroClient){
 		this.thema = new Thema();
@@ -60,17 +61,20 @@ class Editor{
 			//ビューを作成
 			var projectView = new ProjectView(projectController, new ExportController(editor, project));
 			editor.setProjectView(projectView);
-			//インポートを実行
+			var virtualDevice = new VirtualDevice();
+			editor.virtualDevice = virtualDevice;
+			var consoleDevice = new ConsoleView(editor.snap, editor.thema);
+			virtualDevice.setConsoleDevice(consoleDevice);
 			if(data.model.diagram) {
-				var importController = new ImportController(project, editor);
+				//インポートを実行
+				var importController = new ImportController(project, virtualDevice);
 				importController.do_import(data);
 			}else{
 				var diagram = new Diagram();
 				project.setRootDiagram(diagram);
-				var diagramController = new DiagramController(editor, diagram);
+				var diagramController = new DiagramController(editor, diagram, virtualDevice);
 				diagramController.addEntryJob();
 			}
-			editor.consoleView = new ConsoleView(editor);
 		});
 	}
 }

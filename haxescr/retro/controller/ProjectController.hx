@@ -25,7 +25,7 @@ class ProjectController implements Controller{
 	//Project Controller
 	public function addDiagram() {
 		var diagram = new Diagram();
-		var diagramController = new DiagramController(this.editor, diagram);
+		var diagramController = new DiagramController(this.editor, diagram, this.editor.virtualDevice);
 		var diagramView = new DiagramView(diagramController);
 		this.project.setRootDiagram(diagram);
 	}

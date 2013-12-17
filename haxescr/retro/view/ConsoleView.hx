@@ -2,7 +2,6 @@ package retro.view;
 
 import haxe.Timer;
 import snap.Snap;
-import retro.pub.Editor;
 import retro.pub.Point2D;
 import retro.pub.RetroType;
 import retro.model.Port;
@@ -10,8 +9,6 @@ import retro.model.InputPort;
 import retro.model.OutputPort;
 import retro.model.Job;
 import retro.model.Value;
-import retro.controller.DiagramController;
-import retro.controller.JobController;
 
 /*
 	Class Name:JobView
@@ -22,7 +19,7 @@ import retro.controller.JobController;
 	-addOutputPortView:出力ポートを追加する
 	-getPos:グローバル座標を取得
 */
-class ConsoleView{
+class ConsoleView {
 
 	public var pos : Point2D;
 	public var prev_pos : Point2D;
@@ -35,10 +32,8 @@ class ConsoleView{
 	private var buffer:String = "";
 	private var scan_buffer:Array<String->Void>;
 	
-	public function new(editor:Editor) {
+	public function new(snap:Snap, thema) {
 		this.scan_buffer = new Array<String->Void>();
-		var snap = editor.snap;
-		var thema = editor.thema;
 		this.group = snap.group();
 		this.graphic = snap.rect(0, 0, 220, 200);
 		var coll = snap.rect(0, 0, 220, 200);

@@ -25,7 +25,7 @@ class DiagramController implements Controller{
 	
 	private var modules:Array<JobComponent>;
 	
-	public function new(editor, diagram){
+	public function new(editor, diagram, virtualDevice){
 		this.editor = editor;
 		this.diagram = diagram;
 		this.modules = new Array<JobComponent>();
@@ -39,8 +39,8 @@ class DiagramController implements Controller{
 		this.modules.push(new retro.library.core.And());
 		this.modules.push(new retro.library.core.Or());
 		this.modules.push(new retro.library.core.Not());
-		this.modules.push(new retro.library.system.Print(editor));
-		this.modules.push(new retro.library.system.Scan(editor));
+		this.modules.push(new retro.library.system.Print(virtualDevice));
+		this.modules.push(new retro.library.system.Scan(virtualDevice));
 		this.modules.push(new retro.library.array.Create());
 		this.modules.push(new retro.library.array.Length());
 		this.modules.push(new retro.library.array.Push());

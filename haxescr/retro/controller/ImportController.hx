@@ -19,7 +19,7 @@ class ImportController {
 	private var project:Project;
 	private var modules:Array<JobComponent>;
 	
-	public function new(project, editor){
+	public function new(project, virtualDevice){
 		this.project = project;
 		this.modules = new Array<JobComponent>();
 		this.modules.push(new retro.library.core.Through());
@@ -32,8 +32,8 @@ class ImportController {
 		this.modules.push(new retro.library.core.And());
 		this.modules.push(new retro.library.core.Or());
 		this.modules.push(new retro.library.core.Not());
-		this.modules.push(new retro.library.system.Print(editor));
-		this.modules.push(new retro.library.system.Scan(editor));
+		this.modules.push(new retro.library.system.Print(virtualDevice));
+		this.modules.push(new retro.library.system.Scan(virtualDevice));
 		this.modules.push(new retro.library.array.Create());
 		this.modules.push(new retro.library.array.Length());
 		this.modules.push(new retro.library.array.Push());
