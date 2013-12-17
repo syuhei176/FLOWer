@@ -24,7 +24,6 @@ class VMMain_cpp {
 	importController.do_import(haxe.Json.parse(content));
   	var runtime = new retro.vm.Runtime(project.getRootDiagram());
   	var job = project.getRootDiagram().getJob(entry_id);
-  	runtime.invoke_entry(job, new Value(RetroType.RNumber, 1));
-  	runtime.run();
+  	runtime.run(job, new Value(RetroType.RNumber, 1));
   }
 }

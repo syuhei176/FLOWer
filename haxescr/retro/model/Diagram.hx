@@ -7,6 +7,7 @@ using Lambda;
 */
 class Diagram{
 	//model
+	private var entryPoint : EntryJob;
 	private var jobs : Array<Job>;
 	private var valueCarriers : Array<ValueCarrier>;
 	//listeners
@@ -22,6 +23,15 @@ class Diagram{
 		this.onJobRemovedListeners = new Array<Job->Void>();
 		this.onValueCarrierAddedListeners = new Array<ValueCarrier->Void>();
 		this.onValueCarrierRemovedListeners = new Array<ValueCarrier->Void>();
+	}
+	
+	public function setEntryPoint(entry:EntryJob) {
+		this.entryPoint = entry;
+		this.addJob(this.entryPoint);
+	}
+	
+	public function getEntryPoint() {
+		return this.entryPoint;
 	}
 	
 	public function addJob(job:Job) {

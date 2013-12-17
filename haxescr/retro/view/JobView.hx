@@ -58,8 +58,13 @@ class JobView{
 		var snap = this.jobController.getEditor().snap;
 		var thema = this.jobController.getEditor().thema;
 		this.group = snap.group();
-		this.graphic = snap.rect(0, 0, 160, 80);
-		this.coll = snap.rect(0, 0, 160, 80);
+		if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
+			this.graphic = snap.rect(0, 0, 160, 80);
+			this.coll = snap.rect(0, 0, 160, 80);
+		}else{
+			this.graphic = snap.rect(0, 0, 160, 80);
+			this.coll = snap.rect(0, 0, 160, 80);
+		}
 		var text = snap.text(10, -10, job.getName());
 		text.attr({
 			"font-size" : "20px",
@@ -79,12 +84,14 @@ class JobView{
     	});
 		coll.mousedown(function(e, x, y){
 			this.visible_config_btn();
+			/*
 			if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
 				var runTime = this.jobController.getEditor().getRuntime();
 				if(this.setted_value != null) {
 					runTime.invoke_entry(this.jobController.getJob(), new Value(RetroType.RNumber, haxe.Json.parse(this.setted_value)));
 				}
 			}
+			*/
 		});
 		coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());

@@ -69,19 +69,10 @@ class DiagramController implements Controller{
 		return job;
 	}
 	
-	public function addJobByJob(job:Job) {
-		diagram.addJob(job);
-	}
-	public function addEntryJobByJob(entry:EntryJob) {
-		diagram.addJob(entry);
-		entry.addOutputPort(new OutputPort(entry, RetroType.RString, "output"));
-	}
-	
-	
 	public function addEntryJob() {
 		var id = this.editor.IdGenerator.genID();
 		var job = new EntryJob(id);
-		diagram.addJob(job);
+		diagram.setEntryPoint(job);
 		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
 	}
 	public function addLogic(id) {

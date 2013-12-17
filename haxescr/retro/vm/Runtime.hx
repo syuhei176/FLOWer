@@ -4,6 +4,7 @@ import retro.vm.Application;
 using retro.vm.Application;
 import retro.model.Diagram;
 import retro.model.Job;
+import retro.model.EntryJob;
 import retro.vm.Worker;
 import retro.model.ValueCarrier;
 import retro.model.Value;
@@ -31,7 +32,8 @@ class Runtime{
 	}
 	
 	//実行
-	public function run() {
+	public function run(entry:EntryJob) {
+		this.invoke_entry(entry, new Value(RetroType.RNumber, 1));
 		#if cpp
 		while(true) {
 			run_step();
