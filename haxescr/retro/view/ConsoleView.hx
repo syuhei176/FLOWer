@@ -29,22 +29,22 @@ class ConsoleView {
 	public var coll:SnapElement;
 	private var texts:Array<SnapElement>;
 	private var current_line:Int = 0;
-	private var buffer:String = "";
+	private var lines:Array<String>;
 	private var scan_buffer:Array<String->Void>;
 	
 	public function new(snap:Snap, thema) {
+		this.lines = new Array<String>();
 		this.scan_buffer = new Array<String->Void>();
 		this.group = snap.group();
-		this.graphic = snap.rect(0, 0, 220, 200);
-		var coll = snap.rect(0, 0, 220, 200);
+		this.graphic = snap.rect(0, 0, 230, 200);
+		var coll = snap.rect(0, 0, 230, 200);
 		
 		this.current_line = 0;
 		this.texts = new Array<SnapElement>();
-		this.texts.push(snap.text(10, 20, ""));
-		this.texts.push(snap.text(10, 40, ""));
-		this.texts.push(snap.text(10, 60, ""));
-		this.texts.push(snap.text(10, 80, ""));
-		this.texts.push(snap.text(10, 100, ""));
+		for(i in 0...8) {
+			this.lines.push("");
+			this.texts.push(snap.text(10, 20*i+20, ""));
+		}
 		for(t in this.texts) {
 			t.attr({
 				"font-size" : "18px",
@@ -85,22 +85,41 @@ class ConsoleView {
 		this.group.append(coll);
 	}
 	
-	public function print(str) {
-		buffer += str;
-		this.texts[0].attr({
-			text : buffer
-		});
-		
+	public function print(str:String) {
+		for(i in 0...str.length) {
+			this.putChar(str.charAt(i));
+		}
 	}
-	public function println(str) {
-		buffer += str + "\n";
-		this.texts[this.current_line].attr({
-			text : buffer
-		});
-		this.current_line++;
+	public function println(str:String) {
+		this.print(str + "\n");
+	}
+	public function putChar(c) {
+		if(c == "\n") {
+			this.next_line();
+		}else{
+			if(this.lines[this.current_line].length > 20) {
+				this.next_line();
+			}
+			this.lines[this.current_line] += c;
+			this.texts[this.current_line].attr({
+				text : this.lines[this.current_line]
+			});
+		}
+	}
+	public function next_line() {
+		if(this.current_line >= 7) {
+			for(i in 0...this.lines.length) {
+				this.lines[i] = "";
+			}
+			this.current_line = 0;
+		}else{
+			this.current_line++;
+		}
 	}
 	public function scan(cb) {
 		this.scan_buffer.push(cb);
+	}
+	public function getChar() {
 	}
 	public function addPos(x, y) {
 		pos.setX(pos.getX() + x);
