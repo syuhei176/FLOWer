@@ -41,7 +41,7 @@ class DiagramView{
 		rect.attr({
 			fill: "#f737f7",
 		});
-		rect.mouseup(function(e, x, y) {
+		rect.click(function(e) {
 			var createJobDialog = new CreateJobDialog();
 			createJobDialog.on(function(pkg, cmp) {
 				var jobComponent = this.diagramController.getModule(pkg + "." + cmp);

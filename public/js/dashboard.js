@@ -48,7 +48,7 @@
     	return this.model;
 	}
 	
-	function createEditor(cb, name) {
+	function createEditor(name, cb) {
   	  $.post("/editor/create", {name : name}, function(result) {
   		  cb(result);
 	  }, "json");
