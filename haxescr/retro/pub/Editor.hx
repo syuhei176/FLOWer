@@ -69,7 +69,6 @@ class Editor{
 				project.setRootDiagram(diagram);
 				var diagramController = new DiagramController(editor, diagram);
 				diagramController.addEntryJob();
-				diagramController.addEntryJob();
 			}
 			editor.consoleView = new ConsoleView(editor);
 		});

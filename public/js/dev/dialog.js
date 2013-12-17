@@ -1,7 +1,7 @@
 (function(){
 	var packages = {"core":["Through","Add","Times","Reminder","Filter","Compare","And","Or","Not"],
 			"array":["Create","Length","Push","Pop","Shift","Get"],
-			"system":["Print"]};
+			"system":["Print","Scan"]};
 	function CreateJobDialog() {
 		this.listeners = [];
 	}

@@ -4,11 +4,9 @@
 <svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
 	 y="0px" width="100px" height="80px" viewBox="0 0 100 80" enable-background="new 0 0 100 80" xml:space="preserve">
 <g>
-	<rect fill="#29ABE2" width="100" height="80"/>
-	<g>
-		<polygon fill="#FFFFFF" points="24.496,42.305 9.117,24.345 22.505,17.565 37.18,32.377 53.769,25.368 41.714,10.943 
-			54.699,5.322 70.631,24.352 58.156,35.774 63.774,43.479 79.98,41.377 91.413,58.888 81.277,65.542 70.04,51.183 60.101,56.787 
-			68.744,69.044 59.453,73.097 39.141,59.063 52.754,47.331 47.45,39.21 		"/>
-	</g>
+	<rect x="1" y="1" fill="#FFFFFF" stroke="#29ABE2" stroke-width="2" stroke-miterlimit="10" width="98" height="78"/>
+	<rect x="24" y="26" fill="#FFFFFF" stroke="#29ABE2" stroke-width="2" stroke-miterlimit="10" width="56" height="28"/>
+	<circle fill="#29ABE2" cx="79.57" cy="39.732" r="14.544"/>
+	<circle fill="#F2F2F2" stroke="#29ABE2" stroke-width="2" stroke-miterlimit="10" cx="24.323" cy="39.899" r="14.378"/>
 </g>
 </svg>

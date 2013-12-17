@@ -20,11 +20,10 @@ class ValueCarrier {
 	}
 	
 	public function step() {
-		this.count++;
-		if(this.count > 10) {
-			this.count = 0;
+		if(this.count > 9) {
 			return this.destPort;
 		}else{
+			this.count++;
 			this.fireOnStepListeners();
 			return null;
 		}

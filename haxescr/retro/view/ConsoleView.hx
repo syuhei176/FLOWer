@@ -33,8 +33,10 @@ class ConsoleView{
 	private var texts:Array<SnapElement>;
 	private var current_line:Int = 0;
 	private var buffer:String = "";
+	private var scan_buffer:Array<String->Void>;
 	
 	public function new(editor:Editor) {
+		this.scan_buffer = new Array<String->Void>();
 		var snap = editor.snap;
 		var thema = editor.thema;
 		this.group = snap.group();
@@ -73,6 +75,10 @@ class ConsoleView{
     	}, function(x, y) {
     		this.prev_pos.setX(0);
     		this.prev_pos.setY(0);
+    		var cb = this.scan_buffer.shift();
+    		if(cb!=null) {
+	    		cb("dammy");
+    		}
     	}, function(x, y) {
     		
     	});
@@ -98,7 +104,9 @@ class ConsoleView{
 		});
 		this.current_line++;
 	}
-	
+	public function scan(cb) {
+		this.scan_buffer.push(cb);
+	}
 	public function addPos(x, y) {
 		pos.setX(pos.getX() + x);
 		pos.setY(pos.getY() + y);

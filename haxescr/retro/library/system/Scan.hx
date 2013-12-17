@@ -8,14 +8,14 @@ import retro.core.Result;
 import retro.pub.Editor;
 import retro.pub.RetroType;
 
-class Print implements JobComponent {
+class Scan implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	private var editor:Editor;
 	
 	public function new(editor) {
-		this.name = "Print";
+		this.name = "Scan";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("input", RetroType.RNumber);
@@ -29,19 +29,18 @@ class Print implements JobComponent {
 			cb(null);
 			return;
 		}
-		//this.affector.print();
 		#if js
-		this.editor.consoleView.println(input.getValue());
-		trace(input.getValue());
+		this.editor.consoleView.scan(function(str:String) {
+			var result = new Result();
+			result.set("output", str);
+			cb(result);
+		});
 		#else 
     	Sys.print(input.getValue());
     	#end
-		var result = new Result();
-		result.set("output", (input.getValue()));
-		cb(result);
 	}
 
 	public function getModuleName() {
-		return "system.Print";
+		return "system.Scan";
 	}
 }

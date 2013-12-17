@@ -36,40 +36,25 @@ class DiagramView{
 		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
 		
 		var snap = this.diagramController.getEditor().snap;
-		var rect = snap.rect(100, 0, 100, 100);
 		this.path_group = snap.group();
-		rect.attr({
-			fill: "#f737f7",
-		});
-		rect.click(function(e) {
-			var createJobDialog = new CreateJobDialog();
-			createJobDialog.on(function(pkg, cmp) {
-				var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
-				var job = this.diagramController.addSymbolicLink(jobComponent);
-				job.setPos(100, 100);
-			});
-			createJobDialog.open();
-			/*
-			var name = js.Browser.window.prompt("","core.Through");
-			if(name != null) {
-				var jobComponent = this.diagramController.getModule(name);
-				var job = this.diagramController.addSymbolicLink(jobComponent);
-				job.setPos(100, 100);
-			}
-			*/
-		});
+		
 		this.count = 0;
-		/*
+		
 		this.control_group = snap.group();
 		Snap.load("/images/create.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+100+","+0+")");
         	g.click(function(e){
-        		
+        		var createJobDialog = new CreateJobDialog();
+				createJobDialog.on(function(pkg, cmp) {
+					var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
+					var job = this.diagramController.addSymbolicLink(jobComponent);
+					job.setPos(100, 100);
+				});
+				createJobDialog.open();
         	});
         	this.control_group.append(g);
     	});
-    	*/
 	}
 	
 	public function start_step() {
