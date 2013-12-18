@@ -1,5 +1,5 @@
 (function(){
-	var packages = {"core":["Through","Add","Times","Reminder","Filter","Compare","And","Or","Not"],
+	var packages = {"core":["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not"],
 			"array":["Create","Length","Push","Pop","Shift","Get"],
 			"system":["Print","Scan"]};
 	function CreateJobDialog() {
