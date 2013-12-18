@@ -78,7 +78,7 @@ class InputPortView extends PortView{
 	
 	public function OnSetConstant(v) {
 		this.constantValueGraphic = this.snap.circle(0, 0, 18);
-		var text = this.snap.text(-5, 5, v.value);
+		var text = this.snap.text(-5, 5, haxe.Json.stringify(v.value));
 		this.constantValueGraphic.attr({
 				fill: this.thema.contrast1_color,
 				stroke: this.thema.contrast2_color,

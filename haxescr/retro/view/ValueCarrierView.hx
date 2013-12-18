@@ -29,7 +29,7 @@ class ValueCarrierView {
 		this.pos = new Point2D(0, 0);
 		this.group = snap.group();
 		this.graphic = snap.circle(0, 0, 24);
-		var text = snap.text(0, 0, valueCarrier.getValue().value);
+		var text = snap.text(0, 0, haxe.Json.stringify(valueCarrier.getValue().value));
 		this.graphic.attr({
 				fill: thema.contrast1_color,
 				stroke: thema.contrast2_color,

@@ -34,6 +34,7 @@ class DiagramView{
 		diagram.onJobAdded(this.OnJobAdded);
 		diagram.onValueCarrierAdded(this.OnValueCarrierAdded);
 		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
+		diagram.onValueCarrierCleared(this.OnValueCarrierCleared);
 		
 		var snap = this.diagramController.getEditor().snap;
 		this.path_group = snap.group();
@@ -105,8 +106,16 @@ class DiagramView{
 			if(vcv.valueCarrier == valueCarrier) {
 				vcv.remove();
 				valueCarrierViews.remove(vcv);
+				return;
 			}
 		}
+	}
+	//全消し
+	public function OnValueCarrierCleared() {
+		for(vcv in this.valueCarrierViews) {
+			vcv.remove();
+		}
+		this.valueCarrierViews = new Array<ValueCarrierView>();
 	}
 	
 	public function getOutputPortView(port:OutputPort) {

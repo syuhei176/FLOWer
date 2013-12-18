@@ -16,8 +16,6 @@ import haxe.Timer;
 class Runtime{
 	//private var app : Application;
 	private var diagram : Diagram;
-	private var job_queue : Array<Job>;
-	private var valueCarriers : Array<ValueCarrier>;
 	private var timer:Timer;
 	
 	public function new(diagram:Diagram) {
@@ -71,6 +69,7 @@ class Runtime{
 	
 	//ステップ実行
 	public function run_step() {
+		trace(this.diagram.getValueCarriers().length);
 		for(valueCarrier in this.diagram.getValueCarriers()) {
 			var port = valueCarrier.step();
 			if(port == null) {

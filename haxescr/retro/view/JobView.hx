@@ -113,6 +113,9 @@ class JobView{
     		var g = f.select("g");
         	this.group.append(g);
         	g.mouseup(function(e, x, y) {
+				if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
+					//var entry:EntryJob = this.jobController.getJob();
+				}
 				var runTime = this.jobController.getEditor().getRuntime();
 				if(!runTime.isRunning()) {
 					this.setted_value = js.Browser.window.prompt("","");

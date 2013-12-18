@@ -36,9 +36,15 @@ class ProjectView{
         		if(this.mode == RunMode.Stop) {
 	        		this.projectController.run();
 	        		this.mode = RunMode.Run;
+	        		g.select("polygon").attr({
+	        			fill : "#ff0000"
+	        		});
         		}else if(this.mode == RunMode.Run) {
     	    		this.projectController.stop();
     	    		this.mode = RunMode.Stop;
+	        		g.select("polygon").attr({
+	        			fill : "#ffffff"
+	        		});
         		}
         	});
         	this.control_group.append(g);

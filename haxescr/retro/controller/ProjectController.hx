@@ -43,6 +43,8 @@ class ProjectController implements Controller{
 			this.runtime = new Runtime(this.project.getRootDiagram());
 		}
 	  	this.runtime.stop();
+	  	var diagram = this.getProject().getRootDiagram();
+	  	diagram.clearValueCarriers();
 	}
 	//Diagram Controller
 	

@@ -15,6 +15,7 @@ class Diagram{
 	private var onJobRemovedListeners:Array<Job->Void>;
 	private var onValueCarrierAddedListeners:Array<ValueCarrier->Void>;
 	private var onValueCarrierRemovedListeners:Array<ValueCarrier->Void>;
+	private var onValueCarrierClearedListeners:Array<Void->Void>;
 
 	public function new(){
 		this.jobs = new Array<Job>();
@@ -23,6 +24,7 @@ class Diagram{
 		this.onJobRemovedListeners = new Array<Job->Void>();
 		this.onValueCarrierAddedListeners = new Array<ValueCarrier->Void>();
 		this.onValueCarrierRemovedListeners = new Array<ValueCarrier->Void>();
+		this.onValueCarrierClearedListeners = new Array<Void->Void>();
 	}
 	
 	public function setEntryPoint(entry:EntryJob) {
@@ -88,7 +90,12 @@ class Diagram{
 	
 	public function getValueCarriers() {
 		return this.valueCarriers;
-	}	
+	}
+	
+	public function clearValueCarriers() {
+		this.valueCarriers = new Array<ValueCarrier>();
+		this.fireOnValueCarrierCleared();
+	}
 	
 	public function onJobAdded(listener) {
 		this.onJobAddedListeners.push(listener);
@@ -101,6 +108,9 @@ class Diagram{
 	}
 	public function onValueCarrierRemoved(listener) {
 		this.onValueCarrierRemovedListeners.push(listener);
+	}
+	public function onValueCarrierCleared(listener) {
+		this.onValueCarrierClearedListeners.push(listener);
 	}
 	
 	private function fireOnJobAdded(j) {
@@ -124,6 +134,12 @@ class Diagram{
 	private function fireOnValueCarrierRemoved(vc) {
 		for(l in this.onValueCarrierRemovedListeners) {
 			l(vc);
+		}
+	}
+	
+	private function fireOnValueCarrierCleared() {
+		for(l in this.onValueCarrierClearedListeners) {
+			l();
 		}
 	}
 }
