@@ -117,7 +117,7 @@ class ConsoleView {
 		}
 	}
 	public function scan(cb) {
-		var str = js.Browser.window.prompt("","");
+		var str = js.Browser.window.prompt("Standard Input","");
 		cb(str);
 	}
 	public function getChar() {
