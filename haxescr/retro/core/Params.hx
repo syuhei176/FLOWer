@@ -22,6 +22,14 @@ class Params {
 	public function add(name, value) {
 		this.params.push(new Param(name, value));
 	}
+	public function toString() {
+		var str = "[";
+		for(param in params) {
+			str += "{"+param.name +","+ param.value.value + "}";
+		}
+		str += "]";
+		return str;
+	}
 }
 
 class Param {
@@ -33,7 +41,7 @@ class Param {
 		this.value = value;
 	}
 	
-	public function isEmpty() {
+	public function isEmpty():Bool {
 		return value == null;
 	}
 	public function getValue():Dynamic {

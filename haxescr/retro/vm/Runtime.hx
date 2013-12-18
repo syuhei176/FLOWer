@@ -30,8 +30,8 @@ class Runtime{
 	}
 	
 	//実行
-	public function run(entry:EntryJob) {
-		this.invoke_entry(entry, new Value(RetroType.RNumber, 1));
+	public function run(entry:EntryJob, ?v) {
+		this.invoke_entry(entry, new Value(RetroType.RNumber, v));
 		#if cpp
 		while(true) {
 			run_step();
@@ -69,7 +69,6 @@ class Runtime{
 	
 	//ステップ実行
 	public function run_step() {
-		trace(this.diagram.getValueCarriers().length);
 		for(valueCarrier in this.diagram.getValueCarriers()) {
 			var port = valueCarrier.step();
 			if(port == null) {

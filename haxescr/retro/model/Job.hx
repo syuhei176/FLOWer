@@ -83,7 +83,7 @@ class Job{
 	
 	public function getParams() {
 		var params = new Params();
-		for(p in inputPorts) {
+		for(p in this.inputPorts) {
 			var value = null;
 			if(p.getValue()!=null) {
 				value = p.getValue();

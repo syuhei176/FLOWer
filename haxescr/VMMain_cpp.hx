@@ -11,9 +11,7 @@ import retro.vm.Compiler;
 class VMMain_cpp {
   public static function main() {
     var filename = Sys.args()[0];
-    var entry_id = Sys.args()[1];
     trace(filename);
-    trace(entry_id);
     var fi = sys.io.File.read(filename);
     var content:String = "";
     while(!fi.eof()) {
@@ -23,7 +21,7 @@ class VMMain_cpp {
 	var importController = new ImportController(project, null);
 	importController.do_import(haxe.Json.parse(content));
   	var runtime = new retro.vm.Runtime(project.getRootDiagram());
-  	var job = project.getRootDiagram().getJob(entry_id);
-  	runtime.run(job, new Value(RetroType.RNumber, 1));
+  	var job = project.getRootDiagram().getEntryPoint();
+  	runtime.run(job, Sys.args());
   }
 }

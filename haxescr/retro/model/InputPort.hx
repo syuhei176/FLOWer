@@ -5,7 +5,7 @@ import retro.model.Value;
 class InputPort extends Port {
 	//model
 	public var connection : Array<OutputPort>;
-	private var value : ValueCarrier;
+	private var valueCarrier : ValueCarrier;
 	private var constantValue : Value;
 	//listeners
 	private var onSetValueListeners:Array<ValueCarrier->Void>;
@@ -21,13 +21,13 @@ class InputPort extends Port {
 		this.onRemoveConstantValueListeners = new Array<Void->Void>();
 	}
 	
-	public function setValueCarrier(value:ValueCarrier) {
-		this.value = value;
-		this.fireOnSetValueListeners(this.value);
+	public function setValueCarrier(valueCarrier:ValueCarrier) {
+		this.valueCarrier = valueCarrier;
+		this.fireOnSetValueListeners(this.valueCarrier);
 	}
 	
 	public function getValueCarrier():ValueCarrier {
-		return this.value;
+		return this.valueCarrier;
 	}
 	
 	public function getConstantValue() {
@@ -38,16 +38,16 @@ class InputPort extends Port {
 		if(this.constantValue != null) {
 			return this.constantValue;
 		}else{
-			if(this.value == null) {
+			if(this.valueCarrier == null) {
 				return null;
 			}
-			return this.value.getValue();
+			return this.valueCarrier.getValue();
 		}
 	}
 	
 	public function useValueCarrier() {
-		var v = this.value;
-		this.value = null;
+		var v = this.valueCarrier;
+		this.valueCarrier = null;
 		this.fireOnUseValueListeners();
 		return v;
 	}

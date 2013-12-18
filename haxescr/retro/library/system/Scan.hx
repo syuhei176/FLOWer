@@ -36,7 +36,11 @@ class Scan implements JobComponent {
 			cb(result);
 		});
 		#else 
-    	Sys.print(input.getValue());
+		var std_input = Sys.stdin();
+		var result = new Result();
+		var str =  std_input.readLine();
+		result.set("output", str);
+		cb(result);
     	#end
 	}
 

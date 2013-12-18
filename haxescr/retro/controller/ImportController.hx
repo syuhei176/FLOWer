@@ -32,6 +32,7 @@ class ImportController {
 		this.modules.push(new retro.library.core.And());
 		this.modules.push(new retro.library.core.Or());
 		this.modules.push(new retro.library.core.Not());
+		this.modules.push(new retro.library.core.Transistor());
 		this.modules.push(new retro.library.system.Print(virtualDevice));
 		this.modules.push(new retro.library.system.Scan(virtualDevice));
 		this.modules.push(new retro.library.array.Create());
@@ -95,7 +96,7 @@ class ImportController {
 		}
 		for(ip in ips) {
 			var inputPort = diagram.getInputPort(model.id + "." + ip.name);
-			if(ip.constant) {
+			if(ip.constant != null) {
 				inputPort.setConstant(new Value(ip.constant.type, ip.constant.value));
 			}
 		}

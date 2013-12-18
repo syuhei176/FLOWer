@@ -39,6 +39,7 @@ class DiagramController implements Controller{
 		this.modules.push(new retro.library.core.And());
 		this.modules.push(new retro.library.core.Or());
 		this.modules.push(new retro.library.core.Not());
+		this.modules.push(new retro.library.core.Transistor());
 		this.modules.push(new retro.library.system.Print(virtualDevice));
 		this.modules.push(new retro.library.system.Scan(virtualDevice));
 		this.modules.push(new retro.library.array.Create());
