@@ -16,20 +16,20 @@ class Get implements JobComponent {
 		this.name = "Get";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("input1", RetroType.RNumber);
-		this.inputs.add("input2", RetroType.RNumber);
+		this.inputs.add("array", RetroType.RNumber);
+		this.inputs.add("index", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input1 = params.get("input1");
-		var input2 = params.get("input2");
-		if(input1.isEmpty() || input2.isEmpty()) {
+		var array = params.get("array");
+		var index = params.get("index");
+		if(array.isEmpty() || index.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input1.getValue() + input2.getValue()));
+		result.set("output", (array.getValue()[index.getValue()]));
 		cb(result);
 	}
 	

@@ -16,18 +16,18 @@ class Length implements JobComponent {
 		this.name = "Length";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("input", RetroType.RNumber);
+		this.inputs.add("array", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var array = params.get("array");
+		if(array.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input.getValue().length));
+		result.set("output", (array.getValue().length));
 		cb(result);
 	}
 	

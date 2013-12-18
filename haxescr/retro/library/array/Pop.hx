@@ -28,8 +28,10 @@ class Pop implements JobComponent {
 			return;
 		}
 		var result = new Result();
-		result.set("array", (input.getValue().pop()));
-		result.set("value", (input.getValue()));
+		var array = input.getValue();
+		var value = array.pop();
+		result.set("array", array);
+		result.set("value", value);
 		cb(result);
 	}
 	

@@ -7,34 +7,36 @@ import retro.core.Outputs;
 import retro.core.Result;
 import retro.pub.RetroType;
 
-class Create implements JobComponent {
+class Shift implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
 	public function new() {
-		this.name = "Add";
+		this.name = "Shift";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("input1", RetroType.RNumber);
-		this.inputs.add("input2", RetroType.RNumber);
-		this.outputs.add("output", RetroType.RNumber);
+		this.inputs.add("input", RetroType.RNumber);
+		this.outputs.add("array", RetroType.RNumber);
+		this.outputs.add("value", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input1 = params.get("input1");
-		var input2 = params.get("input2");
-		if(input1.isEmpty() || input2.isEmpty()) {
+		var input = params.get("input");
+		if(input.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input1.getValue() + input2.getValue()));
+		var array = input.getValue();
+		var value = array.shift();
+		result.set("array", array);
+		result.set("value", value);
 		cb(result);
 	}
 	
 	public function getModuleName() {
-		return "core.Add";
+		return "array.Shift";
 	}
 	
 
