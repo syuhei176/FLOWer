@@ -117,7 +117,8 @@ class ConsoleView {
 		}
 	}
 	public function scan(cb) {
-		this.scan_buffer.push(cb);
+		var str = js.Browser.window.prompt("","");
+		cb(str);
 	}
 	public function getChar() {
 	}
