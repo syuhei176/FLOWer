@@ -17,6 +17,7 @@ import retro.controller.ExportController;
 import retro.vm.Runtime;
 
 class Editor{
+	private var editorkey:String;
 	public var projectController : ProjectController;
 	public var projectView : ProjectView;
 	public var IdGenerator : retro.pub.IDGenerator;
@@ -27,11 +28,16 @@ class Editor{
 	private var runtime:Runtime;
 	private var retroClient:RetroClient;
 	
-	public function new(id_header, retroClient){
+	public function new(id_header, retroClient, editorkey){
 		this.thema = new Thema();
 		this.snap = new Snap("#svg");
 		this.IdGenerator = retro.pub.IDGenerator.getInstance(id_header);
 		this.retroClient = retroClient;
+		this.editorkey = editorkey;
+	}
+	
+	public function getEditorKey() {
+		return this.editorkey;
 	}
 	
 	public function setProjectController(projectController) {
@@ -53,7 +59,7 @@ class Editor{
 	public static function create(editorkey, id_header){
 		var retroClient = new RetroClient(editorkey);
 		retroClient.init(function(data) {
-			var editor = new Editor(id_header, retroClient);
+			var editor = new Editor(id_header, retroClient, editorkey);
 			var project = new Project();
 			//コントローラを作成
 			var projectController = new ProjectController(editor, project);

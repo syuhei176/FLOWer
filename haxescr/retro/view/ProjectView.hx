@@ -59,6 +59,14 @@ class ProjectView{
         	});
         	this.control_group.append(g);
     	});
+    	Snap.load("/images/download.svg", function (f) {
+    		var g:SnapElement = f.select("g");
+    		g.transform("translate("+300+","+0+")");
+        	g.click(function(e){
+        		js.Browser.window.open("/editor/download/"+this.projectController.getEditor().getEditorKey(), "");
+        	});
+        	this.control_group.append(g);
+    	});
 	}
 	
 	public function OnDiagramAdded(diagram:Diagram) {
