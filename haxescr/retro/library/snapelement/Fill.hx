@@ -1,26 +1,26 @@
-package retro.library.system;
+
+
+package retro.library.snapelement;
 
 import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
 import retro.core.Result;
-import retro.core.VirtualDevice;
 import retro.pub.RetroType;
 
-class Print implements JobComponent {
+class Fill implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
-	private var virtualDevice:VirtualDevice;
 	
-	public function new(virtualDevice) {
-		this.name = "Print";
+	public function new() {
+		this.name = "Fill";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("input", RetroType.RNumber);
+		this.inputs.add("snapelement", RetroType.RNumber);
+    		this.inputs.add("color", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
-		this.virtualDevice = virtualDevice;
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
@@ -29,22 +29,12 @@ class Print implements JobComponent {
 			cb(null);
 			return;
 		}
-		#if js
-		#if virtual
-		this.virtualDevice.getConsoleDevice().print(input.getValue()+"");
-		#else
-		js.Browser.document.write(input.getValue()+"");
-		#end
-		trace(input.getValue());
-		#else 
-    	Sys.print(input.getValue());
-    	#end
 		var result = new Result();
 		result.set("output", (input.getValue()));
 		cb(result);
 	}
 
 	public function getModuleName() {
-		return "system.Print";
+		return "snapelement.Fill";
 	}
 }

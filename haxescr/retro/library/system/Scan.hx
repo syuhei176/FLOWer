@@ -30,11 +30,18 @@ class Scan implements JobComponent {
 			return;
 		}
 		#if js
+		#if virtual
 		this.virtualDevice.getConsoleDevice().scan(function(str:String) {
 			var result = new Result();
 			result.set("output", str);
 			cb(result);
 		});
+		#else
+		var str = js.Browser.window.prompt("Standard Input","");
+		var result = new Result();
+		result.set("output", str);
+		cb(result);
+		#end
 		#else 
 		var std_input = Sys.stdin();
 		var result = new Result();

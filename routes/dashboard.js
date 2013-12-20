@@ -50,7 +50,7 @@ module.exports.editorlist = function(req, res){
         	}
             var collection = new mongodb.Collection(dbinterface, "editor");
         	var query = { key : { $in : has_projects }};
-            collection.find(query, {key : 1, name : 1, visibility : 1}, {limit:10}).toArray(this);
+            collection.find(query, {key : 1, name : 1, visibility : 1}, {limit:20}).toArray(this);
         })
         .seq(function(docs) {
         	res.send(JSON.stringify(docs));
@@ -78,5 +78,16 @@ module.exports.download = function(req, res){
         	res.header('Content-Disposition', 'attachment; filename='+data.name+'.json;');
         	res.send(data);
         });
+    }
+};
+
+module.exports.run = function(req, res){
+    if(req.session && req.session.user) {
+		var user = null;
+        if(req.session && req.session.user) {
+            user = req.session.user;
+        }
+		var key = req.param('key');
+	    res.render('run.ejs', {editorinfo : {key : key}});
     }
 };

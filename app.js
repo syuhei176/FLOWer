@@ -73,6 +73,8 @@ app.post('/register', account.register);
 app.get('/dashboard', dashboard.dashboard);
 app.get('/editor/list', dashboard.editorlist);
 app.get('/editor/download/:key', dashboard.download);
+app.get('/editor/run/:key', dashboard.run);
+
 
 //権限のあるプロジェクトを開く
 app.get('/editor/edit/:key', routes_editor.edit);

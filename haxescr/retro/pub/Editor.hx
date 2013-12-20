@@ -71,6 +71,7 @@ class Editor{
 			editor.virtualDevice = virtualDevice;
 			var consoleDevice = new ConsoleView(editor.snap, editor.thema);
 			virtualDevice.setConsoleDevice(consoleDevice);
+			virtualDevice.setSVGDevice(editor.snap);
 			if(data.model.diagram) {
 				//インポートを実行
 				var importController = new ImportController(project, virtualDevice);

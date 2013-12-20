@@ -29,7 +29,8 @@ class ValueCarrierView {
 		this.pos = new Point2D(0, 0);
 		this.group = snap.group();
 		this.graphic = snap.circle(0, 0, 24);
-		var text = snap.text(0, 0, haxe.Json.stringify(valueCarrier.getValue().value));
+		//var text = snap.text(0, 0, haxe.Json.stringify(valueCarrier.getValue().value));
+		var text = snap.text(0, 0, this.value2String(valueCarrier.getValue().value));
 		this.graphic.attr({
 				fill: thema.contrast1_color,
 				stroke: thema.contrast2_color,
@@ -40,7 +41,28 @@ class ValueCarrierView {
 		
 		this.startPosition();
 	}
-	
+	private function value2String(v:Dynamic) {
+		if(Type.typeof(v) == Type.ValueType.TObject) {
+			return "Object";
+		}else if(Type.typeof(v) == Type.ValueType.TNull) {
+			return "Null";
+		}else if(Type.typeof(v) == Type.ValueType.TFloat) {
+			return v;
+		}else if(Type.typeof(v) == Type.ValueType.TInt) {
+			return haxe.Json.stringify(v);
+		}else if(Type.typeof(v) == Type.ValueType.TFloat) {
+			return v;
+		}else if(Type.typeof(v) == Type.ValueType.TBool) {
+			return v;
+		}else{
+			var class_name = Type.getClassName(Type.getClass(v));
+			if(class_name == "String") {
+				return v;
+			}else{
+				return class_name;
+			}
+		}
+	}
 	public function OnUsed() {
 		this.remove();
 	}
