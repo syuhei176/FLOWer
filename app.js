@@ -14,6 +14,7 @@ var MongoStore = require('connect-mongo')(express);
 
 var account = require("./server/account");
 var editor_controller = require('./server/editor')
+var vm_controller = require('./server/vm')
 
 
 var dbinterface = require("./server/db");
@@ -82,6 +83,16 @@ app.post('/editor/create', routes_editor.create_project);
 app.post('/editor/update', routes_editor.update_project);
 app.post('/editor/delete', routes_editor.delete_project);
 app.post('/editor/copy', routes_editor.copy_project);
+
+//Run flower language on Node.JS
+app.get('/run/:key', function(req, res) {
+	var key = req.param("key");
+	editor_controller.get_all(key, function(err, model) {
+    	vm_controller.VMMain_nodejs.run(model);
+    	res.send("Running");
+	})
+});
+
 
 io.configure(function () {
 	io.set('log level', 1);

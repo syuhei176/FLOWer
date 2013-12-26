@@ -1,0 +1,3 @@
+-main VMMain_nodejs
+-js ../server/vm.js
+-D nodejs 

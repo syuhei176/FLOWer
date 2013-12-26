@@ -82,12 +82,14 @@ this.modules.push(new retro.library.math.Min());
 this.modules.push(new retro.library.math.Pow());
 this.modules.push(new retro.library.math.Random());
 this.modules.push(new retro.library.math.Sqrt());
+#if (!nodejs && !cpp)
 this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 this.modules.push(new retro.library.snapsvg.Circle());
 this.modules.push(new retro.library.snapelement.Translate());
 this.modules.push(new retro.library.snapelement.Fill());
 this.modules.push(new retro.library.jquery.Find());
 this.modules.push(new retro.library.jquery.Html());
+#end
 	}
 	
 	public function getProject() {

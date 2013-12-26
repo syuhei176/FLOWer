@@ -1,8 +1,3 @@
--main VMMain
--js bin/vm.js
-
---next
-
 -main VMMain_cpp
 -cpp bin/vm_cpp
 
