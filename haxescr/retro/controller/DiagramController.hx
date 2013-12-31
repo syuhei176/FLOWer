@@ -95,6 +95,7 @@ this.modules.push(new retro.library.snapelement.Translate());
 this.modules.push(new retro.library.snapelement.Fill());
 this.modules.push(new retro.library.jquery.Find());
 this.modules.push(new retro.library.jquery.Html());
+this.modules.push(new retro.library.pigpio.Write());
 	}
 	
 	public function getEditor() {

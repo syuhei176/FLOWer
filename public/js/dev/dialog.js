@@ -11,6 +11,7 @@
 			"snapsvg":["Rect","Circle",],
 			"snapelement":["Translate","Fill",],
 			"jquery":["Find","Html",],
+			"pigpio":["Write"],
 			"system":["Print","Scan"]};
 	function CreateJobDialog() {
 		this.listeners = [];

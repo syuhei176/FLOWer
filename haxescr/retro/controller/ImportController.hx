@@ -90,6 +90,7 @@ this.modules.push(new retro.library.snapelement.Fill());
 this.modules.push(new retro.library.jquery.Find());
 this.modules.push(new retro.library.jquery.Html());
 #end
+this.modules.push(new retro.library.pigpio.Write());
 	}
 	
 	public function getProject() {

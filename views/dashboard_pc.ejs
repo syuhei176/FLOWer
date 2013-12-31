@@ -18,7 +18,6 @@
       <a href="/"><img src="/images/logo.png" /></a>
   </div>
   <div class="grid2">
-  <%=account.email%>
   </div>
   <div class="grid6 first">
   	<ul class="list-group">
@@ -49,28 +48,12 @@
         	//プロジェクトリスト
           var template = Hogan.compile($("#editor-template").html());
           $.get("/editor/list", {}, function(data) {
-        	  editorList.set(data);
-        	  var html = render_editorlist(editorList.toJSON());
+        	  var html = render_editorlist(data);
         	  $("#editor-list").html(html);
-        	  $('[name="share-btn"]').click(function() {
-        		  var self = $(this);
-        		  var editor = editorList.get($(this).data('cid'));
-        		  var vis = "public";
-        		  if(editor.get('visibility') == "list") {
-        			  vis = "public";
-        		  }else{
-        			  vis = "list";
-        		  }
-            	  $.post("/editor/update", {key : editor.get('key'), visibility : vis}, function(result) {
-            		  self.find('i').removeClass(editor.get('visibility_class'));
-            		  editor.set('visibility', vis);
-            		  self.find('i').addClass(editor.get('visibility_class'));
-            	  }, "json");
-        	  });
           }, "json");
           function render_editorlist(editorlist) {
         	  editorlist = _.map(editorlist, function(editor) {
-        		  return template.render(editor);
+        		  return template.render({key:editor.split('.')[0], name:editor});
         	  });
         	  return editorlist.join('');
           }
