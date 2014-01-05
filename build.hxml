@@ -1,0 +1,4 @@
+-main Main
+-D virtual
+-js exports/public/js/bin/main.js
+-cp src
