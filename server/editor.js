@@ -25,10 +25,10 @@ function save_all(editor_key, data, cb) {
 function get_all(editor_key, cb) {
     Seq()
     .seq(function() {
-    	mydb.load(editor_key, cb);
+    	mydb.load(editor_key, this);
     })
     .seq(function(data) {
-    	cb(null, JSON.parse(data));
+    	cb(null, {model : JSON.parse(data)});
     })
 }
 

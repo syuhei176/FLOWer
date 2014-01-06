@@ -1,5 +1,6 @@
 package retro.library.pigpio;
 
+import haxe.Http;
 import pigpio.Pigpio;
 import retro.core.JobComponent;
 import retro.core.Inputs;
@@ -41,9 +42,16 @@ class Write implements JobComponent {
 			cb(result);
 		});
 		#else 
-		var result = new Result();
-		result.set("output", 0);
-		cb(result);
+		//http connect
+		var http = new Http('/pigpio/write');
+		http.onData = function(data) {
+			var result = new Result();
+			result.set("output", 0);
+			cb(result);
+		}
+		http.setParameter("pin", pin_no);
+		http.setParameter("value", value);
+		http.request(true);
     	#end
 	}
 

@@ -21,7 +21,6 @@
 <script src="/js/lib/lodash.min.js"></script>
 <script src="/js/lib/backbone-min.js"></script>
 <script src="/js/lib/junior.js"></script>
-<script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
 <script src="/js/dashboard.js"></script>
       
     <script>
@@ -42,7 +41,6 @@
         	var HomeView = Jr.View.extend({
         		  render: function(){
         			  var self = this;
-        	          var template = Hogan.compile($("#editor-template").html());
         	          $.get("/editor/list", {}, function(data) {
         	        	  editorList.set(data);
         	        	  var html = render_editorlist(editorList.toJSON());
@@ -50,7 +48,6 @@
 					      var template = ['<div class="content">',
 					                      ' <header class="junior-intro">',
 					                      '   <h1 class="junior-name"><i class="icon-umbrella"></i> Flower</h1>',
-					                      '   <p><%=account.email%></p>',
 					                      ' </header>',
 					                      ' <div id="create-btn" class="button-positive button-block show-more-button">Create</div>',
 					                      '<ul class="list divider-list">',
@@ -77,7 +74,8 @@
         	          }, "json");
         	          function render_editorlist(editorlist) {
         	        	  editorlist = _.map(editorlist, function(editor) {
-        	        		  return template.render(editor);
+        	        		  var key = editor.split(".")[0];
+        	        		  return '<li class="list-divider" data-cid='+key+'>'+key+'</li>';
         	        	  });
         	        	  return editorlist.join('');
         	          }
