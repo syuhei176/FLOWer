@@ -4457,24 +4457,6 @@ retro.view.ProjectView = function(projectController,exportController) {
 		});
 		_g.control_group.append(g);
 	});
-	Snap.load("images/save.svg",function(f) {
-		var g = f.select("g");
-		g.transform("translate(" + 200 + "," + 0 + ")");
-		g.click(function(e) {
-			var exported = _g.exportController.do_export();
-			console.log(exported);
-			_g.projectController.getEditor().save_all(exported);
-		});
-		_g.control_group.append(g);
-	});
-	Snap.load("images/download.svg",function(f) {
-		var g = f.select("g");
-		g.transform("translate(" + 300 + "," + 0 + ")");
-		g.click(function(e) {
-			js.Browser.window.open("/editor/download/" + _g.projectController.getEditor().getEditorKey(),"");
-		});
-		_g.control_group.append(g);
-	});
 };
 retro.view.ProjectView.__name__ = ["retro","view","ProjectView"];
 retro.view.ProjectView.prototype = {
@@ -4706,5 +4688,3 @@ function $hxExpose(src, path) {
 	o[parts[parts.length-1]] = src;
 }
 })();
-
-//@ sourceMappingURL=main.js.map

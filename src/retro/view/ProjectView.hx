@@ -49,24 +49,6 @@ class ProjectView{
         	});
         	this.control_group.append(g);
     	});
-    	Snap.load("images/save.svg", function (f) {
-    		var g:SnapElement = f.select("g");
-    		g.transform("translate("+200+","+0+")");
-        	g.click(function(e){
-        		var exported = this.exportController.do_export();
-        		trace(exported);
-        		this.projectController.getEditor().save_all(exported);
-        	});
-        	this.control_group.append(g);
-    	});
-    	Snap.load("images/download.svg", function (f) {
-    		var g:SnapElement = f.select("g");
-    		g.transform("translate("+300+","+0+")");
-        	g.click(function(e){
-        		js.Browser.window.open("/editor/download/"+this.projectController.getEditor().getEditorKey(), "");
-        	});
-        	this.control_group.append(g);
-    	});
 	}
 	
 	public function OnDiagramAdded(diagram:Diagram) {

@@ -3,9 +3,10 @@
 <html>
   <head>
     <title>エディタ</title>
+    <link rel='stylesheet' href='css/lib/w2ui-1.2.min.css' />
   </head>
   <body>
-  	<svg id="svg" width="1024px" height="2048px" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
+  	<svg id="svg" width="640px" height="1136px" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
   	
       <script src="lib/jquery-1.10.2.min.js"></script>
       <script src="lib/w2ui-1.2.min.js"></script>
@@ -15,7 +16,7 @@
       <script src="js/main.js"></script>
     <script>
         $(function () {
-        	$("#svg").attr("width", window.innerWidth - 30);
+        	//$("#svg").attr("width", window.innerWidth - 30);
           Main.codeiq();
           });
     </script>
