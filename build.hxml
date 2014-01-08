@@ -1,4 +1,4 @@
 -main Main
 -D virtual
--js exports/public/js/bin/main.js
+-js codeiq/js/main.js
 -cp src

@@ -13,5 +13,9 @@ class Main{
 	public static function init(editorkey, id_header){
 			Editor.create(editorkey, id_header);
 	}
+
+	public static function codeiq(){
+		Editor.createCodeIQ();
+	}
 }
 

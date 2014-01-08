@@ -42,7 +42,7 @@ class DiagramView{
 		this.count = 0;
 		
 		this.control_group = snap.group();
-		Snap.load("/images/create.svg", function (f) {
+		Snap.load("images/create.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+100+","+0+")");
         	g.click(function(e){

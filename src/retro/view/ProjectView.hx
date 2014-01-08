@@ -30,7 +30,7 @@ class ProjectView{
 		project.onDiagramAdded(this.OnDiagramAdded);
 		
 		this.control_group = snap.group();
-    	Snap.load("/images/play.svg", function (f) {
+    	Snap.load("images/play.svg", function (f) {
     		var g:SnapElement = f.select("svg");
         	g.click(function(e){
         		if(this.mode == RunMode.Stop) {
@@ -49,7 +49,7 @@ class ProjectView{
         	});
         	this.control_group.append(g);
     	});
-    	Snap.load("/images/save.svg", function (f) {
+    	Snap.load("images/save.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+200+","+0+")");
         	g.click(function(e){
@@ -59,7 +59,7 @@ class ProjectView{
         	});
         	this.control_group.append(g);
     	});
-    	Snap.load("/images/download.svg", function (f) {
+    	Snap.load("images/download.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+300+","+0+")");
         	g.click(function(e){
