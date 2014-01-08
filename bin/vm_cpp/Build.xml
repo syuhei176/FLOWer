@@ -1,0 +1,960 @@
+<xml>
+<files id="haxe">
+<compilerflag value="-Iinclude"/>
+  <file name="src/sys/io/FileInput.cpp">
+   <depend name="include/cpp/Lib.h"/>
+   <depend name="include/haxe/io/Eof.h"/>
+   <depend name="include/haxe/io/Error.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/sys/io/FileInput.h"/>
+  </file>
+  <file name="src/sys/io/File.cpp">
+   <depend name="include/cpp/Lib.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/sys/io/File.h"/>
+   <depend name="include/sys/io/FileInput.h"/>
+  </file>
+  <file name="src/retro/vm/Worker.cpp">
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/vm/Worker.h"/>
+  </file>
+  <file name="src/retro/vm/Runtime.cpp">
+   <depend name="include/Sys.h"/>
+   <depend name="include/haxe/Timer.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/core/ScriptReturnValue.h"/>
+   <depend name="include/retro/model/Diagram.h"/>
+   <depend name="include/retro/model/EntryJob.h"/>
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/model/Value.h"/>
+   <depend name="include/retro/model/ValueCarrier.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+   <depend name="include/retro/vm/Runtime.h"/>
+   <depend name="include/retro/vm/Worker.h"/>
+  </file>
+  <file name="src/retro/vm/Compiler.cpp">
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/retro/vm/Application.h"/>
+   <depend name="include/retro/vm/Compiler.h"/>
+  </file>
+  <file name="src/retro/vm/Application.cpp">
+   <depend name="include/retro/model/Diagram.h"/>
+   <depend name="include/retro/vm/Application.h"/>
+  </file>
+  <file name="src/retro/pub/RetroTypeChecker.cpp">
+   <depend name="include/retro/pub/RetroType.h"/>
+   <depend name="include/retro/pub/RetroTypeChecker.h"/>
+  </file>
+  <file name="src/retro/pub/RetroType.cpp">
+   <depend name="include/retro/core/FlowerClass.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/pub/Point2D.cpp">
+   <depend name="include/retro/pub/Point2D.h"/>
+  </file>
+  <file name="src/retro/pub/IDGenerator.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/retro/pub/IDGenerator.h"/>
+  </file>
+  <file name="src/retro/model/ValueCarrier.cpp">
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/model/Value.h"/>
+   <depend name="include/retro/model/ValueCarrier.h"/>
+  </file>
+  <file name="src/retro/model/Value.cpp">
+   <depend name="include/retro/model/Value.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/model/SymbolicLink.cpp">
+   <depend name="include/retro/core/Input.h"/>
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Output.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/model/SymbolicLink.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+   <depend name="include/retro/vm/Worker.h"/>
+  </file>
+  <file name="src/retro/model/Project.cpp">
+   <depend name="include/retro/model/Diagram.h"/>
+   <depend name="include/retro/model/Project.h"/>
+  </file>
+  <file name="src/retro/model/OutputPort.cpp">
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/model/Logic.cpp">
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/Logic.h"/>
+  </file>
+  <file name="src/retro/model/InputPort.cpp">
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/model/Value.h"/>
+   <depend name="include/retro/model/ValueCarrier.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/model/Port.cpp">
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/model/EntryJob.cpp">
+   <depend name="include/retro/model/EntryJob.h"/>
+   <depend name="include/retro/model/Job.h"/>
+  </file>
+  <file name="src/retro/model/Job.cpp">
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/model/Value.h"/>
+   <depend name="include/retro/pub/Point2D.h"/>
+   <depend name="include/retro/vm/Worker.h"/>
+  </file>
+  <file name="src/retro/model/Diagram.cpp">
+   <depend name="include/retro/model/Diagram.h"/>
+   <depend name="include/retro/model/EntryJob.h"/>
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/model/ValueCarrier.h"/>
+  </file>
+  <file name="src/retro/library/system/Scan.cpp">
+   <depend name="include/Sys.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/core/VirtualDevice.h"/>
+   <depend name="include/retro/library/system/Scan.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/system/Print.cpp">
+   <depend name="include/Sys.h"/>
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/core/VirtualDevice.h"/>
+   <depend name="include/retro/library/system/Print.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/string/Substr.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/string/Substr.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/string/Split.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/string/Split.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/string/Length.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/string/Length.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/string/LastIndexOf.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/string/LastIndexOf.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/string/IndexOf.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/string/IndexOf.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/string/ChatAt.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/string/ChatAt.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/sphero/SetHeading.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/sphero/SetHeading.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/sphero/SetBackLED.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/sphero/SetBackLED.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/sphero/Roll.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/sphero/Roll.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/point2d/Sub.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/point2d/Sub.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/point2d/Distance.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/point2d/Distance.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/point2d/Create.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/point2d/Create.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/point2d/Add.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/point2d/Add.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/pigpio/Write.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/pigpio/Write.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Sqrt.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Sqrt.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Sin.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Sin.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Random.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Random.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Pow.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Pow.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Min.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Min.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Max.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Max.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Log.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Log.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Floor.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Floor.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Cos.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Cos.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Atan2.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Atan2.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Atan.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Atan.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Asin.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Asin.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Acos.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Acos.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/math/Abs.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/math/Abs.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Remove.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Remove.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Push.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Push.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Pop.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Pop.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Length.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Length.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Last.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Last.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Join.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Join.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/IsEmpty.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/IsEmpty.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/First.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/First.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Clear.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Clear.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/list/Add.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/list/Add.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/line2d/Distance.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/line2d/Distance.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/line2d/Create.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/line2d/Create.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/http/Post.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/http/Post.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/http/Get.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/http/Get.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/data/Stack.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/data/Stack.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Transistor.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Transistor.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Times.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Times.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Through.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Through.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Remainder.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Remainder.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Or.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Or.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Not.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Not.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Filter.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Filter.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Drop.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Drop.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Compare.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Compare.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/And.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/And.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/core/Add.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/core/Add.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/array/Push.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/array/Push.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/array/Pop.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/array/Pop.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/array/Length.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/array/Length.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/array/Get.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/array/Get.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/library/array/Create.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/library/array/Create.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/core/VirtualDevice.cpp">
+   <depend name="include/retro/core/VirtualDevice.h"/>
+  </file>
+  <file name="src/retro/core/ScriptReturnValue.cpp">
+   <depend name="include/retro/core/ScriptReturnValue.h"/>
+  </file>
+  <file name="src/retro/core/Result.cpp">
+   <depend name="include/retro/core/Result.h"/>
+   <depend name="include/retro/core/ScriptReturnValue.h"/>
+  </file>
+  <file name="src/retro/core/Param.cpp">
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/model/Value.h"/>
+  </file>
+  <file name="src/retro/core/Params.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/retro/core/Param.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/model/Value.h"/>
+  </file>
+  <file name="src/retro/core/Output.cpp">
+   <depend name="include/retro/core/Output.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/core/Outputs.cpp">
+   <depend name="include/retro/core/Output.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/core/JobComponent.cpp">
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/Outputs.h"/>
+   <depend name="include/retro/core/Params.h"/>
+   <depend name="include/retro/core/Result.h"/>
+  </file>
+  <file name="src/retro/core/Inputs.cpp">
+   <depend name="include/retro/core/Input.h"/>
+   <depend name="include/retro/core/Inputs.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/core/Input.cpp">
+   <depend name="include/retro/core/Input.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/retro/core/FlowerClass.cpp">
+   <depend name="include/retro/core/FlowerClass.h"/>
+  </file>
+  <file name="src/retro/controller/ImportController.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/retro/controller/ImportController.h"/>
+   <depend name="include/retro/core/JobComponent.h"/>
+   <depend name="include/retro/core/VirtualDevice.h"/>
+   <depend name="include/retro/library/array/Create.h"/>
+   <depend name="include/retro/library/array/Get.h"/>
+   <depend name="include/retro/library/array/Length.h"/>
+   <depend name="include/retro/library/array/Pop.h"/>
+   <depend name="include/retro/library/array/Push.h"/>
+   <depend name="include/retro/library/core/Add.h"/>
+   <depend name="include/retro/library/core/And.h"/>
+   <depend name="include/retro/library/core/Compare.h"/>
+   <depend name="include/retro/library/core/Drop.h"/>
+   <depend name="include/retro/library/core/Filter.h"/>
+   <depend name="include/retro/library/core/Not.h"/>
+   <depend name="include/retro/library/core/Or.h"/>
+   <depend name="include/retro/library/core/Remainder.h"/>
+   <depend name="include/retro/library/core/Through.h"/>
+   <depend name="include/retro/library/core/Times.h"/>
+   <depend name="include/retro/library/core/Transistor.h"/>
+   <depend name="include/retro/library/data/Stack.h"/>
+   <depend name="include/retro/library/http/Get.h"/>
+   <depend name="include/retro/library/http/Post.h"/>
+   <depend name="include/retro/library/line2d/Create.h"/>
+   <depend name="include/retro/library/line2d/Distance.h"/>
+   <depend name="include/retro/library/list/Add.h"/>
+   <depend name="include/retro/library/list/Clear.h"/>
+   <depend name="include/retro/library/list/First.h"/>
+   <depend name="include/retro/library/list/IsEmpty.h"/>
+   <depend name="include/retro/library/list/Join.h"/>
+   <depend name="include/retro/library/list/Last.h"/>
+   <depend name="include/retro/library/list/Length.h"/>
+   <depend name="include/retro/library/list/Pop.h"/>
+   <depend name="include/retro/library/list/Push.h"/>
+   <depend name="include/retro/library/list/Remove.h"/>
+   <depend name="include/retro/library/math/Abs.h"/>
+   <depend name="include/retro/library/math/Acos.h"/>
+   <depend name="include/retro/library/math/Asin.h"/>
+   <depend name="include/retro/library/math/Atan.h"/>
+   <depend name="include/retro/library/math/Atan2.h"/>
+   <depend name="include/retro/library/math/Cos.h"/>
+   <depend name="include/retro/library/math/Floor.h"/>
+   <depend name="include/retro/library/math/Log.h"/>
+   <depend name="include/retro/library/math/Max.h"/>
+   <depend name="include/retro/library/math/Min.h"/>
+   <depend name="include/retro/library/math/Pow.h"/>
+   <depend name="include/retro/library/math/Random.h"/>
+   <depend name="include/retro/library/math/Sin.h"/>
+   <depend name="include/retro/library/math/Sqrt.h"/>
+   <depend name="include/retro/library/pigpio/Write.h"/>
+   <depend name="include/retro/library/point2d/Add.h"/>
+   <depend name="include/retro/library/point2d/Create.h"/>
+   <depend name="include/retro/library/point2d/Distance.h"/>
+   <depend name="include/retro/library/point2d/Sub.h"/>
+   <depend name="include/retro/library/sphero/Roll.h"/>
+   <depend name="include/retro/library/sphero/SetBackLED.h"/>
+   <depend name="include/retro/library/sphero/SetHeading.h"/>
+   <depend name="include/retro/library/string/ChatAt.h"/>
+   <depend name="include/retro/library/string/IndexOf.h"/>
+   <depend name="include/retro/library/string/LastIndexOf.h"/>
+   <depend name="include/retro/library/string/Length.h"/>
+   <depend name="include/retro/library/string/Split.h"/>
+   <depend name="include/retro/library/string/Substr.h"/>
+   <depend name="include/retro/library/system/Print.h"/>
+   <depend name="include/retro/library/system/Scan.h"/>
+   <depend name="include/retro/model/Diagram.h"/>
+   <depend name="include/retro/model/EntryJob.h"/>
+   <depend name="include/retro/model/InputPort.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/OutputPort.h"/>
+   <depend name="include/retro/model/Port.h"/>
+   <depend name="include/retro/model/Project.h"/>
+   <depend name="include/retro/model/SymbolicLink.h"/>
+   <depend name="include/retro/model/Value.h"/>
+   <depend name="include/retro/pub/RetroType.h"/>
+  </file>
+  <file name="src/haxe/io/Input.cpp">
+   <depend name="include/StringBuf.h"/>
+   <depend name="include/haxe/io/Eof.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+  </file>
+  <file name="src/haxe/io/Error.cpp">
+   <depend name="include/haxe/io/Error.h"/>
+  </file>
+  <file name="src/haxe/io/Eof.cpp">
+   <depend name="include/haxe/io/Eof.h"/>
+  </file>
+  <file name="src/haxe/Timer.cpp">
+   <depend name="include/haxe/Timer.h"/>
+  </file>
+  <file name="src/haxe/Log.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/haxe/Log.h"/>
+  </file>
+  <file name="src/haxe/Json.cpp">
+   <depend name="include/Std.h"/>
+   <depend name="include/StringBuf.h"/>
+   <depend name="include/haxe/Json.h"/>
+  </file>
+  <file name="src/VMMain_cpp.cpp">
+   <depend name="include/Sys.h"/>
+   <depend name="include/VMMain_cpp.h"/>
+   <depend name="include/haxe/Json.h"/>
+   <depend name="include/haxe/Log.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/retro/controller/ImportController.h"/>
+   <depend name="include/retro/core/VirtualDevice.h"/>
+   <depend name="include/retro/model/Diagram.h"/>
+   <depend name="include/retro/model/EntryJob.h"/>
+   <depend name="include/retro/model/Job.h"/>
+   <depend name="include/retro/model/Project.h"/>
+   <depend name="include/retro/vm/Runtime.h"/>
+   <depend name="include/sys/io/File.h"/>
+   <depend name="include/sys/io/FileInput.h"/>
+  </file>
+  <file name="src/Sys.cpp">
+   <depend name="include/Sys.h"/>
+   <depend name="include/cpp/Lib.h"/>
+   <depend name="include/haxe/io/Input.h"/>
+   <depend name="include/sys/io/FileInput.h"/>
+  </file>
+  <file name="src/cpp/Lib.cpp">
+   <depend name="include/cpp/Lib.h"/>
+  </file>
+  <file name="src/StringBuf.cpp">
+   <depend name="include/StringBuf.h"/>
+  </file>
+  <file name="src/Std.cpp">
+   <depend name="include/Std.h"/>
+  </file>
+  <file name="src/__boot__.cpp">
+  </file>
+  <file name="src/__files__.cpp">
+  </file>
+  <file name="src/__resources__.cpp">
+  </file>
+</files>
+<files id="__lib__">
+<compilerflag value="-Iinclude"/>
+  <file name="src/__lib__.cpp">
+   <depend name="include/VMMain_cpp.h"/>
+  </file>
+</files>
+<files id="__main__">
+<compilerflag value="-Iinclude"/>
+  <file name="src/__main__.cpp">
+   <depend name="include/VMMain_cpp.h"/>
+  </file>
+</files>
+<set name="HAXE_OUTPUT" value="VMMain_cpp" />
+<include name="${HXCPP}/build-tool/BuildCommon.xml"/>
+</xml>
