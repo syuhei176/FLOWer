@@ -47,10 +47,10 @@ class DiagramView{
     		g.transform("translate("+100+","+0+")");
         	g.click(function(e){
         		var createJobDialog = new CreateJobDialog();
-				createJobDialog.on(function(pkg, cmp) {
+				createJobDialog.on(function(pkg, cmp, x, y) {
 					var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
 					var job = this.diagramController.addSymbolicLink(jobComponent);
-					job.setPos(100, 100);
+					job.setPos(x, y);
 				});
 				createJobDialog.open();
         	});

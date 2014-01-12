@@ -1,24 +1,29 @@
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>エディタ</title>
-    <link rel='stylesheet' href='css/lib/w2ui-1.2.min.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=yes" />
+    <title>editor</title>
+    <link rel="stylesheet" type="text/css" href="lib/style.css">
   </head>
-  <body>
-  	<svg id="svg" width="640px" height="1136px" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
-  	
-      <script src="lib/jquery-1.10.2.min.js"></script>
-      <script src="lib/w2ui-1.2.min.js"></script>
-      <script src="lib/snap.svg-min.js"></script>
-      
-      <script src="js/dialog.js"></script>
-      <script src="js/main.js"></script>
-    <script>
-        $(function () {
-        	//$("#svg").attr("width", window.innerWidth - 30);
-          Main.codeiq();
-          });
-    </script>
+  <body class="pure-skin-flower">
+
+   <svg id="svg" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
+  
+   <div id="test" class="modal">
+      <ul id="joblist">
+      </ul>
+  </div>
+
+  <script src="lib/jquery-1.10.2.min.js"></script>
+  <script src="lib/jquery.leanModal.min.js"></script>
+  <script src="lib/snap.svg-min.js"></script>
+
+  <script src="js/dialog.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $(function () {
+      Main.codeiq();
+    });
+  </script>
   </body>
 </html>

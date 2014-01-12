@@ -12,42 +12,38 @@
 			"snapelement":["Translate","Fill",],
 			"jquery":["Find","Html",],
 			"system":["Print","Scan"]};
-	function CreateJobDialog() {
-		this.listeners = [];
+
+	var modalMemu = $("#joblist");
+
+	for( pkg in packages ){
+		var pkgUl = $('<ul class="sub_menu"/>');
+		$(modalMemu).append($("<li/>").append($('<div class="main_menu">'+pkg+'</div>')).append(pkgUl));
+		for( job in packages[pkg] ){
+			$(pkgUl).append('<a><li class="item" pkg="' + pkg + '">'+packages[pkg][job]+'</li></a>');
+		}
 	}
+
+	$('.sub_menu').hide();
+    $('.main_menu').click(function(e){
+        $('+ul.sub_menu',this).slideToggle(100);
+    });
+
+    var listeners = [];
+    $(".item").click(function(e){
+		listeners[0]($(this).attr("pkg"), $(this).text(),e.pageX, e.pageY);
+	});
+
+	function CreateJobDialog() {
+	}
+
 	CreateJobDialog.prototype.on = function(listener) {
-		this.listeners[0] = listener;
+		listeners[0] = listener;
 	}
 	CreateJobDialog.prototype.open = function() {
-		var self = this;
-		var pkg_hrml = [];
-		for(var key in packages) {
-			pkg_hrml.push("<option>"+key+"</option>")
-		}
-		var style = ["width: 180px;",
-		             "height: 50px;"].join('');
-		w2popup.open({
-			title   : 'new job',
-			body    : ['<select id="pkg-name" style="'+style+'">'+pkg_hrml.join('')+'</select>',
-			           '<select id="cmp-name" style="'+style+'"><option>Through</option></select>'],
-			buttons : '<button id="createjob-btn">OK</button>'
-		});
-		$("#pkg-name").change(function() {
-			self.get_component_names($("#pkg-name").val());
-		})
-		$('#createjob-btn').click(function() {
-			self.listeners[0]($("#pkg-name").val(), $("#cmp-name").val());
-			w2popup.close();
-		});
-		self.get_component_names("core");
+		var modal =	$('<a href="#test"></a>');
+		modal.leanModal({closeButton:".sub_menu"});
+		$(modal).click();
 	}
-	CreateJobDialog.prototype.get_component_names = function(pkg_name) {
-		var cmps = packages[pkg_name];
-		var cmps_html = [];
-		for(var i=0;i < cmps.length;i++) {
-			cmps_html.push("<option>" + cmps[i] + "</option>");
-		}
-		$("#cmp-name").html(cmps_html.join(''));
-	}
+
 	window.CreateJobDialog = CreateJobDialog;
 }())
