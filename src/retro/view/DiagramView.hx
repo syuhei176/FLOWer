@@ -32,6 +32,7 @@ class DiagramView{
 		var diagram = this.diagramController.getDiagram();
 		//モデルの変更を監視
 		diagram.onJobAdded(this.OnJobAdded);
+		diagram.onJobRemoved(this.OnJobRemoved);
 		diagram.onValueCarrierAdded(this.OnValueCarrierAdded);
 		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
 		diagram.onValueCarrierCleared(this.OnValueCarrierCleared);
@@ -54,6 +55,12 @@ class DiagramView{
 				});
 				createJobDialog.open();
         	});
+        	this.control_group.append(g);
+    	});
+		Snap.load("images/create.svg", function (f) {
+    		var g:SnapElement = f.select("g");
+    		var right = js.Browser.document.body.clientWidth;
+    		g.transform("translate("+(right - 100)+","+0+")");
         	this.control_group.append(g);
     	});
 	}
@@ -95,6 +102,16 @@ class DiagramView{
 			jobView.OnAddOutputPortView(op);
 		}
 		this.jobViews.push(jobView);
+	}
+	
+	public function OnJobRemoved(job:Job) {
+		for(jobView in this.jobViews) {
+			if(jobView.jobController.getJob() == job) {
+				jobView.removeSelf();
+				this.jobViews.remove(jobView);
+				return;
+			}
+		}
 	}
 	
 	public function OnValueCarrierAdded(valueCarrier:ValueCarrier) {

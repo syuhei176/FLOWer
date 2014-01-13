@@ -104,6 +104,11 @@ class JobView{
     		this.refresh();
 			//this.diagramView.start_step();
     		this.jobController.changePos(this.pos.getX(), this.pos.getY());
+    		var right = js.Browser.document.body.clientWidth;
+    		trace(this.pos.getX(), right);
+    		if(right - 150 < this.pos.getX() && this.pos.getX() < right && this.pos.getY() < 150) {
+	    		this.diagramController.removeJob(this.jobController.getJob());
+    		}
     	});
 		
 		this.group.append(this.graphic);
@@ -127,6 +132,10 @@ class JobView{
     		g.transform("translate("+-30+","+-40+")");
     		this.config_graphic = g;
     	});
+	}
+	
+	public function removeSelf() {
+		this.group.remove();
 	}
 	
 	private function visible_config_btn() {

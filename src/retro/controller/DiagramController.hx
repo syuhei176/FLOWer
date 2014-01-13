@@ -129,7 +129,7 @@ this.modules.push(new retro.library.jquery.Html());
 		diagram.addJob(job);
 	}
 	public function removeJob(job:Job) {
-		diagram.getJobs().remove(job);
+		diagram.removeJob(job);
 	}
 	
 	public function setRubberbandStart(port:OutputPort) {
