@@ -43,6 +43,16 @@ class Diagram{
 	
 	public function removeJob(job:Job) {
 		this.fireOnJobRemoved(job);
+		for(inputPort in job.getInputPorts()) {
+			for(srcPort in inputPort.connection) {
+				srcPort.disconnectToInputPort(inputPort);
+			}
+		}
+		for(outputPort in job.getOutputPorts()) {
+			for(destPort in outputPort.connection) {
+				outputPort.disconnectToInputPort(destPort);
+			}
+		}
 		this.jobs.remove(job);
 	}
 	

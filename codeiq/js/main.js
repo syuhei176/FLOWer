@@ -486,6 +486,11 @@ haxe.Json.prototype = {
 	}
 	,__class__: haxe.Json
 }
+haxe.Log = function() { }
+haxe.Log.__name__ = ["haxe","Log"];
+haxe.Log.trace = function(v,infos) {
+	js.Boot.__trace(v,infos);
+}
 haxe.Timer = function(time_ms) {
 	var me = this;
 	this.id = setInterval(function() {
@@ -495,7 +500,7 @@ haxe.Timer = function(time_ms) {
 haxe.Timer.__name__ = ["haxe","Timer"];
 haxe.Timer.prototype = {
 	run: function() {
-		console.log("run");
+		haxe.Log.trace("run",{ fileName : "Timer.hx", lineNumber : 98, className : "haxe.Timer", methodName : "run"});
 	}
 	,stop: function() {
 		if(this.id == null) return;
@@ -524,6 +529,23 @@ haxe.ds.StringMap.prototype = {
 var js = {}
 js.Boot = function() { }
 js.Boot.__name__ = ["js","Boot"];
+js.Boot.__unhtml = function(s) {
+	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
+}
+js.Boot.__trace = function(v,i) {
+	var msg = i != null?i.fileName + ":" + i.lineNumber + ": ":"";
+	msg += js.Boot.__string_rec(v,"");
+	if(i != null && i.customParams != null) {
+		var _g = 0, _g1 = i.customParams;
+		while(_g < _g1.length) {
+			var v1 = _g1[_g];
+			++_g;
+			msg += "," + js.Boot.__string_rec(v1,"");
+		}
+	}
+	var d;
+	if(typeof(document) != "undefined" && (d = document.getElementById("haxe:trace")) != null) d.innerHTML += js.Boot.__unhtml(msg) + "<br/>"; else if(typeof(console) != "undefined" && console.log != null) console.log(msg);
+}
 js.Boot.__string_rec = function(o,s) {
 	if(o == null) return "null";
 	if(s.length >= 5) return "<...>";
@@ -742,7 +764,7 @@ retro.controller.DiagramController.prototype = {
 		this.start = port;
 	}
 	,removeJob: function(job) {
-		HxOverrides.remove(this.diagram.getJobs(),job);
+		this.diagram.removeJob(job);
 	}
 	,addLogic: function(id) {
 		var job = new retro.model.Logic(id);
@@ -3005,7 +3027,7 @@ retro.library.system.Print.prototype = {
 			return;
 		}
 		this.virtualDevice.getConsoleDevice().print(Std.string(input.getValue()) + "");
-		console.log(input.getValue());
+		haxe.Log.trace(input.getValue(),{ fileName : "Print.hx", lineNumber : 38, className : "retro.library.system.Print", methodName : "onInputRecieved"});
 		var result = new retro.core.Result();
 		result.set("output",input.getValue());
 		cb(result);
@@ -3156,6 +3178,28 @@ retro.model.Diagram.prototype = {
 	}
 	,removeJob: function(job) {
 		this.fireOnJobRemoved(job);
+		var _g = 0, _g1 = job.getInputPorts();
+		while(_g < _g1.length) {
+			var inputPort = _g1[_g];
+			++_g;
+			var _g2 = 0, _g3 = inputPort.connection;
+			while(_g2 < _g3.length) {
+				var srcPort = _g3[_g2];
+				++_g2;
+				srcPort.disconnectToInputPort(inputPort);
+			}
+		}
+		var _g = 0, _g1 = job.getOutputPorts();
+		while(_g < _g1.length) {
+			var outputPort = _g1[_g];
+			++_g;
+			var _g2 = 0, _g3 = outputPort.connection;
+			while(_g2 < _g3.length) {
+				var destPort = _g3[_g2];
+				++_g2;
+				outputPort.disconnectToInputPort(destPort);
+			}
+		}
 		HxOverrides.remove(this.jobs,job);
 	}
 	,addJob: function(job) {
@@ -3348,6 +3392,7 @@ retro.model.Port.prototype = {
 }
 retro.model.InputPort = function(parent,type,name) {
 	retro.model.Port.call(this,parent,type,name);
+	this.connection = new Array();
 	this.onSetValueListeners = new Array();
 	this.onUseValueListeners = new Array();
 	this.onSetConstantValueListeners = new Array();
@@ -3473,10 +3518,12 @@ retro.model.OutputPort.prototype = $extend(retro.model.Port.prototype,{
 	}
 	,disconnectToInputPort: function(port) {
 		this.fireOnDisconnectedListeners(this,port);
+		HxOverrides.remove(port.connection,this);
 		HxOverrides.remove(this.connection,port);
 	}
 	,connectToInputPort: function(port) {
 		this.fireOnConnectedListeners(this,port);
+		port.connection.push(this);
 		this.connection.push(port);
 	}
 	,getConnections: function() {
@@ -3854,6 +3901,7 @@ retro.view.DiagramView = function(diagramController) {
 	this.diagramController = diagramController;
 	var diagram = this.diagramController.getDiagram();
 	diagram.onJobAdded($bind(this,this.OnJobAdded));
+	diagram.onJobRemoved($bind(this,this.OnJobRemoved));
 	diagram.onValueCarrierAdded($bind(this,this.OnValueCarrierAdded));
 	diagram.onValueCarrierRemoved($bind(this,this.OnValueCarrierRemoved));
 	diagram.onValueCarrierCleared($bind(this,this.OnValueCarrierCleared));
@@ -3873,6 +3921,12 @@ retro.view.DiagramView = function(diagramController) {
 			});
 			createJobDialog.open();
 		});
+		_g.control_group.append(g);
+	});
+	Snap.load("images/create.svg",function(f) {
+		var g = f.select("g");
+		var right = js.Browser.document.body.clientWidth;
+		g.transform("translate(" + (right - 100) + "," + 0 + ")");
 		_g.control_group.append(g);
 	});
 };
@@ -3923,6 +3977,18 @@ retro.view.DiagramView.prototype = {
 	}
 	,OnValueCarrierAdded: function(valueCarrier) {
 		this.valueCarrierViews.push(new retro.view.ValueCarrierView(this.diagramController.getEditor(),valueCarrier,this));
+	}
+	,OnJobRemoved: function(job) {
+		var _g = 0, _g1 = this.jobViews;
+		while(_g < _g1.length) {
+			var jobView = _g1[_g];
+			++_g;
+			if(jobView.jobController.getJob() == job) {
+				jobView.removeSelf();
+				HxOverrides.remove(this.jobViews,jobView);
+				return;
+			}
+		}
 	}
 	,OnJobAdded: function(job) {
 		var jobView = new retro.view.JobView(this.diagramController,new retro.controller.JobController(this.diagramController.getEditor(),job),this);
@@ -4131,6 +4197,9 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	},function(x,y) {
 		_g.refresh();
 		_g.jobController.changePos(_g.pos.getX(),_g.pos.getY());
+		var right = js.Browser.document.body.clientWidth;
+		haxe.Log.trace(_g.pos.getX(),{ fileName : "JobView.hx", lineNumber : 108, className : "retro.view.JobView", methodName : "new", customParams : [right]});
+		if(right - 150 < _g.pos.getX() && _g.pos.getX() < right && _g.pos.getY() < 150) _g.diagramController.removeJob(_g.jobController.getJob());
 	});
 	this.group.append(this.graphic);
 	this.group.append(text);
@@ -4302,6 +4371,9 @@ retro.view.JobView.prototype = {
 		};
 		this.config_graphic.attr({ visibility : "visible"});
 	}
+	,removeSelf: function() {
+		this.group.remove();
+	}
 	,__class__: retro.view.JobView
 }
 retro.view.OutputPortView = function(diagramController,jobview,port,snap,thema) {
@@ -4394,7 +4466,7 @@ retro.view.PathView.prototype = {
 	}
 	,onDisconnect: function(o,i) {
 		if(this.target.port != i) return;
-		this.graphic.remove();
+		this.group.remove();
 		HxOverrides.remove(this.source.views,this);
 		HxOverrides.remove(this.target.views,this);
 	}
@@ -4680,6 +4752,7 @@ if(typeof(JSON) != "undefined") haxe.Json = JSON;
 var q = window.jQuery;
 js.JQuery = q;
 js.Browser.window = typeof window != "undefined" ? window : null;
+js.Browser.document = typeof window != "undefined" ? window.document : null;
 Main.main();
 function $hxExpose(src, path) {
 	var o = typeof window != "undefined" ? window : exports;
