@@ -2636,13 +2636,11 @@ retro.library.pigpio.Read.prototype = {
 	}
 	,onInputRecieved: function(params,cb) {
 		var pin = params.get("pin");
-		var valueParam = params.get("value");
-		if(pin.isEmpty() || valueParam.isEmpty()) {
+		if(pin.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var pin_no = pin.getValue();
-		var value = valueParam.getValue();
 		var http = new haxe.Http("/pigpio/read");
 		http.onData = function(data) {
 			var result = new retro.core.Result();

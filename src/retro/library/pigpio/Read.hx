@@ -26,13 +26,11 @@ class Read implements JobComponent {
 	
 	public function onInputRecieved(params:Params, cb) {
 		var pin = params.get("pin");
-		var valueParam = params.get("value");
-		if(pin.isEmpty() || valueParam.isEmpty()) {
+		if(pin.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var pin_no = pin.getValue();
-		var value = valueParam.getValue();
 		#if nodejs
 		Pigpio.open(pin_no, "input", function(err) {
 			Pigpio.read(pin_no, function(err, value) {
