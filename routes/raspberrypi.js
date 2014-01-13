@@ -6,3 +6,10 @@ module.exports.write = function(req, res){
 	raspberrypi.write(pin, value);
 	res.send("0");
 }
+
+module.exports.write = function(req, res){
+	var pin = Number(req.param('pin') || 16);
+	raspberrypi.read(pin, function(err, value) {
+		res.send(JSON.stringify(value));
+	});
+}

@@ -7,3 +7,12 @@ module.exports.write = function(pin, value){
 	    });
 	});
 }
+
+module.exports.read = function(pin, cb){
+	gpio.open(pin, "input", function(err) {
+	    gpio.read(pin, function(err, value) {
+	    	cb(err, value);
+	        gpio.close(pin);
+	    });
+	});
+}

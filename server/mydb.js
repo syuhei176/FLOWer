@@ -1,11 +1,12 @@
 var fs = require('fs');
+var config = require('../config');
 
 module.exports = {
 	list : list,
 	save : save,
 	load : load
 }
-var dir = "./data/";
+var dir = config.db_dir;//"./data/";
 
 function list(cb) {
 	fs.readdir(dir, function(err, files){

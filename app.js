@@ -51,6 +51,7 @@ app.post('/editor/delete', routes_editor.delete_project);
 app.post('/editor/copy', routes_editor.copy_project);
 
 app.post('/pigpio/write', routes_raspberrypi.write);
+app.post('/pigpio/read', routes_raspberrypi.read);
 
 //Run flower language on Node.JS
 app.get('/run/:key', function(req, res) {
