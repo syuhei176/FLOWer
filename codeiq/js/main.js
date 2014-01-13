@@ -4369,12 +4369,15 @@ retro.view.PathView = function(diagramController,diagramView,source_port,target_
 	this.source.port.onDisconnected($bind(this,this.onDisconnect));
 	this.group = this.snap.group();
 	this.graphic = this.snap.line(0,0,0,0);
+	this.coll = this.snap.line(0,0,0,0);
 	this.graphic.attr({ stroke : thema.path_color, strokeWidth : 7});
+	this.coll.attr({ stroke : "#a0a000", 'stroke-opacity' : 0, strokeWidth : 30});
 	diagramView.path_group.append(this.group);
-	this.graphic.mousedown(function(e,x,y) {
+	this.coll.mousedown(function(e,x,y) {
 		_g.visible_remove_btn();
 	});
 	this.group.append(this.graphic);
+	this.group.append(this.coll);
 	this.refresh();
 	this.init_remove_btn();
 };
@@ -4387,6 +4390,7 @@ retro.view.PathView.prototype = {
 		xx = xx / len;
 		yy = yy / len;
 		this.graphic.attr({ x1 : this.source.getPos().getX() + xx * 20, y1 : this.source.getPos().getY() + yy * 20, x2 : this.target.getPos().getX() - xx * 20, y2 : this.target.getPos().getY() - yy * 20});
+		this.coll.attr({ x1 : this.source.getPos().getX() + xx * 20, y1 : this.source.getPos().getY() + yy * 20, x2 : this.target.getPos().getX() - xx * 20, y2 : this.target.getPos().getY() - yy * 20});
 	}
 	,onDisconnect: function(o,i) {
 		if(this.target.port != i) return;
