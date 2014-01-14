@@ -77,19 +77,19 @@ class InputPortView extends PortView{
 	}
 	
 	public function OnSetConstant(v) {
-		this.constantValueGraphic = this.snap.circle(0, 0, 18);
+		this.constantValueGraphic = this.snap.group();
+		var graphic = this.snap.circle(0, 0, 18);
 		var text = this.snap.text(-5, 5, haxe.Json.stringify(v.value));
-		this.constantValueGraphic.attr({
+		graphic.attr({
 				fill: this.thema.contrast1_color,
 				stroke: this.thema.contrast2_color,
 				strokeWidth: 4
 				});
+		this.constantValueGraphic.append(graphic);
+		this.constantValueGraphic.append(text);
 		this.group.append(this.constantValueGraphic);
-		this.group.append(text);
-		this.constantValueGraphic.drag(function(dx, dy, x, y) {
-			if(dx + dy > 3) {
-				this.port.removeConstant();
-			}
+		graphic.click(function(e) {
+			this.port.removeConstant();
 		});
 	}
 	
