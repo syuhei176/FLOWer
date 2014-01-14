@@ -4204,7 +4204,7 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	this.group.append(this.graphic);
 	this.group.append(text);
 	this.group.append(this.coll);
-	Snap.load("/images/config.svg",function(f) {
+	Snap.load("images/config.svg",function(f) {
 		var g = f.select("g");
 		_g.group.append(g);
 		g.mouseup(function(e,x,y) {
@@ -4488,7 +4488,7 @@ retro.view.PathView.prototype = {
 	}
 	,init_remove_btn: function() {
 		var _g = this;
-		Snap.load("/images/remove.svg",function(f) {
+		Snap.load("images/remove.svg",function(f) {
 			var g = f.select("g");
 			_g.group.append(g);
 			g.mousedown(function(e,x,y) {

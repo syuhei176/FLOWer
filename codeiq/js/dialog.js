@@ -1,4 +1,5 @@
 (function(){
+
 	var packages = {"core":["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor"],
 			"array":["Create","Length","Push","Pop","Shift","Get"],
 			"data":["Stack"],
@@ -11,15 +12,16 @@
 			"snapsvg":["Rect","Circle",],
 			"snapelement":["Translate","Fill",],
 			"jquery":["Find","Html",],
-			"system":["Print","Scan"]};
+			"system":["Print","Scan"],
+			"" : []};
 
 	var modalMemu = $("#joblist");
 
 	for( pkg in packages ){
-		var pkgUl = $('<ul class="sub_menu"/>');
-		$(modalMemu).append($("<li/>").append($('<div class="main_menu">'+pkg+'</div>')).append(pkgUl));
+		var pkgUl = $('<ul/>').addClass("sub_menu");
+		$(modalMemu).append($("<li/>").append($('<div/>').addClass("main_menu").text(pkg)).append(pkgUl));
 		for( job in packages[pkg] ){
-			$(pkgUl).append('<a><li class="item" pkg="' + pkg + '">'+packages[pkg][job]+'</li></a>');
+			$(pkgUl).append($('<a/>').append($('<li pkg="' + pkg + '"/>').addClass('item').text(packages[pkg][job])));
 		}
 	}
 
@@ -28,10 +30,12 @@
         $('+ul.sub_menu',this).slideToggle(100);
     });
 
+
     var listeners = [];
     $(".item").click(function(e){
-		listeners[0]($(this).attr("pkg"), $(this).text(),e.pageX, e.pageY);
+		listeners[0]($(this).attr("pkg"), $(this).text(), 100, 100);
 	});
+
 
 	function CreateJobDialog() {
 	}
@@ -40,7 +44,7 @@
 		listeners[0] = listener;
 	}
 	CreateJobDialog.prototype.open = function() {
-		var modal =	$('<a href="#test"></a>');
+		var modal =	$('<a href="#jobdiv"></a>');
 		modal.leanModal({closeButton:".sub_menu"});
 		$(modal).click();
 	}

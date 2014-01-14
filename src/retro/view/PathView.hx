@@ -71,7 +71,7 @@ class PathView{
 	}
 	
 	private function init_remove_btn() {
-    	Snap.load("/images/remove.svg", function (f) {
+    	Snap.load("images/remove.svg", function (f) {
     		var g = f.select("g");
         	this.group.append(g);
         	g.mousedown(function(e, x, y) {

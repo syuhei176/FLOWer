@@ -3,20 +3,19 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=0.7, user-scalable=yes" />
     <title>editor</title>
-    <link rel="stylesheet" type="text/css" href="lib/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="lib/jquery-1.10.2.min.js"></script>
+    <script src="lib/jquery.leanModal.min.js"></script>
+    <script src="lib/snap.svg-min.js"></script>
   </head>
   <body>
 
    <svg id="svg" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></svg>
   
-   <div id="test" class="modal">
+   <div id="jobdiv" class="modal">
       <ul id="joblist">
       </ul>
   </div>
-
-  <script src="lib/jquery-1.10.2.min.js"></script>
-  <script src="lib/jquery.leanModal.min.js"></script>
-  <script src="lib/snap.svg-min.js"></script>
 
   <script src="js/dialog.js"></script>
   <script src="js/main.js"></script>
@@ -24,6 +23,7 @@
     $(function () {
       Main.codeiq();
     });
-  </script>
+    </script>
+
   </body>
 </html>
