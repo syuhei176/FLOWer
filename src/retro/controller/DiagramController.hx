@@ -134,18 +134,23 @@ this.modules.push(new retro.library.jquery.Html());
 	}
 	
 	public function setRubberbandStart(port:OutputPort) {
+		if( this.start != null ) this.start.onNormal();
 		this.start = port;
+		this.start.onSelected();
 	}
+
 	public function setRubberbandEnd(port:InputPort) {
 		if(this.start == null) {
 			return false;
 		}else{
 			this.end = port;
+			this.start.onNormal();
 			this.start.connectToInputPort(this.end);
 			return true;
 		}
 	}
 	public function clearRubberband() {
+		if( this.start != null ) this.start.onNormal();
 		this.start = null;
 		this.end = null;
 	}

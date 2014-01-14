@@ -38,8 +38,16 @@ class OutputPortView extends PortView{
 			this.diagramController.setRubberbandStart(this.port);
 		});
 		this.setPos(160, 0);
-	}
-	
+
+		this.port.onSelected = function(){
+			this.graphic.attr({ fill : thema.selected_port_color });
+			//this.graphic.attr({ stroke : thema.selected_port_color });
+		};
+		this.port.onNormal = function(){
+			this.graphic.attr({ fill : thema.base_color });
+			this.graphic.attr({ stroke : thema.base_color });
+		};
+	}	
 	/*
 		OutputPortからInputPortまで接続されたときに呼ばれる
 	*/
