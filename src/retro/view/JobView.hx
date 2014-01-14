@@ -136,15 +136,16 @@ class JobView{
 	
 	public function removeSelf() {
 		this.group.remove();
+		this.config_timer.stop();
 	}
 	
 	private function visible_config_btn() {
 		this.config_timer = new Timer(3000);
 		this.config_timer.run = function() {
+    		this.config_timer.stop();
 	    	this.config_graphic.attr({
     			"visibility" : "hidden"
     		});
-    		this.config_timer.stop();
 		}
     	this.config_graphic.attr({
     		"visibility" : "visible"

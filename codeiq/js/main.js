@@ -775,6 +775,7 @@ retro.controller.DiagramController.prototype = {
 		var job = new retro.model.EntryJob(id);
 		this.diagram.setEntryPoint(job);
 		job.addOutputPort(new retro.model.OutputPort(job,retro.pub.RetroType.RString,"output"));
+		return job;
 	}
 	,addSymbolicLink: function(jobComponent) {
 		var id = this.editor.IdGenerator.genID();
@@ -1061,7 +1062,7 @@ retro.controller.ProjectController.prototype = {
 	,run: function() {
 		if(this.runtime == null) this.runtime = new retro.vm.Runtime(this.project.getRootDiagram());
 		var entry = this.getProject().getRootDiagram().getEntryPoint();
-		this.runtime.run(entry);
+		this.runtime.run(entry,0);
 	}
 	,addDiagram: function() {
 		var diagram = new retro.model.Diagram();
@@ -3683,7 +3684,13 @@ retro.pub.Editor.createCodeIQ = function() {
 	var diagram = new retro.model.Diagram();
 	project.setRootDiagram(diagram);
 	var diagramController = new retro.controller.DiagramController(editor,diagram,virtualDevice);
-	diagramController.addEntryJob();
+	var entryJob = diagramController.addEntryJob();
+	var ThroughJob = diagramController.addSymbolicLink(diagramController.getModule("core.Through"));
+	ThroughJob.setPos(350,100);
+	entryJob.getOutputPort("output").connectToInputPort(ThroughJob.getInputPort("input"));
+	var AddJob = diagramController.addSymbolicLink(diagramController.getModule("core.Add"));
+	AddJob.setPos(100,200);
+	diagramController.addSymbolicLink(diagramController.getModule("system.Print")).setPos(350,200);
 }
 retro.pub.Editor.prototype = {
 	getRuntime: function() {
@@ -3923,10 +3930,10 @@ retro.view.DiagramView = function(diagramController) {
 		});
 		_g.control_group.append(g);
 	});
-	Snap.load("images/create.svg",function(f) {
+	Snap.load("images/dustbox.svg",function(f) {
 		var g = f.select("g");
 		var right = js.Browser.document.body.clientWidth;
-		g.transform("translate(" + (right - 100) + "," + 0 + ")");
+		g.transform("translate(" + (right - 140) + "," + 0 + ")");
 		_g.control_group.append(g);
 	});
 };
@@ -4117,13 +4124,15 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 	}
 	,OnSetConstant: function(v) {
 		var _g = this;
-		this.constantValueGraphic = this.snap.circle(0,0,18);
+		this.constantValueGraphic = this.snap.group();
+		var graphic = this.snap.circle(0,0,18);
 		var text = this.snap.text(-5,5,haxe.Json.stringify(v.value));
-		this.constantValueGraphic.attr({ fill : this.thema.contrast1_color, stroke : this.thema.contrast2_color, strokeWidth : 4});
+		graphic.attr({ fill : this.thema.contrast1_color, stroke : this.thema.contrast2_color, strokeWidth : 4});
+		this.constantValueGraphic.append(graphic);
+		this.constantValueGraphic.append(text);
 		this.group.append(this.constantValueGraphic);
-		this.group.append(text);
-		this.constantValueGraphic.drag(function(dx,dy,x,y) {
-			if(dx + dy > 3) _g.port.removeConstant();
+		graphic.click(function(e) {
+			_g.port.removeConstant();
 		});
 	}
 	,step: function() {
@@ -4366,13 +4375,14 @@ retro.view.JobView.prototype = {
 		var _g = this;
 		this.config_timer = new haxe.Timer(3000);
 		this.config_timer.run = function() {
-			_g.config_graphic.attr({ visibility : "hidden"});
 			_g.config_timer.stop();
+			_g.config_graphic.attr({ visibility : "hidden"});
 		};
 		this.config_graphic.attr({ visibility : "visible"});
 	}
 	,removeSelf: function() {
 		this.group.remove();
+		this.config_timer.stop();
 	}
 	,__class__: retro.view.JobView
 }
