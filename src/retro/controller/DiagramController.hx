@@ -123,6 +123,7 @@ this.modules.push(new retro.library.jquery.Html());
 		var job = new EntryJob(id);
 		diagram.setEntryPoint(job);
 		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
+		return job;
 	}
 	public function addLogic(id) {
 		var job = new Logic(id);

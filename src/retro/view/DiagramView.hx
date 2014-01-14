@@ -57,10 +57,10 @@ class DiagramView{
         	});
         	this.control_group.append(g);
     	});
-		Snap.load("images/create.svg", function (f) {
+		Snap.load("images/dustbox.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		var right = js.Browser.document.body.clientWidth;
-    		g.transform("translate("+(right - 100)+","+0+")");
+    		g.transform("translate("+(right - 140)+","+0+")");
         	this.control_group.append(g);
     	});
 	}

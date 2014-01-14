@@ -101,8 +101,15 @@ class Editor{
 		var diagram = new Diagram();
 		project.setRootDiagram(diagram);
 		var diagramController = new DiagramController(editor, diagram, virtualDevice);
-		diagramController.addEntryJob();
-	}	
+		var entryJob = diagramController.addEntryJob();
+		var ThroughJob = diagramController.addSymbolicLink(diagramController.getModule("core.Through"));
+		ThroughJob.setPos(350, 100);
+		entryJob.getOutputPort("output").connectToInputPort(ThroughJob.getInputPort("input"));
+		var AddJob = diagramController.addSymbolicLink(diagramController.getModule("core.Add"));
+		AddJob.setPos(100, 200);
+		diagramController.addSymbolicLink(diagramController.getModule("system.Print")).setPos(350, 200);
+		
+	}
 
 
 }
