@@ -11,7 +11,10 @@
 .modal{
         width: 80%;
         height: 80%;
+        display: none; 
         overflow: auto;
+        overflow-x: hidden;
+        overflow-y:scroll;
 }
 
 a {

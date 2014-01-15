@@ -48,53 +48,53 @@ class DiagramController implements Controller{
 		this.modules.push(new retro.library.array.Pop());
 		this.modules.push(new retro.library.array.Get());
 		this.modules.push(new retro.library.data.Stack());
-this.modules.push(new retro.library.sphero.SetBackLED());
-this.modules.push(new retro.library.sphero.SetHeading());
-this.modules.push(new retro.library.sphero.Roll());
-this.modules.push(new retro.library.string.Split());
-this.modules.push(new retro.library.string.IndexOf());
-this.modules.push(new retro.library.string.ChatAt());
-this.modules.push(new retro.library.string.Substr());
-this.modules.push(new retro.library.string.Length());
-this.modules.push(new retro.library.string.LastIndexOf());
-this.modules.push(new retro.library.point2d.Add());
-this.modules.push(new retro.library.point2d.Sub());
-this.modules.push(new retro.library.point2d.Create());
-this.modules.push(new retro.library.point2d.Distance());
-this.modules.push(new retro.library.http.Post());
-this.modules.push(new retro.library.http.Get());
-this.modules.push(new retro.library.line2d.Create());
-this.modules.push(new retro.library.line2d.Distance());
-this.modules.push(new retro.library.list.Length());
-this.modules.push(new retro.library.list.Add());
-this.modules.push(new retro.library.list.Clear());
-this.modules.push(new retro.library.list.First());
-this.modules.push(new retro.library.list.IsEmpty());
-this.modules.push(new retro.library.list.Join());
-this.modules.push(new retro.library.list.Last());
-this.modules.push(new retro.library.list.Pop());
-this.modules.push(new retro.library.list.Push());
-this.modules.push(new retro.library.list.Remove());
-this.modules.push(new retro.library.math.Abs());
-this.modules.push(new retro.library.math.Acos());
-this.modules.push(new retro.library.math.Asin());
-this.modules.push(new retro.library.math.Atan());
-this.modules.push(new retro.library.math.Atan2());
-this.modules.push(new retro.library.math.Cos());
-this.modules.push(new retro.library.math.Sin());
-this.modules.push(new retro.library.math.Floor());
-this.modules.push(new retro.library.math.Log());
-this.modules.push(new retro.library.math.Max());
-this.modules.push(new retro.library.math.Min());
-this.modules.push(new retro.library.math.Pow());
-this.modules.push(new retro.library.math.Random());
-this.modules.push(new retro.library.math.Sqrt());
-this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
-this.modules.push(new retro.library.snapsvg.Circle());
-this.modules.push(new retro.library.snapelement.Translate());
-this.modules.push(new retro.library.snapelement.Fill());
-this.modules.push(new retro.library.jquery.Find());
-this.modules.push(new retro.library.jquery.Html());
+		this.modules.push(new retro.library.sphero.SetBackLED());
+		this.modules.push(new retro.library.sphero.SetHeading());
+		this.modules.push(new retro.library.sphero.Roll());
+		this.modules.push(new retro.library.string.Split());
+		this.modules.push(new retro.library.string.IndexOf());
+		this.modules.push(new retro.library.string.ChatAt());
+		this.modules.push(new retro.library.string.Substr());
+		this.modules.push(new retro.library.string.Length());
+		this.modules.push(new retro.library.string.LastIndexOf());
+		this.modules.push(new retro.library.point2d.Add());
+		this.modules.push(new retro.library.point2d.Sub());
+		this.modules.push(new retro.library.point2d.Create());
+		this.modules.push(new retro.library.point2d.Distance());
+		this.modules.push(new retro.library.http.Post());
+		this.modules.push(new retro.library.http.Get());
+		this.modules.push(new retro.library.line2d.Create());
+		this.modules.push(new retro.library.line2d.Distance());
+		this.modules.push(new retro.library.list.Length());
+		this.modules.push(new retro.library.list.Add());
+		this.modules.push(new retro.library.list.Clear());
+		this.modules.push(new retro.library.list.First());
+		this.modules.push(new retro.library.list.IsEmpty());
+		this.modules.push(new retro.library.list.Join());
+		this.modules.push(new retro.library.list.Last());
+		this.modules.push(new retro.library.list.Pop());
+		this.modules.push(new retro.library.list.Push());
+		this.modules.push(new retro.library.list.Remove());
+		this.modules.push(new retro.library.math.Abs());
+		this.modules.push(new retro.library.math.Acos());
+		this.modules.push(new retro.library.math.Asin());
+		this.modules.push(new retro.library.math.Atan());
+		this.modules.push(new retro.library.math.Atan2());
+		this.modules.push(new retro.library.math.Cos());
+		this.modules.push(new retro.library.math.Sin());
+		this.modules.push(new retro.library.math.Floor());
+		this.modules.push(new retro.library.math.Log());
+		this.modules.push(new retro.library.math.Max());
+		this.modules.push(new retro.library.math.Min());
+		this.modules.push(new retro.library.math.Pow());
+		this.modules.push(new retro.library.math.Random());
+		this.modules.push(new retro.library.math.Sqrt());
+		this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+		this.modules.push(new retro.library.snapsvg.Circle());
+		this.modules.push(new retro.library.snapelement.Translate());
+		this.modules.push(new retro.library.snapelement.Fill());
+		this.modules.push(new retro.library.jquery.Find());
+		this.modules.push(new retro.library.jquery.Html());
 	}
 	
 	public function getEditor() {
@@ -134,18 +134,23 @@ this.modules.push(new retro.library.jquery.Html());
 	}
 	
 	public function setRubberbandStart(port:OutputPort) {
+		if( this.start != null ) this.start.onNormal();
 		this.start = port;
+		this.start.onSelected();
 	}
+
 	public function setRubberbandEnd(port:InputPort) {
 		if(this.start == null) {
 			return false;
 		}else{
 			this.end = port;
+			this.start.onNormal();
 			this.start.connectToInputPort(this.end);
 			return true;
 		}
 	}
 	public function clearRubberband() {
+		if( this.start != null ) this.start.onNormal();
 		this.start = null;
 		this.end = null;
 	}

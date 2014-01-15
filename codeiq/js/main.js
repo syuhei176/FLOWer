@@ -750,18 +750,22 @@ retro.controller.DiagramController.prototype = {
 		return null;
 	}
 	,clearRubberband: function() {
+		if(this.start != null) this.start.onNormal();
 		this.start = null;
 		this.end = null;
 	}
 	,setRubberbandEnd: function(port) {
 		if(this.start == null) return false; else {
 			this.end = port;
+			this.start.onNormal();
 			this.start.connectToInputPort(this.end);
 			return true;
 		}
 	}
 	,setRubberbandStart: function(port) {
+		if(this.start != null) this.start.onNormal();
 		this.start = port;
+		this.start.onSelected();
 	}
 	,removeJob: function(job) {
 		this.diagram.removeJob(job);
@@ -4213,7 +4217,7 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	this.group.append(this.graphic);
 	this.group.append(text);
 	this.group.append(this.coll);
-	Snap.load("/images/config.svg",function(f) {
+	Snap.load("images/config.svg",function(f) {
 		var g = f.select("g");
 		_g.group.append(g);
 		g.mouseup(function(e,x,y) {
@@ -4399,6 +4403,13 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap,thema) 
 		_g.diagramController.setRubberbandStart(_g.port);
 	});
 	this.setPos(160,0);
+	this.port.onSelected = function() {
+		_g.graphic.attr({ fill : thema.selected_port_color});
+	};
+	this.port.onNormal = function() {
+		_g.graphic.attr({ fill : thema.base_color});
+		_g.graphic.attr({ stroke : thema.base_color});
+	};
 };
 retro.view.OutputPortView.__name__ = ["retro","view","OutputPortView"];
 retro.view.OutputPortView.__super__ = retro.view.PortView;
@@ -4498,7 +4509,7 @@ retro.view.PathView.prototype = {
 	}
 	,init_remove_btn: function() {
 		var _g = this;
-		Snap.load("/images/remove.svg",function(f) {
+		Snap.load("images/remove.svg",function(f) {
 			var g = f.select("g");
 			_g.group.append(g);
 			g.mousedown(function(e,x,y) {
@@ -4556,6 +4567,7 @@ retro.view.Thema = function() {
 	this.font_color = "#007ab7";
 	this.contrast2_color = "#b61972";
 	this.contrast1_color = "#db7bb1";
+	this.selected_port_color = "#FFDE0C";
 	this.sub3_color = "#d7ebf6";
 	this.sub2_color = "#8ec7e4";
 	this.sub1_color = "#007ab7";

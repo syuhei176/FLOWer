@@ -114,7 +114,7 @@ class JobView{
 		this.group.append(this.graphic);
 		this.group.append(text);
 		this.group.append(coll);
-    	Snap.load("/images/config.svg", function (f) {
+    	Snap.load("images/config.svg", function (f) {
     		var g = f.select("g");
         	this.group.append(g);
         	g.mouseup(function(e, x, y) {

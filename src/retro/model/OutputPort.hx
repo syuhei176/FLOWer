@@ -8,6 +8,8 @@ package retro.model;
 */
 class OutputPort extends Port {
 	public var connection : Array<InputPort>;
+	public var onSelected : Void -> Void;
+	public var onNormal: Void -> Void;
 	
 	private var onConnectedListeners:Array<OutputPort->InputPort->Void>;
 	private var onDisconnectedListeners:Array<OutputPort->InputPort->Void>;

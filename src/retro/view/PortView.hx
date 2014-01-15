@@ -54,7 +54,7 @@ class PortView{
 		this.group.append(this.graphic);
 		this.group.append(coll);
 	}
-	
+
 	public function refresh() {
 		for(pathView in this.views) {
 			pathView.refresh();
