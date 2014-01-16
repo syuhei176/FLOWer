@@ -1737,7 +1737,7 @@ retro.library.core.Transistor.prototype = {
 	,onInputRecieved: function(params,cb) {
 		var emitter = params.get("emitter");
 		var base = params.get("base");
-		if(emitter.isEmpty() || base.isEmpty() || base.getValue() == false) {
+		if(emitter.isEmpty() || base.isEmpty()) {
 			cb(null);
 			return;
 		}
@@ -3937,7 +3937,7 @@ retro.view.DiagramView = function(diagramController) {
 	Snap.load("images/dustbox.svg",function(f) {
 		var g = f.select("g");
 		var right = js.Browser.document.body.clientWidth;
-		g.transform("translate(" + (right - 140) + "," + 0 + ")");
+		g.transform("translate(" + (right - 80) + "," + -10 + ")");
 		_g.control_group.append(g);
 	});
 };

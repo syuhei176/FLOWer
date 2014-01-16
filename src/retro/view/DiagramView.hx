@@ -60,7 +60,7 @@ class DiagramView{
 		Snap.load("images/dustbox.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		var right = js.Browser.document.body.clientWidth;
-    		g.transform("translate("+(right - 140)+","+0+")");
+    		g.transform("translate("+(right - 80)+","+-10+")");
         	this.control_group.append(g);
     	});
 	}
