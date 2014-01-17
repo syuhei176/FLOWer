@@ -21,13 +21,13 @@ class C0 implements JobComponent {
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("flag");
+		var input = params.get("trigger");
 		if(input.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("0", 1);
+		result.set("0", 0);
 		cb(result);
 	}
 

@@ -105,7 +105,6 @@ class JobView{
 			//this.diagramView.start_step();
     		this.jobController.changePos(this.pos.getX(), this.pos.getY());
     		var right = js.Browser.document.body.clientWidth;
-    		trace(this.pos.getX(), right);
     		if(right - 150 < this.pos.getX() && this.pos.getX() < right && this.pos.getY() < 150) {
 	    		this.diagramController.removeJob(this.jobController.getJob());
     		}

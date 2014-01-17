@@ -57,6 +57,8 @@ Main.codeiq = function() {
 }
 var IMap = function() { }
 IMap.__name__ = ["IMap"];
+var ModuleAdder = function() { }
+ModuleAdder.__name__ = ["ModuleAdder"];
 var Reflect = function() { }
 Reflect.__name__ = ["Reflect"];
 Reflect.field = function(o,field) {
@@ -486,11 +488,6 @@ haxe.Json.prototype = {
 	}
 	,__class__: haxe.Json
 }
-haxe.Log = function() { }
-haxe.Log.__name__ = ["haxe","Log"];
-haxe.Log.trace = function(v,infos) {
-	js.Boot.__trace(v,infos);
-}
 haxe.Timer = function(time_ms) {
 	var me = this;
 	this.id = setInterval(function() {
@@ -500,7 +497,7 @@ haxe.Timer = function(time_ms) {
 haxe.Timer.__name__ = ["haxe","Timer"];
 haxe.Timer.prototype = {
 	run: function() {
-		haxe.Log.trace("run",{ fileName : "Timer.hx", lineNumber : 98, className : "haxe.Timer", methodName : "run"});
+		console.log("run");
 	}
 	,stop: function() {
 		if(this.id == null) return;
@@ -529,23 +526,6 @@ haxe.ds.StringMap.prototype = {
 var js = {}
 js.Boot = function() { }
 js.Boot.__name__ = ["js","Boot"];
-js.Boot.__unhtml = function(s) {
-	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
-}
-js.Boot.__trace = function(v,i) {
-	var msg = i != null?i.fileName + ":" + i.lineNumber + ": ":"";
-	msg += js.Boot.__string_rec(v,"");
-	if(i != null && i.customParams != null) {
-		var _g = 0, _g1 = i.customParams;
-		while(_g < _g1.length) {
-			var v1 = _g1[_g];
-			++_g;
-			msg += "," + js.Boot.__string_rec(v1,"");
-		}
-	}
-	var d;
-	if(typeof(document) != "undefined" && (d = document.getElementById("haxe:trace")) != null) d.innerHTML += js.Boot.__unhtml(msg) + "<br/>"; else if(typeof(console) != "undefined" && console.log != null) console.log(msg);
-}
 js.Boot.__string_rec = function(o,s) {
 	if(o == null) return "null";
 	if(s.length >= 5) return "<...>";
@@ -672,37 +652,12 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.core.Times());
 	this.modules.push(new retro.library.core.Remainder());
 	this.modules.push(new retro.library.core.Filter());
-	this.modules.push(new retro.library.core.Drop());
 	this.modules.push(new retro.library.core.Compare());
 	this.modules.push(new retro.library.core.And());
 	this.modules.push(new retro.library.core.Or());
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
-	this.modules.push(new retro.library.system.Print(virtualDevice));
-	this.modules.push(new retro.library.system.Scan(virtualDevice));
-	this.modules.push(new retro.library.array.Create());
-	this.modules.push(new retro.library.array.Length());
-	this.modules.push(new retro.library.array.Push());
-	this.modules.push(new retro.library.array.Pop());
-	this.modules.push(new retro.library.array.Get());
 	this.modules.push(new retro.library.data.Stack());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
-	this.modules.push(new retro.library.string.Split());
-	this.modules.push(new retro.library.string.IndexOf());
-	this.modules.push(new retro.library.string.ChatAt());
-	this.modules.push(new retro.library.string.Substr());
-	this.modules.push(new retro.library.string.Length());
-	this.modules.push(new retro.library.string.LastIndexOf());
-	this.modules.push(new retro.library.point2d.Add());
-	this.modules.push(new retro.library.point2d.Sub());
-	this.modules.push(new retro.library.point2d.Create());
-	this.modules.push(new retro.library.point2d.Distance());
-	this.modules.push(new retro.library.http.Post());
-	this.modules.push(new retro.library.http.Get());
-	this.modules.push(new retro.library.line2d.Create());
-	this.modules.push(new retro.library.line2d.Distance());
 	this.modules.push(new retro.library.list.Length());
 	this.modules.push(new retro.library.list.Add());
 	this.modules.push(new retro.library.list.Clear());
@@ -727,10 +682,43 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 	this.modules.push(new retro.library.snapsvg.Circle());
+	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.point2d.Add());
+	this.modules.push(new retro.library.point2d.Sub());
+	this.modules.push(new retro.library.point2d.Create());
+	this.modules.push(new retro.library.point2d.Distance());
+	this.modules.push(new retro.library.line2d.Create());
+	this.modules.push(new retro.library.line2d.Distance());
+	this.modules.push(new retro.library.system.Print(virtualDevice));
+	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.string.Split());
+	this.modules.push(new retro.library.string.IndexOf());
+	this.modules.push(new retro.library.string.ChatAt());
+	this.modules.push(new retro.library.string.Substr());
+	this.modules.push(new retro.library.string.Length());
+	this.modules.push(new retro.library.string.LastIndexOf());
+	this.modules.push(new retro.library.number.C0());
+	this.modules.push(new retro.library.number.C1());
+	this.modules.push(new retro.library.number.C2());
+	this.modules.push(new retro.library.number.C3());
+	this.modules.push(new retro.library.number.C4());
+	this.modules.push(new retro.library.number.C5());
+	this.modules.push(new retro.library.number.C6());
+	this.modules.push(new retro.library.number.C7());
+	this.modules.push(new retro.library.number.C8());
+	this.modules.push(new retro.library.number.C9());
+	this.modules.push(new retro.library.array.Create());
+	this.modules.push(new retro.library.array.Length());
+	this.modules.push(new retro.library.array.Push());
+	this.modules.push(new retro.library.array.Pop());
+	this.modules.push(new retro.library.array.Shift());
+	this.modules.push(new retro.library.array.Get());
+	this.modules.push(new retro.library.sphero.SetBackLED());
+	this.modules.push(new retro.library.sphero.SetHeading());
+	this.modules.push(new retro.library.sphero.Roll());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
 };
@@ -755,7 +743,7 @@ retro.controller.DiagramController.prototype = {
 		this.end = null;
 	}
 	,setRubberbandEnd: function(port) {
-		if(this.start == null) return false; else {
+		if(this.start == null) return false; else if(port.parent == this.start.parent) return false; else {
 			this.end = port;
 			this.start.onNormal();
 			this.start.connectToInputPort(this.end);
@@ -1398,6 +1386,35 @@ retro.library.array.Push.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.array.Push
+}
+retro.library.array.Shift = function() {
+	this.name = "Shift";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("input",retro.pub.RetroType.RNumber);
+	this.outputs.add("array",retro.pub.RetroType.RNumber);
+	this.outputs.add("value",retro.pub.RetroType.RNumber);
+};
+retro.library.array.Shift.__name__ = ["retro","library","array","Shift"];
+retro.library.array.Shift.__interfaces__ = [retro.core.JobComponent];
+retro.library.array.Shift.prototype = {
+	getModuleName: function() {
+		return "array.Shift";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("input");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		var array = input.getValue();
+		var value = array.shift();
+		result.set("array",array);
+		result.set("value",value);
+		cb(result);
+	}
+	,__class__: retro.library.array.Shift
 }
 retro.library.core = {}
 retro.library.core.Add = function() {
@@ -2553,6 +2570,257 @@ retro.library.math.Sqrt.prototype = {
 	}
 	,__class__: retro.library.math.Sqrt
 }
+retro.library.number = {}
+retro.library.number.C0 = function() {
+	this.name = "C0";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("0",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C0.__name__ = ["retro","library","number","C0"];
+retro.library.number.C0.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C0.prototype = {
+	getModuleName: function() {
+		return "number.0";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("0",0);
+		cb(result);
+	}
+	,__class__: retro.library.number.C0
+}
+retro.library.number.C1 = function() {
+	this.name = "C1";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("1",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C1.__name__ = ["retro","library","number","C1"];
+retro.library.number.C1.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C1.prototype = {
+	getModuleName: function() {
+		return "number.1";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("1",1);
+		cb(result);
+	}
+	,__class__: retro.library.number.C1
+}
+retro.library.number.C2 = function() {
+	this.name = "C2";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("2",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C2.__name__ = ["retro","library","number","C2"];
+retro.library.number.C2.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C2.prototype = {
+	getModuleName: function() {
+		return "number.2";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("2",2);
+		cb(result);
+	}
+	,__class__: retro.library.number.C2
+}
+retro.library.number.C3 = function() {
+	this.name = "C3";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("3",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C3.__name__ = ["retro","library","number","C3"];
+retro.library.number.C3.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C3.prototype = {
+	getModuleName: function() {
+		return "number.3";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("3",3);
+		cb(result);
+	}
+	,__class__: retro.library.number.C3
+}
+retro.library.number.C4 = function() {
+	this.name = "C4";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("4",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C4.__name__ = ["retro","library","number","C4"];
+retro.library.number.C4.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C4.prototype = {
+	getModuleName: function() {
+		return "number.4";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("4",4);
+		cb(result);
+	}
+	,__class__: retro.library.number.C4
+}
+retro.library.number.C5 = function() {
+	this.name = "C5";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("5",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C5.__name__ = ["retro","library","number","C5"];
+retro.library.number.C5.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C5.prototype = {
+	getModuleName: function() {
+		return "number.5";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("5",5);
+		cb(result);
+	}
+	,__class__: retro.library.number.C5
+}
+retro.library.number.C6 = function() {
+	this.name = "C6";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("6",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C6.__name__ = ["retro","library","number","C6"];
+retro.library.number.C6.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C6.prototype = {
+	getModuleName: function() {
+		return "number.6";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("6",6);
+		cb(result);
+	}
+	,__class__: retro.library.number.C6
+}
+retro.library.number.C7 = function() {
+	this.name = "C7";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("7",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C7.__name__ = ["retro","library","number","C7"];
+retro.library.number.C7.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C7.prototype = {
+	getModuleName: function() {
+		return "number.7";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("7",7);
+		cb(result);
+	}
+	,__class__: retro.library.number.C7
+}
+retro.library.number.C8 = function() {
+	this.name = "C8";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("8",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C8.__name__ = ["retro","library","number","C8"];
+retro.library.number.C8.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C8.prototype = {
+	getModuleName: function() {
+		return "number.8";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("8",8);
+		cb(result);
+	}
+	,__class__: retro.library.number.C8
+}
+retro.library.number.C9 = function() {
+	this.name = "C9";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("0",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C9.__name__ = ["retro","library","number","C9"];
+retro.library.number.C9.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C9.prototype = {
+	getModuleName: function() {
+		return "number.9";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("9",1);
+		cb(result);
+	}
+	,__class__: retro.library.number.C9
+}
 retro.library.point2d = {}
 retro.library.point2d.Add = function() {
 	this.name = "Add";
@@ -3032,7 +3300,7 @@ retro.library.system.Print.prototype = {
 			return;
 		}
 		this.virtualDevice.getConsoleDevice().print(Std.string(input.getValue()) + "");
-		haxe.Log.trace(input.getValue(),{ fileName : "Print.hx", lineNumber : 38, className : "retro.library.system.Print", methodName : "onInputRecieved"});
+		console.log(input.getValue());
 		var result = new retro.core.Result();
 		result.set("output",input.getValue());
 		cb(result);
@@ -3689,12 +3957,9 @@ retro.pub.Editor.createCodeIQ = function() {
 	project.setRootDiagram(diagram);
 	var diagramController = new retro.controller.DiagramController(editor,diagram,virtualDevice);
 	var entryJob = diagramController.addEntryJob();
-	var ThroughJob = diagramController.addSymbolicLink(diagramController.getModule("core.Through"));
-	ThroughJob.setPos(350,100);
-	entryJob.getOutputPort("output").connectToInputPort(ThroughJob.getInputPort("input"));
-	var AddJob = diagramController.addSymbolicLink(diagramController.getModule("core.Add"));
-	AddJob.setPos(100,200);
-	diagramController.addSymbolicLink(diagramController.getModule("system.Print")).setPos(350,200);
+	entryJob.setPos(80,300);
+	var printJob = diagramController.getModule("system.Print");
+	diagramController.addSymbolicLink(printJob).setPos(380,300);
 }
 retro.pub.Editor.prototype = {
 	getRuntime: function() {
@@ -4211,7 +4476,6 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 		_g.refresh();
 		_g.jobController.changePos(_g.pos.getX(),_g.pos.getY());
 		var right = js.Browser.document.body.clientWidth;
-		haxe.Log.trace(_g.pos.getX(),{ fileName : "JobView.hx", lineNumber : 108, className : "retro.view.JobView", methodName : "new", customParams : [right]});
 		if(right - 150 < _g.pos.getX() && _g.pos.getX() < right && _g.pos.getY() < 150) _g.diagramController.removeJob(_g.jobController.getJob());
 	});
 	this.group.append(this.graphic);

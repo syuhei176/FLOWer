@@ -21,7 +21,7 @@ class C9 implements JobComponent {
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("flag");
+		var input = params.get("trigger");
 		if(input.isEmpty()) {
 			cb(null);
 			return;
