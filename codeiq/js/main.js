@@ -3403,6 +3403,17 @@ retro.model.Diagram.prototype = {
 		this.onJobAddedListeners.push(listener);
 	}
 	,clearValueCarriers: function() {
+		var _g = 0, _g1 = this.jobs;
+		while(_g < _g1.length) {
+			var job = _g1[_g];
+			++_g;
+			var _g2 = 0, _g3 = job.getInputPorts();
+			while(_g2 < _g3.length) {
+				var inputPort = _g3[_g2];
+				++_g2;
+				this.removeValueCarrier(inputPort.useValueCarrier());
+			}
+		}
 		this.valueCarriers = new Array();
 		this.fireOnValueCarrierCleared();
 	}

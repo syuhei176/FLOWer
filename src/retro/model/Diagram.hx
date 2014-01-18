@@ -103,6 +103,11 @@ class Diagram{
 	}
 	
 	public function clearValueCarriers() {
+		for( job in this.jobs ){
+			for(inputPort in job.getInputPorts()) {
+				this.removeValueCarrier(inputPort.useValueCarrier());
+			}
+		}
 		this.valueCarriers = new Array<ValueCarrier>();
 		this.fireOnValueCarrierCleared();
 	}
