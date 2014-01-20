@@ -33,6 +33,7 @@ class PathView{
 	
 	private var remove_graphic:SnapElement;
 	private var remove_timer:Timer;
+	private var diagramView:DiagramView;
 	
 	public function new(diagramController, diagramView, source_port, target_port, snap, thema) {
 		this.onRemoveListeners = new Array<PathView->InputPort->Void>();
@@ -41,6 +42,7 @@ class PathView{
 		this.target = target_port;
 		this.snap = snap;
 		this.thema = thema;
+		this.diagramView = diagramView;
 		//モデルの変更を監視
 		this.source.port.onDisconnected(this.onDisconnect);
 		
@@ -73,7 +75,7 @@ class PathView{
 	private function init_remove_btn() {
     	Snap.load("images/remove.svg", function (f) {
     		var g = f.select("g");
-        	this.group.append(g);
+        	this.diagramView.control_group.append(g);
         	g.mousedown(function(e, x, y) {
     			DiagramController.disconnect(this.source.port, this.target.port);
 	    		this.remove_graphic.attr({
@@ -110,6 +112,7 @@ class PathView{
 	public function onDisconnect(o, i) {
 		if(this.target.port != i) return;
     	this.group.remove();
+    	this.remove_graphic.remove();
     	this.source.views.remove(this);
     	this.target.views.remove(this);
 	}

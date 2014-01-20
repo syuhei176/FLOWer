@@ -19,7 +19,7 @@ class DiagramView{
 	private var onButtonListeners:Array<Int->Void>;
 	private var jobViews:Array<JobView>;
 	private var valueCarrierViews:Array<ValueCarrierView>;
-	private var control_group:SnapElement;
+	public var control_group:SnapElement;
 	public var path_group:SnapElement;
 	//力学
 	private var timer:Timer = null;
