@@ -30,6 +30,7 @@ class DiagramView{
 		this.valueCarrierViews = new Array<ValueCarrierView>();
 		this.diagramController = diagramController;
 		var diagram = this.diagramController.getDiagram();
+		var thema = this.diagramController.getEditor().thema;
 		//モデルの変更を監視
 		diagram.onJobAdded(this.OnJobAdded);
 		diagram.onJobRemoved(this.OnJobRemoved);
@@ -43,10 +44,19 @@ class DiagramView{
 		this.count = 0;
 		
 		this.control_group = snap.group();
-		Snap.load("images/create.svg", function (f) {
+		var create_coll = snap.rect(75,5,70,61);
+		create_coll.attr({
+    	    fill: "#ffffff",
+    	    "fill-opacity" : 0,
+    	});
+		Snap.load("/images/create.svg", function (f) {
     		var g:SnapElement = f.select("g");
-    		g.transform("translate("+100+","+0+")");
-        	g.click(function(e){
+    		g.transform("translate("+74+","+5+")");
+    		g.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				});
+        	create_coll.click(function(e){
         		var createJobDialog = new CreateJobDialog();
 				createJobDialog.on(function(pkg, cmp, x, y) {
 					var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
@@ -56,11 +66,23 @@ class DiagramView{
 				createJobDialog.open();
         	});
         	this.control_group.append(g);
+        	this.control_group.append(create_coll);
     	});
-		Snap.load("images/dustbox.svg", function (f) {
+		Snap.load("/images/dustbox.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		var right = js.Browser.document.body.clientWidth;
-    		g.transform("translate("+(right - 80)+","+-10+")");
+    		var rect = snap.rect((right - 80), 5, 70, 61, 5, 5);
+    		g.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				});
+    		rect.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				fill : "#F4F4F4",
+				});
+    		g.transform("translate("+(right - 80)+","+3+")");
+    		this.control_group.append(rect);
         	this.control_group.append(g);
     	});
 	}

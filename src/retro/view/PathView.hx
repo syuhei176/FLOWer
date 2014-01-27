@@ -52,7 +52,7 @@ class PathView{
 		
 		this.graphic.attr({
     	    stroke: thema.path_color,
-    	    strokeWidth: 7
+    	    strokeWidth: 1
     	});
     	this.coll.attr({
     	    stroke: "#a0a000",

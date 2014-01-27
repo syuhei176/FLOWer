@@ -12,6 +12,7 @@ import retro.model.Job;
 import retro.model.Value;
 import retro.controller.DiagramController;
 import retro.controller.JobController;
+using Lambda;
 
 /*
 	Class Name:JobView
@@ -41,6 +42,7 @@ class JobView{
 	private var outputportviews:Array<OutputPortView>;
 	
 	private var setted_value:String;
+
 	
 	public function new(diagramController, jobController, diagramView) {
 		this.inputportviews = new Array<InputPortView>();
@@ -59,22 +61,34 @@ class JobView{
 		var thema = this.jobController.getEditor().thema;
 		this.group = snap.group();
 		if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-			this.graphic = snap.rect(0, 0, 160, 80);
-			this.coll = snap.rect(0, 0, 160, 80);
-		}else{
-			this.graphic = snap.rect(0, 0, 160, 80);
-			this.coll = snap.rect(0, 0, 160, 80);
-		}
-		var text = snap.text(10, -10, job.getName());
-		text.attr({
-			"font-size" : "20px",
-			fill : thema.font_color
-		});
-		this.graphic.attr({
-				fill: thema.bg_color,
-				stroke: thema.base_color,
-				strokeWidth: 3
+			this.graphic = snap.rect(0, 0, 216, 89, 5, 5);
+			this.graphic.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				fill : thema.bg_color,
 				});
+			this.coll = snap.rect(0, 0, 216, 89);
+		}else{
+			this.graphic = snap.rect(0, 0, 216, 89, 5, 5);
+			this.graphic.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				fill : thema.bg_color,
+				});
+			this.coll = snap.rect(0, 0, 216, 89);
+		}
+		var text = snap.text(12, 24, job.getName());
+		text.attr({
+			"font-size" : "12px",
+			fill : thema.font_color,
+			"font-family" : "MyriadPro-Regular"
+		});
+		var line = snap.line(0, 36, 216, 36);
+		line.attr({
+			strokeWidth : 1,
+			stroke : thema.stroke_color,
+			});
+
 		this.pos = new Point2D(0, 0);
 		this.prev_pos = new Point2D(0, 0);
 		this.setPos(100, 100);
@@ -84,19 +98,12 @@ class JobView{
     	});
 		coll.mousedown(function(e, x, y){
 			this.visible_config_btn();
-			/*
-			if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-				var runTime = this.jobController.getEditor().getRuntime();
-				if(this.setted_value != null) {
-					runTime.invoke_entry(this.jobController.getJob(), new Value(RetroType.RNumber, haxe.Json.parse(this.setted_value)));
-				}
-			}
-			*/
 		});
 		coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
         	this.prev_pos.setX(dx);
         	this.prev_pos.setY(dy);
+        	this.refresh();
     	}, function(x, y) {
     		this.prev_pos.setX(0);
     		this.prev_pos.setY(0);
@@ -112,25 +119,8 @@ class JobView{
 		
 		this.group.append(this.graphic);
 		this.group.append(text);
+		this.group.append(line);
 		this.group.append(coll);
-    	Snap.load("images/config.svg", function (f) {
-    		var g = f.select("g");
-        	this.group.append(g);
-        	g.mouseup(function(e, x, y) {
-				if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-					//var entry:EntryJob = this.jobController.getJob();
-				}
-				var runTime = this.jobController.getEditor().getRuntime();
-				if(!runTime.isRunning()) {
-					this.setted_value = js.Browser.window.prompt("","");
-				}
-        	});
-    		g.attr({
-    			"visibility" : "hidden"
-    		});
-    		g.transform("translate("+-30+","+-40+")");
-    		this.config_graphic = g;
-    	});
 	}
 	
 	public function removeSelf() {
@@ -186,21 +176,23 @@ class JobView{
 		}
 	}
 	public function cal2() {
-		var h:Int = 22;
+		var h:Int = 63;
 		for(pv in this.inputportviews) {
 			pv.setPos(0, h);
-			h += 44;
+			h += 53;
 		}
-		h = 22;
+		h = 63;
 		for(pv in this.outputportviews) {
-			pv.setPos(160, h);
-			h += 44;
+			pv.setPos(216, h);
+			h += 53;
 		}
 		this.graphic.attr({
-			height : this.inputportviews.length > this.outputportviews.length ? this.inputportviews.length*44 : this.outputportviews.length*44
+			height : this.inputportviews.length > this.outputportviews.length 
+			? this.inputportviews.length*53+36 : this.outputportviews.length*53+36
 		});
 		this.coll.attr({
-			height : this.inputportviews.length > this.outputportviews.length ? this.inputportviews.length*44 : this.outputportviews.length*44
+			height : this.inputportviews.length > this.outputportviews.length 
+			? this.inputportviews.length*53+36 : this.outputportviews.length*53+36
 		});
 	}
 	

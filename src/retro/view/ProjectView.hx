@@ -27,27 +27,54 @@ class ProjectView{
 		this.mode = RunMode.Stop;
 		var snap = this.projectController.getEditor().snap;
 		var project = this.projectController.getProject();
+		var thema = this.projectController.getEditor().thema;
 		project.onDiagramAdded(this.OnDiagramAdded);
 		
 		this.control_group = snap.group();
-    	Snap.load("images/play.svg", function (f) {
+		var rect = snap.rect(5, 5, 140, 61, 5, 5);
+		rect.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				fill : "#F4F4F4",
+				});
+		var coll = snap.rect(5,5,70,61);
+		coll.attr({
+    	    fill: "#ffffff",
+    	    "fill-opacity" : 0,
+    	});
+		var line = snap.line(75,5,75,66);
+		line.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				});
+
+    	Snap.load("/images/play.svg", function (f) {
     		var g:SnapElement = f.select("svg");
-        	g.click(function(e){
+    		var path : SnapElement = g.select("path");
+    		path.transform("translate("+8+","+5+")");
+    		path.attr({
+    			fill : "#ffffff",
+    			stroke : thema.stroke_color
+    			});
+        	coll.click(function(e){
         		if(this.mode == RunMode.Stop) {
 	        		this.projectController.run();
 	        		this.mode = RunMode.Run;
-	        		g.select("polygon").attr({
-	        			fill : "#ff0000"
+	        		path.attr({
+	        			fill : "#FF39A6"
 	        		});
         		}else if(this.mode == RunMode.Run) {
     	    		this.projectController.stop();
     	    		this.mode = RunMode.Stop;
-	        		g.select("polygon").attr({
-	        			fill : "#ffffff"
+	        		path.attr({
+	        			fill : "#ffffff",
+	        			stroke : thema.stroke_color
 	        		});
         		}
         	});
+        	this.control_group.append(rect);
         	this.control_group.append(g);
+        	this.control_group.append(coll);
     	});
 	}
 	

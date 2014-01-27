@@ -47,14 +47,16 @@ class ConsoleView {
 		}
 		for(t in this.texts) {
 			t.attr({
-				"font-size" : "18px",
-				fill : "#f0f0ff"
+			"font-size" : "12px",
+			fill : thema.font_color,
+			"font-family" : "MyriadPro-Regular",
+			width : 220,
 			});
 		}
 		this.graphic.attr({
-				fill: "#202020",
-				stroke: "#707070",
-				strokeWidth: 5
+				fill: thema.bg_color,
+				stroke: thema.stroke_color,
+				strokeWidth: 1,
 				});
 		this.pos = new Point2D(0, 0);
 		this.prev_pos = new Point2D(0, 0);
@@ -97,7 +99,7 @@ class ConsoleView {
 		if(c == "\n") {
 			this.next_line();
 		}else{
-			if(this.lines[this.current_line].length > 20) {
+			if(this.lines[this.current_line].length > 35) {
 				this.next_line();
 			}
 			this.lines[this.current_line] += c;
@@ -107,7 +109,7 @@ class ConsoleView {
 		}
 	}
 	public function next_line() {
-		if(this.current_line >= 7) {
+		if(this.current_line >= 35) {
 			for(i in 0...this.lines.length) {
 				this.lines[i] = "";
 			}

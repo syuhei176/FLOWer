@@ -28,17 +28,21 @@ class ValueCarrierView {
 		var thema = editor.thema;
 		this.pos = new Point2D(0, 0);
 		this.group = snap.group();
-		this.graphic = snap.circle(0, 0, 24);
 		//var text = snap.text(0, 0, haxe.Json.stringify(valueCarrier.getValue().value));
-		var text = snap.text(0, 0, this.value2String(valueCarrier.getValue().value));
+		var t = this.value2String(valueCarrier.getValue().value);
+		var text : SnapElement = snap.text(-2, 4, t);
+		text.attr({
+			"font-size" : "12px",
+			fill : "#ffffff",
+			"font-family" : 'MyriadPro-Regular',
+		});
+		this.graphic = snap.rect(-21, -21, 42 + (t.length - 1) * 6, 42, 21, 21);
 		this.graphic.attr({
 				fill: thema.contrast1_color,
-				stroke: thema.contrast2_color,
-				strokeWidth: 4
+				strokeWidth: 1
 				});
 		this.group.append(this.graphic);
 		this.group.append(text);
-		
 		this.startPosition();
 	}
 	private function value2String(v:Dynamic) {
@@ -47,7 +51,7 @@ class ValueCarrierView {
 		}else if(Type.typeof(v) == Type.ValueType.TNull) {
 			return "Null";
 		}else if(Type.typeof(v) == Type.ValueType.TFloat) {
-			return v;
+			return Std.string(v);
 		}else if(Type.typeof(v) == Type.ValueType.TInt) {
 			return haxe.Json.stringify(v);
 		}else if(Type.typeof(v) == Type.ValueType.TFloat) {
