@@ -4187,6 +4187,7 @@ retro.view.DiagramView = function(diagramController) {
 	this.valueCarrierViews = new Array();
 	this.diagramController = diagramController;
 	var diagram = this.diagramController.getDiagram();
+	var thema = this.diagramController.getEditor().thema;
 	diagram.onJobAdded($bind(this,this.OnJobAdded));
 	diagram.onJobRemoved($bind(this,this.OnJobRemoved));
 	diagram.onValueCarrierAdded($bind(this,this.OnValueCarrierAdded));
@@ -4196,10 +4197,13 @@ retro.view.DiagramView = function(diagramController) {
 	this.path_group = snap1.group();
 	this.count = 0;
 	this.control_group = snap1.group();
+	var create_coll = snap1.rect(75,5,70,61);
+	create_coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
 	Snap.load("images/create.svg",function(f) {
 		var g = f.select("g");
-		g.transform("translate(" + 100 + "," + 0 + ")");
-		g.click(function(e) {
+		g.transform("translate(" + 74 + "," + 5 + ")");
+		g.attr({ strokeWidth : 1, stroke : thema.stroke_color});
+		create_coll.click(function(e) {
 			var createJobDialog = new CreateJobDialog();
 			createJobDialog.on(function(pkg,cmp,x,y) {
 				var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
@@ -4209,11 +4213,16 @@ retro.view.DiagramView = function(diagramController) {
 			createJobDialog.open();
 		});
 		_g.control_group.append(g);
+		_g.control_group.append(create_coll);
 	});
 	Snap.load("images/dustbox.svg",function(f) {
 		var g = f.select("g");
 		var right = js.Browser.document.body.clientWidth;
-		g.transform("translate(" + (right - 80) + "," + -10 + ")");
+		var rect = snap1.rect(right - 80,5,70,61,5,5);
+		g.attr({ strokeWidth : 1, stroke : thema.stroke_color});
+		rect.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		g.transform("translate(" + (right - 80) + "," + 3 + ")");
+		_g.control_group.append(rect);
 		_g.control_group.append(g);
 	});
 };
@@ -4327,8 +4336,8 @@ retro.view.PortView = function(diagramController,jobview,snap,thema) {
 	this.snap = snap;
 	this.thema = thema;
 	this.group = snap.group();
-	this.graphic = snap.circle(0,0,22);
-	this.coll = snap.circle(0,0,22);
+	this.graphic = snap.circle(0,0,21);
+	this.coll = snap.circle(0,0,21);
 	this.th = 0;
 	this.pos = new retro.pub.Point2D(0,0);
 	this.velocity = 0;
@@ -4384,9 +4393,9 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap,thema) {
 	this.port = port;
 	this.port.onSetConstantValue($bind(this,this.OnSetConstant));
 	this.port.onRemoveConstantValue($bind(this,this.OnRemoveConstant));
-	this.graphic.attr({ fill : thema.bg_color, stroke : thema.base_color, strokeWidth : 3});
+	this.graphic.attr({ fill : thema.bg_color, stroke : thema.stroke_color, strokeWidth : 1});
 	var text = snap.text(26,0,port.getName());
-	text.attr({ 'font-size' : "12px", fill : thema.font_color});
+	text.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular"});
 	this.group.append(text);
 	this.coll.mouseup(function(e,x,y) {
 		if(_g.diagramController.setRubberbandEnd(_g.port)) _g.diagramController.clearRubberband(); else {
@@ -4405,9 +4414,11 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 	,OnSetConstant: function(v) {
 		var _g = this;
 		this.constantValueGraphic = this.snap.group();
-		var graphic = this.snap.circle(0,0,18);
-		var text = this.snap.text(-5,5,haxe.Json.stringify(v.value));
-		graphic.attr({ fill : this.thema.contrast1_color, stroke : this.thema.contrast2_color, strokeWidth : 4});
+		var t = Std.string(v.value);
+		var text = this.snap.text(-2,4,t);
+		text.attr({ 'font-size' : "12px", fill : "#ffffff", 'font-family' : "MyriadPro-Regular"});
+		var graphic = this.snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+		graphic.attr({ fill : this.thema.contrast2_color, strokeWidth : 1, stroke : this.thema.stroke_color});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
 		this.group.append(this.constantValueGraphic);
@@ -4456,19 +4467,22 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	job.onInputPortAdded($bind(this,this.OnAddInputPortView));
 	job.onOutputPortAdded($bind(this,this.OnAddOutputPortView));
 	job.onPosChanged($bind(this,this.OnPosChanged));
-	var snap1 = this.jobController.getEditor().snap;
+	var snap = this.jobController.getEditor().snap;
 	var thema = this.jobController.getEditor().thema;
-	this.group = snap1.group();
+	this.group = snap.group();
 	if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-		this.graphic = snap1.rect(0,0,160,80);
-		this.coll = snap1.rect(0,0,160,80);
+		this.graphic = snap.rect(0,0,216,89,5,5);
+		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		this.coll = snap.rect(0,0,216,89);
 	} else {
-		this.graphic = snap1.rect(0,0,160,80);
-		this.coll = snap1.rect(0,0,160,80);
+		this.graphic = snap.rect(0,0,216,89,5,5);
+		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		this.coll = snap.rect(0,0,216,89);
 	}
-	var text = snap1.text(10,-10,job.getName());
-	text.attr({ 'font-size' : "20px", fill : thema.font_color});
-	this.graphic.attr({ fill : thema.bg_color, stroke : thema.base_color, strokeWidth : 3});
+	var text = snap.text(12,24,job.getName());
+	text.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular"});
+	var line = snap.line(0,36,216,36);
+	line.attr({ strokeWidth : 1, stroke : thema.stroke_color});
 	this.pos = new retro.pub.Point2D(0,0);
 	this.prev_pos = new retro.pub.Point2D(0,0);
 	this.setPos(100,100);
@@ -4480,6 +4494,7 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 		_g.addPos(dx - _g.prev_pos.getX(),dy - _g.prev_pos.getY());
 		_g.prev_pos.setX(dx);
 		_g.prev_pos.setY(dy);
+		_g.refresh();
 	},function(x,y) {
 		_g.prev_pos.setX(0);
 		_g.prev_pos.setY(0);
@@ -4491,20 +4506,8 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	});
 	this.group.append(this.graphic);
 	this.group.append(text);
+	this.group.append(line);
 	this.group.append(this.coll);
-	Snap.load("images/config.svg",function(f) {
-		var g = f.select("g");
-		_g.group.append(g);
-		g.mouseup(function(e,x,y) {
-			if(Type.getClassName(Type.getClass(_g.jobController.getJob())) == "retro.model.EntryJob") {
-			}
-			var runTime = _g.jobController.getEditor().getRuntime();
-			if(!runTime.isRunning()) _g.setted_value = js.Browser.window.prompt("","");
-		});
-		g.attr({ visibility : "hidden"});
-		g.transform("translate(" + -30 + "," + -40 + ")");
-		_g.config_graphic = g;
-	});
 };
 retro.view.JobView.__name__ = ["retro","view","JobView"];
 retro.view.JobView.prototype = {
@@ -4595,24 +4598,24 @@ retro.view.JobView.prototype = {
 		return energy;
 	}
 	,cal2: function() {
-		var h = 22;
+		var h = 63;
 		var _g = 0, _g1 = this.inputportviews;
 		while(_g < _g1.length) {
 			var pv = _g1[_g];
 			++_g;
 			pv.setPos(0,h);
-			h += 44;
+			h += 53;
 		}
-		h = 22;
+		h = 63;
 		var _g = 0, _g1 = this.outputportviews;
 		while(_g < _g1.length) {
 			var pv = _g1[_g];
 			++_g;
-			pv.setPos(160,h);
-			h += 44;
+			pv.setPos(216,h);
+			h += 53;
 		}
-		this.graphic.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 44:this.outputportviews.length * 44});
-		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 44:this.outputportviews.length * 44});
+		this.graphic.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 53 + 36:this.outputportviews.length * 53 + 36});
+		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 53 + 36:this.outputportviews.length * 53 + 36});
 	}
 	,cal: function() {
 		var th = 2 * Math.PI / (this.inputportviews.length + this.outputportviews.length);
@@ -4670,20 +4673,19 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap,thema) 
 	retro.view.PortView.call(this,diagramController,jobview,snap,thema);
 	this.port = port;
 	this.port.onConnected($bind(this,this.OnConnected));
-	this.graphic.attr({ fill : thema.base_color, stroke : thema.base_color, strokeWidth : 3});
+	this.graphic.attr({ fill : thema.base_color, stroke : thema.stroke_color, strokeWidth : 1});
 	var text = snap.text(-70,0,port.getName());
-	text.attr({ 'font-size' : "12px", fill : thema.font_color});
+	text.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular"});
 	this.group.append(text);
 	this.coll.mousedown(function(e,x,y) {
 		_g.diagramController.setRubberbandStart(_g.port);
 	});
 	this.setPos(160,0);
 	this.port.onSelected = function() {
-		_g.graphic.attr({ fill : thema.selected_port_color});
+		_g.graphic.attr({ fill : thema.selected_port_color, stroke : thema.stroke_color});
 	};
 	this.port.onNormal = function() {
-		_g.graphic.attr({ fill : thema.base_color});
-		_g.graphic.attr({ stroke : thema.base_color});
+		_g.graphic.attr({ fill : thema.base_color, stroke : thema.stroke_color});
 	};
 };
 retro.view.OutputPortView.__name__ = ["retro","view","OutputPortView"];
@@ -4734,11 +4736,12 @@ retro.view.PathView = function(diagramController,diagramView,source_port,target_
 	this.target = target_port;
 	this.snap = snap;
 	this.thema = thema;
+	this.diagramView = diagramView;
 	this.source.port.onDisconnected($bind(this,this.onDisconnect));
 	this.group = this.snap.group();
 	this.graphic = this.snap.line(0,0,0,0);
 	this.coll = this.snap.line(0,0,0,0);
-	this.graphic.attr({ stroke : thema.path_color, strokeWidth : 7});
+	this.graphic.attr({ stroke : thema.path_color, strokeWidth : 1});
 	this.coll.attr({ stroke : "#a0a000", 'stroke-opacity' : 0, strokeWidth : 30});
 	diagramView.path_group.append(this.group);
 	this.coll.mousedown(function(e,x,y) {
@@ -4763,6 +4766,7 @@ retro.view.PathView.prototype = {
 	,onDisconnect: function(o,i) {
 		if(this.target.port != i) return;
 		this.group.remove();
+		this.remove_graphic.remove();
 		HxOverrides.remove(this.source.views,this);
 		HxOverrides.remove(this.target.views,this);
 	}
@@ -4786,7 +4790,7 @@ retro.view.PathView.prototype = {
 		var _g = this;
 		Snap.load("images/remove.svg",function(f) {
 			var g = f.select("g");
-			_g.group.append(g);
+			_g.diagramView.control_group.append(g);
 			g.mousedown(function(e,x,y) {
 				retro.controller.DiagramController.disconnect(_g.source.port,_g.target.port);
 				_g.remove_graphic.attr({ visibility : "hidden"});
@@ -4812,22 +4816,34 @@ retro.view.ProjectView = function(projectController,exportController) {
 	this.mode = retro.view.RunMode.Stop;
 	var snap1 = this.projectController.getEditor().snap;
 	var project = this.projectController.getProject();
+	var thema = this.projectController.getEditor().thema;
 	project.onDiagramAdded($bind(this,this.OnDiagramAdded));
 	this.control_group = snap1.group();
+	var rect = snap1.rect(5,5,140,61,5,5);
+	rect.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+	var coll = snap1.rect(5,5,70,61);
+	coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
+	var line = snap1.line(75,5,75,66);
+	line.attr({ strokeWidth : 1, stroke : thema.stroke_color});
 	Snap.load("images/play.svg",function(f) {
 		var g = f.select("svg");
-		g.click(function(e) {
+		var path = g.select("path");
+		path.transform("translate(" + 8 + "," + 5 + ")");
+		path.attr({ fill : "#ffffff", stroke : thema.stroke_color});
+		coll.click(function(e) {
 			if(_g.mode == retro.view.RunMode.Stop) {
 				_g.projectController.run();
 				_g.mode = retro.view.RunMode.Run;
-				g.select("polygon").attr({ fill : "#ff0000"});
+				path.attr({ fill : "#FF39A6"});
 			} else if(_g.mode == retro.view.RunMode.Run) {
 				_g.projectController.stop();
 				_g.mode = retro.view.RunMode.Stop;
-				g.select("polygon").attr({ fill : "#ffffff"});
+				path.attr({ fill : "#ffffff", stroke : thema.stroke_color});
 			}
 		});
+		_g.control_group.append(rect);
 		_g.control_group.append(g);
+		_g.group.append(coll);
 	});
 };
 retro.view.ProjectView.__name__ = ["retro","view","ProjectView"];
@@ -4838,16 +4854,17 @@ retro.view.ProjectView.prototype = {
 	,__class__: retro.view.ProjectView
 }
 retro.view.Thema = function() {
-	this.path_color = "#007ab7";
-	this.font_color = "#007ab7";
-	this.contrast2_color = "#b61972";
-	this.contrast1_color = "#db7bb1";
-	this.selected_port_color = "#FFDE0C";
+	this.stroke_color = "#696969";
+	this.path_color = "#AB3381";
+	this.font_color = "#555555";
+	this.contrast2_color = "#FF39A6";
+	this.contrast1_color = "#FF39A6";
+	this.selected_port_color = "#FF39A6";
 	this.sub3_color = "#d7ebf6";
 	this.sub2_color = "#8ec7e4";
 	this.sub1_color = "#007ab7";
-	this.base_color = "#3297c9";
-	this.bg_color = "#ffffff";
+	this.base_color = "#D3D3D3";
+	this.bg_color = "#F4F4F4";
 };
 retro.view.Thema.__name__ = ["retro","view","Thema"];
 retro.view.Thema.prototype = {
@@ -4862,9 +4879,11 @@ retro.view.ValueCarrierView = function(editor,valueCarrier,diagramView) {
 	var thema = editor.thema;
 	this.pos = new retro.pub.Point2D(0,0);
 	this.group = snap.group();
-	this.graphic = snap.circle(0,0,24);
-	var text = snap.text(0,0,this.value2String(valueCarrier.getValue().value));
-	this.graphic.attr({ fill : thema.contrast1_color, stroke : thema.contrast2_color, strokeWidth : 4});
+	var t = this.value2String(valueCarrier.getValue().value);
+	var text = snap.text(-2,4,t);
+	text.attr({ 'font-size' : "12px", fill : "#ffffff", 'font-family' : "MyriadPro-Regular"});
+	this.graphic = snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+	this.graphic.attr({ fill : thema.contrast1_color, strokeWidth : 1});
 	this.group.append(this.graphic);
 	this.group.append(text);
 	this.startPosition();
@@ -4900,7 +4919,7 @@ retro.view.ValueCarrierView.prototype = {
 		this.remove();
 	}
 	,value2String: function(v) {
-		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) return v; else {
+		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) return v; else {
 			var class_name = Type.getClassName(Type.getClass(v));
 			if(class_name == "String") return v; else return class_name;
 		}

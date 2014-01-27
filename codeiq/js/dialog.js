@@ -33,6 +33,7 @@
 
 
     var listeners = [];
+    var close_listeners = [];
     $(".item").click(function(e){
 		listeners[0]($(this).attr("pkg"), $(this).text(), 100, 100);
 	});
@@ -44,6 +45,10 @@
 	CreateJobDialog.prototype.on = function(listener) {
 		listeners[0] = listener;
 	}
+	CreateJobDialog.prototype.onClose = function(listener) {
+		close_listeners[0] = listener;
+	}
+
 	CreateJobDialog.prototype.open = function() {
 		var modal =	$('<a href="#jobdiv"></a>');
 		modal.leanModal({closeButton:".sub_menu"});

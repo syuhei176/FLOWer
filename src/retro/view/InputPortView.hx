@@ -26,14 +26,15 @@ class InputPortView extends PortView{
 		
 		this.graphic.attr({
 			fill: thema.bg_color,
-			stroke: thema.base_color,
-			strokeWidth: 3
+			stroke : thema.stroke_color,
+			strokeWidth: 1,
 		});
 		
 		var text = snap.text(26, 0, port.getName());
 		text.attr({
 			"font-size" : "12px",
-			fill : thema.font_color
+			fill : thema.font_color,
+			"font-family" : 'MyriadPro-Regular'
 		});
 		this.group.append(text);
 		
@@ -43,10 +44,10 @@ class InputPortView extends PortView{
 				this.diagramController.clearRubberband();
 			}else{
 				//set constant
-				/*var v = window.prompt("","");
+				var v = window.prompt("","");
 				if(v != null) {
 					this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
-				}*/
+				}
 			}
 		});
 		this.setPos(0, 0);
@@ -78,12 +79,18 @@ class InputPortView extends PortView{
 	
 	public function OnSetConstant(v) {
 		this.constantValueGraphic = this.snap.group();
-		var graphic = this.snap.circle(0, 0, 18);
-		var text = this.snap.text(-5, 5, haxe.Json.stringify(v.value));
+		var t = Std.string(v.value);
+		var text : SnapElement = snap.text(-2, 4, t);
+		text.attr({
+			"font-size" : "12px",
+			fill : "#ffffff",
+			"font-family" : 'MyriadPro-Regular',
+		});
+		var graphic = snap.rect(-21, -21, 42 + (t.length - 1) * 6, 42, 21, 21);
 		graphic.attr({
-				fill: this.thema.contrast1_color,
-				stroke: this.thema.contrast2_color,
-				strokeWidth: 4
+				fill: thema.contrast2_color,
+				strokeWidth: 1,
+				stroke : thema.stroke_color
 				});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
