@@ -40,8 +40,8 @@ class PortView{
 		this.thema = thema;
 		
 		this.group = snap.group();
-		this.graphic = snap.circle(0, 0, 22);
-		this.coll = snap.circle(0, 0, 22);
+		this.graphic = snap.circle(0, 0, 21);
+		this.coll = snap.circle(0, 0, 21);
 		this.th = 0;
 		this.pos = new Point2D(0, 0);
 		this.velocity = 0;
@@ -54,7 +54,7 @@ class PortView{
 		this.group.append(this.graphic);
 		this.group.append(coll);
 	}
-	
+
 	public function refresh() {
 		for(pathView in this.views) {
 			pathView.refresh();

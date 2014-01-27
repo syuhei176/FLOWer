@@ -192,7 +192,10 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
+<<<<<<< HEAD
 	this.modules.push(new retro.library.pigpio.Write());
+=======
+>>>>>>> codeiq
 };
 retro.controller.ImportController.__name__ = true;
 retro.controller.ImportController.prototype = {
@@ -1620,6 +1623,7 @@ retro.library.math.Sqrt.prototype = {
 		cb(result);
 	}
 }
+<<<<<<< HEAD
 retro.library.pigpio = {}
 retro.library.pigpio.Write = function() {
 	this.name = "Write";
@@ -1653,6 +1657,8 @@ retro.library.pigpio.Write.prototype = {
 		});
 	}
 }
+=======
+>>>>>>> codeiq
 retro.library.point2d = {}
 retro.library.point2d.Add = function() {
 	this.name = "Add";

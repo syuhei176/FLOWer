@@ -28,7 +28,7 @@ class Editor{
 	private var runtime:Runtime;
 	private var retroClient:RetroClient;
 	
-	public function new(id_header, retroClient, editorkey){
+	public function new(?id_header, ?retroClient, ?editorkey){
 		this.thema = new Thema();
 		this.snap = new Snap("#svg");
 		this.IdGenerator = retro.pub.IDGenerator.getInstance(id_header);
@@ -84,4 +84,28 @@ class Editor{
 			}
 		});
 	}
+
+	public static function createCodeIQ(){
+		var editor = new Editor();
+		editor.IdGenerator = retro.pub.IDGenerator.getInstance("codeIQ");
+		var project = new Project();
+		var projectController = new ProjectController(editor, project);
+		editor.setProjectController(projectController);
+		var projectView = new ProjectView(projectController, new ExportController(editor, project));
+		editor.setProjectView(projectView);
+		var virtualDevice = new VirtualDevice();
+		editor.virtualDevice = virtualDevice;
+		var consoleDevice = new ConsoleView(editor.snap, editor.thema);
+		virtualDevice.setConsoleDevice(consoleDevice);
+		virtualDevice.setSVGDevice(editor.snap);
+		var diagram = new Diagram();
+		project.setRootDiagram(diagram);
+		var diagramController = new DiagramController(editor, diagram, virtualDevice);
+		var entryJob = diagramController.addEntryJob();
+		entryJob.setPos(80,300);
+		var printJob = diagramController.getModule("system.Print");
+		diagramController.addSymbolicLink(printJob).setPos(380, 300);
+	}
+
+
 }

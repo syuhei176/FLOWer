@@ -1,0 +1,110 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>nodoca</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+      <link rel='stylesheet' href='/stylesheets/lib/w2ui-1.2.min.css' />
+  </head>
+  <style>
+
+.bubble {
+  position: relative;
+  width: 360px;
+}
+
+.bubble .body {
+  color: #ffffff;
+  background-color: #66aa11;
+    padding : 12px;
+}
+
+.bubble .tail {
+  border-top: 18px solid #66aa11;
+  border-right: 24px solid transparent; 
+  position: absolute;
+  bottom: -18px;
+  left: 36px;
+  width: 0; 
+  height: 0; 
+}
+
+  .message {
+    margin : 10px;
+    padding : 10px;
+    border : none;
+    background-color : #ffffff;
+  }
+  .message .content {
+    font-size : 16px;
+    margin : 1;
+    padding : 1;
+  }
+  .message .created-date {
+    font-size : 10px;
+    margin : 0px;
+    padding : 0px;
+    position : absolute;
+    right : 16px;
+  }
+  </style>
+  <body>
+      
+<div id="layout" style="width: 96%; height: 500px;"></div>
+      <script src="/js/lib/jquery-1.10.2.min.js"></script>
+      <script src="/js/lib/underscore-min.js"></script>
+      <script src="/js/lib/backbone-min.js"></script>
+      <script src="/js/lib/w2ui-1.2.min.js"></script>
+      <script src="/js/lib/socket.io.min.js"></script>
+      <script src="/js/lib/jarty.js"></script>
+      <script src="/js/dev/rchat-client.js"></script>
+    <script>
+        $(function () {
+
+
+    		var pstyle = 'border: 1px solid #dfdfdf; padding: 5px;';
+    		$('#layout').w2layout({
+                                name: 'layout',
+                                panels: [
+                                         { type: 'top', size: 60, style: pstyle, content: '<img width="200" src="/images/logo.png" /><a href="/chat/<%=group_key%>?ui=couple">カップル</a><a href="/chat/<%=group_key%>?ui=timeline">グループ向け</a><a href="/chat/<%=group_key%>?ui=tree">グループ向け２</a>' },
+                                         { type: 'left', size: 200, style: pstyle, content: 'left', resizable : true},
+                                         { type: 'main', style: pstyle, content: '<div id="list"></div>' },
+                                         { type: 'preview', size: '40%', resizable: true, style: pstyle, content: '<div id="chatbox"></div>' }
+                                         ]
+                                });
+            init_chat("<%=group_key%>");
+          });
+        //w2ui['layout'].content('top', 'This is some content set manually')
+        </script>
+        
+        <script id="source-a-message" type="text/jarty">
+        {* <![CDATA[ *}
+        <div class="message">
+            {if $message.parent}
+            {$message.parent.userinfo.email}さんの「{$message.parent.content}」への返信
+            {/if}
+            <div class="content">
+                {$message.content}
+            </div>
+            <div class="created-date">
+            <a name="reply" data-cid="{$message.id}">Reply</a>
+            {$message.userinfo.email}
+            {$message.created_date}
+            </div>
+        </div>
+        {* ]]> *}
+        </script>
+        
+        <script id="source-chatbox" type="text/jarty">
+        {* <![CDATA[ *}
+        {if $chatbox.reply_target}
+        <div id="replayzone">{$chatbox.reply_target}<a id="close-replayzone">&times;</a></div>
+        {/if}
+        <div class="w2ui-field"><textarea id="message" type="text" style="width: 385px; height: 80px; resize: none"></textarea></div>
+        <a id="btn" class="button" name="send" value="Send">送信</a>
+        {* ]]> *}
+        </script>
+  </body>
+</html>
+

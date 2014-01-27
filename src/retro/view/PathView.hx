@@ -19,6 +19,7 @@ import retro.controller.DiagramController;
 class PathView{
 
 	public var graphic:SnapElement;
+	private var coll:SnapElement;
 	private var group:SnapElement;
 	
 	public var source:OutputPortView;
@@ -32,6 +33,7 @@ class PathView{
 	
 	private var remove_graphic:SnapElement;
 	private var remove_timer:Timer;
+	private var diagramView:DiagramView;
 	
 	public function new(diagramController, diagramView, source_port, target_port, snap, thema) {
 		this.onRemoveListeners = new Array<PathView->InputPort->Void>();
@@ -40,31 +42,40 @@ class PathView{
 		this.target = target_port;
 		this.snap = snap;
 		this.thema = thema;
+		this.diagramView = diagramView;
 		//モデルの変更を監視
 		this.source.port.onDisconnected(this.onDisconnect);
 		
 		this.group = this.snap.group();
 		this.graphic = this.snap.line(0, 0, 0, 0);
+		this.coll = this.snap.line(0, 0, 0, 0);
 		
 		this.graphic.attr({
     	    stroke: thema.path_color,
-    	    strokeWidth: 7
+    	    strokeWidth: 1
     	});
+    	this.coll.attr({
+    	    stroke: "#a0a000",
+    	    "stroke-opacity" : 0,
+    	    strokeWidth: 30
+    	});
+    	
     	diagramView.path_group.append(this.group);
     	
-		this.graphic.mousedown(function(e, x, y){
+		this.coll.mousedown(function(e, x, y){
 			this.visible_remove_btn();
 		});
     	
     	this.group.append(this.graphic);
+    	this.group.append(this.coll);
     	this.refresh();
     	this.init_remove_btn();
 	}
 	
 	private function init_remove_btn() {
-    	Snap.load("/images/remove.svg", function (f) {
+    	Snap.load("images/remove.svg", function (f) {
     		var g = f.select("g");
-        	this.group.append(g);
+        	this.diagramView.control_group.append(g);
         	g.mousedown(function(e, x, y) {
     			DiagramController.disconnect(this.source.port, this.target.port);
 	    		this.remove_graphic.attr({
@@ -100,7 +111,8 @@ class PathView{
 	
 	public function onDisconnect(o, i) {
 		if(this.target.port != i) return;
-    	this.graphic.remove();
+    	this.group.remove();
+    	this.remove_graphic.remove();
     	this.source.views.remove(this);
     	this.target.views.remove(this);
 	}
@@ -112,6 +124,12 @@ class PathView{
 		xx = xx / len;
 		yy = yy / len;
 		this.graphic.attr({
+			x1 : this.source.getPos().getX() + xx*20,
+			y1 : this.source.getPos().getY() + yy*20,
+			x2 : this.target.getPos().getX() - xx*20,
+			y2 : this.target.getPos().getY() - yy*20
+		});
+		this.coll.attr({
 			x1 : this.source.getPos().getX() + xx*20,
 			y1 : this.source.getPos().getY() + yy*20,
 			x2 : this.target.getPos().getX() - xx*20,

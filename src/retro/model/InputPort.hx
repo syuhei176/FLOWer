@@ -15,6 +15,7 @@ class InputPort extends Port {
 	
 	public function new(parent, type, name){
 		super(parent, type, name);
+		this.connection = new Array<OutputPort>();
 		this.onSetValueListeners = new Array<ValueCarrier->Void>();
 		this.onUseValueListeners = new Array<Void->Void>();
 		this.onSetConstantValueListeners = new Array<Value->Void>();

@@ -24,7 +24,7 @@ class Transistor implements JobComponent {
 	public function onInputRecieved(params:Params, cb) {
 		var emitter = params.get("emitter");
 		var base = params.get("base");
-		if(emitter.isEmpty() || base.isEmpty() || base.getValue()==false) {
+		if(emitter.isEmpty() || base.isEmpty()) {
 			cb(null);
 			return;
 		}

@@ -101,11 +101,14 @@ StringBuf.prototype = {
 	}
 	,__class__: StringBuf
 }
+<<<<<<< HEAD
 var StringTools = function() { }
 StringTools.__name__ = ["StringTools"];
 StringTools.urlEncode = function(s) {
 	return encodeURIComponent(s);
 }
+=======
+>>>>>>> codeiq
 var ValueType = { __ename__ : true, __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
@@ -170,6 +173,7 @@ Type.enumIndex = function(e) {
 	return e[1];
 }
 var haxe = {}
+<<<<<<< HEAD
 haxe.Http = function(url) {
 	this.url = url;
 	this.headers = new haxe.ds.StringMap();
@@ -248,6 +252,8 @@ haxe.Http.prototype = {
 	}
 	,__class__: haxe.Http
 }
+=======
+>>>>>>> codeiq
 haxe.Json = function() {
 };
 haxe.Json.__name__ = ["haxe","Json"];
@@ -585,9 +591,13 @@ haxe.Timer.prototype = {
 	,__class__: haxe.Timer
 }
 haxe.ds = {}
+<<<<<<< HEAD
 haxe.ds.StringMap = function() {
 	this.h = { };
 };
+=======
+haxe.ds.StringMap = function() { }
+>>>>>>> codeiq
 haxe.ds.StringMap.__name__ = ["haxe","ds","StringMap"];
 haxe.ds.StringMap.__interfaces__ = [IMap];
 haxe.ds.StringMap.prototype = {
@@ -601,9 +611,12 @@ haxe.ds.StringMap.prototype = {
 	,get: function(key) {
 		return this.h["$" + key];
 	}
+<<<<<<< HEAD
 	,set: function(key,value) {
 		this.h["$" + key] = value;
 	}
+=======
+>>>>>>> codeiq
 	,__class__: haxe.ds.StringMap
 }
 var js = {}
@@ -719,11 +732,14 @@ js.Boot.__instanceof = function(o,cl) {
 }
 js.Browser = function() { }
 js.Browser.__name__ = ["js","Browser"];
+<<<<<<< HEAD
 js.Browser.createXMLHttpRequest = function() {
 	if(typeof XMLHttpRequest != "undefined") return new XMLHttpRequest();
 	if(typeof ActiveXObject != "undefined") return new ActiveXObject("Microsoft.XMLHTTP");
 	throw "Unable to create XMLHttpRequest object.";
 }
+=======
+>>>>>>> codeiq
 var retro = {}
 retro.controller = {}
 retro.controller.Controller = function() { }
@@ -801,8 +817,11 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
+<<<<<<< HEAD
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
+=======
+>>>>>>> codeiq
 };
 retro.controller.DiagramController.__name__ = ["retro","controller","DiagramController"];
 retro.controller.DiagramController.__interfaces__ = [retro.controller.Controller];
@@ -1007,8 +1026,11 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
+<<<<<<< HEAD
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
+=======
+>>>>>>> codeiq
 };
 retro.controller.ImportController.__name__ = ["retro","controller","ImportController"];
 retro.controller.ImportController.prototype = {
@@ -2620,6 +2642,7 @@ retro.library.math.Sqrt.prototype = {
 	}
 	,__class__: retro.library.math.Sqrt
 }
+<<<<<<< HEAD
 retro.library.pigpio = {}
 retro.library.pigpio.Read = function() {
 	this.name = "Read";
@@ -2687,6 +2710,8 @@ retro.library.pigpio.Write.prototype = {
 	}
 	,__class__: retro.library.pigpio.Write
 }
+=======
+>>>>>>> codeiq
 retro.library.point2d = {}
 retro.library.point2d.Add = function() {
 	this.name = "Add";

@@ -25,21 +25,34 @@ class OutputPortView extends PortView{
 		this.port.onConnected(this.OnConnected);
 		this.graphic.attr({
 			fill: thema.base_color,
-			stroke: thema.base_color,
-			strokeWidth: 3
+			stroke : thema.stroke_color,
+			strokeWidth: 1
 		});
 		var text = snap.text(-70, 0, port.getName());
 		text.attr({
 			"font-size" : "12px",
-			fill : thema.font_color
+			fill : thema.font_color,
+			"font-family" : 'MyriadPro-Regular'
 		});
 		this.group.append(text);
 		this.coll.mousedown(function(e, x, y) {
 			this.diagramController.setRubberbandStart(this.port);
 		});
 		this.setPos(160, 0);
-	}
-	
+
+		this.port.onSelected = function(){
+			this.graphic.attr({ 
+				fill : thema.selected_port_color,
+				stroke : thema.stroke_color,
+			});
+		};
+		this.port.onNormal = function(){
+			this.graphic.attr({ 
+				fill : thema.base_color, 
+				stroke : thema.stroke_color,
+			});
+		};
+	}	
 	/*
 		OutputPortからInputPortまで接続されたときに呼ばれる
 	*/

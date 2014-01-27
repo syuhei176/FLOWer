@@ -718,7 +718,10 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
+<<<<<<< HEAD
 	this.modules.push(new retro.library.pigpio.Write());
+=======
+>>>>>>> codeiq
 };
 retro.controller.DiagramController.__name__ = ["retro","controller","DiagramController"];
 retro.controller.DiagramController.__interfaces__ = [retro.controller.Controller];
@@ -923,7 +926,10 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
+<<<<<<< HEAD
 	this.modules.push(new retro.library.pigpio.Write());
+=======
+>>>>>>> codeiq
 };
 retro.controller.ImportController.__name__ = ["retro","controller","ImportController"];
 retro.controller.ImportController.prototype = {
@@ -2535,6 +2541,7 @@ retro.library.math.Sqrt.prototype = {
 	}
 	,__class__: retro.library.math.Sqrt
 }
+<<<<<<< HEAD
 retro.library.pigpio = {}
 retro.library.pigpio.Write = function() {
 	this.name = "Write";
@@ -2565,6 +2572,8 @@ retro.library.pigpio.Write.prototype = {
 	}
 	,__class__: retro.library.pigpio.Write
 }
+=======
+>>>>>>> codeiq
 retro.library.point2d = {}
 retro.library.point2d.Add = function() {
 	this.name = "Add";

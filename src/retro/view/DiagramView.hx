@@ -19,7 +19,7 @@ class DiagramView{
 	private var onButtonListeners:Array<Int->Void>;
 	private var jobViews:Array<JobView>;
 	private var valueCarrierViews:Array<ValueCarrierView>;
-	private var control_group:SnapElement;
+	public var control_group:SnapElement;
 	public var path_group:SnapElement;
 	//力学
 	private var timer:Timer = null;
@@ -30,8 +30,10 @@ class DiagramView{
 		this.valueCarrierViews = new Array<ValueCarrierView>();
 		this.diagramController = diagramController;
 		var diagram = this.diagramController.getDiagram();
+		var thema = this.diagramController.getEditor().thema;
 		//モデルの変更を監視
 		diagram.onJobAdded(this.OnJobAdded);
+		diagram.onJobRemoved(this.OnJobRemoved);
 		diagram.onValueCarrierAdded(this.OnValueCarrierAdded);
 		diagram.onValueCarrierRemoved(this.OnValueCarrierRemoved);
 		diagram.onValueCarrierCleared(this.OnValueCarrierCleared);
@@ -42,18 +44,45 @@ class DiagramView{
 		this.count = 0;
 		
 		this.control_group = snap.group();
-		Snap.load("/images/create.svg", function (f) {
+		var create_coll = snap.rect(75,5,70,61);
+		create_coll.attr({
+    	    fill: "#ffffff",
+    	    "fill-opacity" : 0,
+    	});
+		Snap.load("images/create.svg", function (f) {
     		var g:SnapElement = f.select("g");
-    		g.transform("translate("+100+","+0+")");
-        	g.click(function(e){
+    		g.transform("translate("+74+","+5+")");
+    		g.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				});
+        	create_coll.click(function(e){
         		var createJobDialog = new CreateJobDialog();
-				createJobDialog.on(function(pkg, cmp) {
+				createJobDialog.on(function(pkg, cmp, x, y) {
 					var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
 					var job = this.diagramController.addSymbolicLink(jobComponent);
-					job.setPos(100, 100);
+					job.setPos(x, y);
 				});
 				createJobDialog.open();
         	});
+        	this.control_group.append(g);
+        	this.control_group.append(create_coll);
+    	});
+		Snap.load("images/dustbox.svg", function (f) {
+    		var g:SnapElement = f.select("g");
+    		var right = js.Browser.document.body.clientWidth;
+    		var rect = snap.rect((right - 80), 5, 70, 61, 5, 5);
+    		g.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				});
+    		rect.attr({
+				strokeWidth : 1,
+				stroke : thema.stroke_color,
+				fill : "#F4F4F4",
+				});
+    		g.transform("translate("+(right - 80)+","+3+")");
+    		this.control_group.append(rect);
         	this.control_group.append(g);
     	});
 	}
@@ -95,6 +124,16 @@ class DiagramView{
 			jobView.OnAddOutputPortView(op);
 		}
 		this.jobViews.push(jobView);
+	}
+	
+	public function OnJobRemoved(job:Job) {
+		for(jobView in this.jobViews) {
+			if(jobView.jobController.getJob() == job) {
+				jobView.removeSelf();
+				this.jobViews.remove(jobView);
+				return;
+			}
+		}
 	}
 	
 	public function OnValueCarrierAdded(valueCarrier:ValueCarrier) {
