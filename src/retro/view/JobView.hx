@@ -12,6 +12,7 @@ import retro.model.Job;
 import retro.model.Value;
 import retro.controller.DiagramController;
 import retro.controller.JobController;
+using Lambda;
 
 /*
 	Class Name:JobView
@@ -97,6 +98,7 @@ class JobView{
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
         	this.prev_pos.setX(dx);
         	this.prev_pos.setY(dy);
+        	this.refresh();
     	}, function(x, y) {
     		this.prev_pos.setX(0);
     		this.prev_pos.setY(0);
@@ -113,24 +115,6 @@ class JobView{
 		this.group.append(this.graphic);
 		this.group.append(text);
 		this.group.append(coll);
-    	Snap.load("images/config.svg", function (f) {
-    		var g = f.select("g");
-        	this.group.append(g);
-        	g.mouseup(function(e, x, y) {
-				if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-					//var entry:EntryJob = this.jobController.getJob();
-				}
-				var runTime = this.jobController.getEditor().getRuntime();
-				if(!runTime.isRunning()) {
-					this.setted_value = js.Browser.window.prompt("","");
-				}
-        	});
-    		g.attr({
-    			"visibility" : "hidden"
-    		});
-    		g.transform("translate("+-30+","+-40+")");
-    		this.config_graphic = g;
-    	});
 	}
 	
 	public function removeSelf() {

@@ -43,10 +43,10 @@ class InputPortView extends PortView{
 				this.diagramController.clearRubberband();
 			}else{
 				//set constant
-				var v = window.prompt("","");
+				/*var v = window.prompt("","");
 				if(v != null) {
 					this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
-				}
+				}*/
 			}
 		});
 		this.setPos(0, 0);
