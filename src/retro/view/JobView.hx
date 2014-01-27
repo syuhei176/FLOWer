@@ -65,7 +65,7 @@ class JobView{
 			this.graphic.attr({
 				strokeWidth : 1,
 				stroke : thema.stroke_color,
-				fill : "#F4F4F4",
+				fill : thema.bg_color,
 				});
 			this.coll = snap.rect(0, 0, 216, 89);
 		}else{
@@ -73,7 +73,7 @@ class JobView{
 			this.graphic.attr({
 				strokeWidth : 1,
 				stroke : thema.stroke_color,
-				fill : "#F4F4F4",
+				fill : thema.bg_color,
 				});
 			this.coll = snap.rect(0, 0, 216, 89);
 		}

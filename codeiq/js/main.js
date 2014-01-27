@@ -4099,9 +4099,9 @@ retro.view.ConsoleView = function(snap,thema) {
 	while(_g1 < _g11.length) {
 		var t = _g11[_g1];
 		++_g1;
-		t.attr({ 'font-size' : "18px", fill : "#f0f0ff"});
+		t.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular", width : 220});
 	}
-	this.graphic.attr({ fill : "#202020", stroke : "#707070", strokeWidth : 5});
+	this.graphic.attr({ fill : thema.bg_color, stroke : thema.stroke_color, strokeWidth : 1});
 	this.pos = new retro.pub.Point2D(0,0);
 	this.prev_pos = new retro.pub.Point2D(0,0);
 	this.setPos(200,80);
@@ -4151,7 +4151,7 @@ retro.view.ConsoleView.prototype = {
 		cb(str);
 	}
 	,next_line: function() {
-		if(this.current_line >= 7) {
+		if(this.current_line >= 35) {
 			var _g1 = 0, _g = this.lines.length;
 			while(_g1 < _g) {
 				var i = _g1++;
@@ -4162,7 +4162,7 @@ retro.view.ConsoleView.prototype = {
 	}
 	,putChar: function(c) {
 		if(c == "\n") this.next_line(); else {
-			if(this.lines[this.current_line].length > 20) this.next_line();
+			if(this.lines[this.current_line].length > 35) this.next_line();
 			this.lines[this.current_line] += c;
 			this.texts[this.current_line].attr({ text : this.lines[this.current_line]});
 		}
@@ -4472,11 +4472,11 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	this.group = snap.group();
 	if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
 		this.graphic = snap.rect(0,0,216,89,5,5);
-		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : thema.bg_color});
 		this.coll = snap.rect(0,0,216,89);
 	} else {
 		this.graphic = snap.rect(0,0,216,89,5,5);
-		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : thema.bg_color});
 		this.coll = snap.rect(0,0,216,89);
 	}
 	var text = snap.text(12,24,job.getName());
