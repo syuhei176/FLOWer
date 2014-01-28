@@ -1,42 +1,11 @@
 logic-on-canvas
 ===============
 
-#HOW TO INSTALL
-
-```
-npm install
-```
-
-
-#HOW TO START
-
-```
-npm start
-```
-
-#GRAMMAR
-
-Diagram  
-has many jobs.  
-
-Job  
-has many ports as inputs.  
-has many ports as outputs.  
-
-Port
-has many connections as srcConnections.  
-has name property.  
-has type property.  
-
-Connection
-has a port as target.  
-has a port as source.  
-
-Entry is Job.  
-Actuator is Job.  
-Logic is Job.  
-Memory is Job.  
-
-Constant Value
-
+# Build
+	# build all
+    >> neko build.n
+    # build codeiq
+    neko build.n codeiq
+    # build raspberrypi
+    neko build.n raspberrypi
 
