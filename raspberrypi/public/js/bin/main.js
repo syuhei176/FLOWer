@@ -964,37 +964,12 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.core.Times());
 	this.modules.push(new retro.library.core.Remainder());
 	this.modules.push(new retro.library.core.Filter());
-	this.modules.push(new retro.library.core.Drop());
 	this.modules.push(new retro.library.core.Compare());
 	this.modules.push(new retro.library.core.And());
 	this.modules.push(new retro.library.core.Or());
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
-	this.modules.push(new retro.library.system.Print(virtualDevice));
-	this.modules.push(new retro.library.system.Scan(virtualDevice));
-	this.modules.push(new retro.library.array.Create());
-	this.modules.push(new retro.library.array.Length());
-	this.modules.push(new retro.library.array.Push());
-	this.modules.push(new retro.library.array.Pop());
-	this.modules.push(new retro.library.array.Get());
 	this.modules.push(new retro.library.data.Stack());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
-	this.modules.push(new retro.library.string.Split());
-	this.modules.push(new retro.library.string.IndexOf());
-	this.modules.push(new retro.library.string.ChatAt());
-	this.modules.push(new retro.library.string.Substr());
-	this.modules.push(new retro.library.string.Length());
-	this.modules.push(new retro.library.string.LastIndexOf());
-	this.modules.push(new retro.library.point2d.Add());
-	this.modules.push(new retro.library.point2d.Sub());
-	this.modules.push(new retro.library.point2d.Create());
-	this.modules.push(new retro.library.point2d.Distance());
-	this.modules.push(new retro.library.http.Post());
-	this.modules.push(new retro.library.http.Get());
-	this.modules.push(new retro.library.line2d.Create());
-	this.modules.push(new retro.library.line2d.Distance());
 	this.modules.push(new retro.library.list.Length());
 	this.modules.push(new retro.library.list.Add());
 	this.modules.push(new retro.library.list.Clear());
@@ -1019,10 +994,45 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 	this.modules.push(new retro.library.snapsvg.Circle());
+	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.point2d.Add());
+	this.modules.push(new retro.library.point2d.Sub());
+	this.modules.push(new retro.library.point2d.Create());
+	this.modules.push(new retro.library.point2d.Distance());
+	this.modules.push(new retro.library.line2d.Create());
+	this.modules.push(new retro.library.line2d.Distance());
+	this.modules.push(new retro.library.system.Print(virtualDevice));
+	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.pigpio.Write());
+	this.modules.push(new retro.library.pigpio.Read());
+	this.modules.push(new retro.library.string.Split());
+	this.modules.push(new retro.library.string.IndexOf());
+	this.modules.push(new retro.library.string.ChatAt());
+	this.modules.push(new retro.library.string.Substr());
+	this.modules.push(new retro.library.string.Length());
+	this.modules.push(new retro.library.string.LastIndexOf());
+	this.modules.push(new retro.library.number.C0());
+	this.modules.push(new retro.library.number.C1());
+	this.modules.push(new retro.library.number.C2());
+	this.modules.push(new retro.library.number.C3());
+	this.modules.push(new retro.library.number.C4());
+	this.modules.push(new retro.library.number.C5());
+	this.modules.push(new retro.library.number.C6());
+	this.modules.push(new retro.library.number.C7());
+	this.modules.push(new retro.library.number.C8());
+	this.modules.push(new retro.library.number.C9());
+	this.modules.push(new retro.library.array.Create());
+	this.modules.push(new retro.library.array.Length());
+	this.modules.push(new retro.library.array.Push());
+	this.modules.push(new retro.library.array.Pop());
+	this.modules.push(new retro.library.array.Shift());
+	this.modules.push(new retro.library.array.Get());
+	this.modules.push(new retro.library.sphero.SetBackLED());
+	this.modules.push(new retro.library.sphero.SetHeading());
+	this.modules.push(new retro.library.sphero.Roll());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
 };
@@ -1620,29 +1630,6 @@ retro.library.core.Compare.prototype = {
 	}
 	,__class__: retro.library.core.Compare
 }
-retro.library.core.Drop = function() {
-	this.name = "Drop";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("input",retro.pub.RetroType.RNumber);
-};
-retro.library.core.Drop.__name__ = ["retro","library","core","Drop"];
-retro.library.core.Drop.__interfaces__ = [retro.core.JobComponent];
-retro.library.core.Drop.prototype = {
-	getModuleName: function() {
-		return "core.Drop";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		cb(result);
-	}
-	,__class__: retro.library.core.Drop
-}
 retro.library.core.Filter = function() {
 	this.name = "Filter";
 	this.inputs = new retro.core.Inputs();
@@ -1889,61 +1876,6 @@ retro.library.data.Stack.prototype = {
 		}
 	}
 	,__class__: retro.library.data.Stack
-}
-retro.library.http = {}
-retro.library.http.Get = function() {
-	this.name = "Get";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("http",retro.pub.RetroType.RNumber);
-	this.inputs.add("url",retro.pub.RetroType.RNumber);
-	this.inputs.add("params",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.http.Get.__name__ = ["retro","library","http","Get"];
-retro.library.http.Get.__interfaces__ = [retro.core.JobComponent];
-retro.library.http.Get.prototype = {
-	getModuleName: function() {
-		return "http.Get";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.http.Get
-}
-retro.library.http.Post = function() {
-	this.name = "Post";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("http",retro.pub.RetroType.RNumber);
-	this.inputs.add("url",retro.pub.RetroType.RNumber);
-	this.inputs.add("params",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.http.Post.__name__ = ["retro","library","http","Post"];
-retro.library.http.Post.__interfaces__ = [retro.core.JobComponent];
-retro.library.http.Post.prototype = {
-	getModuleName: function() {
-		return "http.Post";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.http.Post
 }
 retro.library.jquery = {}
 retro.library.jquery.Find = function() {
