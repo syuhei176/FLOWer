@@ -4827,7 +4827,6 @@ retro.view.JobView.prototype = {
 	}
 	,removeSelf: function() {
 		this.group.remove();
-		this.config_timer.stop();
 	}
 	,__class__: retro.view.JobView
 }
@@ -5003,6 +5002,16 @@ retro.view.ProjectView = function(projectController,exportController) {
 				_g.mode = retro.view.RunMode.Stop;
 				path.attr({ fill : "#ffffff", stroke : thema.stroke_color});
 			}
+		});
+		Snap.load("/images/save.svg",function(f1) {
+			var g1 = f1.select("g");
+			g1.transform("translate(" + 160 + "," + 5 + ")");
+			g1.click(function(e) {
+				var exported = _g.exportController.do_export();
+				console.log(exported);
+				_g.projectController.getEditor().save_all(exported);
+			});
+			_g.control_group.append(g1);
 		});
 		_g.control_group.append(rect);
 		_g.control_group.append(g);
