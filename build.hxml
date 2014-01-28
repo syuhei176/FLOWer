@@ -1,7 +1,10 @@
 -main Main
 -D virtual
--js exports/public/js/bin/main.js
+-D raspi
+-js raspberrypi/public/js/bin/main.js
 -cp src
+-resource raspi-flower-modules.json@flower-modules
+
 
 --next 
 
@@ -9,3 +12,4 @@
 -D codeiq
 -js codeiq/js/main.js
 -cp src
+-resource codeiq-flower-modules.json@flower-modules

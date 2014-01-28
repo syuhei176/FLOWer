@@ -3,7 +3,7 @@ import haxe.macro.Context;
 
 class ModuleAdder{
 	macro public static function add(filename : String){
-		var jsonString = sys.io.File.getContent(haxe.macro.Context.resolvePath(filename));
+		var jsonString = haxe.Resource.getString(filename);
 		var json : { packages : List<String> } = haxe.Json.parse(jsonString);
 		var result : Array<Expr> = [];
 		for( pkgName in Reflect.fields(json)  ){

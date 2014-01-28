@@ -29,11 +29,8 @@ class DiagramController implements Controller{
 		this.editor = editor;
 		this.diagram = diagram;
 		this.modules = new Array<JobComponent>();
-		#if codeiq
-		
-		#else
-		ModuleAdder.add("flower-modules.json");
-		#end
+
+		ModuleAdder.add("flower-modules");
 	}
 	
 	public function getEditor() {

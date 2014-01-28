@@ -30,11 +30,7 @@ class Print implements JobComponent {
 			return;
 		}
 		#if js
-		#if virtual
 		this.virtualDevice.getConsoleDevice().print(input.getValue()+"");
-		#else
-		js.Browser.document.write(input.getValue()+"");
-		#end
 		trace(input.getValue());
 		#else 
     	Sys.print(input.getValue());

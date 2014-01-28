@@ -1,0 +1,63 @@
+{
+	"core":{
+		"none" : ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor"],
+		"virtualDevice" : []
+	},
+	"array": {
+		"none" : ["Create","Length","Push","Pop","Shift","Get"],
+		"virtualDevice" : []
+	},
+	"data": {
+		"none" : ["Stack"],
+		"virtualDevice" : []
+	},
+	"sphero": { 
+		"none" : ["SetBackLED","SetHeading","Roll"],
+		"virtualDevice" : []
+	},
+	"string": {
+		"none" :	["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf"],
+		"virtualDevice" : []
+	},
+	"point2d": {
+		"none" : ["Add","Sub","Create","Distance"],"http":["Post","Get"],
+		"virtualDevice" : []
+	},
+	"line2d" : {
+		"none" : ["Create","Distance"],
+		"virtualDevice" : []
+	},
+	"list" : {
+		"none" : ["Length","Add","Clear","First","IsEmpty","Join","Last","Pop","Push","Remove"],
+		"virtualDevice" : []
+	},
+	"math": {
+		"none" : ["Abs","Acos","Asin","Atan","Atan2","Cos","Sin","Floor","Log","Max","Min","Pow","Random","Sqrt"],
+		"virtualDevice" : []
+	},
+	"snapsvg": {
+		"none" : ["Circle"],
+		"virtualDevice" : ["Rect"]
+	},
+	"snapelement": {
+		"none" : ["Translate","Fill"],
+		"virtualDevice" : []
+	},
+	"jquery": {
+		"none" : ["Find","Html"],
+		"virtualDevice" : []
+	},
+	"number" : {
+		"none" : ["C0","C1","C2","C3","C4","C5","C6","C7","C8","C9"],
+		"virtualDevice" : [] 
+	},
+	"pigpio" :{
+		"none" : ["Write","Read"],
+		"virtualDevice" : []
+	},
+	"system" : {
+			"none" : [],
+			"virtualDevice" : ["Print","Scan"]
+		}
+	}
+}

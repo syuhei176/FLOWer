@@ -72,6 +72,7 @@ class ProjectView{
 	        		});
         		}
         	});
+        #if raspi
         Snap.load("/images/save.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+160+","+5+")");
@@ -82,6 +83,7 @@ class ProjectView{
         	});
         	this.control_group.append(g);
     	});
+    	#end
         	
         	this.control_group.append(rect);
         	this.control_group.append(g);

@@ -106,6 +106,11 @@ StringBuf.prototype = {
 	}
 	,__class__: StringBuf
 }
+var StringTools = function() { }
+StringTools.__name__ = ["StringTools"];
+StringTools.urlEncode = function(s) {
+	return encodeURIComponent(s);
+}
 var ValueType = { __ename__ : true, __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
@@ -170,6 +175,84 @@ Type.enumIndex = function(e) {
 	return e[1];
 }
 var haxe = {}
+haxe.Http = function(url) {
+	this.url = url;
+	this.headers = new haxe.ds.StringMap();
+	this.params = new haxe.ds.StringMap();
+	this.async = true;
+};
+haxe.Http.__name__ = ["haxe","Http"];
+haxe.Http.prototype = {
+	onStatus: function(status) {
+	}
+	,onError: function(msg) {
+	}
+	,onData: function(data) {
+	}
+	,request: function(post) {
+		var me = this;
+		me.responseData = null;
+		var r = js.Browser.createXMLHttpRequest();
+		var onreadystatechange = function(_) {
+			if(r.readyState != 4) return;
+			var s = (function($this) {
+				var $r;
+				try {
+					$r = r.status;
+				} catch( e ) {
+					$r = null;
+				}
+				return $r;
+			}(this));
+			if(s == undefined) s = null;
+			if(s != null) me.onStatus(s);
+			if(s != null && s >= 200 && s < 400) me.onData(me.responseData = r.responseText); else if(s == null) me.onError("Failed to connect or resolve host"); else switch(s) {
+			case 12029:
+				me.onError("Failed to connect to host");
+				break;
+			case 12007:
+				me.onError("Unknown host");
+				break;
+			default:
+				me.responseData = r.responseText;
+				me.onError("Http Error #" + r.status);
+			}
+		};
+		if(this.async) r.onreadystatechange = onreadystatechange;
+		var uri = this.postData;
+		if(uri != null) post = true; else {
+			var $it0 = this.params.keys();
+			while( $it0.hasNext() ) {
+				var p = $it0.next();
+				if(uri == null) uri = ""; else uri += "&";
+				uri += StringTools.urlEncode(p) + "=" + StringTools.urlEncode(this.params.get(p));
+			}
+		}
+		try {
+			if(post) r.open("POST",this.url,this.async); else if(uri != null) {
+				var question = this.url.split("?").length <= 1;
+				r.open("GET",this.url + (question?"?":"&") + uri,this.async);
+				uri = null;
+			} else r.open("GET",this.url,this.async);
+		} catch( e ) {
+			this.onError(e.toString());
+			return;
+		}
+		if(this.headers.get("Content-Type") == null && post && this.postData == null) r.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		var $it1 = this.headers.keys();
+		while( $it1.hasNext() ) {
+			var h = $it1.next();
+			r.setRequestHeader(h,this.headers.get(h));
+		}
+		r.send(uri);
+		if(!this.async) onreadystatechange(null);
+	}
+	,setParameter: function(param,value) {
+		this.params.set(param,value);
+		return this;
+	}
+	,__class__: haxe.Http
+}
 haxe.Json = function() {
 };
 haxe.Json.__name__ = ["haxe","Json"];
@@ -507,7 +590,9 @@ haxe.Timer.prototype = {
 	,__class__: haxe.Timer
 }
 haxe.ds = {}
-haxe.ds.StringMap = function() { }
+haxe.ds.StringMap = function() {
+	this.h = { };
+};
 haxe.ds.StringMap.__name__ = ["haxe","ds","StringMap"];
 haxe.ds.StringMap.__interfaces__ = [IMap];
 haxe.ds.StringMap.prototype = {
@@ -520,6 +605,9 @@ haxe.ds.StringMap.prototype = {
 	}
 	,get: function(key) {
 		return this.h["$" + key];
+	}
+	,set: function(key,value) {
+		this.h["$" + key] = value;
 	}
 	,__class__: haxe.ds.StringMap
 }
@@ -636,6 +724,11 @@ js.Boot.__instanceof = function(o,cl) {
 }
 js.Browser = function() { }
 js.Browser.__name__ = ["js","Browser"];
+js.Browser.createXMLHttpRequest = function() {
+	if(typeof XMLHttpRequest != "undefined") return new XMLHttpRequest();
+	if(typeof ActiveXObject != "undefined") return new ActiveXObject("Microsoft.XMLHTTP");
+	throw "Unable to create XMLHttpRequest object.";
+}
 var retro = {}
 retro.controller = {}
 retro.controller.Controller = function() { }
@@ -694,6 +787,8 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.pigpio.Write());
+	this.modules.push(new retro.library.pigpio.Read());
 	this.modules.push(new retro.library.string.Split());
 	this.modules.push(new retro.library.string.IndexOf());
 	this.modules.push(new retro.library.string.ChatAt());
@@ -2821,6 +2916,75 @@ retro.library.number.C9.prototype = {
 	}
 	,__class__: retro.library.number.C9
 }
+retro.library.pigpio = {}
+retro.library.pigpio.Read = function() {
+	this.name = "Read";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("pin",retro.pub.RetroType.RNumber);
+	this.outputs.add("value",retro.pub.RetroType.RNumber);
+};
+retro.library.pigpio.Read.__name__ = ["retro","library","pigpio","Read"];
+retro.library.pigpio.Read.__interfaces__ = [retro.core.JobComponent];
+retro.library.pigpio.Read.prototype = {
+	getModuleName: function() {
+		return "pigpio.Read";
+	}
+	,onInputRecieved: function(params,cb) {
+		var pin = params.get("pin");
+		var valueParam = params.get("value");
+		if(pin.isEmpty() || valueParam.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var pin_no = pin.getValue();
+		var value = valueParam.getValue();
+		var http = new haxe.Http("/pigpio/read");
+		http.onData = function(data) {
+			var result = new retro.core.Result();
+			result.set("value",haxe.Json.parse(data));
+			cb(result);
+		};
+		http.setParameter("pin",pin_no);
+		http.request(true);
+	}
+	,__class__: retro.library.pigpio.Read
+}
+retro.library.pigpio.Write = function() {
+	this.name = "Write";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("pin",retro.pub.RetroType.RNumber);
+	this.inputs.add("value",retro.pub.RetroType.RNumber);
+	this.outputs.add("output",retro.pub.RetroType.RNumber);
+};
+retro.library.pigpio.Write.__name__ = ["retro","library","pigpio","Write"];
+retro.library.pigpio.Write.__interfaces__ = [retro.core.JobComponent];
+retro.library.pigpio.Write.prototype = {
+	getModuleName: function() {
+		return "pigpio.Write";
+	}
+	,onInputRecieved: function(params,cb) {
+		var pin = params.get("pin");
+		var valueParam = params.get("value");
+		if(pin.isEmpty() || valueParam.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var pin_no = pin.getValue();
+		var value = valueParam.getValue();
+		var http = new haxe.Http("/pigpio/write");
+		http.onData = function(data) {
+			var result = new retro.core.Result();
+			result.set("output",0);
+			cb(result);
+		};
+		http.setParameter("pin",pin_no);
+		http.setParameter("value",value);
+		http.request(true);
+	}
+	,__class__: retro.library.pigpio.Write
+}
 retro.library.point2d = {}
 retro.library.point2d.Add = function() {
 	this.name = "Add";
@@ -4488,7 +4652,6 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	this.setPos(100,100);
 	this.coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
 	this.coll.mousedown(function(e,x,y) {
-		_g.visible_config_btn();
 	});
 	this.coll.drag(function(dx,dy,x,y) {
 		_g.addPos(dx - _g.prev_pos.getX(),dy - _g.prev_pos.getY());
@@ -4664,7 +4827,6 @@ retro.view.JobView.prototype = {
 	}
 	,removeSelf: function() {
 		this.group.remove();
-		this.config_timer.stop();
 	}
 	,__class__: retro.view.JobView
 }
@@ -4840,6 +5002,16 @@ retro.view.ProjectView = function(projectController,exportController) {
 				_g.mode = retro.view.RunMode.Stop;
 				path.attr({ fill : "#ffffff", stroke : thema.stroke_color});
 			}
+		});
+		Snap.load("/images/save.svg",function(f1) {
+			var g1 = f1.select("g");
+			g1.transform("translate(" + 160 + "," + 5 + ")");
+			g1.click(function(e) {
+				var exported = _g.exportController.do_export();
+				console.log(exported);
+				_g.projectController.getEditor().save_all(exported);
+			});
+			_g.control_group.append(g1);
 		});
 		_g.control_group.append(rect);
 		_g.control_group.append(g);
