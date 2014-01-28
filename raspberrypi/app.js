@@ -13,6 +13,7 @@ var express = require('express')
 var editor_controller = require('./server/editor')
 var vm_controller = require('./server/vm')
 var config = require("./server/config");
+var raspberrypi_controller = require('./server/raspberrypi')
 
 server.listen(3000);
 
@@ -80,6 +81,11 @@ var chat = io
     	editor_controller.save_all(msg.editor_key, msg.data, function() {
     		
     	});
+    });
+    socket.on('readwait', function (msg) {
+        raspberrypi_controller.readWait(msg.pin, function(err, value) {
+            socket.emit('readwait', value);
+        })
     });
     socket.on('update', function (msg) {
     	var room_name = "g" + msg.editor_key;

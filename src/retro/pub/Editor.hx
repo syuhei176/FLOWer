@@ -72,6 +72,7 @@ class Editor{
 			var consoleDevice = new ConsoleView(editor.snap, editor.thema);
 			virtualDevice.setConsoleDevice(consoleDevice);
 			virtualDevice.setSVGDevice(editor.snap);
+			virtualDevice.setSocketDevice(retroClient);
 			if(data.model.diagram) {
 				//インポートを実行
 				var importController = new ImportController(project, virtualDevice);

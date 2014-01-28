@@ -15,6 +15,9 @@ $(function(){
 			'reconnection delay': 500,
 			'max reconnection attempts': 10
 		});
+        this.listeners = {
+        		readwait : []
+        }
     	this.socket.on('connect', function() {
     		console.log('connected');
 			self.socket.emit('join', {
@@ -23,6 +26,11 @@ $(function(){
 			self.socket.on('getall', function(a) {
 				console.log(a);
 				self.editor = cb(a);
+			});
+			self.socket.on('readwait', function(a) {
+				for(var i=0;i < self.listeners.readwait.length;i++) {
+					self.listeners.readwait[i](a);
+				}
 			});
 			self.get_all();
     	});
@@ -53,6 +61,13 @@ $(function(){
     RetroClient.prototype.exporter = function() {
     	this.save_all(this.editor.diagram.exporter());
     	
+    }
+    
+    RetroClient.prototype.readwait = function(pin, cb) {
+        this.listeners.readwait.push(cb);
+    	this.socket.emit("readwait", {
+    		pin : pin
+    	});
     }
     
     window.RetroClient = RetroClient;

@@ -7,4 +7,5 @@ extern class RetroClient {
 	public function new(editor_key:Dynamic);
 	public function init(cb:Dynamic):Void;
 	public function save_all(data:Dynamic):Void;
+	public function readwait(pin:Int, cb:Int->Void):Void;
 }

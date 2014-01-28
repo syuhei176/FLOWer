@@ -789,6 +789,7 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
+	this.modules.push(new retro.library.pigpio.ReadWait(virtualDevice));
 	this.modules.push(new retro.library.string.Split());
 	this.modules.push(new retro.library.string.IndexOf());
 	this.modules.push(new retro.library.string.ChatAt());
@@ -1008,6 +1009,7 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
+	this.modules.push(new retro.library.pigpio.ReadWait(virtualDevice));
 	this.modules.push(new retro.library.string.Split());
 	this.modules.push(new retro.library.string.IndexOf());
 	this.modules.push(new retro.library.string.ChatAt());
@@ -1342,8 +1344,14 @@ retro.core.VirtualDevice = function() {
 };
 retro.core.VirtualDevice.__name__ = ["retro","core","VirtualDevice"];
 retro.core.VirtualDevice.prototype = {
-	getSnap: function() {
+	getRetroClient: function() {
+		return this.retroClient;
+	}
+	,getSnap: function() {
 		return this.snap;
+	}
+	,setSocketDevice: function(retroClient) {
+		this.retroClient = retroClient;
 	}
 	,setSVGDevice: function(snap) {
 		this.snap = snap;
@@ -2880,6 +2888,35 @@ retro.library.pigpio.Read.prototype = {
 	}
 	,__class__: retro.library.pigpio.Read
 }
+retro.library.pigpio.ReadWait = function(virtualDevice) {
+	this.name = "ReadWait";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("pin",retro.pub.RetroType.RNumber);
+	this.outputs.add("value",retro.pub.RetroType.RNumber);
+	this.virtualDevice = virtualDevice;
+};
+retro.library.pigpio.ReadWait.__name__ = ["retro","library","pigpio","ReadWait"];
+retro.library.pigpio.ReadWait.__interfaces__ = [retro.core.JobComponent];
+retro.library.pigpio.ReadWait.prototype = {
+	getModuleName: function() {
+		return "pigpio.ReadWait";
+	}
+	,onInputRecieved: function(params,cb) {
+		var pin = params.get("pin");
+		if(pin.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var pin_no = pin.getValue();
+		this.virtualDevice.getRetroClient().readwait(pin_no,function(data) {
+			var result = new retro.core.Result();
+			result.set("value",data);
+			cb(result);
+		});
+	}
+	,__class__: retro.library.pigpio.ReadWait
+}
 retro.library.pigpio.Write = function() {
 	this.name = "Write";
 	this.inputs = new retro.core.Inputs();
@@ -4034,6 +4071,7 @@ retro.pub.Editor.create = function(editorkey,id_header) {
 		var consoleDevice = new retro.view.ConsoleView(editor.snap,editor.thema);
 		virtualDevice.setConsoleDevice(consoleDevice);
 		virtualDevice.setSVGDevice(editor.snap);
+		virtualDevice.setSocketDevice(retroClient);
 		if(data.model.diagram) {
 			var importController = new retro.controller.ImportController(project,virtualDevice);
 			importController.do_import(data);
