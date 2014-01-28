@@ -2864,13 +2864,11 @@ retro.library.pigpio.Read.prototype = {
 	}
 	,onInputRecieved: function(params,cb) {
 		var pin = params.get("pin");
-		var valueParam = params.get("value");
-		if(pin.isEmpty() || valueParam.isEmpty()) {
+		if(pin.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var pin_no = pin.getValue();
-		var value = valueParam.getValue();
 		var http = new haxe.Http("/pigpio/read");
 		http.onData = function(data) {
 			var result = new retro.core.Result();
@@ -4882,7 +4880,7 @@ retro.view.PathView.prototype = {
 	}
 	,init_remove_btn: function() {
 		var _g = this;
-		Snap.load("images/remove.svg",function(f) {
+		Snap.load("/images/remove.svg",function(f) {
 			var g = f.select("g");
 			_g.diagramView.control_group.append(g);
 			g.mousedown(function(e,x,y) {
@@ -5061,6 +5059,21 @@ retro.vm.Runtime.prototype = {
 			port[0].setValueCarrier(valueCarrier[0]);
 			var params = port[0].parent.getParams();
 			var worker = port[0].parent.getWorker();
+			var flg = true;
+			var _g2 = 0, _g3 = port[0].parent.getInputPorts();
+			while(_g2 < _g3.length) {
+				var p = _g3[_g2];
+				++_g2;
+				if(p.getValue() == null) flg = false;
+			}
+			if(flg) {
+				var _g2 = 0, _g3 = port[0].parent.getInputPorts();
+				while(_g2 < _g3.length) {
+					var p = _g3[_g2];
+					++_g2;
+					this.diagram.removeValueCarrier(p.useValueCarrier());
+				}
+			}
 			worker.act(params,(function(port,valueCarrier) {
 				return function(script_result) {
 					if(script_result == null) return;

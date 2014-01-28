@@ -77,6 +77,18 @@ class Runtime{
 			port.setValueCarrier(valueCarrier);
 			var params = port.parent.getParams();
 			var worker = port.parent.getWorker();
+			//インプットがすべて埋まっているときに消費
+			var flg:Bool = true;
+			for(p in port.parent.getInputPorts()) {
+				if(p.getValue() == null) {
+					flg = false;
+				}
+			}
+			if(flg) {
+				for(p in port.parent.getInputPorts()) {
+					this.diagram.removeValueCarrier(p.useValueCarrier());
+				}
+			}
 			worker.act(params, function(script_result) {
 				if(script_result == null) {
 					return;
