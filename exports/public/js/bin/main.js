@@ -54,6 +54,8 @@ Main.init = function(editorkey,id_header) {
 }
 var IMap = function() { }
 IMap.__name__ = ["IMap"];
+var ModuleAdder = function() { }
+ModuleAdder.__name__ = ["ModuleAdder"];
 var Reflect = function() { }
 Reflect.__name__ = ["Reflect"];
 Reflect.field = function(o,field) {
@@ -101,14 +103,6 @@ StringBuf.prototype = {
 	}
 	,__class__: StringBuf
 }
-<<<<<<< HEAD
-var StringTools = function() { }
-StringTools.__name__ = ["StringTools"];
-StringTools.urlEncode = function(s) {
-	return encodeURIComponent(s);
-}
-=======
->>>>>>> codeiq
 var ValueType = { __ename__ : true, __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
@@ -173,87 +167,6 @@ Type.enumIndex = function(e) {
 	return e[1];
 }
 var haxe = {}
-<<<<<<< HEAD
-haxe.Http = function(url) {
-	this.url = url;
-	this.headers = new haxe.ds.StringMap();
-	this.params = new haxe.ds.StringMap();
-	this.async = true;
-};
-haxe.Http.__name__ = ["haxe","Http"];
-haxe.Http.prototype = {
-	onStatus: function(status) {
-	}
-	,onError: function(msg) {
-	}
-	,onData: function(data) {
-	}
-	,request: function(post) {
-		var me = this;
-		me.responseData = null;
-		var r = js.Browser.createXMLHttpRequest();
-		var onreadystatechange = function(_) {
-			if(r.readyState != 4) return;
-			var s = (function($this) {
-				var $r;
-				try {
-					$r = r.status;
-				} catch( e ) {
-					$r = null;
-				}
-				return $r;
-			}(this));
-			if(s == undefined) s = null;
-			if(s != null) me.onStatus(s);
-			if(s != null && s >= 200 && s < 400) me.onData(me.responseData = r.responseText); else if(s == null) me.onError("Failed to connect or resolve host"); else switch(s) {
-			case 12029:
-				me.onError("Failed to connect to host");
-				break;
-			case 12007:
-				me.onError("Unknown host");
-				break;
-			default:
-				me.responseData = r.responseText;
-				me.onError("Http Error #" + r.status);
-			}
-		};
-		if(this.async) r.onreadystatechange = onreadystatechange;
-		var uri = this.postData;
-		if(uri != null) post = true; else {
-			var $it0 = this.params.keys();
-			while( $it0.hasNext() ) {
-				var p = $it0.next();
-				if(uri == null) uri = ""; else uri += "&";
-				uri += StringTools.urlEncode(p) + "=" + StringTools.urlEncode(this.params.get(p));
-			}
-		}
-		try {
-			if(post) r.open("POST",this.url,this.async); else if(uri != null) {
-				var question = this.url.split("?").length <= 1;
-				r.open("GET",this.url + (question?"?":"&") + uri,this.async);
-				uri = null;
-			} else r.open("GET",this.url,this.async);
-		} catch( e ) {
-			this.onError(e.toString());
-			return;
-		}
-		if(this.headers.get("Content-Type") == null && post && this.postData == null) r.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		var $it1 = this.headers.keys();
-		while( $it1.hasNext() ) {
-			var h = $it1.next();
-			r.setRequestHeader(h,this.headers.get(h));
-		}
-		r.send(uri);
-		if(!this.async) onreadystatechange(null);
-	}
-	,setParameter: function(param,value) {
-		this.params.set(param,value);
-		return this;
-	}
-	,__class__: haxe.Http
-}
-=======
->>>>>>> codeiq
 haxe.Json = function() {
 };
 haxe.Json.__name__ = ["haxe","Json"];
@@ -591,13 +504,7 @@ haxe.Timer.prototype = {
 	,__class__: haxe.Timer
 }
 haxe.ds = {}
-<<<<<<< HEAD
-haxe.ds.StringMap = function() {
-	this.h = { };
-};
-=======
 haxe.ds.StringMap = function() { }
->>>>>>> codeiq
 haxe.ds.StringMap.__name__ = ["haxe","ds","StringMap"];
 haxe.ds.StringMap.__interfaces__ = [IMap];
 haxe.ds.StringMap.prototype = {
@@ -611,12 +518,6 @@ haxe.ds.StringMap.prototype = {
 	,get: function(key) {
 		return this.h["$" + key];
 	}
-<<<<<<< HEAD
-	,set: function(key,value) {
-		this.h["$" + key] = value;
-	}
-=======
->>>>>>> codeiq
 	,__class__: haxe.ds.StringMap
 }
 var js = {}
@@ -732,14 +633,6 @@ js.Boot.__instanceof = function(o,cl) {
 }
 js.Browser = function() { }
 js.Browser.__name__ = ["js","Browser"];
-<<<<<<< HEAD
-js.Browser.createXMLHttpRequest = function() {
-	if(typeof XMLHttpRequest != "undefined") return new XMLHttpRequest();
-	if(typeof ActiveXObject != "undefined") return new ActiveXObject("Microsoft.XMLHTTP");
-	throw "Unable to create XMLHttpRequest object.";
-}
-=======
->>>>>>> codeiq
 var retro = {}
 retro.controller = {}
 retro.controller.Controller = function() { }
@@ -756,37 +649,12 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.core.Times());
 	this.modules.push(new retro.library.core.Remainder());
 	this.modules.push(new retro.library.core.Filter());
-	this.modules.push(new retro.library.core.Drop());
 	this.modules.push(new retro.library.core.Compare());
 	this.modules.push(new retro.library.core.And());
 	this.modules.push(new retro.library.core.Or());
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
-	this.modules.push(new retro.library.system.Print(virtualDevice));
-	this.modules.push(new retro.library.system.Scan(virtualDevice));
-	this.modules.push(new retro.library.array.Create());
-	this.modules.push(new retro.library.array.Length());
-	this.modules.push(new retro.library.array.Push());
-	this.modules.push(new retro.library.array.Pop());
-	this.modules.push(new retro.library.array.Get());
 	this.modules.push(new retro.library.data.Stack());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
-	this.modules.push(new retro.library.string.Split());
-	this.modules.push(new retro.library.string.IndexOf());
-	this.modules.push(new retro.library.string.ChatAt());
-	this.modules.push(new retro.library.string.Substr());
-	this.modules.push(new retro.library.string.Length());
-	this.modules.push(new retro.library.string.LastIndexOf());
-	this.modules.push(new retro.library.point2d.Add());
-	this.modules.push(new retro.library.point2d.Sub());
-	this.modules.push(new retro.library.point2d.Create());
-	this.modules.push(new retro.library.point2d.Distance());
-	this.modules.push(new retro.library.http.Post());
-	this.modules.push(new retro.library.http.Get());
-	this.modules.push(new retro.library.line2d.Create());
-	this.modules.push(new retro.library.line2d.Distance());
 	this.modules.push(new retro.library.list.Length());
 	this.modules.push(new retro.library.list.Add());
 	this.modules.push(new retro.library.list.Clear());
@@ -811,17 +679,45 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 	this.modules.push(new retro.library.snapsvg.Circle());
+	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.point2d.Add());
+	this.modules.push(new retro.library.point2d.Sub());
+	this.modules.push(new retro.library.point2d.Create());
+	this.modules.push(new retro.library.point2d.Distance());
+	this.modules.push(new retro.library.line2d.Create());
+	this.modules.push(new retro.library.line2d.Distance());
+	this.modules.push(new retro.library.system.Print(virtualDevice));
+	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.string.Split());
+	this.modules.push(new retro.library.string.IndexOf());
+	this.modules.push(new retro.library.string.ChatAt());
+	this.modules.push(new retro.library.string.Substr());
+	this.modules.push(new retro.library.string.Length());
+	this.modules.push(new retro.library.string.LastIndexOf());
+	this.modules.push(new retro.library.number.C0());
+	this.modules.push(new retro.library.number.C1());
+	this.modules.push(new retro.library.number.C2());
+	this.modules.push(new retro.library.number.C3());
+	this.modules.push(new retro.library.number.C4());
+	this.modules.push(new retro.library.number.C5());
+	this.modules.push(new retro.library.number.C6());
+	this.modules.push(new retro.library.number.C7());
+	this.modules.push(new retro.library.number.C8());
+	this.modules.push(new retro.library.number.C9());
+	this.modules.push(new retro.library.array.Create());
+	this.modules.push(new retro.library.array.Length());
+	this.modules.push(new retro.library.array.Push());
+	this.modules.push(new retro.library.array.Pop());
+	this.modules.push(new retro.library.array.Shift());
+	this.modules.push(new retro.library.array.Get());
+	this.modules.push(new retro.library.sphero.SetBackLED());
+	this.modules.push(new retro.library.sphero.SetHeading());
+	this.modules.push(new retro.library.sphero.Roll());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
-<<<<<<< HEAD
-	this.modules.push(new retro.library.pigpio.Write());
-	this.modules.push(new retro.library.pigpio.Read());
-=======
->>>>>>> codeiq
 };
 retro.controller.DiagramController.__name__ = ["retro","controller","DiagramController"];
 retro.controller.DiagramController.__interfaces__ = [retro.controller.Controller];
@@ -1026,11 +922,6 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
-<<<<<<< HEAD
-	this.modules.push(new retro.library.pigpio.Write());
-	this.modules.push(new retro.library.pigpio.Read());
-=======
->>>>>>> codeiq
 };
 retro.controller.ImportController.__name__ = ["retro","controller","ImportController"];
 retro.controller.ImportController.prototype = {
@@ -1155,7 +1046,7 @@ retro.controller.ProjectController.prototype = {
 	,run: function() {
 		if(this.runtime == null) this.runtime = new retro.vm.Runtime(this.project.getRootDiagram());
 		var entry = this.getProject().getRootDiagram().getEntryPoint();
-		this.runtime.run(entry);
+		this.runtime.run(entry,0);
 	}
 	,addDiagram: function() {
 		var diagram = new retro.model.Diagram();
@@ -1487,6 +1378,35 @@ retro.library.array.Push.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.array.Push
+}
+retro.library.array.Shift = function() {
+	this.name = "Shift";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("input",retro.pub.RetroType.RNumber);
+	this.outputs.add("array",retro.pub.RetroType.RNumber);
+	this.outputs.add("value",retro.pub.RetroType.RNumber);
+};
+retro.library.array.Shift.__name__ = ["retro","library","array","Shift"];
+retro.library.array.Shift.__interfaces__ = [retro.core.JobComponent];
+retro.library.array.Shift.prototype = {
+	getModuleName: function() {
+		return "array.Shift";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("input");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		var array = input.getValue();
+		var value = array.shift();
+		result.set("array",array);
+		result.set("value",value);
+		cb(result);
+	}
+	,__class__: retro.library.array.Shift
 }
 retro.library.core = {}
 retro.library.core.Add = function() {
@@ -1826,7 +1746,7 @@ retro.library.core.Transistor.prototype = {
 	,onInputRecieved: function(params,cb) {
 		var emitter = params.get("emitter");
 		var base = params.get("base");
-		if(emitter.isEmpty() || base.isEmpty() || base.getValue() == false) {
+		if(emitter.isEmpty() || base.isEmpty()) {
 			cb(null);
 			return;
 		}
@@ -2642,76 +2562,257 @@ retro.library.math.Sqrt.prototype = {
 	}
 	,__class__: retro.library.math.Sqrt
 }
-<<<<<<< HEAD
-retro.library.pigpio = {}
-retro.library.pigpio.Read = function() {
-	this.name = "Read";
+retro.library.number = {}
+retro.library.number.C0 = function() {
+	this.name = "C0";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("pin",retro.pub.RetroType.RNumber);
-	this.outputs.add("value",retro.pub.RetroType.RNumber);
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("0",retro.pub.RetroType.RNumber);
 };
-retro.library.pigpio.Read.__name__ = ["retro","library","pigpio","Read"];
-retro.library.pigpio.Read.__interfaces__ = [retro.core.JobComponent];
-retro.library.pigpio.Read.prototype = {
+retro.library.number.C0.__name__ = ["retro","library","number","C0"];
+retro.library.number.C0.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C0.prototype = {
 	getModuleName: function() {
-		return "pigpio.Read";
+		return "number.0";
 	}
 	,onInputRecieved: function(params,cb) {
-		var pin = params.get("pin");
-		if(pin.isEmpty()) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
 			cb(null);
 			return;
 		}
-		var pin_no = pin.getValue();
-		var http = new haxe.Http("/pigpio/read");
-		http.onData = function(data) {
-			var result = new retro.core.Result();
-			result.set("value",haxe.Json.parse(data));
-			cb(result);
-		};
-		http.setParameter("pin",pin_no);
-		http.request(true);
+		var result = new retro.core.Result();
+		result.set("0",0);
+		cb(result);
 	}
-	,__class__: retro.library.pigpio.Read
+	,__class__: retro.library.number.C0
 }
-retro.library.pigpio.Write = function() {
-	this.name = "Write";
+retro.library.number.C1 = function() {
+	this.name = "C1";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("pin",retro.pub.RetroType.RNumber);
-	this.inputs.add("value",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("1",retro.pub.RetroType.RNumber);
 };
-retro.library.pigpio.Write.__name__ = ["retro","library","pigpio","Write"];
-retro.library.pigpio.Write.__interfaces__ = [retro.core.JobComponent];
-retro.library.pigpio.Write.prototype = {
+retro.library.number.C1.__name__ = ["retro","library","number","C1"];
+retro.library.number.C1.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C1.prototype = {
 	getModuleName: function() {
-		return "pigpio.Write";
+		return "number.1";
 	}
 	,onInputRecieved: function(params,cb) {
-		var pin = params.get("pin");
-		var valueParam = params.get("value");
-		if(pin.isEmpty() || valueParam.isEmpty()) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
 			cb(null);
 			return;
 		}
-		var pin_no = pin.getValue();
-		var value = valueParam.getValue();
-		var http = new haxe.Http("/pigpio/write");
-		http.onData = function(data) {
-			var result = new retro.core.Result();
-			result.set("output",0);
-			cb(result);
-		};
-		http.setParameter("pin",pin_no);
-		http.setParameter("value",value);
-		http.request(true);
+		var result = new retro.core.Result();
+		result.set("1",1);
+		cb(result);
 	}
-	,__class__: retro.library.pigpio.Write
+	,__class__: retro.library.number.C1
 }
-=======
->>>>>>> codeiq
+retro.library.number.C2 = function() {
+	this.name = "C2";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("2",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C2.__name__ = ["retro","library","number","C2"];
+retro.library.number.C2.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C2.prototype = {
+	getModuleName: function() {
+		return "number.2";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("2",2);
+		cb(result);
+	}
+	,__class__: retro.library.number.C2
+}
+retro.library.number.C3 = function() {
+	this.name = "C3";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("3",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C3.__name__ = ["retro","library","number","C3"];
+retro.library.number.C3.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C3.prototype = {
+	getModuleName: function() {
+		return "number.3";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("3",3);
+		cb(result);
+	}
+	,__class__: retro.library.number.C3
+}
+retro.library.number.C4 = function() {
+	this.name = "C4";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("4",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C4.__name__ = ["retro","library","number","C4"];
+retro.library.number.C4.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C4.prototype = {
+	getModuleName: function() {
+		return "number.4";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("4",4);
+		cb(result);
+	}
+	,__class__: retro.library.number.C4
+}
+retro.library.number.C5 = function() {
+	this.name = "C5";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("5",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C5.__name__ = ["retro","library","number","C5"];
+retro.library.number.C5.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C5.prototype = {
+	getModuleName: function() {
+		return "number.5";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("5",5);
+		cb(result);
+	}
+	,__class__: retro.library.number.C5
+}
+retro.library.number.C6 = function() {
+	this.name = "C6";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("6",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C6.__name__ = ["retro","library","number","C6"];
+retro.library.number.C6.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C6.prototype = {
+	getModuleName: function() {
+		return "number.6";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("6",6);
+		cb(result);
+	}
+	,__class__: retro.library.number.C6
+}
+retro.library.number.C7 = function() {
+	this.name = "C7";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("7",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C7.__name__ = ["retro","library","number","C7"];
+retro.library.number.C7.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C7.prototype = {
+	getModuleName: function() {
+		return "number.7";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("7",7);
+		cb(result);
+	}
+	,__class__: retro.library.number.C7
+}
+retro.library.number.C8 = function() {
+	this.name = "C8";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("8",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C8.__name__ = ["retro","library","number","C8"];
+retro.library.number.C8.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C8.prototype = {
+	getModuleName: function() {
+		return "number.8";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("8",8);
+		cb(result);
+	}
+	,__class__: retro.library.number.C8
+}
+retro.library.number.C9 = function() {
+	this.name = "C9";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("0",retro.pub.RetroType.RNumber);
+};
+retro.library.number.C9.__name__ = ["retro","library","number","C9"];
+retro.library.number.C9.__interfaces__ = [retro.core.JobComponent];
+retro.library.number.C9.prototype = {
+	getModuleName: function() {
+		return "number.9";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		result.set("9",1);
+		cb(result);
+	}
+	,__class__: retro.library.number.C9
+}
 retro.library.point2d = {}
 retro.library.point2d.Add = function() {
 	this.name = "Add";
@@ -3294,6 +3395,17 @@ retro.model.Diagram.prototype = {
 		this.onJobAddedListeners.push(listener);
 	}
 	,clearValueCarriers: function() {
+		var _g = 0, _g1 = this.jobs;
+		while(_g < _g1.length) {
+			var job = _g1[_g];
+			++_g;
+			var _g2 = 0, _g3 = job.getInputPorts();
+			while(_g2 < _g3.length) {
+				var inputPort = _g3[_g2];
+				++_g2;
+				this.removeValueCarrier(inputPort.useValueCarrier());
+			}
+		}
 		this.valueCarriers = new Array();
 		this.fireOnValueCarrierCleared();
 	}
@@ -3342,6 +3454,28 @@ retro.model.Diagram.prototype = {
 	}
 	,removeJob: function(job) {
 		this.fireOnJobRemoved(job);
+		var _g = 0, _g1 = job.getInputPorts();
+		while(_g < _g1.length) {
+			var inputPort = _g1[_g];
+			++_g;
+			var _g2 = 0, _g3 = inputPort.connection;
+			while(_g2 < _g3.length) {
+				var srcPort = _g3[_g2];
+				++_g2;
+				srcPort.disconnectToInputPort(inputPort);
+			}
+		}
+		var _g = 0, _g1 = job.getOutputPorts();
+		while(_g < _g1.length) {
+			var outputPort = _g1[_g];
+			++_g;
+			var _g2 = 0, _g3 = outputPort.connection;
+			while(_g2 < _g3.length) {
+				var destPort = _g3[_g2];
+				++_g2;
+				outputPort.disconnectToInputPort(destPort);
+			}
+		}
 		HxOverrides.remove(this.jobs,job);
 	}
 	,addJob: function(job) {
@@ -3534,6 +3668,7 @@ retro.model.Port.prototype = {
 }
 retro.model.InputPort = function(parent,type,name) {
 	retro.model.Port.call(this,parent,type,name);
+	this.connection = new Array();
 	this.onSetValueListeners = new Array();
 	this.onUseValueListeners = new Array();
 	this.onSetConstantValueListeners = new Array();
@@ -3659,10 +3794,12 @@ retro.model.OutputPort.prototype = $extend(retro.model.Port.prototype,{
 	}
 	,disconnectToInputPort: function(port) {
 		this.fireOnDisconnectedListeners(this,port);
+		HxOverrides.remove(port.connection,this);
 		HxOverrides.remove(this.connection,port);
 	}
 	,connectToInputPort: function(port) {
 		this.fireOnConnectedListeners(this,port);
+		port.connection.push(this);
 		this.connection.push(port);
 	}
 	,getConnections: function() {
@@ -4021,7 +4158,9 @@ retro.view.DiagramView = function(diagramController) {
 	this.valueCarrierViews = new Array();
 	this.diagramController = diagramController;
 	var diagram = this.diagramController.getDiagram();
+	var thema = this.diagramController.getEditor().thema;
 	diagram.onJobAdded($bind(this,this.OnJobAdded));
+	diagram.onJobRemoved($bind(this,this.OnJobRemoved));
 	diagram.onValueCarrierAdded($bind(this,this.OnValueCarrierAdded));
 	diagram.onValueCarrierRemoved($bind(this,this.OnValueCarrierRemoved));
 	diagram.onValueCarrierCleared($bind(this,this.OnValueCarrierCleared));
@@ -4029,18 +4168,32 @@ retro.view.DiagramView = function(diagramController) {
 	this.path_group = snap1.group();
 	this.count = 0;
 	this.control_group = snap1.group();
-	Snap.load("/images/create.svg",function(f) {
+	var create_coll = snap1.rect(75,5,70,61);
+	create_coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
+	Snap.load("images/create.svg",function(f) {
 		var g = f.select("g");
-		g.transform("translate(" + 100 + "," + 0 + ")");
-		g.click(function(e) {
+		g.transform("translate(" + 74 + "," + 5 + ")");
+		g.attr({ strokeWidth : 1, stroke : thema.stroke_color});
+		create_coll.click(function(e) {
 			var createJobDialog = new CreateJobDialog();
-			createJobDialog.on(function(pkg,cmp) {
+			createJobDialog.on(function(pkg,cmp,x,y) {
 				var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
 				var job = _g.diagramController.addSymbolicLink(jobComponent);
-				job.setPos(100,100);
+				job.setPos(x,y);
 			});
 			createJobDialog.open();
 		});
+		_g.control_group.append(g);
+		_g.control_group.append(create_coll);
+	});
+	Snap.load("images/dustbox.svg",function(f) {
+		var g = f.select("g");
+		var right = js.Browser.document.body.clientWidth;
+		var rect = snap1.rect(right - 80,5,70,61,5,5);
+		g.attr({ strokeWidth : 1, stroke : thema.stroke_color});
+		rect.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		g.transform("translate(" + (right - 80) + "," + 3 + ")");
+		_g.control_group.append(rect);
 		_g.control_group.append(g);
 	});
 };
@@ -4092,6 +4245,18 @@ retro.view.DiagramView.prototype = {
 	,OnValueCarrierAdded: function(valueCarrier) {
 		this.valueCarrierViews.push(new retro.view.ValueCarrierView(this.diagramController.getEditor(),valueCarrier,this));
 	}
+	,OnJobRemoved: function(job) {
+		var _g = 0, _g1 = this.jobViews;
+		while(_g < _g1.length) {
+			var jobView = _g1[_g];
+			++_g;
+			if(jobView.jobController.getJob() == job) {
+				jobView.removeSelf();
+				HxOverrides.remove(this.jobViews,jobView);
+				return;
+			}
+		}
+	}
 	,OnJobAdded: function(job) {
 		var jobView = new retro.view.JobView(this.diagramController,new retro.controller.JobController(this.diagramController.getEditor(),job),this);
 		var _g = 0, _g1 = job.getInputPorts();
@@ -4142,8 +4307,8 @@ retro.view.PortView = function(diagramController,jobview,snap,thema) {
 	this.snap = snap;
 	this.thema = thema;
 	this.group = snap.group();
-	this.graphic = snap.circle(0,0,22);
-	this.coll = snap.circle(0,0,22);
+	this.graphic = snap.circle(0,0,21);
+	this.coll = snap.circle(0,0,21);
 	this.th = 0;
 	this.pos = new retro.pub.Point2D(0,0);
 	this.velocity = 0;
@@ -4199,9 +4364,9 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap,thema) {
 	this.port = port;
 	this.port.onSetConstantValue($bind(this,this.OnSetConstant));
 	this.port.onRemoveConstantValue($bind(this,this.OnRemoveConstant));
-	this.graphic.attr({ fill : thema.bg_color, stroke : thema.base_color, strokeWidth : 3});
+	this.graphic.attr({ fill : thema.bg_color, stroke : thema.stroke_color, strokeWidth : 1});
 	var text = snap.text(26,0,port.getName());
-	text.attr({ 'font-size' : "12px", fill : thema.font_color});
+	text.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular"});
 	this.group.append(text);
 	this.coll.mouseup(function(e,x,y) {
 		if(_g.diagramController.setRubberbandEnd(_g.port)) _g.diagramController.clearRubberband(); else {
@@ -4219,13 +4384,17 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 	}
 	,OnSetConstant: function(v) {
 		var _g = this;
-		this.constantValueGraphic = this.snap.circle(0,0,18);
-		var text = this.snap.text(-5,5,haxe.Json.stringify(v.value));
-		this.constantValueGraphic.attr({ fill : this.thema.contrast1_color, stroke : this.thema.contrast2_color, strokeWidth : 4});
+		this.constantValueGraphic = this.snap.group();
+		var t = Std.string(v.value);
+		var text = this.snap.text(-2,4,t);
+		text.attr({ 'font-size' : "12px", fill : "#ffffff", 'font-family' : "MyriadPro-Regular"});
+		var graphic = this.snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+		graphic.attr({ fill : this.thema.contrast2_color, strokeWidth : 1, stroke : this.thema.stroke_color});
+		this.constantValueGraphic.append(graphic);
+		this.constantValueGraphic.append(text);
 		this.group.append(this.constantValueGraphic);
-		this.group.append(text);
-		this.constantValueGraphic.drag(function(dx,dy,x,y) {
-			if(dx + dy > 3) _g.port.removeConstant();
+		graphic.click(function(e) {
+			_g.port.removeConstant();
 		});
 	}
 	,step: function() {
@@ -4269,19 +4438,22 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	job.onInputPortAdded($bind(this,this.OnAddInputPortView));
 	job.onOutputPortAdded($bind(this,this.OnAddOutputPortView));
 	job.onPosChanged($bind(this,this.OnPosChanged));
-	var snap1 = this.jobController.getEditor().snap;
+	var snap = this.jobController.getEditor().snap;
 	var thema = this.jobController.getEditor().thema;
-	this.group = snap1.group();
+	this.group = snap.group();
 	if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-		this.graphic = snap1.rect(0,0,160,80);
-		this.coll = snap1.rect(0,0,160,80);
+		this.graphic = snap.rect(0,0,216,89,5,5);
+		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		this.coll = snap.rect(0,0,216,89);
 	} else {
-		this.graphic = snap1.rect(0,0,160,80);
-		this.coll = snap1.rect(0,0,160,80);
+		this.graphic = snap.rect(0,0,216,89,5,5);
+		this.graphic.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+		this.coll = snap.rect(0,0,216,89);
 	}
-	var text = snap1.text(10,-10,job.getName());
-	text.attr({ 'font-size' : "20px", fill : thema.font_color});
-	this.graphic.attr({ fill : thema.bg_color, stroke : thema.base_color, strokeWidth : 3});
+	var text = snap.text(12,24,job.getName());
+	text.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular"});
+	var line = snap.line(0,36,216,36);
+	line.attr({ strokeWidth : 1, stroke : thema.stroke_color});
 	this.pos = new retro.pub.Point2D(0,0);
 	this.prev_pos = new retro.pub.Point2D(0,0);
 	this.setPos(100,100);
@@ -4293,29 +4465,20 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 		_g.addPos(dx - _g.prev_pos.getX(),dy - _g.prev_pos.getY());
 		_g.prev_pos.setX(dx);
 		_g.prev_pos.setY(dy);
+		_g.refresh();
 	},function(x,y) {
 		_g.prev_pos.setX(0);
 		_g.prev_pos.setY(0);
 	},function(x,y) {
 		_g.refresh();
 		_g.jobController.changePos(_g.pos.getX(),_g.pos.getY());
+		var right = js.Browser.document.body.clientWidth;
+		if(right - 150 < _g.pos.getX() && _g.pos.getX() < right && _g.pos.getY() < 150) _g.diagramController.removeJob(_g.jobController.getJob());
 	});
 	this.group.append(this.graphic);
 	this.group.append(text);
+	this.group.append(line);
 	this.group.append(this.coll);
-	Snap.load("/images/config.svg",function(f) {
-		var g = f.select("g");
-		_g.group.append(g);
-		g.mouseup(function(e,x,y) {
-			if(Type.getClassName(Type.getClass(_g.jobController.getJob())) == "retro.model.EntryJob") {
-			}
-			var runTime = _g.jobController.getEditor().getRuntime();
-			if(!runTime.isRunning()) _g.setted_value = js.Browser.window.prompt("","");
-		});
-		g.attr({ visibility : "hidden"});
-		g.transform("translate(" + -30 + "," + -40 + ")");
-		_g.config_graphic = g;
-	});
 };
 retro.view.JobView.__name__ = ["retro","view","JobView"];
 retro.view.JobView.prototype = {
@@ -4406,24 +4569,24 @@ retro.view.JobView.prototype = {
 		return energy;
 	}
 	,cal2: function() {
-		var h = 22;
+		var h = 63;
 		var _g = 0, _g1 = this.inputportviews;
 		while(_g < _g1.length) {
 			var pv = _g1[_g];
 			++_g;
 			pv.setPos(0,h);
-			h += 44;
+			h += 53;
 		}
-		h = 22;
+		h = 63;
 		var _g = 0, _g1 = this.outputportviews;
 		while(_g < _g1.length) {
 			var pv = _g1[_g];
 			++_g;
-			pv.setPos(160,h);
-			h += 44;
+			pv.setPos(216,h);
+			h += 53;
 		}
-		this.graphic.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 44:this.outputportviews.length * 44});
-		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 44:this.outputportviews.length * 44});
+		this.graphic.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 53 + 36:this.outputportviews.length * 53 + 36});
+		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 53 + 36:this.outputportviews.length * 53 + 36});
 	}
 	,cal: function() {
 		var th = 2 * Math.PI / (this.inputportviews.length + this.outputportviews.length);
@@ -4465,10 +4628,14 @@ retro.view.JobView.prototype = {
 		var _g = this;
 		this.config_timer = new haxe.Timer(3000);
 		this.config_timer.run = function() {
-			_g.config_graphic.attr({ visibility : "hidden"});
 			_g.config_timer.stop();
+			_g.config_graphic.attr({ visibility : "hidden"});
 		};
 		this.config_graphic.attr({ visibility : "visible"});
+	}
+	,removeSelf: function() {
+		this.group.remove();
+		this.config_timer.stop();
 	}
 	,__class__: retro.view.JobView
 }
@@ -4477,14 +4644,20 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap,thema) 
 	retro.view.PortView.call(this,diagramController,jobview,snap,thema);
 	this.port = port;
 	this.port.onConnected($bind(this,this.OnConnected));
-	this.graphic.attr({ fill : thema.base_color, stroke : thema.base_color, strokeWidth : 3});
+	this.graphic.attr({ fill : thema.base_color, stroke : thema.stroke_color, strokeWidth : 1});
 	var text = snap.text(-70,0,port.getName());
-	text.attr({ 'font-size' : "12px", fill : thema.font_color});
+	text.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular"});
 	this.group.append(text);
 	this.coll.mousedown(function(e,x,y) {
 		_g.diagramController.setRubberbandStart(_g.port);
 	});
 	this.setPos(160,0);
+	this.port.onSelected = function() {
+		_g.graphic.attr({ fill : thema.selected_port_color, stroke : thema.stroke_color});
+	};
+	this.port.onNormal = function() {
+		_g.graphic.attr({ fill : thema.base_color, stroke : thema.stroke_color});
+	};
 };
 retro.view.OutputPortView.__name__ = ["retro","view","OutputPortView"];
 retro.view.OutputPortView.__super__ = retro.view.PortView;
@@ -4534,15 +4707,19 @@ retro.view.PathView = function(diagramController,diagramView,source_port,target_
 	this.target = target_port;
 	this.snap = snap;
 	this.thema = thema;
+	this.diagramView = diagramView;
 	this.source.port.onDisconnected($bind(this,this.onDisconnect));
 	this.group = this.snap.group();
 	this.graphic = this.snap.line(0,0,0,0);
-	this.graphic.attr({ stroke : thema.path_color, strokeWidth : 7});
+	this.coll = this.snap.line(0,0,0,0);
+	this.graphic.attr({ stroke : thema.path_color, strokeWidth : 1});
+	this.coll.attr({ stroke : "#a0a000", 'stroke-opacity' : 0, strokeWidth : 30});
 	diagramView.path_group.append(this.group);
-	this.graphic.mousedown(function(e,x,y) {
+	this.coll.mousedown(function(e,x,y) {
 		_g.visible_remove_btn();
 	});
 	this.group.append(this.graphic);
+	this.group.append(this.coll);
 	this.refresh();
 	this.init_remove_btn();
 };
@@ -4555,10 +4732,12 @@ retro.view.PathView.prototype = {
 		xx = xx / len;
 		yy = yy / len;
 		this.graphic.attr({ x1 : this.source.getPos().getX() + xx * 20, y1 : this.source.getPos().getY() + yy * 20, x2 : this.target.getPos().getX() - xx * 20, y2 : this.target.getPos().getY() - yy * 20});
+		this.coll.attr({ x1 : this.source.getPos().getX() + xx * 20, y1 : this.source.getPos().getY() + yy * 20, x2 : this.target.getPos().getX() - xx * 20, y2 : this.target.getPos().getY() - yy * 20});
 	}
 	,onDisconnect: function(o,i) {
 		if(this.target.port != i) return;
-		this.graphic.remove();
+		this.group.remove();
+		this.remove_graphic.remove();
 		HxOverrides.remove(this.source.views,this);
 		HxOverrides.remove(this.target.views,this);
 	}
@@ -4580,9 +4759,9 @@ retro.view.PathView.prototype = {
 	}
 	,init_remove_btn: function() {
 		var _g = this;
-		Snap.load("/images/remove.svg",function(f) {
+		Snap.load("images/remove.svg",function(f) {
 			var g = f.select("g");
-			_g.group.append(g);
+			_g.diagramView.control_group.append(g);
 			g.mousedown(function(e,x,y) {
 				retro.controller.DiagramController.disconnect(_g.source.port,_g.target.port);
 				_g.remove_graphic.attr({ visibility : "hidden"});
@@ -4608,40 +4787,34 @@ retro.view.ProjectView = function(projectController,exportController) {
 	this.mode = retro.view.RunMode.Stop;
 	var snap1 = this.projectController.getEditor().snap;
 	var project = this.projectController.getProject();
+	var thema = this.projectController.getEditor().thema;
 	project.onDiagramAdded($bind(this,this.OnDiagramAdded));
 	this.control_group = snap1.group();
-	Snap.load("/images/play.svg",function(f) {
+	var rect = snap1.rect(5,5,140,61,5,5);
+	rect.attr({ strokeWidth : 1, stroke : thema.stroke_color, fill : "#F4F4F4"});
+	var coll = snap1.rect(5,5,70,61);
+	coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
+	var line = snap1.line(75,5,75,66);
+	line.attr({ strokeWidth : 1, stroke : thema.stroke_color});
+	Snap.load("images/play.svg",function(f) {
 		var g = f.select("svg");
-		g.click(function(e) {
+		var path = g.select("path");
+		path.transform("translate(" + 8 + "," + 5 + ")");
+		path.attr({ fill : "#ffffff", stroke : thema.stroke_color});
+		coll.click(function(e) {
 			if(_g.mode == retro.view.RunMode.Stop) {
 				_g.projectController.run();
 				_g.mode = retro.view.RunMode.Run;
-				g.select("polygon").attr({ fill : "#ff0000"});
+				path.attr({ fill : "#FF39A6"});
 			} else if(_g.mode == retro.view.RunMode.Run) {
 				_g.projectController.stop();
 				_g.mode = retro.view.RunMode.Stop;
-				g.select("polygon").attr({ fill : "#ffffff"});
+				path.attr({ fill : "#ffffff", stroke : thema.stroke_color});
 			}
 		});
+		_g.control_group.append(rect);
 		_g.control_group.append(g);
-	});
-	Snap.load("/images/save.svg",function(f) {
-		var g = f.select("g");
-		g.transform("translate(" + 200 + "," + 0 + ")");
-		g.click(function(e) {
-			var exported = _g.exportController.do_export();
-			console.log(exported);
-			_g.projectController.getEditor().save_all(exported);
-		});
-		_g.control_group.append(g);
-	});
-	Snap.load("/images/download.svg",function(f) {
-		var g = f.select("g");
-		g.transform("translate(" + 300 + "," + 0 + ")");
-		g.click(function(e) {
-			js.Browser.window.open("/editor/download/" + _g.projectController.getEditor().getEditorKey(),"");
-		});
-		_g.control_group.append(g);
+		_g.group.append(coll);
 	});
 };
 retro.view.ProjectView.__name__ = ["retro","view","ProjectView"];
@@ -4652,15 +4825,17 @@ retro.view.ProjectView.prototype = {
 	,__class__: retro.view.ProjectView
 }
 retro.view.Thema = function() {
-	this.path_color = "#007ab7";
-	this.font_color = "#007ab7";
-	this.contrast2_color = "#b61972";
-	this.contrast1_color = "#db7bb1";
+	this.stroke_color = "#696969";
+	this.path_color = "#AB3381";
+	this.font_color = "#555555";
+	this.contrast2_color = "#FF39A6";
+	this.contrast1_color = "#FF39A6";
+	this.selected_port_color = "#FF39A6";
 	this.sub3_color = "#d7ebf6";
 	this.sub2_color = "#8ec7e4";
 	this.sub1_color = "#007ab7";
-	this.base_color = "#3297c9";
-	this.bg_color = "#ffffff";
+	this.base_color = "#D3D3D3";
+	this.bg_color = "#F4F4F4";
 };
 retro.view.Thema.__name__ = ["retro","view","Thema"];
 retro.view.Thema.prototype = {
@@ -4675,9 +4850,11 @@ retro.view.ValueCarrierView = function(editor,valueCarrier,diagramView) {
 	var thema = editor.thema;
 	this.pos = new retro.pub.Point2D(0,0);
 	this.group = snap.group();
-	this.graphic = snap.circle(0,0,24);
-	var text = snap.text(0,0,this.value2String(valueCarrier.getValue().value));
-	this.graphic.attr({ fill : thema.contrast1_color, stroke : thema.contrast2_color, strokeWidth : 4});
+	var t = this.value2String(valueCarrier.getValue().value);
+	var text = snap.text(-2,4,t);
+	text.attr({ 'font-size' : "12px", fill : "#ffffff", 'font-family' : "MyriadPro-Regular"});
+	this.graphic = snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+	this.graphic.attr({ fill : thema.contrast1_color, strokeWidth : 1});
 	this.group.append(this.graphic);
 	this.group.append(text);
 	this.startPosition();
@@ -4713,7 +4890,7 @@ retro.view.ValueCarrierView.prototype = {
 		this.remove();
 	}
 	,value2String: function(v) {
-		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) return v; else {
+		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) return v; else {
 			var class_name = Type.getClassName(Type.getClass(v));
 			if(class_name == "String") return v; else return class_name;
 		}
@@ -4862,6 +5039,7 @@ if(typeof(JSON) != "undefined") haxe.Json = JSON;
 var q = window.jQuery;
 js.JQuery = q;
 js.Browser.window = typeof window != "undefined" ? window : null;
+js.Browser.document = typeof window != "undefined" ? window.document : null;
 Main.main();
 function $hxExpose(src, path) {
 	var o = typeof window != "undefined" ? window : exports;

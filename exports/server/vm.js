@@ -55,6 +55,7 @@ haxe.Timer.prototype = {
 		clearInterval(this.id);
 		this.id = null;
 	}
+	,__class__: haxe.Timer
 }
 var js = {}
 js.Boot = function() { }
@@ -125,6 +126,48 @@ js.Boot.__string_rec = function(o,s) {
 		return String(o);
 	}
 }
+js.Boot.__interfLoop = function(cc,cl) {
+	if(cc == null) return false;
+	if(cc == cl) return true;
+	var intf = cc.__interfaces__;
+	if(intf != null) {
+		var _g1 = 0, _g = intf.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var i1 = intf[i];
+			if(i1 == cl || js.Boot.__interfLoop(i1,cl)) return true;
+		}
+	}
+	return js.Boot.__interfLoop(cc.__super__,cl);
+}
+js.Boot.__instanceof = function(o,cl) {
+	if(cl == null) return false;
+	switch(cl) {
+	case Int:
+		return (o|0) === o;
+	case Float:
+		return typeof(o) == "number";
+	case Bool:
+		return typeof(o) == "boolean";
+	case String:
+		return typeof(o) == "string";
+	case Dynamic:
+		return true;
+	default:
+		if(o != null) {
+			if(typeof(cl) == "function") {
+				if(o instanceof cl) {
+					if(cl == Array) return o.__enum__ == null;
+					return true;
+				}
+				if(js.Boot.__interfLoop(o.__class__,cl)) return true;
+			}
+		} else return false;
+		if(cl == Class && o.__name__ != null) return true;
+		if(cl == Enum && o.__ename__ != null) return true;
+		return o.__enum__ == cl;
+	}
+}
 js.Browser = function() { }
 js.Browser.__name__ = true;
 var retro = {}
@@ -192,10 +235,7 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-<<<<<<< HEAD
 	this.modules.push(new retro.library.pigpio.Write());
-=======
->>>>>>> codeiq
 };
 retro.controller.ImportController.__name__ = true;
 retro.controller.ImportController.prototype = {
@@ -266,10 +306,14 @@ retro.controller.ImportController.prototype = {
 	,getProject: function() {
 		return this.project;
 	}
+	,__class__: retro.controller.ImportController
 }
 retro.core = {}
 retro.core.FlowerClass = function() { }
 retro.core.FlowerClass.__name__ = true;
+retro.core.FlowerClass.prototype = {
+	__class__: retro.core.FlowerClass
+}
 retro.core.Input = function(name,type) {
 	this.name = name;
 	this.type = type;
@@ -282,6 +326,7 @@ retro.core.Input.prototype = {
 	,getName: function() {
 		return this.name;
 	}
+	,__class__: retro.core.Input
 }
 retro.core.Inputs = function() {
 	this.inputs = new Array();
@@ -303,9 +348,13 @@ retro.core.Inputs.prototype = {
 	,add: function(name,type) {
 		this.inputs.push(new retro.core.Input(name,type));
 	}
+	,__class__: retro.core.Inputs
 }
 retro.core.JobComponent = function() { }
 retro.core.JobComponent.__name__ = true;
+retro.core.JobComponent.prototype = {
+	__class__: retro.core.JobComponent
+}
 retro.core.Outputs = function() {
 	this.outputs = new Array();
 };
@@ -326,6 +375,7 @@ retro.core.Outputs.prototype = {
 	,add: function(name,type) {
 		this.outputs.push(new retro.core.Output(name,type));
 	}
+	,__class__: retro.core.Outputs
 }
 retro.core.Output = function(name,type) {
 	this.name = name;
@@ -339,6 +389,7 @@ retro.core.Output.prototype = {
 	,getType: function() {
 		return this.type;
 	}
+	,__class__: retro.core.Output
 }
 retro.core.Params = function() {
 	this.params = new Array();
@@ -368,6 +419,7 @@ retro.core.Params.prototype = {
 		}
 		return null;
 	}
+	,__class__: retro.core.Params
 }
 retro.core.Param = function(name,value) {
 	this.name = name;
@@ -381,6 +433,7 @@ retro.core.Param.prototype = {
 	,isEmpty: function() {
 		return this.value == null;
 	}
+	,__class__: retro.core.Param
 }
 retro.core.Result = function() {
 	this.script_result = new Array();
@@ -408,12 +461,16 @@ retro.core.Result.prototype = {
 		}
 		this.script_result.push(new retro.core.ScriptReturnValue(portname,value));
 	}
+	,__class__: retro.core.Result
 }
 retro.core.ScriptReturnValue = function(portname,value) {
 	this.portname = portname;
 	this.value = value;
 };
 retro.core.ScriptReturnValue.__name__ = true;
+retro.core.ScriptReturnValue.prototype = {
+	__class__: retro.core.ScriptReturnValue
+}
 retro.core.VirtualDevice = function() {
 };
 retro.core.VirtualDevice.__name__ = true;
@@ -430,6 +487,7 @@ retro.core.VirtualDevice.prototype = {
 	,setConsoleDevice: function(consoleDevice) {
 		this.consoleDevice = consoleDevice;
 	}
+	,__class__: retro.core.VirtualDevice
 }
 retro.library = {}
 retro.library.array = {}
@@ -456,6 +514,7 @@ retro.library.array.Create.prototype = {
 		result.set("output",[]);
 		cb(result);
 	}
+	,__class__: retro.library.array.Create
 }
 retro.library.array.Get = function() {
 	this.name = "Get";
@@ -482,6 +541,7 @@ retro.library.array.Get.prototype = {
 		result.set("output",array.getValue()[index.getValue()]);
 		cb(result);
 	}
+	,__class__: retro.library.array.Get
 }
 retro.library.array.Length = function() {
 	this.name = "Length";
@@ -506,6 +566,7 @@ retro.library.array.Length.prototype = {
 		result.set("output",array.getValue().length);
 		cb(result);
 	}
+	,__class__: retro.library.array.Length
 }
 retro.library.array.Pop = function() {
 	this.name = "Pop";
@@ -534,6 +595,7 @@ retro.library.array.Pop.prototype = {
 		result.set("value",value);
 		cb(result);
 	}
+	,__class__: retro.library.array.Pop
 }
 retro.library.array.Push = function() {
 	this.name = "Push";
@@ -561,6 +623,7 @@ retro.library.array.Push.prototype = {
 		result.set("output",array.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.array.Push
 }
 retro.library.core = {}
 retro.library.core.Add = function() {
@@ -588,6 +651,7 @@ retro.library.core.Add.prototype = {
 		result.set("output",input1.getValue() + input2.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Add
 }
 retro.library.core.And = function() {
 	this.name = "And";
@@ -614,6 +678,7 @@ retro.library.core.And.prototype = {
 		result.set("output",input1.getValue() && input2.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.And
 }
 retro.library.core.Compare = function() {
 	this.name = "Compare";
@@ -667,6 +732,7 @@ retro.library.core.Compare.prototype = {
 		result.set("pass",pass);
 		cb(result);
 	}
+	,__class__: retro.library.core.Compare
 }
 retro.library.core.Drop = function() {
 	this.name = "Drop";
@@ -689,6 +755,7 @@ retro.library.core.Drop.prototype = {
 		var result = new retro.core.Result();
 		cb(result);
 	}
+	,__class__: retro.library.core.Drop
 }
 retro.library.core.Filter = function() {
 	this.name = "Filter";
@@ -746,6 +813,7 @@ retro.library.core.Filter.prototype = {
 		result.set("pass",value.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Filter
 }
 retro.library.core.Not = function() {
 	this.name = "Not";
@@ -770,6 +838,7 @@ retro.library.core.Not.prototype = {
 		result.set("output",!input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Not
 }
 retro.library.core.Or = function() {
 	this.name = "Or";
@@ -796,6 +865,7 @@ retro.library.core.Or.prototype = {
 		result.set("output",input1.getValue() || input2.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Or
 }
 retro.library.core.Remainder = function() {
 	this.name = "Remainder";
@@ -822,6 +892,7 @@ retro.library.core.Remainder.prototype = {
 		result.set("output",input1.getValue() % input2.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Remainder
 }
 retro.library.core.Through = function() {
 	this.name = "Through";
@@ -846,6 +917,7 @@ retro.library.core.Through.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Through
 }
 retro.library.core.Times = function() {
 	this.name = "Times";
@@ -872,6 +944,7 @@ retro.library.core.Times.prototype = {
 		result.set("output",input1.getValue() * input2.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Times
 }
 retro.library.core.Transistor = function() {
 	this.name = "Transistor";
@@ -898,6 +971,7 @@ retro.library.core.Transistor.prototype = {
 		result.set("collector",emitter.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.core.Transistor
 }
 retro.library.data = {}
 retro.library.data.Stack = function() {
@@ -928,6 +1002,7 @@ retro.library.data.Stack.prototype = {
 			cb(result);
 		}
 	}
+	,__class__: retro.library.data.Stack
 }
 retro.library.http = {}
 retro.library.http.Get = function() {
@@ -955,6 +1030,7 @@ retro.library.http.Get.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.http.Get
 }
 retro.library.http.Post = function() {
 	this.name = "Post";
@@ -981,6 +1057,7 @@ retro.library.http.Post.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.http.Post
 }
 retro.library.line2d = {}
 retro.library.line2d.Create = function() {
@@ -1008,6 +1085,7 @@ retro.library.line2d.Create.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.line2d.Create
 }
 retro.library.line2d.Distance = function() {
 	this.name = "Distance";
@@ -1032,6 +1110,7 @@ retro.library.line2d.Distance.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.line2d.Distance
 }
 retro.library.list = {}
 retro.library.list.Add = function() {
@@ -1058,6 +1137,7 @@ retro.library.list.Add.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Add
 }
 retro.library.list.Clear = function() {
 	this.name = "Clear";
@@ -1082,6 +1162,7 @@ retro.library.list.Clear.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Clear
 }
 retro.library.list.First = function() {
 	this.name = "First";
@@ -1106,6 +1187,7 @@ retro.library.list.First.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.First
 }
 retro.library.list.IsEmpty = function() {
 	this.name = "IsEmpty";
@@ -1130,6 +1212,7 @@ retro.library.list.IsEmpty.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.IsEmpty
 }
 retro.library.list.Join = function() {
 	this.name = "Join";
@@ -1155,6 +1238,7 @@ retro.library.list.Join.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Join
 }
 retro.library.list.Last = function() {
 	this.name = "Last";
@@ -1179,6 +1263,7 @@ retro.library.list.Last.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Last
 }
 retro.library.list.Length = function() {
 	this.name = "Length";
@@ -1203,6 +1288,7 @@ retro.library.list.Length.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Length
 }
 retro.library.list.Pop = function() {
 	this.name = "Pop";
@@ -1227,6 +1313,7 @@ retro.library.list.Pop.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Pop
 }
 retro.library.list.Push = function() {
 	this.name = "Push";
@@ -1252,6 +1339,7 @@ retro.library.list.Push.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Push
 }
 retro.library.list.Remove = function() {
 	this.name = "Remove";
@@ -1277,6 +1365,7 @@ retro.library.list.Remove.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.list.Remove
 }
 retro.library.math = {}
 retro.library.math.Abs = function() {
@@ -1302,6 +1391,7 @@ retro.library.math.Abs.prototype = {
 		result.set("output",Math.abs(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Abs
 }
 retro.library.math.Acos = function() {
 	this.name = "Acos";
@@ -1326,6 +1416,7 @@ retro.library.math.Acos.prototype = {
 		result.set("output",Math.acos(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Acos
 }
 retro.library.math.Asin = function() {
 	this.name = "Asin";
@@ -1350,6 +1441,7 @@ retro.library.math.Asin.prototype = {
 		result.set("output",Math.asin(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Asin
 }
 retro.library.math.Atan = function() {
 	this.name = "Atan";
@@ -1374,6 +1466,7 @@ retro.library.math.Atan.prototype = {
 		result.set("output",Math.atan(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Atan
 }
 retro.library.math.Atan2 = function() {
 	this.name = "Atan2";
@@ -1400,6 +1493,7 @@ retro.library.math.Atan2.prototype = {
 		result.set("output",Math.atan2(x.getValue(),y.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Atan2
 }
 retro.library.math.Cos = function() {
 	this.name = "Cos";
@@ -1424,6 +1518,7 @@ retro.library.math.Cos.prototype = {
 		result.set("output",Math.cos(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Cos
 }
 retro.library.math.Floor = function() {
 	this.name = "Floor";
@@ -1448,6 +1543,7 @@ retro.library.math.Floor.prototype = {
 		result.set("output",Math.floor(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Floor
 }
 retro.library.math.Log = function() {
 	this.name = "Log";
@@ -1472,6 +1568,7 @@ retro.library.math.Log.prototype = {
 		result.set("output",Math.log(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Log
 }
 retro.library.math.Max = function() {
 	this.name = "Max";
@@ -1498,6 +1595,7 @@ retro.library.math.Max.prototype = {
 		result.set("output",Math.max(a.getValue(),b.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Max
 }
 retro.library.math.Min = function() {
 	this.name = "Min";
@@ -1524,6 +1622,7 @@ retro.library.math.Min.prototype = {
 		result.set("output",Math.min(a.getValue(),b.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Min
 }
 retro.library.math.Pow = function() {
 	this.name = "Pow";
@@ -1550,6 +1649,7 @@ retro.library.math.Pow.prototype = {
 		result.set("output",Math.pow(v.getValue(),exp.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Pow
 }
 retro.library.math.Random = function() {
 	this.name = "Random";
@@ -1574,6 +1674,7 @@ retro.library.math.Random.prototype = {
 		result.set("output",v.getValue() * Math.random());
 		cb(result);
 	}
+	,__class__: retro.library.math.Random
 }
 retro.library.math.Sin = function() {
 	this.name = "Sin";
@@ -1598,6 +1699,7 @@ retro.library.math.Sin.prototype = {
 		result.set("output",Math.sin(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Sin
 }
 retro.library.math.Sqrt = function() {
 	this.name = "Sqrt";
@@ -1622,8 +1724,8 @@ retro.library.math.Sqrt.prototype = {
 		result.set("output",Math.sqrt(input.getValue()));
 		cb(result);
 	}
+	,__class__: retro.library.math.Sqrt
 }
-<<<<<<< HEAD
 retro.library.pigpio = {}
 retro.library.pigpio.Write = function() {
 	this.name = "Write";
@@ -1656,9 +1758,8 @@ retro.library.pigpio.Write.prototype = {
 			cb(result);
 		});
 	}
+	,__class__: retro.library.pigpio.Write
 }
-=======
->>>>>>> codeiq
 retro.library.point2d = {}
 retro.library.point2d.Add = function() {
 	this.name = "Add";
@@ -1683,6 +1784,7 @@ retro.library.point2d.Add.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.point2d.Add
 }
 retro.library.point2d.Create = function() {
 	this.name = "Create";
@@ -1709,6 +1811,7 @@ retro.library.point2d.Create.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.point2d.Create
 }
 retro.library.point2d.Distance = function() {
 	this.name = "Distance";
@@ -1733,6 +1836,7 @@ retro.library.point2d.Distance.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.point2d.Distance
 }
 retro.library.point2d.Sub = function() {
 	this.name = "Sub";
@@ -1757,6 +1861,7 @@ retro.library.point2d.Sub.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.point2d.Sub
 }
 retro.library.sphero = {}
 retro.library.sphero.Roll = function() {
@@ -1784,6 +1889,7 @@ retro.library.sphero.Roll.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.sphero.Roll
 }
 retro.library.sphero.SetBackLED = function() {
 	this.name = "SetBackLED";
@@ -1808,6 +1914,7 @@ retro.library.sphero.SetBackLED.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.sphero.SetBackLED
 }
 retro.library.sphero.SetHeading = function() {
 	this.name = "SetHeading";
@@ -1833,6 +1940,7 @@ retro.library.sphero.SetHeading.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.sphero.SetHeading
 }
 retro.library.string = {}
 retro.library.string.ChatAt = function() {
@@ -1859,6 +1967,7 @@ retro.library.string.ChatAt.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.string.ChatAt
 }
 retro.library.string.IndexOf = function() {
 	this.name = "IndexOf";
@@ -1884,6 +1993,7 @@ retro.library.string.IndexOf.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.string.IndexOf
 }
 retro.library.string.LastIndexOf = function() {
 	this.name = "LastIndexOf";
@@ -1909,6 +2019,7 @@ retro.library.string.LastIndexOf.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.string.LastIndexOf
 }
 retro.library.string.Length = function() {
 	this.name = "Length";
@@ -1933,6 +2044,7 @@ retro.library.string.Length.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.string.Length
 }
 retro.library.string.Split = function() {
 	this.name = "Split";
@@ -1957,6 +2069,7 @@ retro.library.string.Split.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.string.Split
 }
 retro.library.string.Substr = function() {
 	this.name = "Substr";
@@ -1983,6 +2096,7 @@ retro.library.string.Substr.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.string.Substr
 }
 retro.library.system = {}
 retro.library.system.Print = function(virtualDevice) {
@@ -2011,6 +2125,7 @@ retro.library.system.Print.prototype = {
 		result.set("output",input.getValue());
 		cb(result);
 	}
+	,__class__: retro.library.system.Print
 }
 retro.library.system.Scan = function(virtualDevice) {
 	this.name = "Scan";
@@ -2037,6 +2152,7 @@ retro.library.system.Scan.prototype = {
 		result.set("output",str);
 		cb(result);
 	}
+	,__class__: retro.library.system.Scan
 }
 retro.model = {}
 retro.model.Diagram = function() {
@@ -2167,6 +2283,7 @@ retro.model.Diagram.prototype = {
 		this.entryPoint = entry;
 		this.addJob(this.entryPoint);
 	}
+	,__class__: retro.model.Diagram
 }
 retro.model.Job = function(id) {
 	this.id = id;
@@ -2312,6 +2429,7 @@ retro.model.Job.prototype = {
 	,getId: function() {
 		return this.id;
 	}
+	,__class__: retro.model.Job
 }
 retro.model.EntryJob = function(id) {
 	retro.model.Job.call(this,id);
@@ -2322,6 +2440,7 @@ retro.model.EntryJob.prototype = $extend(retro.model.Job.prototype,{
 	getName: function() {
 		return "Entry";
 	}
+	,__class__: retro.model.EntryJob
 });
 retro.model.Port = function(parent,type,name) {
 	this.parent = parent;
@@ -2339,6 +2458,7 @@ retro.model.Port.prototype = {
 	,getURI: function() {
 		return this.parent.getId() + "." + this.getName();
 	}
+	,__class__: retro.model.Port
 }
 retro.model.InputPort = function(parent,type,name) {
 	retro.model.Port.call(this,parent,type,name);
@@ -2424,6 +2544,7 @@ retro.model.InputPort.prototype = $extend(retro.model.Port.prototype,{
 		this.valueCarrier = valueCarrier;
 		this.fireOnSetValueListeners(this.valueCarrier);
 	}
+	,__class__: retro.model.InputPort
 });
 retro.model.Logic = function(id) {
 	retro.model.Job.call(this,id);
@@ -2431,6 +2552,7 @@ retro.model.Logic = function(id) {
 retro.model.Logic.__name__ = true;
 retro.model.Logic.__super__ = retro.model.Job;
 retro.model.Logic.prototype = $extend(retro.model.Job.prototype,{
+	__class__: retro.model.Logic
 });
 retro.model.OutputPort = function(parent,type,name) {
 	retro.model.Port.call(this,parent,type,name);
@@ -2474,6 +2596,7 @@ retro.model.OutputPort.prototype = $extend(retro.model.Port.prototype,{
 	,getConnections: function() {
 		return this.connection;
 	}
+	,__class__: retro.model.OutputPort
 });
 retro.model.Project = function() {
 	this.onDiagramAddedListeners = new Array();
@@ -2498,6 +2621,7 @@ retro.model.Project.prototype = {
 		this.diagram = diagram;
 		this.fireOnConnection(this.diagram);
 	}
+	,__class__: retro.model.Project
 }
 retro.model.SymbolicLink = function(id,jobComponent) {
 	retro.model.Job.call(this,id);
@@ -2533,12 +2657,16 @@ retro.model.SymbolicLink.prototype = $extend(retro.model.Job.prototype,{
 	,getPrototype: function() {
 		return this.prototype;
 	}
+	,__class__: retro.model.SymbolicLink
 });
 retro.model.Value = function(_type,_value) {
 	this.type = _type;
 	this.value = _value;
 };
 retro.model.Value.__name__ = true;
+retro.model.Value.prototype = {
+	__class__: retro.model.Value
+}
 retro.model.ValueCarrier = function(value,src,dest) {
 	this.count = 0;
 	this.value = value;
@@ -2570,6 +2698,7 @@ retro.model.ValueCarrier.prototype = {
 			return null;
 		}
 	}
+	,__class__: retro.model.ValueCarrier
 }
 retro.pub = {}
 retro.pub.IDGenerator = function(uniqueEditorKey) {
@@ -2586,6 +2715,7 @@ retro.pub.IDGenerator.prototype = {
 		this.counter += 1;
 		return this.uniqueEditorKey + Std.string(this.counter);
 	}
+	,__class__: retro.pub.IDGenerator
 }
 retro.pub.Point2D = function(x,y) {
 	this.x = x;
@@ -2634,6 +2764,7 @@ retro.pub.Point2D.prototype = {
 	,getX: function() {
 		return this.x;
 	}
+	,__class__: retro.pub.Point2D
 }
 retro.pub.RetroType = { __ename__ : true, __constructs__ : ["REmpty","RString","RNumber","RBool","RList","RTuple","RUnknown","RClass"] }
 retro.pub.RetroType.REmpty = ["REmpty",0];
@@ -2756,6 +2887,7 @@ retro.view.ConsoleView.prototype = {
 			this.putChar(str.charAt(i));
 		}
 	}
+	,__class__: retro.view.ConsoleView
 }
 retro.vm = {}
 retro.vm.Application = function() {
@@ -2770,6 +2902,7 @@ retro.vm.Application.prototype = {
 	,getName: function() {
 		return "Application Name";
 	}
+	,__class__: retro.vm.Application
 }
 retro.vm.Compiler = function(app) {
 	this.app = app;
@@ -2787,6 +2920,7 @@ retro.vm.Compiler.prototype = {
 		}
 		console.log(this.app.getName());
 	}
+	,__class__: retro.vm.Compiler
 }
 retro.vm.Runtime = function(diagram) {
 	this.diagram = diagram;
@@ -2867,6 +3001,7 @@ retro.vm.Runtime.prototype = {
 		if(this.timer != null) return true;
 		return false;
 	}
+	,__class__: retro.vm.Runtime
 }
 retro.vm.Worker = function(job,func) {
 	this.job = job;
@@ -2877,6 +3012,7 @@ retro.vm.Worker.prototype = {
 	act: function(params,cb) {
 		this.func(params,cb);
 	}
+	,__class__: retro.vm.Worker
 }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; };
@@ -2896,8 +3032,18 @@ Math.isFinite = function(i) {
 Math.isNaN = function(i) {
 	return isNaN(i);
 };
+String.prototype.__class__ = String;
 String.__name__ = true;
+Array.prototype.__class__ = Array;
 Array.__name__ = true;
+var Int = { __name__ : ["Int"]};
+var Dynamic = { __name__ : ["Dynamic"]};
+var Float = Number;
+Float.__name__ = ["Float"];
+var Bool = Boolean;
+Bool.__ename__ = ["Bool"];
+var Class = { __name__ : ["Class"]};
+var Enum = { };
 js.Browser.window = typeof window != "undefined" ? window : null;
 js.Browser.document = typeof window != "undefined" ? window.document : null;
 VMMain_nodejs.main();

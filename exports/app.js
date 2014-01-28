@@ -1,6 +1,5 @@
 var express = require('express')
   , app = express()
-  , routes = require('./routes')
   , dashboard = require('./routes/dashboard')
   , routes_editor = require('./routes/editor')
   , routes_raspberrypi = require('./routes/raspberrypi')
@@ -46,9 +45,7 @@ app.get('/editor/run/:key', dashboard.run);
 //権限のあるプロジェクトを開く
 app.get('/editor/edit/:key', routes_editor.edit);
 app.post('/editor/create', routes_editor.create_project);
-app.post('/editor/update', routes_editor.update_project);
-app.post('/editor/delete', routes_editor.delete_project);
-app.post('/editor/copy', routes_editor.copy_project);
+//app.post('/editor/delete', routes_editor.delete_project);
 
 app.post('/pigpio/write', routes_raspberrypi.write);
 app.post('/pigpio/read', routes_raspberrypi.read);
