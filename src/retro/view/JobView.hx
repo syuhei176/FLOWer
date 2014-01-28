@@ -125,7 +125,7 @@ class JobView{
 	
 	public function removeSelf() {
 		this.group.remove();
-		this.config_timer.stop();
+		//this.config_timer.stop();
 	}
 	
 	private function visible_config_btn() {
