@@ -22,74 +22,7 @@ class ImportController {
 	public function new(project, virtualDevice){
 		this.project = project;
 		this.modules = new Array<JobComponent>();
-		this.modules.push(new retro.library.core.Through());
-		this.modules.push(new retro.library.core.Add());
-		this.modules.push(new retro.library.core.Times());
-		this.modules.push(new retro.library.core.Remainder());
-		this.modules.push(new retro.library.core.Filter());
-		this.modules.push(new retro.library.core.Drop());
-		this.modules.push(new retro.library.core.Compare());
-		this.modules.push(new retro.library.core.And());
-		this.modules.push(new retro.library.core.Or());
-		this.modules.push(new retro.library.core.Not());
-		this.modules.push(new retro.library.core.Transistor());
-		this.modules.push(new retro.library.system.Print(virtualDevice));
-		this.modules.push(new retro.library.system.Scan(virtualDevice));
-		this.modules.push(new retro.library.array.Create());
-		this.modules.push(new retro.library.array.Length());
-		this.modules.push(new retro.library.array.Push());
-		this.modules.push(new retro.library.array.Pop());
-		this.modules.push(new retro.library.array.Get());
-		this.modules.push(new retro.library.data.Stack());
-		this.modules.push(new retro.library.sphero.SetBackLED());
-		this.modules.push(new retro.library.sphero.SetHeading());
-		this.modules.push(new retro.library.sphero.Roll());
-		this.modules.push(new retro.library.string.Split());
-		this.modules.push(new retro.library.string.IndexOf());
-		this.modules.push(new retro.library.string.ChatAt());
-		this.modules.push(new retro.library.string.Substr());
-		this.modules.push(new retro.library.string.Length());
-		this.modules.push(new retro.library.string.LastIndexOf());
-		this.modules.push(new retro.library.point2d.Add());
-		this.modules.push(new retro.library.point2d.Sub());
-		this.modules.push(new retro.library.point2d.Create());
-		this.modules.push(new retro.library.point2d.Distance());
-		this.modules.push(new retro.library.http.Post());
-		this.modules.push(new retro.library.http.Get());
-		this.modules.push(new retro.library.line2d.Create());
-		this.modules.push(new retro.library.line2d.Distance());
-		this.modules.push(new retro.library.list.Length());
-		this.modules.push(new retro.library.list.Add());
-		this.modules.push(new retro.library.list.Clear());
-		this.modules.push(new retro.library.list.First());
-		this.modules.push(new retro.library.list.IsEmpty());
-		this.modules.push(new retro.library.list.Join());
-		this.modules.push(new retro.library.list.Last());
-		this.modules.push(new retro.library.list.Pop());
-		this.modules.push(new retro.library.list.Push());
-		this.modules.push(new retro.library.list.Remove());
-		this.modules.push(new retro.library.math.Abs());
-		this.modules.push(new retro.library.math.Acos());
-		this.modules.push(new retro.library.math.Asin());
-		this.modules.push(new retro.library.math.Atan());
-		this.modules.push(new retro.library.math.Atan2());
-		this.modules.push(new retro.library.math.Cos());
-		this.modules.push(new retro.library.math.Sin());
-		this.modules.push(new retro.library.math.Floor());
-		this.modules.push(new retro.library.math.Log());
-		this.modules.push(new retro.library.math.Max());
-		this.modules.push(new retro.library.math.Min());
-		this.modules.push(new retro.library.math.Pow());
-		this.modules.push(new retro.library.math.Random());
-		this.modules.push(new retro.library.math.Sqrt());
-		#if (!nodejs && !cpp)
-		this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
-		this.modules.push(new retro.library.snapsvg.Circle());
-		this.modules.push(new retro.library.snapelement.Translate());
-		this.modules.push(new retro.library.snapelement.Fill());
-		this.modules.push(new retro.library.jquery.Find());
-		this.modules.push(new retro.library.jquery.Html());
-		#end
+		ModuleAdder.add("flower-modules");
 	}
 	
 	public function getProject() {
