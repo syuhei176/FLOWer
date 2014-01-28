@@ -73,7 +73,7 @@ class PathView{
 	}
 	
 	private function init_remove_btn() {
-    	Snap.load("images/remove.svg", function (f) {
+    	Snap.load(#if codeiq "images/remove.svg" #else "/images/remove.svg" #end, function (f) {
     		var g = f.select("g");
         	this.diagramView.control_group.append(g);
         	g.mousedown(function(e, x, y) {
