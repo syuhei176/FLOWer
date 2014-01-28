@@ -7,7 +7,7 @@ module.exports.write = function(req, res){
 	res.send("0");
 }
 
-module.exports.write = function(req, res){
+module.exports.read = function(req, res){
 	var pin = Number(req.param('pin') || 16);
 	raspberrypi.read(pin, function(err, value) {
 		res.send(JSON.stringify(value));
