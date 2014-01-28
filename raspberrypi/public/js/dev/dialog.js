@@ -1,4 +1,5 @@
 (function(){
+
 	var packages = {"core":["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor"],
 			"array":["Create","Length","Push","Pop","Shift","Get"],
 			"data":["Stack"],
@@ -11,8 +12,10 @@
 			"snapsvg":["Rect","Circle",],
 			"snapelement":["Translate","Fill",],
 			"jquery":["Find","Html",],
-			"pigpio":["Write","Read"],
-			"system":["Print","Scan"]};
+			"system":["Print","Scan"],
+			"number" : ["0","1","2","3","4","5","6","7","8","9"],
+			"" : []};
+
 	var modalMemu = $("#joblist");
 
 	for( pkg in packages ){
@@ -30,7 +33,6 @@
 
 
     var listeners = [];
-    var close_listeners = [];
     $(".item").click(function(e){
 		listeners[0]($(this).attr("pkg"), $(this).text(), 100, 100);
 	});
@@ -42,10 +44,6 @@
 	CreateJobDialog.prototype.on = function(listener) {
 		listeners[0] = listener;
 	}
-	CreateJobDialog.prototype.onClose = function(listener) {
-		close_listeners[0] = listener;
-	}
-
 	CreateJobDialog.prototype.open = function() {
 		var modal =	$('<a href="#jobdiv"></a>');
 		modal.leanModal({closeButton:".sub_menu"});
