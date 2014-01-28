@@ -92,14 +92,14 @@ class JobView{
 		this.pos = new Point2D(0, 0);
 		this.prev_pos = new Point2D(0, 0);
 		this.setPos(100, 100);
-		coll.attr({
+		this.coll.attr({
     	    fill: "#ffffff",
     	    "fill-opacity" : 0,
     	});
-		coll.mousedown(function(e, x, y){
-			this.visible_config_btn();
+		this.coll.mousedown(function(e, x, y){
+			//this.visible_config_btn();
 		});
-		coll.drag(function(dx, dy, x, y){
+		this.coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
         	this.prev_pos.setX(dx);
         	this.prev_pos.setY(dy);
@@ -120,7 +120,7 @@ class JobView{
 		this.group.append(this.graphic);
 		this.group.append(text);
 		this.group.append(line);
-		this.group.append(coll);
+		this.group.append(this.coll);
 	}
 	
 	public function removeSelf() {

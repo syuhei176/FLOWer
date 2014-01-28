@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard Retro</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+<link rel="stylesheet" href="/stylesheets/lib/ratchet.css"/>
+<link rel="stylesheet" href="/stylesheets/lib/junior.css"/>
+    <style>
+
+    </style>
+  </head>
+  <body>
+  <div id="app-container">
+    <div id="app-main">
+    </div>
+</div>
+<script src="/js/lib/jquery-1.10.2.min.js"></script>
+<script src="/js/lib/modernizr.custom.15848.js"></script>
+<script src="/js/lib/zepto.min.js"></script>
+<script src="/js/lib/zepto.flickable.min.js"></script>
+<script src="/js/lib/lodash.min.js"></script>
+<script src="/js/lib/backbone-min.js"></script>
+<script src="/js/lib/junior.js"></script>
+<script src="/js/dashboard.js"></script>
+      
+    <script>
+        $(function() {
+        	var AppRouter = Jr.Router.extend({
+        	    routes: {
+        	      '': 'home',
+        	      'home': 'home',
+        	      'about': 'about',
+        	      'details': 'details'
+        	    },
+
+        	    home: function(){
+        	      var homeView = new HomeView();
+        	      this.renderView(homeView);
+        	    }
+        	});
+        	var HomeView = Jr.View.extend({
+        		  render: function(){
+        			  var self = this;
+        	          $.get("/editor/list", {}, function(data) {
+        	        	  editorList.set(data);
+        	        	  var html = render_editorlist(editorList.toJSON());
+        	        	  //$("#editor-list").html(html);
+					      var template = ['<div class="content">',
+					                      ' <header class="junior-intro">',
+					                      '   <h1 class="junior-name"><i class="icon-umbrella"></i> Flower</h1>',
+					                      ' </header>',
+					                      ' <div id="create-btn" class="button-positive button-block show-more-button">Create</div>',
+					                      '<ul class="list divider-list">',
+					                      html,
+					                      '</ul>',
+					                      '</div>'
+					                      ].join('');
+              		    self.$el.html(template);
+        	        	  $('[name="share-btn"]').click(function() {
+        	        		  var self = $(this);
+        	        		  var editor = editorList.get($(this).data('cid'));
+        	        		  var vis = "public";
+        	        		  if(editor.get('visibility') == "list") {
+        	        			  vis = "public";
+        	        		  }else{
+        	        			  vis = "list";
+        	        		  }
+        	            	  $.post("/editor/update", {key : editor.get('key'), visibility : vis}, function(result) {
+        	            		  self.find('i').removeClass(editor.get('visibility_class'));
+        	            		  editor.set('visibility', vis);
+        	            		  self.find('i').addClass(editor.get('visibility_class'));
+        	            	  }, "json");
+        	        	  });
+        	          }, "json");
+        	          function render_editorlist(editorlist) {
+        	        	  editorlist = _.map(editorlist, function(editor) {
+        	        		  var key = editor.split(".")[0];
+        	        		  return '<li class="list-divider" data-cid='+key+'>'+key+'</li>';
+        	        	  });
+        	        	  return editorlist.join('');
+        	          }
+        		    return this;
+        		  },
+
+        		  events: {
+        		    'click #create-btn': 'onCreateBtnPressed',
+        		    'click li': 'onListSelected'
+        		  },
+        		  onCreateBtnPressed: function() {
+                	  createEditor("Untitled Editor", function(result){
+            			  window.open("/editor/edit/" + result.editorinfo.key);
+                	  });
+        		  },
+        		  onListSelected: function(event, list) {
+        			  window.open("/editor/edit/" + $(event.target).data("cid"));
+        		  }
+        		});
+        	var appRouter = new AppRouter();
+        	Backbone.history.start();
+        	Jr.Navigator.navigate('home',{
+        	  trigger: true
+        	});
+        	var editorList = new EditorList();
+        })
+    </script>
+    <script id="editor-template" type="text/underscore">
+<li class="list-divider" data-cid="{{key}}">{{name}}</li>
+    </script>
+	<!-- 
+	<div><a href="/editor/edit/{{key}}" target="_blank">{{name}}</a><button name="share-btn" data-cid="{{key}}"><i class="icon-base {{visibility_class}}"></i></button></div>
+	 -->
+  </body>
+</html>
+

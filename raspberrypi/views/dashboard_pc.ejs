@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard Retro</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+
+    </style>
+  </head>
+  <body>
+  
+  <div class="container clearfix">
+  <div class="grid first">
+    <div>
+    </div>
+  </div>
+  <div class="grid6 first">
+      <a href="/"><img src="/images/logo.png" /></a>
+  </div>
+  <div class="grid2">
+  </div>
+  <div class="grid6 first">
+  	<ul class="list-group">
+	<li id="create-editor-btn" class="list-group-item" style="cursor: pointer">
+		<div>Create New Editor</div>
+	</li>
+  	</ul>
+  	<ul id="editor-list" class="list-group">
+  	</ul>
+  </div>
+  </div>
+  <div class="grid first">&copy;<a href="http://technicalrockstars.co.jp">Technical Rockstars, Inc.</a></div>
+      <script src="/js/lib/jquery-1.10.2.min.js"></script>
+      <script src="/js/lib/underscore-min.js"></script>
+      <script src="/js/lib/backbone-min.js"></script>
+      <script src="http://twitter.github.com/hogan.js/builds/2.0.0/hogan-2.0.0.js"></script>
+      <script src="/js/dashboard.js"></script>
+    <script>
+        $(function() {
+        	var editorList = new EditorList();
+        	
+        	//プロジェクト作成
+          $("#create-editor-btn").click(function() {
+        	  createEditor("Untitled Editor", function(result){
+    			  window.open("/editor/edit/" + result.editorinfo.key);
+        	  });
+          });
+        	//プロジェクトリスト
+          var template = Hogan.compile($("#editor-template").html());
+          $.get("/editor/list", {}, function(data) {
+        	  var html = render_editorlist(data);
+        	  $("#editor-list").html(html);
+          }, "json");
+          function render_editorlist(editorlist) {
+        	  editorlist = _.map(editorlist, function(editor) {
+        		  return template.render({key:editor.split('.')[0], name:editor});
+        	  });
+        	  return editorlist.join('');
+          }
+        })
+    </script>
+    <script id="editor-template" type="text/underscore">
+	<li class="list-group-item">
+		<div><a href="/editor/edit/{{key}}" target="_blank">{{name}}</a><button name="share-btn" data-cid="{{key}}"><i class="icon-base {{visibility_class}}"></i></button></div>
+	</li>
+    </script>
+  </body>
+</html>
