@@ -2,3 +2,10 @@
 -D virtual
 -js exports/public/js/bin/main.js
 -cp src
+
+--next 
+
+-main Main
+-D codeiq
+-js codeiq/js/main.js
+-cp src

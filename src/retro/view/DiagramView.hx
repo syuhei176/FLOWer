@@ -49,7 +49,7 @@ class DiagramView{
     	    fill: "#ffffff",
     	    "fill-opacity" : 0,
     	});
-		Snap.load("/images/create.svg", function (f) {
+		Snap.load(#if codeiq "images/create.svg" #else "/images/create.svg" #end, function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+74+","+5+")");
     		g.attr({
@@ -68,7 +68,7 @@ class DiagramView{
         	this.control_group.append(g);
         	this.control_group.append(create_coll);
     	});
-		Snap.load("/images/dustbox.svg", function (f) {
+		Snap.load(#if codeiq "images/dustbox.svg" #else "/images/dustbox.svg" #end, function (f) {
     		var g:SnapElement = f.select("g");
     		var right = js.Browser.document.body.clientWidth;
     		var rect = snap.rect((right - 80), 5, 70, 61, 5, 5);

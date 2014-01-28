@@ -48,7 +48,7 @@ class ProjectView{
 				stroke : thema.stroke_color,
 				});
 
-    	Snap.load("/images/play.svg", function (f) {
+    	Snap.load(#if codeiq "images/play.svg" #else "/images/play.svg" #end, function (f) {
     		var g:SnapElement = f.select("svg");
     		var path : SnapElement = g.select("path");
     		path.transform("translate("+8+","+5+")");

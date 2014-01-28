@@ -2,8 +2,9 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 
 class ModuleAdder{
-	macro public static function add(){
-		var json : { packages : List<String> } = haxe.Json.parse(CompileTime.readJsonFile("flower-modules.json"));
+	macro public static function add(filename : String){
+		var jsonString = sys.io.File.getContent(haxe.macro.Context.resolvePath(filename));
+		var json : { packages : List<String> } = haxe.Json.parse(jsonString);
 		var result : Array<Expr> = [];
 		for( pkgName in Reflect.fields(json)  ){
 			var classNames : { none : List<String>, 
