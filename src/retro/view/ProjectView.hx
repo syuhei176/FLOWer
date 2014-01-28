@@ -72,6 +72,17 @@ class ProjectView{
 	        		});
         		}
         	});
+        Snap.load("/images/save.svg", function (f) {
+    		var g:SnapElement = f.select("g");
+    		g.transform("translate("+160+","+5+")");
+        	g.click(function(e){
+        		var exported = this.exportController.do_export();
+        		trace(exported);
+        		this.projectController.getEditor().save_all(exported);
+        	});
+        	this.control_group.append(g);
+    	});
+        	
         	this.control_group.append(rect);
         	this.control_group.append(g);
         	this.control_group.append(coll);
