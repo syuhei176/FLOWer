@@ -4868,7 +4868,7 @@ retro.view.PathView = function(diagramController,diagramView,source_port,target_
 	this.group = this.snap.group();
 	this.graphic = this.snap.line(0,0,0,0);
 	this.coll = this.snap.line(0,0,0,0);
-	this.graphic.attr({ stroke : "#696969", strokeWidth : 1});
+	this.graphic.attr({ stroke : "#FF39A6", strokeWidth : 1});
 	this.coll.attr({ stroke : "#a0a000", 'stroke-opacity' : 0, strokeWidth : 30});
 	diagramView.path_group.append(this.group);
 	this.coll.mousedown(function(e,x,y) {
@@ -5232,7 +5232,7 @@ retro.view.Thema.outputPortFontFill = "#696969";
 retro.view.Thema.selectedOutputPortFill = "#FF39A6";
 retro.view.Thema.selectedOutputPortStroke = "#696969";
 retro.view.Thema.selectedOutputPortStrokeWidth = 1;
-retro.view.Thema.pathLineStroke = "#696969";
+retro.view.Thema.pathLineStroke = "#FF39A6";
 retro.view.Thema.pathLineStrokeWidth = 1;
 retro.view.Thema.consoleFill = "#F4F4F4";
 retro.view.Thema.consoleStroke = "#696969";
