@@ -3,12 +3,12 @@ package retro.view;
 class Thema {
 	// 色のデフォルト設定
 	// dafaults Thema
-	inline public static var fill = "#F4F4F4";
-	inline public static var stroke = "#696969";
+	inline public static var fill = "#FCFCFC";
+	inline public static var stroke = "#E3E3E3";
 	inline public static var strokeWidth = 1;
 
-	inline public static var fontFamily = "MyriadPro-Regular";
-	inline public static var fontSize = "12pt";
+	inline public static var fontFamily = "Helvetica, Arial, sans-serif";
+	inline public static var fontSize = "10pt";
 	inline public static var fontFill = "#696969";
 
 	// ここに変数をテキトーに追加していいぽよ
@@ -28,9 +28,9 @@ class Thema {
 	inline public static var jobFontFill = fontFill;
 
 	//InputPortView Thema
-	inline public static var inputPortFill = fill;
+	inline public static var inputPortFill = "#E9E9E9";
 	inline public static var inputPortStroke = stroke;
-	inline public static var inputPortStrokeWidth = strokeWidth;
+	inline public static var inputPortStrokeWidth = 0;
 
 	inline public static var inputPortFontFamily = fontFamily;
 	inline public static var inputPortFontSize = fontSize;
@@ -39,7 +39,7 @@ class Thema {
 	//OutputPortView Thema
 	inline public static var outputPortFill = "#D3D3D3";
 	inline public static var outputPortStroke = stroke;
-	inline public static var outputPortStrokeWidth = strokeWidth;
+	inline public static var outputPortStrokeWidth = 0;
 
 	inline public static var outputPortFontFamily = fontFamily;
 	inline public static var outputPortFontSize = fontSize;
@@ -48,20 +48,20 @@ class Thema {
 	//OutputPortView Selected Thema
 	inline public static var selectedOutputPortFill = "#FF39A6";
 	inline public static var selectedOutputPortStroke = stroke;
-	inline public static var selectedOutputPortStrokeWidth = strokeWidth;
+	inline public static var selectedOutputPortStrokeWidth = 0;
 
 	// PathLine
 	inline public static var pathLineStroke = stroke;
 	inline public static var pathLineStrokeWidth = strokeWidth;
 
 	//Console View
-	inline public static var consoleFill = fill;
-	inline public static var consoleStroke = stroke;
+	inline public static var consoleFill = "#CCCCCC";
+	inline public static var consoleStroke = "#CCCCCC";
 	inline public static var consoleStrokeWidth = strokeWidth;
 
 	inline public static var consoleFontFamily = fontFamily;
 	inline public static var consoleFontSize = fontSize;
-	inline public static var consoleFontFill = fontFill;
+	inline public static var consoleFontFill = "#FFFFFF";
 
 	// Constant Value 
 	inline public static var constantValueFill = "#FF39A6";
@@ -79,7 +79,7 @@ class Thema {
 
 	inline public static var valueCarrierFontFamily = fontFamily;
 	inline public static var valueCarrierFontSize = fontSize;
-	inline public static var valueCarrierFontFill = "#ffffff";
+	inline public static var valueCarrierFontFill = "#FFFFFF";
 
 	// button Background
 	inline public static var buttonBackgroundFill = fill;
@@ -92,22 +92,22 @@ class Thema {
 	inline public static var dustboxBackgroundStrokeWidth = strokeWidth;
 
 	// play svg
-	inline public static var playSvgFill = "#ffffff";
+	inline public static var playSvgFill = "#D3D3D3";
 	inline public static var playSvgStroke = stroke;
-	inline public static var playSvgStrokeWidth = strokeWidth;
+	inline public static var playSvgStrokeWidth = 0;
 
 	// playModeColor
 	inline public static var playModeFill = "#FF39A6";
 	inline public static var playModeStroke = "#FF39A6";
-	inline public static var playModeStrokeWidth = strokeWidth;
+	inline public static var playModeStrokeWidth = 0;
 
 	// create svg
-	inline public static var createSvgFill = "#ffffff";
+	inline public static var createSvgFill = "#D3D3D3";
 	inline public static var createSvgStroke = stroke;
-	inline public static var createSvgStrokeWidth = strokeWidth;
+	inline public static var createSvgStrokeWidth = 0;
 
 	// dustbox svg
-	inline public static var dustboxSvgFill = "#ffffff";
+	inline public static var dustboxSvgFill = "#D3D3D3";
 	inline public static var dustboxSvgStroke = stroke;
-	inline public static var dustboxSvgStrokeWidth = strokeWidth;
+	inline public static var dustboxSvgStrokeWidth = 0;
 }
