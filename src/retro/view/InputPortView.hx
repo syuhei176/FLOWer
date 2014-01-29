@@ -16,6 +16,7 @@ import retro.controller.DiagramController;
 class InputPortView extends PortView{
 
 	public var port:InputPort;
+	public var isConnected = false;
 	private var constantValueGraphic:SnapElement;
 	
 	public function new(diagramController, jobview, port, snap, thema) {
@@ -42,11 +43,14 @@ class InputPortView extends PortView{
 		this.coll.mouseup(function(e, x, y) {
 			if(this.diagramController.setRubberbandEnd(this.port)) {
 				this.diagramController.clearRubberband();
+				this.isConnected = true;
 			}else{
 				//set constant
-				var v = window.prompt("","");
-				if(v != null) {
-					this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+				if( this.isConnected == false ){ 
+					var v = window.prompt("","");
+					if(v != null) {
+						this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+					}
 				}
 			}
 		});

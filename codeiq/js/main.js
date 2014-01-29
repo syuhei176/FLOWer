@@ -1342,8 +1342,14 @@ retro.core.VirtualDevice = function() {
 };
 retro.core.VirtualDevice.__name__ = ["retro","core","VirtualDevice"];
 retro.core.VirtualDevice.prototype = {
-	getSnap: function() {
+	getRetroClient: function() {
+		return this.retroClient;
+	}
+	,getSnap: function() {
 		return this.snap;
+	}
+	,setSocketDevice: function(retroClient) {
+		this.retroClient = retroClient;
 	}
 	,setSVGDevice: function(snap) {
 		this.snap = snap;
@@ -2864,13 +2870,11 @@ retro.library.pigpio.Read.prototype = {
 	}
 	,onInputRecieved: function(params,cb) {
 		var pin = params.get("pin");
-		var valueParam = params.get("value");
-		if(pin.isEmpty() || valueParam.isEmpty()) {
+		if(pin.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var pin_no = pin.getValue();
-		var value = valueParam.getValue();
 		var http = new haxe.Http("/pigpio/read");
 		http.onData = function(data) {
 			var result = new retro.core.Result();
@@ -4035,6 +4039,7 @@ retro.pub.Editor.create = function(editorkey,id_header) {
 		var consoleDevice = new retro.view.ConsoleView(editor.snap,editor.thema);
 		virtualDevice.setConsoleDevice(consoleDevice);
 		virtualDevice.setSVGDevice(editor.snap);
+		virtualDevice.setSocketDevice(retroClient);
 		if(data.model.diagram) {
 			var importController = new retro.controller.ImportController(project,virtualDevice);
 			importController.do_import(data);
@@ -4483,6 +4488,7 @@ retro.view.PortView.prototype = {
 	,__class__: retro.view.PortView
 }
 retro.view.InputPortView = function(diagramController,jobview,port,snap,thema) {
+	this.isConnected = false;
 	var _g = this;
 	retro.view.PortView.call(this,diagramController,jobview,snap,thema);
 	this.port = port;
@@ -4493,7 +4499,10 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap,thema) {
 	text.attr({ 'font-size' : "12px", fill : thema.font_color, 'font-family' : "MyriadPro-Regular"});
 	this.group.append(text);
 	this.coll.mouseup(function(e,x,y) {
-		if(_g.diagramController.setRubberbandEnd(_g.port)) _g.diagramController.clearRubberband(); else {
+		if(_g.diagramController.setRubberbandEnd(_g.port)) {
+			_g.diagramController.clearRubberband();
+			_g.isConnected = true;
+		} else if(_g.isConnected == false) {
 			var v = js.Browser.window.prompt("","");
 			if(v != null) _g.port.setConstant(new retro.model.Value(retro.pub.RetroType.RNumber,haxe.Json.parse(v)));
 		}
@@ -4862,6 +4871,7 @@ retro.view.PathView.prototype = {
 		this.remove_graphic.remove();
 		HxOverrides.remove(this.source.views,this);
 		HxOverrides.remove(this.target.views,this);
+		this.target.isConnected = false;
 	}
 	,visible_remove_btn: function() {
 		var _g = this;
@@ -5050,6 +5060,21 @@ retro.vm.Runtime.prototype = {
 			port[0].setValueCarrier(valueCarrier[0]);
 			var params = port[0].parent.getParams();
 			var worker = port[0].parent.getWorker();
+			var flg = true;
+			var _g2 = 0, _g3 = port[0].parent.getInputPorts();
+			while(_g2 < _g3.length) {
+				var p = _g3[_g2];
+				++_g2;
+				if(p.getValue() == null) flg = false;
+			}
+			if(flg) {
+				var _g2 = 0, _g3 = port[0].parent.getInputPorts();
+				while(_g2 < _g3.length) {
+					var p = _g3[_g2];
+					++_g2;
+					this.diagram.removeValueCarrier(p.useValueCarrier());
+				}
+			}
 			worker.act(params,(function(port,valueCarrier) {
 				return function(script_result) {
 					if(script_result == null) return;

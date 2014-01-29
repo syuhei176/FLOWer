@@ -115,6 +115,7 @@ class PathView{
     	this.remove_graphic.remove();
     	this.source.views.remove(this);
     	this.target.views.remove(this);
+    	this.target.isConnected = false;
 	}
 	
 	public function refresh() {
