@@ -30,7 +30,6 @@ class DiagramView{
 		this.valueCarrierViews = new Array<ValueCarrierView>();
 		this.diagramController = diagramController;
 		var diagram = this.diagramController.getDiagram();
-		var thema = this.diagramController.getEditor().thema;
 		//モデルの変更を監視
 		diagram.onJobAdded(this.OnJobAdded);
 		diagram.onJobRemoved(this.OnJobRemoved);
@@ -53,9 +52,10 @@ class DiagramView{
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+74+","+5+")");
     		g.attr({
-				strokeWidth : 1,
-				stroke : thema.stroke_color,
-				});
+    			fill : Thema.createSvgFill,
+    			stroke : Thema.createSvgStroke,
+    			strokeWidth : Thema.createSvgStrokeWidth
+    			});
         	create_coll.click(function(e){
         		var createJobDialog = new CreateJobDialog();
 				createJobDialog.on(function(pkg, cmp, x, y) {
@@ -73,13 +73,14 @@ class DiagramView{
     		var right = js.Browser.document.body.clientWidth;
     		var rect = snap.rect((right - 80), 5, 70, 61, 5, 5);
     		g.attr({
-				strokeWidth : 1,
-				stroke : thema.stroke_color,
-				});
+    			fill : Thema.dustboxSvgFill,
+    			stroke : Thema.dustboxSvgStroke,
+    			strokeWidth : Thema.dustboxSvgStrokeWidth
+    			});
     		rect.attr({
-				strokeWidth : 1,
-				stroke : thema.stroke_color,
-				fill : "#F4F4F4",
+				strokeWidth : Thema.dustboxBackgroundStrokeWidth,
+				stroke : Thema.dustboxBackgroundStroke,
+				fill :  Thema.dustboxBackgroundFill,
 				});
     		g.transform("translate("+(right - 80)+","+3+")");
     		this.control_group.append(rect);

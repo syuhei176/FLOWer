@@ -27,7 +27,6 @@ class PathView{
 	
 	private var diagramController:DiagramController;
 	private var snap:Snap;
-	private var thema:Thema;
 	
 	private var onRemoveListeners:Array<PathView->InputPort->Void>;
 	
@@ -35,13 +34,12 @@ class PathView{
 	private var remove_timer:Timer;
 	private var diagramView:DiagramView;
 	
-	public function new(diagramController, diagramView, source_port, target_port, snap, thema) {
+	public function new(diagramController, diagramView, source_port, target_port, snap) {
 		this.onRemoveListeners = new Array<PathView->InputPort->Void>();
 		this.diagramController = diagramController;
 		this.source = source_port;
 		this.target = target_port;
 		this.snap = snap;
-		this.thema = thema;
 		this.diagramView = diagramView;
 		//モデルの変更を監視
 		this.source.port.onDisconnected(this.onDisconnect);
@@ -51,8 +49,8 @@ class PathView{
 		this.coll = this.snap.line(0, 0, 0, 0);
 		
 		this.graphic.attr({
-    	    stroke: thema.path_color,
-    	    strokeWidth: 1
+    	    stroke: Thema.pathLineStroke,
+    	    strokeWidth: Thema.pathLineStrokeWidth,
     	});
     	this.coll.attr({
     	    stroke: "#a0a000",

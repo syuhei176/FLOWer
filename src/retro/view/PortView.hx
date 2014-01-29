@@ -30,14 +30,12 @@ class PortView{
 	public var diagramController:DiagramController;
 	private var editor:Editor;
 	private var snap:Snap;
-	private var thema:Thema;
 	
-	public function new(diagramController, jobview, snap, thema) {
+	public function new(diagramController, jobview, snap) {
 		this.diagramController = diagramController;
 		this.views = new Array<PathView>();
 		this.jobView = jobview;
 		this.snap = snap;
-		this.thema = thema;
 		
 		this.group = snap.group();
 		this.graphic = snap.circle(0, 0, 21);

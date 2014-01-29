@@ -25,21 +25,21 @@ class ValueCarrierView {
 		this.count = 0;
 		
 		var snap = editor.snap;
-		var thema = editor.thema;
 		this.pos = new Point2D(0, 0);
 		this.group = snap.group();
 		//var text = snap.text(0, 0, haxe.Json.stringify(valueCarrier.getValue().value));
 		var t = this.value2String(valueCarrier.getValue().value);
 		var text : SnapElement = snap.text(-2, 4, t);
 		text.attr({
-			"font-size" : "12px",
-			fill : "#ffffff",
-			"font-family" : 'MyriadPro-Regular',
+			"font-size" : Thema.valueCarrierFontSize,
+			fill : Thema.valueCarrierFontFill,
+			"font-family" : Thema.valueCarrierFontFamily,
 		});
 		this.graphic = snap.rect(-21, -21, 42 + (t.length - 1) * 6, 42, 21, 21);
 		this.graphic.attr({
-				fill: thema.contrast1_color,
-				strokeWidth: 1
+				fill: Thema.valueCarrierFill,
+				strokeWidth: Thema.valueCarrierStrokeWidth,
+				stroke: Thema.valueCarrierStroke,
 				});
 		this.group.append(this.graphic);
 		this.group.append(text);

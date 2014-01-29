@@ -18,21 +18,21 @@ import retro.controller.DiagramController;
 class OutputPortView extends PortView{
 	public var port:OutputPort;
 	
-	public function new(diagramController, jobview, port, snap, thema) {
-		super(diagramController, jobview, snap, thema);
+	public function new(diagramController, jobview, port, snap) {
+		super(diagramController, jobview, snap);
 		this.port = port;
 		//モデルの変更を監視
 		this.port.onConnected(this.OnConnected);
 		this.graphic.attr({
-			fill: thema.base_color,
-			stroke : thema.stroke_color,
-			strokeWidth: 1
+			fill: Thema.outputPortFill,
+			stroke : Thema.outputPortStroke,
+			strokeWidth: Thema.outputPortStrokeWidth
 		});
 		var text = snap.text(-70, 0, port.getName());
 		text.attr({
-			"font-size" : "12px",
-			fill : thema.font_color,
-			"font-family" : 'MyriadPro-Regular'
+			"font-size" : Thema.outputPortFontSize,
+			fill : Thema.outputPortFontFill,
+			"font-family" : Thema.outputPortFontFamily,
 		});
 		this.group.append(text);
 		this.coll.mousedown(function(e, x, y) {
@@ -42,14 +42,16 @@ class OutputPortView extends PortView{
 
 		this.port.onSelected = function(){
 			this.graphic.attr({ 
-				fill : thema.selected_port_color,
-				stroke : thema.stroke_color,
+				fill : Thema.selectedOutputPortFill,
+				stroke : Thema.selectedOutputPortStroke,
+				strokeWidth: Thema.selectedOutputPortStrokeWidth
 			});
 		};
 		this.port.onNormal = function(){
 			this.graphic.attr({ 
-				fill : thema.base_color, 
-				stroke : thema.stroke_color,
+				fill : Thema.outputPortFill, 
+				stroke : Thema.outputPortStroke,
+				strokeWidth: Thema.outputPortStrokeWidth
 			});
 		};
 	}	
@@ -58,7 +60,7 @@ class OutputPortView extends PortView{
 	*/
 	public function OnConnected(o:OutputPort, i:InputPort) {
 		var inputView = this.jobView.diagramView.getInputPortView(i);
-		var pathView = new PathView(this.diagramController, this.jobView.diagramView, this, inputView, this.snap, this.thema);
+		var pathView = new PathView(this.diagramController, this.jobView.diagramView, this, inputView, this.snap);
 		this.views.push(pathView);
 		inputView.views.push(pathView);
 	}

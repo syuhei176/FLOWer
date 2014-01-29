@@ -1,5 +1,5 @@
 (function(){
-	
+
 	var packages =  {
 	 "core": ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor",], 
 	 "data": ["Stack",], 
@@ -10,7 +10,7 @@
 	 "line2d": ["Create","Distance",], 
 	 "system": ["Print","Scan",], 
 	 "snapelement": ["Translate","Fill",], 
-	 "pigpio":["Write","Read","ReadWait"],
+	 "pigpio": ["ReadWait","Write","Read",], 
 	 "string": ["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf",], 
 	 "number": ["C0","C1","C2","C3","C4","C5","C6","C7","C8","C9",], 
 	 "array": ["Create","Length","Push","Pop","Shift","Get",], 
