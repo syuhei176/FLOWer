@@ -1,7 +1,7 @@
 logic-on-canvas
 ===============
 
-# Build
+## Build
 コードの変更して、適用するときにビルド
 
     # build all
@@ -11,7 +11,7 @@ logic-on-canvas
     # build raspberrypi
     neko build.n raspberrypi
 
-# codeiqサーバ起動
+## codeiqサーバ起動
     
     # codeiqサーバに移動
     >> cd codeiq
@@ -20,9 +20,9 @@ logic-on-canvas
 http://localhost:8888
 でサーバを起動する。
 
-# テーマ編集
+## テーマ編集
 
-src/retro/view/Thema.hx にて
+src/retro/view/Thema.hx にて変数をまとめている
 
 
 
