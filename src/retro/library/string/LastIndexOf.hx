@@ -19,18 +19,19 @@ class LastIndexOf implements JobComponent {
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("string", RetroType.RNumber);
-    		this.inputs.add("char", RetroType.RNumber);
+    	this.inputs.add("char", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var char = params.get("char");
+		if(string.isEmpty() && char.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input.getValue()));
+		result.set("output", (string.getValue().lastIndexOf(char.getValue())));
 		cb(result);
 	}
 
