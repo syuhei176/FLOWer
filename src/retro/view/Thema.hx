@@ -1,6 +1,7 @@
 package retro.view;
 
 class Thema {
+	// 色のデフォルト設定
 	// dafaults Thema
 	inline public static var fill = "#F4F4F4";
 	inline public static var stroke = "#696969";
@@ -10,6 +11,13 @@ class Thema {
 	inline public static var fontSize = "12pt";
 	inline public static var fontFill = "#696969";
 
+	// ここに変数をテキトーに追加していいぽよ
+	//例 : つかってないぽよ
+	//inline public static var customfontFill = "";
+	
+	// ここまでー
+
+	// 以下の変数名は代えないでぽよー。
 	// jobView Thema
 	inline public static var jobFill = fill;
 	inline public static var jobStroke = stroke;
