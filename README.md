@@ -3,7 +3,8 @@ logic-on-canvas
 
 # Build
 方法
-	# build all
+
+    # build all
     >> neko build.n
     # build codeiq
     neko build.n codeiq
