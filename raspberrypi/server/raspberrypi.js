@@ -18,12 +18,14 @@ module.exports.read = function(pin, cb){
 }
 
 module.exports.readWait = function(pin, cb){
+	var prev = 0;
 	gpio.open(pin, "input", function(err) {
 		setInterval(function() {
 		    gpio.read(pin, function(err, value) {
-		    	if(value == 1) {
+		    	if(value == 1 && prev == 0) {
 			    	cb(err, value);
 		    	}
+	    		prev = value;
 		    });
 		}, 100);
 	});
