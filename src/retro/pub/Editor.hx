@@ -22,14 +22,12 @@ class Editor{
 	public var projectView : ProjectView;
 	public var IdGenerator : retro.pub.IDGenerator;
 	public var snap:Snap;
-	public var thema:Thema;
 	public var virtualDevice:VirtualDevice;
 	
 	private var runtime:Runtime;
 	private var retroClient:RetroClient;
 	
 	public function new(?id_header, ?retroClient, ?editorkey){
-		this.thema = new Thema();
 		this.snap = new Snap("#svg");
 		this.IdGenerator = retro.pub.IDGenerator.getInstance(id_header);
 		this.retroClient = retroClient;
@@ -69,7 +67,7 @@ class Editor{
 			editor.setProjectView(projectView);
 			var virtualDevice = new VirtualDevice();
 			editor.virtualDevice = virtualDevice;
-			var consoleDevice = new ConsoleView(editor.snap, editor.thema);
+			var consoleDevice = new ConsoleView(editor.snap);
 			virtualDevice.setConsoleDevice(consoleDevice);
 			virtualDevice.setSVGDevice(editor.snap);
 			virtualDevice.setSocketDevice(retroClient);
@@ -96,7 +94,7 @@ class Editor{
 		editor.setProjectView(projectView);
 		var virtualDevice = new VirtualDevice();
 		editor.virtualDevice = virtualDevice;
-		var consoleDevice = new ConsoleView(editor.snap, editor.thema);
+		var consoleDevice = new ConsoleView(editor.snap);
 		virtualDevice.setConsoleDevice(consoleDevice);
 		virtualDevice.setSVGDevice(editor.snap);
 		var diagram = new Diagram();

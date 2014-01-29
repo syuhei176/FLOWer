@@ -16,25 +16,26 @@ import retro.controller.DiagramController;
 class InputPortView extends PortView{
 
 	public var port:InputPort;
+	public var isConnected = false;
 	private var constantValueGraphic:SnapElement;
 	
-	public function new(diagramController, jobview, port, snap, thema) {
-		super(diagramController, jobview, snap, thema);
+	public function new(diagramController, jobview, port, snap) {
+		super(diagramController, jobview, snap);
 		this.port = port;
 		this.port.onSetConstantValue(OnSetConstant);
 		this.port.onRemoveConstantValue(OnRemoveConstant);
 		
 		this.graphic.attr({
-			fill: thema.bg_color,
-			stroke : thema.stroke_color,
-			strokeWidth: 1,
+			fill: Thema.inputPortFill,
+			stroke : Thema.inputPortStroke,
+			strokeWidth: Thema.inputPortStrokeWidth,
 		});
 		
 		var text = snap.text(26, 0, port.getName());
 		text.attr({
-			"font-size" : "12px",
-			fill : thema.font_color,
-			"font-family" : 'MyriadPro-Regular'
+			"font-size" : Thema.inputPortFontSize,
+			fill : Thema.inputPortFontFill,
+			"font-family" : Thema.inputPortFontFamily
 		});
 		this.group.append(text);
 		
@@ -42,11 +43,14 @@ class InputPortView extends PortView{
 		this.coll.mouseup(function(e, x, y) {
 			if(this.diagramController.setRubberbandEnd(this.port)) {
 				this.diagramController.clearRubberband();
+				this.isConnected = true;
 			}else{
 				//set constant
-				var v = window.prompt("","");
-				if(v != null) {
-					this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+				if( this.isConnected == false ){ 
+					var v = window.prompt("","");
+					if(v != null) {
+						this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+					}
 				}
 			}
 		});
@@ -82,15 +86,15 @@ class InputPortView extends PortView{
 		var t = Std.string(v.value);
 		var text : SnapElement = snap.text(-2, 4, t);
 		text.attr({
-			"font-size" : "12px",
-			fill : "#ffffff",
-			"font-family" : 'MyriadPro-Regular',
+			"font-size" : Thema.constantValueFontSize,
+			fill : Thema.constantValueFontFill,
+			"font-family" : Thema.constantValueFontFamily
 		});
 		var graphic = snap.rect(-21, -21, 42 + (t.length - 1) * 6, 42, 21, 21);
 		graphic.attr({
-				fill: thema.contrast2_color,
-				strokeWidth: 1,
-				stroke : thema.stroke_color
+				fill: Thema.constantValueFill,
+				strokeWidth: Thema.constantValueStrokeWidth,
+				stroke : Thema.constantValueStroke
 				});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);

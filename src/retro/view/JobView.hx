@@ -58,35 +58,34 @@ class JobView{
 		job.onPosChanged(OnPosChanged);
 		
 		var snap = this.jobController.getEditor().snap;
-		var thema = this.jobController.getEditor().thema;
 		this.group = snap.group();
 		if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
 			this.graphic = snap.rect(0, 0, 216, 89, 5, 5);
 			this.graphic.attr({
-				strokeWidth : 1,
-				stroke : thema.stroke_color,
-				fill : thema.bg_color,
+				strokeWidth : Thema.jobStrokeWidth,
+				stroke : Thema.jobStroke,
+				fill : Thema.jobFill
 				});
 			this.coll = snap.rect(0, 0, 216, 89);
 		}else{
 			this.graphic = snap.rect(0, 0, 216, 89, 5, 5);
 			this.graphic.attr({
-				strokeWidth : 1,
-				stroke : thema.stroke_color,
-				fill : thema.bg_color,
+				strokeWidth : Thema.jobStrokeWidth,
+				stroke : Thema.jobStroke,
+				fill : Thema.jobFill
 				});
 			this.coll = snap.rect(0, 0, 216, 89);
 		}
 		var text = snap.text(12, 24, job.getName());
 		text.attr({
-			"font-size" : "12px",
-			fill : thema.font_color,
-			"font-family" : "MyriadPro-Regular"
+			"font-size" : Thema.jobFontSize,
+			fill : Thema.jobFontFill,
+			"font-family" : Thema.jobFontFamily
 		});
 		var line = snap.line(0, 36, 216, 36);
 		line.attr({
-			strokeWidth : 1,
-			stroke : thema.stroke_color,
+			strokeWidth : Thema.jobStrokeWidth,
+			stroke : Thema.jobStroke,
 			});
 
 		this.pos = new Point2D(0, 0);
@@ -144,8 +143,7 @@ class JobView{
 	//Model変更時に呼ばれるリスナー
 	public function OnAddInputPortView(port : InputPort) {
 		var snap = this.jobController.getEditor().snap;
-		var thema = this.jobController.getEditor().thema;
-		var portView = new InputPortView(this.diagramController, this, port, snap, thema);
+		var portView = new InputPortView(this.diagramController, this, port, snap);
 		this.group.append(portView.group);
 		this.inputportviews.push(portView);
 		this.cal2();
@@ -155,8 +153,7 @@ class JobView{
 	//Model変更時に呼ばれるリスナー
 	public function OnAddOutputPortView(port : OutputPort) {
 		var snap = this.jobController.getEditor().snap;
-		var thema = this.jobController.getEditor().thema;
-		var portView = new OutputPortView(this.diagramController, this, port, snap, thema);
+		var portView = new OutputPortView(this.diagramController, this, port, snap);
 		this.group.append(portView.group);
 		this.outputportviews.push(portView);
 		this.cal2();

@@ -27,15 +27,14 @@ class ProjectView{
 		this.mode = RunMode.Stop;
 		var snap = this.projectController.getEditor().snap;
 		var project = this.projectController.getProject();
-		var thema = this.projectController.getEditor().thema;
 		project.onDiagramAdded(this.OnDiagramAdded);
 		
 		this.control_group = snap.group();
 		var rect = snap.rect(5, 5, 140, 61, 5, 5);
 		rect.attr({
-				strokeWidth : 1,
-				stroke : thema.stroke_color,
-				fill : "#F4F4F4",
+				strokeWidth : Thema.buttonBackgroundStrokeWidth,
+				stroke : Thema.buttonBackgroundStroke,
+				fill :  Thema.buttonBackgroundFill,
 				});
 		var coll = snap.rect(5,5,70,61);
 		coll.attr({
@@ -44,8 +43,8 @@ class ProjectView{
     	});
 		var line = snap.line(75,5,75,66);
 		line.attr({
-				strokeWidth : 1,
-				stroke : thema.stroke_color,
+				strokeWidth : Thema.buttonBackgroundStrokeWidth,
+				stroke : Thema.buttonBackgroundStroke,
 				});
 
     	Snap.load(#if codeiq "images/play.svg" #else "/images/play.svg" #end, function (f) {
@@ -53,22 +52,26 @@ class ProjectView{
     		var path : SnapElement = g.select("path");
     		path.transform("translate("+8+","+5+")");
     		path.attr({
-    			fill : "#ffffff",
-    			stroke : thema.stroke_color
+    			fill : Thema.playSvgFill,
+    			stroke : Thema.playSvgStroke,
+    			strokeWidth : Thema.playSvgStrokeWidth
     			});
         	coll.click(function(e){
         		if(this.mode == RunMode.Stop) {
 	        		this.projectController.run();
 	        		this.mode = RunMode.Run;
 	        		path.attr({
-	        			fill : "#FF39A6"
+	        			fill : Thema.playModeFill,
+	        			stroke : Thema.playModeStroke,
+	        			strokeWidth : Thema.playModeStrokeWidth
 	        		});
         		}else if(this.mode == RunMode.Run) {
     	    		this.projectController.stop();
     	    		this.mode = RunMode.Stop;
 	        		path.attr({
-	        			fill : "#ffffff",
-	        			stroke : thema.stroke_color
+	        			fill : Thema.playSvgFill,
+	        			stroke : Thema.playSvgStroke,
+	        			strokeWidth : Thema.playSvgStrokeWidth
 	        		});
         		}
         	});

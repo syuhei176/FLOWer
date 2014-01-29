@@ -32,7 +32,7 @@ class ConsoleView {
 	private var lines:Array<String>;
 	private var scan_buffer:Array<String->Void>;
 	
-	public function new(snap:Snap, thema) {
+	public function new(snap:Snap) {
 		this.lines = new Array<String>();
 		this.scan_buffer = new Array<String->Void>();
 		this.group = snap.group();
@@ -47,16 +47,16 @@ class ConsoleView {
 		}
 		for(t in this.texts) {
 			t.attr({
-			"font-size" : "12px",
-			fill : thema.font_color,
-			"font-family" : "MyriadPro-Regular",
+			"font-size" : Thema.consoleFontSize,
+			fill : Thema.consoleFontFill,
+			"font-family" : Thema.consoleFontFamily,
 			width : 220,
 			});
 		}
 		this.graphic.attr({
-				fill: thema.bg_color,
-				stroke: thema.stroke_color,
-				strokeWidth: 1,
+				fill: Thema.consoleFill,
+				stroke: Thema.consoleStroke,
+				strokeWidth: Thema.consoleStrokeWidth,
 				});
 		this.pos = new Point2D(0, 0);
 		this.prev_pos = new Point2D(0, 0);
