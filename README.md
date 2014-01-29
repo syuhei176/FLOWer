@@ -2,7 +2,7 @@ logic-on-canvas
 ===============
 
 # Build
-方法
+コードの変更して、適用するときにビルド
 
     # build all
     >> neko build.n
@@ -19,4 +19,10 @@ logic-on-canvas
 
 http://localhost:8888
 でサーバを起動する。
+
+# テーマ編集
+
+src/retro/view/Thema.hx にて
+
+
 
