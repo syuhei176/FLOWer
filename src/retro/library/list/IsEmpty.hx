@@ -19,17 +19,17 @@ class IsEmpty implements JobComponent {
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("list", RetroType.RNumber);
-    		this.outputs.add("output", RetroType.RNumber);
+    	this.outputs.add("output", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input.getValue()));
+		result.set("output", (list.getValue().length == 0));
 		cb(result);
 	}
 

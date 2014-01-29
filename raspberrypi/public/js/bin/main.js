@@ -722,6 +722,9 @@ js.Boot.__instanceof = function(o,cl) {
 		return o.__enum__ == cl;
 	}
 }
+js.Boot.__cast = function(o,t) {
+	if(js.Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
+}
 js.Browser = function() { }
 js.Browser.__name__ = ["js","Browser"];
 js.Browser.createXMLHttpRequest = function() {
@@ -775,8 +778,8 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Circle());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.point2d.Add());
 	this.modules.push(new retro.library.point2d.Sub());
 	this.modules.push(new retro.library.point2d.Create());
@@ -812,9 +815,6 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.array.Pop());
 	this.modules.push(new retro.library.array.Shift());
 	this.modules.push(new retro.library.array.Get());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
 };
@@ -995,8 +995,8 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Circle());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.point2d.Add());
 	this.modules.push(new retro.library.point2d.Sub());
 	this.modules.push(new retro.library.point2d.Create());
@@ -1032,9 +1032,6 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.array.Pop());
 	this.modules.push(new retro.library.array.Shift());
 	this.modules.push(new retro.library.array.Get());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
 };
@@ -2057,13 +2054,13 @@ retro.library.list.First.prototype = {
 		return "list.First";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue()[0]);
 		cb(result);
 	}
 	,__class__: retro.library.list.First
@@ -2082,13 +2079,13 @@ retro.library.list.IsEmpty.prototype = {
 		return "list.IsEmpty";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().length == 0);
 		cb(result);
 	}
 	,__class__: retro.library.list.IsEmpty
@@ -2098,7 +2095,7 @@ retro.library.list.Join = function() {
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
 	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
+	this.inputs.add("sep",retro.pub.RetroType.RNumber);
 	this.outputs.add("output",retro.pub.RetroType.RNumber);
 };
 retro.library.list.Join.__name__ = ["retro","library","list","Join"];
@@ -2108,13 +2105,14 @@ retro.library.list.Join.prototype = {
 		return "list.Join";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		var sep = params.get("sep");
+		if(list.isEmpty() && sep.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().join(sep.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.list.Join
@@ -2133,13 +2131,13 @@ retro.library.list.Last.prototype = {
 		return "list.Last";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue()[js.Boot.__cast(list.getValue().length - 1 , Int)]);
 		cb(result);
 	}
 	,__class__: retro.library.list.Last
@@ -2158,13 +2156,13 @@ retro.library.list.Length.prototype = {
 		return "list.Length";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().length);
 		cb(result);
 	}
 	,__class__: retro.library.list.Length
@@ -3113,15 +3111,15 @@ retro.library.snapelement.Translate.prototype = {
 	,__class__: retro.library.snapelement.Translate
 }
 retro.library.snapsvg = {}
-retro.library.snapsvg.Circle = function() {
+retro.library.snapsvg.Circle = function(virtualDevice) {
 	this.name = "Circle";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("snapsvg",retro.pub.RetroType.RNumber);
 	this.inputs.add("x",retro.pub.RetroType.RNumber);
 	this.inputs.add("y",retro.pub.RetroType.RNumber);
 	this.inputs.add("r",retro.pub.RetroType.RNumber);
 	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.virtualDevice = virtualDevice;
 };
 retro.library.snapsvg.Circle.__name__ = ["retro","library","snapsvg","Circle"];
 retro.library.snapsvg.Circle.__interfaces__ = [retro.core.JobComponent];
@@ -3130,13 +3128,16 @@ retro.library.snapsvg.Circle.prototype = {
 		return "snapsvg.Circle";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var x = params.get("x");
+		var y = params.get("y");
+		var r = params.get("r");
+		if(x.isEmpty() && y.isEmpty() && r.isEmpty()) {
 			cb(null);
 			return;
 		}
+		var snapElement = this.virtualDevice.getSnap().circle(x.getValue(),y.getValue(),r.getValue());
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",snapElement);
 		cb(result);
 	}
 	,__class__: retro.library.snapsvg.Circle
@@ -3174,85 +3175,6 @@ retro.library.snapsvg.Rect.prototype = {
 	}
 	,__class__: retro.library.snapsvg.Rect
 }
-retro.library.sphero = {}
-retro.library.sphero.Roll = function() {
-	this.name = "Roll";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.inputs.add("speed",retro.pub.RetroType.RNumber);
-	this.inputs.add("angle",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.Roll.__name__ = ["retro","library","sphero","Roll"];
-retro.library.sphero.Roll.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.Roll.prototype = {
-	getModuleName: function() {
-		return "sphero.Roll";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.Roll
-}
-retro.library.sphero.SetBackLED = function() {
-	this.name = "SetBackLED";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.SetBackLED.__name__ = ["retro","library","sphero","SetBackLED"];
-retro.library.sphero.SetBackLED.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.SetBackLED.prototype = {
-	getModuleName: function() {
-		return "sphero.SetBackLED";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.SetBackLED
-}
-retro.library.sphero.SetHeading = function() {
-	this.name = "SetHeading";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.inputs.add("r",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.SetHeading.__name__ = ["retro","library","sphero","SetHeading"];
-retro.library.sphero.SetHeading.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.SetHeading.prototype = {
-	getModuleName: function() {
-		return "sphero.SetHeading";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.SetHeading
-}
 retro.library.string = {}
 retro.library.string.ChatAt = function() {
 	this.name = "ChatAt";
@@ -3269,13 +3191,14 @@ retro.library.string.ChatAt.prototype = {
 		return "string.ChatAt";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var index = params.get("index");
+		if(string.isEmpty() && index.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().charAt(index.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.ChatAt
@@ -3295,13 +3218,14 @@ retro.library.string.IndexOf.prototype = {
 		return "string.IndexOf";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var $char = params.get("char");
+		if(string.isEmpty() && $char.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().indexOf($char.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.IndexOf
@@ -3321,13 +3245,14 @@ retro.library.string.LastIndexOf.prototype = {
 		return "string.LastIndexOf";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var $char = params.get("char");
+		if(string.isEmpty() && $char.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().lastIndexOf($char.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.LastIndexOf
@@ -3346,13 +3271,13 @@ retro.library.string.Length.prototype = {
 		return "string.Length";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		if(string.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().length);
 		cb(result);
 	}
 	,__class__: retro.library.string.Length
@@ -3361,8 +3286,9 @@ retro.library.string.Split = function() {
 	this.name = "Split";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("string",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.inputs.add("string",retro.pub.RetroType.RString);
+	this.inputs.add("delimiter",retro.pub.RetroType.RString);
+	this.outputs.add("output",retro.pub.RetroType.RString);
 };
 retro.library.string.Split.__name__ = ["retro","library","string","Split"];
 retro.library.string.Split.__interfaces__ = [retro.core.JobComponent];
@@ -3371,13 +3297,14 @@ retro.library.string.Split.prototype = {
 		return "string.Split";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var delimiter = params.get("delimiter");
+		if(string.isEmpty() && delimiter.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().split(delimiter.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.Split
@@ -5040,7 +4967,9 @@ retro.view.ValueCarrierView.prototype = {
 		this.remove();
 	}
 	,value2String: function(v) {
-		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) return v; else {
+		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) {
+			if(v == true) return "True"; else return "False";
+		} else {
 			var class_name = Type.getClassName(Type.getClass(v));
 			if(class_name == "String") return v; else return class_name;
 		}

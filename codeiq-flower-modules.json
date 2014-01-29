@@ -36,8 +36,8 @@
 		"virtualDevice" : []
 	},
 	"snapsvg": {
-		"none" : ["Circle"],
-		"virtualDevice" : ["Rect"]
+		"none" : [],
+		"virtualDevice" : ["Rect","Circle"]
 	},
 	"snapelement": {
 		"none" : ["Translate","Fill"],
