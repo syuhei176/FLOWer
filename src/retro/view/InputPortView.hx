@@ -37,7 +37,7 @@ class InputPortView extends PortView{
 			fill : Thema.inputPortFontFill,
 			"font-family" : Thema.inputPortFontFamily
 		});
-		this.group.append(text);
+		this.upperGroup.append(text);
 		
 		
 		this.coll.mouseup(function(e, x, y) {

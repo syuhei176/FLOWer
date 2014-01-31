@@ -22,6 +22,7 @@ class PortView{
 	public var velocity : Float;
 	
 	public var group:SnapElement;
+	public var upperGroup:SnapElement;
 	public var graphic:SnapElement;
 	public var coll:SnapElement;
 	public var jobView:JobView;
@@ -38,6 +39,7 @@ class PortView{
 		this.snap = snap;
 		
 		this.group = snap.group();
+		this.upperGroup = snap.group();
 		this.graphic = snap.circle(0, 0, 21);
 		this.coll = snap.circle(0, 0, 21);
 		this.th = 0;
@@ -50,7 +52,7 @@ class PortView{
     	});
     	
 		this.group.append(this.graphic);
-		this.group.append(coll);
+		this.upperGroup.append(coll);
 	}
 
 	public function refresh() {
@@ -63,6 +65,7 @@ class PortView{
 		pos.setX(pos.getX() + x);
 		pos.setY(pos.getY() + y);
 		this.group.transform("translate(" + pos.getX() + "," + pos.getY() + ")");
+		this.upperGroup.transform("translate(" + pos.getX() + "," + pos.getY() + ")");
 	}
 	public function setR(th:Float) {
 		this.th = th;
@@ -72,6 +75,7 @@ class PortView{
 		pos.setX(x);
 		pos.setY(y);
 		this.group.transform("translate(" + pos.getX() + "," + pos.getY() + ")");
+		this.upperGroup.transform("translate(" + pos.getX() + "," + pos.getY() + ")");
 	}
 	public function getPos() {
 		return Point2D.add(pos, this.jobView.getPos());

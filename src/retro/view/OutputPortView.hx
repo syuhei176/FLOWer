@@ -34,7 +34,7 @@ class OutputPortView extends PortView{
 			fill : Thema.outputPortFontFill,
 			"font-family" : Thema.outputPortFontFamily,
 		});
-		this.group.append(text);
+		this.upperGroup.append(text);
 		this.coll.mousedown(function(e, x, y) {
 			this.diagramController.setRubberbandStart(this.port);
 		});

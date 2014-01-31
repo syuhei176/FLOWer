@@ -29,9 +29,13 @@ class JobView{
 	public var prev_pos : Point2D;
 	
 	public var group:SnapElement;
-	public var graphic:SnapElement;
+	public var titleRect:SnapElement;
+	public var titleText:SnapElement;
+	public var portRect:SnapElement;
 	public var coll:SnapElement;
-	private var config_graphic:SnapElement;
+	private var job : Job;
+	private var snap : Snap;
+	private var configGraphic:SnapElement;
 	private var config_timer:Timer;
 	
 	public var diagramController:DiagramController;
@@ -42,7 +46,6 @@ class JobView{
 	private var outputportviews:Array<OutputPortView>;
 	
 	private var setted_value:String;
-
 	
 	public function new(diagramController, jobController, diagramView) {
 		this.inputportviews = new Array<InputPortView>();
@@ -52,42 +55,34 @@ class JobView{
 		this.diagramView = diagramView;
 		
 		//modelの変更を監視
-		var job = this.jobController.getJob();
+		this.job = this.jobController.getJob();
 		job.onInputPortAdded(OnAddInputPortView);
 		job.onOutputPortAdded(OnAddOutputPortView);
 		job.onPosChanged(OnPosChanged);
-		
-		var snap = this.jobController.getEditor().snap;
-		this.group = snap.group();
-		if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-			this.graphic = snap.rect(0, 0, 216, 89, 5, 5);
-			this.graphic.attr({
-				strokeWidth : Thema.jobStrokeWidth,
-				stroke : Thema.jobStroke,
-				fill : Thema.jobFill
-				});
-			this.coll = snap.rect(0, 0, 216, 89);
-		}else{
-			this.graphic = snap.rect(0, 0, 216, 89, 5, 5);
-			this.graphic.attr({
-				strokeWidth : Thema.jobStrokeWidth,
-				stroke : Thema.jobStroke,
-				fill : Thema.jobFill
-				});
-			this.coll = snap.rect(0, 0, 216, 89);
-		}
-		var text = snap.text(12, 24, job.getName());
-		text.attr({
-			"font-size" : Thema.jobFontSize,
-			fill : Thema.jobFontFill,
-			"font-family" : Thema.jobFontFamily
-		});
-		var line = snap.line(0, 36, 216, 36);
-		line.attr({
-			strokeWidth : Thema.jobStrokeWidth,
-			stroke : Thema.jobStroke,
-			});
 
+		this.snap = this.jobController.getEditor().snap;
+		this.group = snap.group();
+
+		this.titleRect = this.snap.rect(0, 0, Thema.jobWidth, Thema.jobTitleHeight);
+		this.titleRect.attr({
+				strokeWidth : Thema.jobTitleStrokeWidth,
+				stroke : Thema.jobTitleStroke,
+				fill : Thema.jobTitleFill
+				});
+		this.portRect = this.snap.rect(0, Thema.jobTitleHeight, Thema.jobWidth, 0);
+		this.portRect.attr({
+			strokeWidth : Thema.jobPortStrokeWidth,
+				stroke : Thema.jobPortStroke,
+				fill : Thema.jobPortFill
+			});
+		this.coll = this.snap.rect(0, 0, Thema.jobWidth, Thema.jobTitleHeight);
+		
+		this.titleText = this.snap.text(12, 24, this.job.getName());
+		titleText.attr({
+			"font-size" : Thema.jobTitleFontSize,
+			fill : Thema.jobTitleFontFill,
+			"font-family" : Thema.jobTitleFontFamily
+		});
 		this.pos = new Point2D(0, 0);
 		this.prev_pos = new Point2D(0, 0);
 		this.setPos(100, 100);
@@ -98,10 +93,19 @@ class JobView{
 		this.coll.mousedown(function(e, x, y){
 			//this.visible_config_btn();
 		});
+		var inDustBox = false;
+		var isInDustBox = function(x,y){
+			var right = js.Browser.document.body.clientWidth;
+			return inDustBox = (right - Thema.dustboxWidth) < x && (x < right) &&
+					y < Thema.dustboxHeight;
+		};
 		this.coll.drag(function(dx, dy, x, y){
         	this.addPos(dx - this.prev_pos.getX(), dy - this.prev_pos.getY());
         	this.prev_pos.setX(dx);
         	this.prev_pos.setY(dy);
+        	if(isInDustBox(Std.int(x), Std.int(y))) 
+        		this.diagramView.showDustBoxOver() 
+        		else this.diagramView.showDustBox();
         	this.refresh();
     	}, function(x, y) {
     		this.prev_pos.setX(0);
@@ -110,18 +114,26 @@ class JobView{
     		this.refresh();
 			//this.diagramView.start_step();
     		this.jobController.changePos(this.pos.getX(), this.pos.getY());
-    		var right = js.Browser.document.body.clientWidth;
-    		if(right - 150 < this.pos.getX() && this.pos.getX() < right && this.pos.getY() < 150) {
-	    		this.diagramController.removeJob(this.jobController.getJob());
+    		if(inDustBox){
+    			this.diagramController.removeJob(this.jobController.getJob());
+    			this.diagramView.showDustBox();
     		}
     	});
-		
-		this.group.append(this.graphic);
-		this.group.append(text);
-		this.group.append(line);
-		this.group.append(this.coll);
 	}
-	
+
+	public function drawView(){
+		for( portView in this.inputportviews ) this.group.append(portView.group);
+		for( portView in this.outputportviews ) this.group.append(portView.group);
+		this.group.append(this.titleRect);
+		this.group.append(this.portRect);
+		this.group.append(this.titleText);
+		this.group.append(this.coll);
+		for( portView in this.inputportviews ) this.group.append(portView.upperGroup);
+		for( portView in this.outputportviews ) this.group.append(portView.upperGroup);
+		this.cal2();
+	}
+
+
 	public function removeSelf() {
 		this.group.remove();
 		//this.config_timer.stop();
@@ -131,11 +143,11 @@ class JobView{
 		this.config_timer = new Timer(3000);
 		this.config_timer.run = function() {
     		this.config_timer.stop();
-	    	this.config_graphic.attr({
+	    	this.configGraphic.attr({
     			"visibility" : "hidden"
     		});
 		}
-    	this.config_graphic.attr({
+    	this.configGraphic.attr({
     		"visibility" : "visible"
     	});
 	}
@@ -144,9 +156,7 @@ class JobView{
 	public function OnAddInputPortView(port : InputPort) {
 		var snap = this.jobController.getEditor().snap;
 		var portView = new InputPortView(this.diagramController, this, port, snap);
-		this.group.append(portView.group);
 		this.inputportviews.push(portView);
-		this.cal2();
 		return portView;
 	}
 	
@@ -154,9 +164,7 @@ class JobView{
 	public function OnAddOutputPortView(port : OutputPort) {
 		var snap = this.jobController.getEditor().snap;
 		var portView = new OutputPortView(this.diagramController, this, port, snap);
-		this.group.append(portView.group);
 		this.outputportviews.push(portView);
-		this.cal2();
 		return portView;
 	}
 	
@@ -173,23 +181,23 @@ class JobView{
 		}
 	}
 	public function cal2() {
-		var h:Int = 63;
-		for(pv in this.inputportviews) {
-			pv.setPos(0, h);
-			h += 53;
-		}
-		h = 63;
-		for(pv in this.outputportviews) {
-			pv.setPos(216, h);
-			h += 53;
-		}
-		this.graphic.attr({
-			height : this.inputportviews.length > this.outputportviews.length 
-			? this.inputportviews.length*53+36 : this.outputportviews.length*53+36
+		this.inputportviews.mapi(function(i, view)
+			return view.setPos(0, i * Thema.jobOnePortHeight + Thema.jobTitleHeight +
+				Thema.jobOnePortHeight / 2));
+
+		this.outputportviews.mapi(function(i, view)
+			return view.setPos(Thema.jobWidth, i * Thema.jobOnePortHeight + Thema.jobTitleHeight + 
+				Thema.jobOnePortHeight / 2));
+		
+		this.portRect.attr({
+			height : if( this.inputportviews.length > this.outputportviews.length )
+			this.inputportviews.length*Thema.jobOnePortHeight else this.outputportviews.length*Thema.jobOnePortHeight 
 		});
+
 		this.coll.attr({
-			height : this.inputportviews.length > this.outputportviews.length 
-			? this.inputportviews.length*53+36 : this.outputportviews.length*53+36
+			height : if(this.inputportviews.length > this.outputportviews.length)
+			this.inputportviews.length * Thema.jobOnePortHeight + Thema.jobTitleHeight 
+			else this.outputportviews.length * Thema.jobOnePortHeight + Thema.jobTitleHeight
 		});
 	}
 	
