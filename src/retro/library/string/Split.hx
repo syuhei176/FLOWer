@@ -18,18 +18,20 @@ class Split implements JobComponent {
 		this.name = "Split";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("string", RetroType.RNumber);
-    		this.outputs.add("output", RetroType.RNumber);
+		this.inputs.add("string", RetroType.RString);
+		this.inputs.add("delimiter", RetroType.RString);
+    	this.outputs.add("output", RetroType.RString);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var delimiter = params.get("delimiter");
+		if(string.isEmpty() && delimiter.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input.getValue()));
+		result.set("output", (string.getValue().split(delimiter.getValue())));
 		cb(result);
 	}
 
