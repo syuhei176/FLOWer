@@ -4836,11 +4836,7 @@ retro.view.PathView = function(diagramController,diagramView,source_port,target_
 	this.group = this.snap.group();
 	this.graphic = this.snap.line(0,0,0,0);
 	this.coll = this.snap.line(0,0,0,0);
-<<<<<<< HEAD
 	this.graphic.attr({ stroke : "#E3E3E3", strokeWidth : 1});
-=======
-	this.graphic.attr({ stroke : "#FF39A6", strokeWidth : 1});
->>>>>>> origin/develop
 	this.coll.attr({ stroke : "#a0a000", 'stroke-opacity' : 0, strokeWidth : 30});
 	diagramView.path_group.append(this.group);
 	this.coll.mousedown(function(e,x,y) {
@@ -5192,15 +5188,9 @@ retro.view.Thema.outputPortFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.outputPortFontSize = "10pt";
 retro.view.Thema.outputPortFontFill = "#696969";
 retro.view.Thema.selectedOutputPortFill = "#FF39A6";
-<<<<<<< HEAD
 retro.view.Thema.selectedOutputPortStroke = "#E3E3E3";
 retro.view.Thema.selectedOutputPortStrokeWidth = 0;
 retro.view.Thema.pathLineStroke = "#E3E3E3";
-=======
-retro.view.Thema.selectedOutputPortStroke = "#696969";
-retro.view.Thema.selectedOutputPortStrokeWidth = 1;
-retro.view.Thema.pathLineStroke = "#FF39A6";
->>>>>>> origin/develop
 retro.view.Thema.pathLineStrokeWidth = 1;
 retro.view.Thema.consoleFill = "#CCCCCC";
 retro.view.Thema.consoleStroke = "#CCCCCC";
