@@ -30,67 +30,50 @@ class ProjectView{
 		project.onDiagramAdded(this.OnDiagramAdded);
 		
 		this.control_group = snap.group();
-		var rect = snap.rect(5, 5, 140, 61, 5, 5);
-		rect.attr({
-				strokeWidth : Thema.buttonBackgroundStrokeWidth,
-				stroke : Thema.buttonBackgroundStroke,
-				fill :  Thema.buttonBackgroundFill,
-				});
-		var coll = snap.rect(5,5,70,61);
-		coll.attr({
-    	    fill: "#ffffff",
-    	    "fill-opacity" : 0,
-    	});
-		var line = snap.line(75,5,75,66);
-		line.attr({
-				strokeWidth : Thema.buttonBackgroundStrokeWidth,
-				stroke : Thema.buttonBackgroundStroke,
-				});
 
     	Snap.load(#if codeiq "images/play.svg" #else "/images/play.svg" #end, function (f) {
     		var g:SnapElement = f.select("svg");
-    		var path : SnapElement = g.select("path");
-    		path.transform("translate("+8+","+5+")");
-    		path.attr({
-    			fill : Thema.playSvgFill,
-    			stroke : Thema.playSvgStroke,
-    			strokeWidth : Thema.playSvgStrokeWidth
-    			});
-        	coll.click(function(e){
-        		if(this.mode == RunMode.Stop) {
-	        		this.projectController.run();
-	        		this.mode = RunMode.Run;
-	        		path.attr({
-	        			fill : Thema.playModeFill,
-	        			stroke : Thema.playModeStroke,
-	        			strokeWidth : Thema.playModeStrokeWidth
-	        		});
-        		}else if(this.mode == RunMode.Run) {
-    	    		this.projectController.stop();
-    	    		this.mode = RunMode.Stop;
-	        		path.attr({
-	        			fill : Thema.playSvgFill,
-	        			stroke : Thema.playSvgStroke,
-	        			strokeWidth : Thema.playSvgStrokeWidth
-	        		});
-        		}
+    		this.control_group.append(g);
+    		this.control_group.transform("translate("+Thema.playSvgX+","+Thema.playSvgY+")");
+    		Snap.load(#if codeiq "images/play-over.svg" #else "/images/play-over.svg" #end, function (f) {
+    			var g2:SnapElement = f.select("svg");
+    			this.control_group.transform("translate("+Thema.playSvgX+","+Thema.playSvgY+")");
+    			g.click(function(e){
+    				trace("click");
+    				if(this.mode == RunMode.Stop) {
+    					this.projectController.run();
+    					this.mode = RunMode.Run;
+    					this.control_group.append(g2);
+    				};
+	        	});
+	        	g2.click(function(e){
+	        		if(this.mode == RunMode.Run) {
+	    	    		this.projectController.stop();
+	    	    		this.mode = RunMode.Stop;
+	    	    		g2.remove();
+	        		}
+	        	});
         	});
         #if raspi
         Snap.load("/images/save.svg", function (f) {
     		var g:SnapElement = f.select("g");
-    		g.transform("translate("+160+","+5+")");
-        	g.click(function(e){
-        		var exported = this.exportController.do_export();
-        		trace(exported);
-        		this.projectController.getEditor().save_all(exported);
-        	});
-        	this.control_group.append(g);
+    		g.transform("translate("+Thema.saveSvgX+","+Thema.saveSvgY+")");
+    		Snap.load("/images/save-over.svg", function (f) {
+    			var g2:SnapElement = f.select("g");
+    			g2.transform("translate("+Thema.saveSvgX+","+Thema.saveSvgY+")");
+    			this.control_group.append(g);
+    			g.click(function(e){
+	        		var exported = this.exportController.do_export();
+	        		this.projectController.getEditor().save_all(exported);
+	        		this.control_group.append(g2);
+	        		var timer = new haxe.Timer(500);
+	        		timer.run = function(){
+	        			g2.remove();
+	        		};
+    			});
+    		});
     	});
     	#end
-        	
-        	this.control_group.append(rect);
-        	this.control_group.append(g);
-        	this.control_group.append(coll);
     	});
 	}
 	

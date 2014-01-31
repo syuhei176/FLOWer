@@ -31,13 +31,13 @@ class InputPortView extends PortView{
 			strokeWidth: Thema.inputPortStrokeWidth,
 		});
 		
-		var text = snap.text(26, 0, port.getName());
+		var text = snap.text(Thema.inputPortTextX, Thema.inputPortTextY, port.getName());
 		text.attr({
 			"font-size" : Thema.inputPortFontSize,
 			fill : Thema.inputPortFontFill,
 			"font-family" : Thema.inputPortFontFamily
 		});
-		this.group.append(text);
+		this.upperGroup.append(text);
 		
 		
 		this.coll.mouseup(function(e, x, y) {
@@ -90,7 +90,9 @@ class InputPortView extends PortView{
 			fill : Thema.constantValueFontFill,
 			"font-family" : Thema.constantValueFontFamily
 		});
-		var graphic = snap.rect(-21, -21, 42 + (t.length - 1) * 6, 42, 21, 21);
+		var graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
+			Thema.valueCarrierRadius * 2 + (t.length - 1) * 6, Thema.valueCarrierRadius * 2, 
+			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
 		graphic.attr({
 				fill: Thema.constantValueFill,
 				strokeWidth: Thema.constantValueStrokeWidth,
@@ -98,7 +100,7 @@ class InputPortView extends PortView{
 				});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
-		this.group.append(this.constantValueGraphic);
+		this.upperGroup.append(this.constantValueGraphic);
 		graphic.click(function(e) {
 			this.port.removeConstant();
 		});

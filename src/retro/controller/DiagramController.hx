@@ -57,8 +57,8 @@ class DiagramController implements Controller{
 	public function addEntryJob() {
 		var id = this.editor.IdGenerator.genID();
 		var job = new EntryJob(id);
-		diagram.setEntryPoint(job);
 		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
+		diagram.setEntryPoint(job);
 		return job;
 	}
 	public function addLogic(id) {

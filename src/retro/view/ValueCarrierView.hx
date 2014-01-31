@@ -35,7 +35,9 @@ class ValueCarrierView {
 			fill : Thema.valueCarrierFontFill,
 			"font-family" : Thema.valueCarrierFontFamily,
 		});
-		this.graphic = snap.rect(-21, -21, 42 + (t.length - 1) * 6, 42, 21, 21);
+		this.graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
+			Thema.valueCarrierRadius * 2 + (t.length - 1) * 6, Thema.valueCarrierRadius * 2, 
+			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
 		this.graphic.attr({
 				fill: Thema.valueCarrierFill,
 				strokeWidth: Thema.valueCarrierStrokeWidth,
@@ -57,7 +59,8 @@ class ValueCarrierView {
 		}else if(Type.typeof(v) == Type.ValueType.TFloat) {
 			return v;
 		}else if(Type.typeof(v) == Type.ValueType.TBool) {
-			return v;
+			if(v == true) return "True";
+			else return "False";
 		}else{
 			var class_name = Type.getClassName(Type.getClass(v));
 			if(class_name == "String") {

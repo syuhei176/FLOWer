@@ -23,13 +23,13 @@ class Length implements JobComponent {
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		if(string.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input.getValue()));
+		result.set("output", (string.getValue().length));
 		cb(result);
 	}
 

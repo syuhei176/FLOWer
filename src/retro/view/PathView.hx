@@ -70,7 +70,7 @@ class PathView{
     	this.init_remove_btn();
 	}
 	
-	private function init_remove_btn() {
+	public function init_remove_btn() {
     	Snap.load(#if codeiq "images/remove.svg" #else "/images/remove.svg" #end, function (f) {
     		var g = f.select("g");
         	this.diagramView.control_group.append(g);
@@ -88,14 +88,10 @@ class PathView{
     	});
 	}
 	private function visible_remove_btn() {
-		var xx = this.target.getPos().getX() + this.source.getPos().getX();
-		var yy = this.target.getPos().getY() + this.source.getPos().getY();
-		xx /= 2;
-		yy /= 2;
-		xx -= 22;
-		yy -= 22;
+		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - Thema.jobWidth / 2 - Thema.removeRadius;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - Thema.jobTitleHeight;
     	this.remove_graphic.transform("translate("+xx+","+yy+")");
-		this.remove_timer = new Timer(3000);
+		this.remove_timer = new Timer(2000);
 		this.remove_timer.run = function() {
 	    	this.remove_graphic.attr({
     			"visibility" : "hidden"

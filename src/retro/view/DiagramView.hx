@@ -21,6 +21,8 @@ class DiagramView{
 	private var valueCarrierViews:Array<ValueCarrierView>;
 	public var control_group:SnapElement;
 	public var path_group:SnapElement;
+	public var showDustBoxOver : Void -> Void;
+	public var showDustBox : Void -> Void;
 	//力学
 	private var timer:Timer = null;
 	private var count:Int = 0;
@@ -48,43 +50,49 @@ class DiagramView{
     	    fill: "#ffffff",
     	    "fill-opacity" : 0,
     	});
+
 		Snap.load(#if codeiq "images/create.svg" #else "/images/create.svg" #end, function (f) {
-    		var g:SnapElement = f.select("g");
-    		g.transform("translate("+74+","+5+")");
-    		g.attr({
-    			fill : Thema.createSvgFill,
-    			stroke : Thema.createSvgStroke,
-    			strokeWidth : Thema.createSvgStrokeWidth
-    			});
-        	create_coll.click(function(e){
-        		var createJobDialog = new CreateJobDialog();
-				createJobDialog.on(function(pkg, cmp, x, y) {
-					var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
-					var job = this.diagramController.addSymbolicLink(jobComponent);
-					job.setPos(x, y);
-				});
-				createJobDialog.open();
+    		var g:SnapElement = f.select("svg");
+    		this.control_group.append(g);
+    		this.control_group.transform("translate("+Thema.createSvgX+","+Thema.createSvgY+")");
+    		Snap.load(#if codeiq "images/create-over.svg" #else "/images/create-over.svg" #end, function (f) {
+    			var g2:SnapElement = f.select("svg");
+	    		g.click(function(e){
+	    			this.control_group.append(g2);
+	    			var createJobDialog = new CreateJobDialog();
+					createJobDialog.on(function(pkg, cmp, x, y) {
+						var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
+						var job = this.diagramController.addSymbolicLink(jobComponent);
+						job.setPos(x, y);
+					});
+					createJobDialog.open();
+					var timer = new Timer(1000);
+					timer.run = function() g2.remove();
+	    		});
         	});
-        	this.control_group.append(g);
-        	this.control_group.append(create_coll);
-    	});
+        });
+
+
+
 		Snap.load(#if codeiq "images/dustbox.svg" #else "/images/dustbox.svg" #end, function (f) {
     		var g:SnapElement = f.select("g");
     		var right = js.Browser.document.body.clientWidth;
-    		var rect = snap.rect((right - 80), 5, 70, 61, 5, 5);
-    		g.attr({
-    			fill : Thema.dustboxSvgFill,
-    			stroke : Thema.dustboxSvgStroke,
-    			strokeWidth : Thema.dustboxSvgStrokeWidth
-    			});
-    		rect.attr({
-				strokeWidth : Thema.dustboxBackgroundStrokeWidth,
-				stroke : Thema.dustboxBackgroundStroke,
-				fill :  Thema.dustboxBackgroundFill,
-				});
-    		g.transform("translate("+(right - 80)+","+3+")");
-    		this.control_group.append(rect);
-        	this.control_group.append(g);
+    		var dustbox_group = snap.group();
+    		dustbox_group.transform("translate("+(right - Thema.dustboxRightX)+","+Thema.dustboxY+")");
+        	dustbox_group.append(g);
+        	Snap.load(#if codeiq "images/dustbox-over.svg" #else "/images/dustbox-over.svg"#end, function(f){
+        		var g2:SnapElement = f.select("g");
+
+        		this.showDustBox = function(){
+        			g2.remove();
+        			dustbox_group.append(g);
+        		}
+
+        		this.showDustBoxOver = function(){
+        			g.remove();
+        			dustbox_group.append(g2);
+        		}
+        	});
     	});
 	}
 	
@@ -124,6 +132,7 @@ class DiagramView{
 		for(op in job.getOutputPorts()) {
 			jobView.OnAddOutputPortView(op);
 		}
+		jobView.drawView();
 		this.jobViews.push(jobView);
 	}
 	

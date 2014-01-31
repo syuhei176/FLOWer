@@ -1,3 +1,7 @@
+body{
+        background-color: #39B1CB;
+}
+
 #lean_overlay{
         position: fixed; z-index:100; 
         top: 0px;

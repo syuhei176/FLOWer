@@ -11,10 +11,6 @@
 		"none" : ["Stack"],
 		"virtualDevice" : []
 	},
-	"sphero": { 
-		"none" : ["SetBackLED","SetHeading","Roll"],
-		"virtualDevice" : []
-	},
 	"string": {
 		"none" :	["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf"],
 		"virtualDevice" : []
@@ -36,8 +32,8 @@
 		"virtualDevice" : []
 	},
 	"snapsvg": {
-		"none" : ["Circle"],
-		"virtualDevice" : ["Rect"]
+		"none" : [],
+		"virtualDevice" : ["Rect","Circle"]
 	},
 	"snapelement": {
 		"none" : ["Translate","Fill"],

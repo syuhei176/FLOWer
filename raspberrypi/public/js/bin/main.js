@@ -41,6 +41,31 @@ HxOverrides.iter = function(a) {
 		return this.arr[this.cur++];
 	}};
 }
+var Lambda = function() { }
+Lambda.__name__ = ["Lambda"];
+Lambda.mapi = function(it,f) {
+	var l = new List();
+	var i = 0;
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		l.add(f(i++,x));
+	}
+	return l;
+}
+var List = function() {
+	this.length = 0;
+};
+List.__name__ = ["List"];
+List.prototype = {
+	add: function(item) {
+		var x = [item];
+		if(this.h == null) this.h = x; else this.q[1] = x;
+		this.q = x;
+		this.length++;
+	}
+	,__class__: List
+}
 var Main = function() { }
 $hxExpose(Main, "Main");
 Main.__name__ = ["Main"];
@@ -722,6 +747,9 @@ js.Boot.__instanceof = function(o,cl) {
 		return o.__enum__ == cl;
 	}
 }
+js.Boot.__cast = function(o,t) {
+	if(js.Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
+}
 js.Browser = function() { }
 js.Browser.__name__ = ["js","Browser"];
 js.Browser.createXMLHttpRequest = function() {
@@ -775,8 +803,8 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Circle());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.point2d.Add());
 	this.modules.push(new retro.library.point2d.Sub());
 	this.modules.push(new retro.library.point2d.Create());
@@ -812,9 +840,6 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.array.Pop());
 	this.modules.push(new retro.library.array.Shift());
 	this.modules.push(new retro.library.array.Get());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
 };
@@ -861,8 +886,8 @@ retro.controller.DiagramController.prototype = {
 	,addEntryJob: function() {
 		var id = this.editor.IdGenerator.genID();
 		var job = new retro.model.EntryJob(id);
-		this.diagram.setEntryPoint(job);
 		job.addOutputPort(new retro.model.OutputPort(job,retro.pub.RetroType.RString,"output"));
+		this.diagram.setEntryPoint(job);
 		return job;
 	}
 	,addSymbolicLink: function(jobComponent) {
@@ -995,8 +1020,8 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Circle());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.point2d.Add());
 	this.modules.push(new retro.library.point2d.Sub());
 	this.modules.push(new retro.library.point2d.Create());
@@ -1032,9 +1057,6 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.array.Pop());
 	this.modules.push(new retro.library.array.Shift());
 	this.modules.push(new retro.library.array.Get());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
 	this.modules.push(new retro.library.jquery.Find());
 	this.modules.push(new retro.library.jquery.Html());
 };
@@ -1073,8 +1095,8 @@ retro.controller.ImportController.prototype = {
 			++_g;
 			if(j.meta == "retro.model.EntryJob") {
 				var entry = new retro.model.EntryJob(j.id);
-				diagram.setEntryPoint(entry);
 				entry.addOutputPort(new retro.model.OutputPort(entry,retro.pub.RetroType.RString,"output"));
+				diagram.setEntryPoint(entry);
 				entry.setPos(j.pos.x,j.pos.y);
 			} else if(j.meta == "retro.model.SymbolicLink") {
 				var jobComponent = this.getModule(j.ref);
@@ -2057,13 +2079,13 @@ retro.library.list.First.prototype = {
 		return "list.First";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue()[0]);
 		cb(result);
 	}
 	,__class__: retro.library.list.First
@@ -2082,13 +2104,13 @@ retro.library.list.IsEmpty.prototype = {
 		return "list.IsEmpty";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().length == 0);
 		cb(result);
 	}
 	,__class__: retro.library.list.IsEmpty
@@ -2098,7 +2120,7 @@ retro.library.list.Join = function() {
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
 	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
+	this.inputs.add("sep",retro.pub.RetroType.RNumber);
 	this.outputs.add("output",retro.pub.RetroType.RNumber);
 };
 retro.library.list.Join.__name__ = ["retro","library","list","Join"];
@@ -2108,13 +2130,14 @@ retro.library.list.Join.prototype = {
 		return "list.Join";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		var sep = params.get("sep");
+		if(list.isEmpty() && sep.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().join(sep.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.list.Join
@@ -2133,13 +2156,13 @@ retro.library.list.Last.prototype = {
 		return "list.Last";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue()[js.Boot.__cast(list.getValue().length - 1 , Int)]);
 		cb(result);
 	}
 	,__class__: retro.library.list.Last
@@ -2158,13 +2181,13 @@ retro.library.list.Length.prototype = {
 		return "list.Length";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().length);
 		cb(result);
 	}
 	,__class__: retro.library.list.Length
@@ -3113,15 +3136,15 @@ retro.library.snapelement.Translate.prototype = {
 	,__class__: retro.library.snapelement.Translate
 }
 retro.library.snapsvg = {}
-retro.library.snapsvg.Circle = function() {
+retro.library.snapsvg.Circle = function(virtualDevice) {
 	this.name = "Circle";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("snapsvg",retro.pub.RetroType.RNumber);
 	this.inputs.add("x",retro.pub.RetroType.RNumber);
 	this.inputs.add("y",retro.pub.RetroType.RNumber);
 	this.inputs.add("r",retro.pub.RetroType.RNumber);
 	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.virtualDevice = virtualDevice;
 };
 retro.library.snapsvg.Circle.__name__ = ["retro","library","snapsvg","Circle"];
 retro.library.snapsvg.Circle.__interfaces__ = [retro.core.JobComponent];
@@ -3130,13 +3153,16 @@ retro.library.snapsvg.Circle.prototype = {
 		return "snapsvg.Circle";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var x = params.get("x");
+		var y = params.get("y");
+		var r = params.get("r");
+		if(x.isEmpty() && y.isEmpty() && r.isEmpty()) {
 			cb(null);
 			return;
 		}
+		var snapElement = this.virtualDevice.getSnap().circle(x.getValue(),y.getValue(),r.getValue());
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",snapElement);
 		cb(result);
 	}
 	,__class__: retro.library.snapsvg.Circle
@@ -3174,85 +3200,6 @@ retro.library.snapsvg.Rect.prototype = {
 	}
 	,__class__: retro.library.snapsvg.Rect
 }
-retro.library.sphero = {}
-retro.library.sphero.Roll = function() {
-	this.name = "Roll";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.inputs.add("speed",retro.pub.RetroType.RNumber);
-	this.inputs.add("angle",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.Roll.__name__ = ["retro","library","sphero","Roll"];
-retro.library.sphero.Roll.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.Roll.prototype = {
-	getModuleName: function() {
-		return "sphero.Roll";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.Roll
-}
-retro.library.sphero.SetBackLED = function() {
-	this.name = "SetBackLED";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.SetBackLED.__name__ = ["retro","library","sphero","SetBackLED"];
-retro.library.sphero.SetBackLED.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.SetBackLED.prototype = {
-	getModuleName: function() {
-		return "sphero.SetBackLED";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.SetBackLED
-}
-retro.library.sphero.SetHeading = function() {
-	this.name = "SetHeading";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.inputs.add("r",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.SetHeading.__name__ = ["retro","library","sphero","SetHeading"];
-retro.library.sphero.SetHeading.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.SetHeading.prototype = {
-	getModuleName: function() {
-		return "sphero.SetHeading";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.SetHeading
-}
 retro.library.string = {}
 retro.library.string.ChatAt = function() {
 	this.name = "ChatAt";
@@ -3269,13 +3216,14 @@ retro.library.string.ChatAt.prototype = {
 		return "string.ChatAt";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var index = params.get("index");
+		if(string.isEmpty() && index.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().charAt(index.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.ChatAt
@@ -3295,13 +3243,14 @@ retro.library.string.IndexOf.prototype = {
 		return "string.IndexOf";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var $char = params.get("char");
+		if(string.isEmpty() && $char.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().indexOf($char.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.IndexOf
@@ -3321,13 +3270,14 @@ retro.library.string.LastIndexOf.prototype = {
 		return "string.LastIndexOf";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var $char = params.get("char");
+		if(string.isEmpty() && $char.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().lastIndexOf($char.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.LastIndexOf
@@ -3346,13 +3296,13 @@ retro.library.string.Length.prototype = {
 		return "string.Length";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		if(string.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().length);
 		cb(result);
 	}
 	,__class__: retro.library.string.Length
@@ -3361,8 +3311,9 @@ retro.library.string.Split = function() {
 	this.name = "Split";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("string",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.inputs.add("string",retro.pub.RetroType.RString);
+	this.inputs.add("delimiter",retro.pub.RetroType.RString);
+	this.outputs.add("output",retro.pub.RetroType.RString);
 };
 retro.library.string.Split.__name__ = ["retro","library","string","Split"];
 retro.library.string.Split.__interfaces__ = [retro.core.JobComponent];
@@ -3371,13 +3322,14 @@ retro.library.string.Split.prototype = {
 		return "string.Split";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var delimiter = params.get("delimiter");
+		if(string.isEmpty() && delimiter.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().split(delimiter.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.Split
@@ -4330,30 +4282,44 @@ retro.view.DiagramView = function(diagramController) {
 	var create_coll = snap1.rect(75,5,70,61);
 	create_coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
 	Snap.load("/images/create.svg",function(f) {
-		var g = f.select("g");
-		g.transform("translate(" + 74 + "," + 5 + ")");
-		g.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-		create_coll.click(function(e) {
-			var createJobDialog = new CreateJobDialog();
-			createJobDialog.on(function(pkg,cmp,x,y) {
-				var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
-				var job = _g.diagramController.addSymbolicLink(jobComponent);
-				job.setPos(x,y);
-			});
-			createJobDialog.open();
-		});
+		var g = f.select("svg");
 		_g.control_group.append(g);
-		_g.control_group.append(create_coll);
+		_g.control_group.transform("translate(" + 115 + "," + 5 + ")");
+		Snap.load("/images/create-over.svg",function(f1) {
+			var g2 = f1.select("svg");
+			g.click(function(e) {
+				_g.control_group.append(g2);
+				var createJobDialog = new CreateJobDialog();
+				createJobDialog.on(function(pkg,cmp,x,y) {
+					var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
+					var job = _g.diagramController.addSymbolicLink(jobComponent);
+					job.setPos(x,y);
+				});
+				createJobDialog.open();
+				var timer = new haxe.Timer(1000);
+				timer.run = function() {
+					g2.remove();
+				};
+			});
+		});
 	});
 	Snap.load("/images/dustbox.svg",function(f) {
-		var g = f.select("g");
+		var g1 = f.select("g");
 		var right = js.Browser.document.body.clientWidth;
-		var rect = snap1.rect(right - 80,5,70,61,5,5);
-		g.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-		rect.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#FCFCFC"});
-		g.transform("translate(" + (right - 80) + "," + 3 + ")");
-		_g.control_group.append(rect);
-		_g.control_group.append(g);
+		var dustbox_group = snap1.group();
+		dustbox_group.transform("translate(" + (right - 100) + "," + 5 + ")");
+		dustbox_group.append(g1);
+		Snap.load("/images/dustbox-over.svg",function(f1) {
+			var g21 = f1.select("g");
+			_g.showDustBox = function() {
+				g21.remove();
+				dustbox_group.append(g1);
+			};
+			_g.showDustBoxOver = function() {
+				g1.remove();
+				dustbox_group.append(g21);
+			};
+		});
 	});
 };
 retro.view.DiagramView.__name__ = ["retro","view","DiagramView"];
@@ -4430,6 +4396,7 @@ retro.view.DiagramView.prototype = {
 			++_g;
 			jobView.OnAddOutputPortView(op);
 		}
+		jobView.drawView();
 		this.jobViews.push(jobView);
 	}
 	,step: function() {
@@ -4465,15 +4432,16 @@ retro.view.PortView = function(diagramController,jobview,snap) {
 	this.jobView = jobview;
 	this.snap = snap;
 	this.group = snap.group();
-	this.graphic = snap.circle(0,0,21);
-	this.coll = snap.circle(0,0,21);
+	this.upperGroup = snap.group();
+	this.graphic = snap.circle(0,0,20);
+	this.coll = snap.circle(0,0,20);
 	this.th = 0;
 	this.pos = new retro.pub.Point2D(0,0);
 	this.velocity = 0;
 	this.setPos(100,100);
 	this.coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
 	this.group.append(this.graphic);
-	this.group.append(this.coll);
+	this.upperGroup.append(this.coll);
 };
 retro.view.PortView.__name__ = ["retro","view","PortView"];
 retro.view.PortView.prototype = {
@@ -4496,6 +4464,7 @@ retro.view.PortView.prototype = {
 		this.pos.setX(x);
 		this.pos.setY(y);
 		this.group.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
+		this.upperGroup.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
 	}
 	,setR: function(th) {
 		this.th = th;
@@ -4505,6 +4474,7 @@ retro.view.PortView.prototype = {
 		this.pos.setX(this.pos.getX() + x);
 		this.pos.setY(this.pos.getY() + y);
 		this.group.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
+		this.upperGroup.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
 	}
 	,refresh: function() {
 		var _g = 0, _g1 = this.views;
@@ -4524,9 +4494,9 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 	this.port.onSetConstantValue($bind(this,this.OnSetConstant));
 	this.port.onRemoveConstantValue($bind(this,this.OnRemoveConstant));
 	this.graphic.attr({ fill : "#E9E9E9", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(26,0,port.getName());
+	var text = snap.text(20,0,port.getName());
 	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
-	this.group.append(text);
+	this.upperGroup.append(text);
 	this.coll.mouseup(function(e,x,y) {
 		if(_g.diagramController.setRubberbandEnd(_g.port)) {
 			_g.diagramController.clearRubberband();
@@ -4550,11 +4520,11 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 		var t = Std.string(v.value);
 		var text = this.snap.text(-2,4,t);
 		text.attr({ 'font-size' : "10pt", fill : "#ffffff", 'font-family' : "Helvetica, Arial, sans-serif"});
-		var graphic = this.snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+		var graphic = this.snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
 		graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
-		this.group.append(this.constantValueGraphic);
+		this.upperGroup.append(this.constantValueGraphic);
 		graphic.click(function(e) {
 			_g.port.removeConstant();
 		});
@@ -4596,35 +4566,35 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	this.diagramController = diagramController;
 	this.jobController = jobController;
 	this.diagramView = diagramView;
-	var job = this.jobController.getJob();
-	job.onInputPortAdded($bind(this,this.OnAddInputPortView));
-	job.onOutputPortAdded($bind(this,this.OnAddOutputPortView));
-	job.onPosChanged($bind(this,this.OnPosChanged));
-	var snap = this.jobController.getEditor().snap;
-	this.group = snap.group();
-	if(Type.getClassName(Type.getClass(this.jobController.getJob())) == "retro.model.EntryJob") {
-		this.graphic = snap.rect(0,0,216,89,5,5);
-		this.graphic.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#FCFCFC"});
-		this.coll = snap.rect(0,0,216,89);
-	} else {
-		this.graphic = snap.rect(0,0,216,89,5,5);
-		this.graphic.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#FCFCFC"});
-		this.coll = snap.rect(0,0,216,89);
-	}
-	var text = snap.text(12,24,job.getName());
-	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
-	var line = snap.line(0,36,216,36);
-	line.attr({ strokeWidth : 1, stroke : "#E3E3E3"});
+	this.job = this.jobController.getJob();
+	this.job.onInputPortAdded($bind(this,this.OnAddInputPortView));
+	this.job.onOutputPortAdded($bind(this,this.OnAddOutputPortView));
+	this.job.onPosChanged($bind(this,this.OnPosChanged));
+	this.snap = this.jobController.getEditor().snap;
+	this.group = this.snap.group();
+	this.titleRect = this.snap.rect(0,0,216,36);
+	this.titleRect.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#2C3E50"});
+	this.portRect = this.snap.rect(0,36,216,0);
+	this.portRect.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#FCFCFC"});
+	this.coll = this.snap.rect(0,0,216,36);
+	this.titleText = this.snap.text(12,24,this.job.getName());
+	this.titleText.attr({ 'font-size' : "10pt", fill : "#ffffff", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.pos = new retro.pub.Point2D(0,0);
 	this.prev_pos = new retro.pub.Point2D(0,0);
 	this.setPos(100,100);
 	this.coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
 	this.coll.mousedown(function(e,x,y) {
 	});
+	var inDustBox = false;
+	var isInDustBox = function(x,y) {
+		var right = js.Browser.document.body.clientWidth;
+		return inDustBox = right - 100 < x && x < right && y < 100;
+	};
 	this.coll.drag(function(dx,dy,x,y) {
 		_g.addPos(dx - _g.prev_pos.getX(),dy - _g.prev_pos.getY());
 		_g.prev_pos.setX(dx);
 		_g.prev_pos.setY(dy);
+		if(isInDustBox(x | 0,y | 0)) _g.diagramView.showDustBoxOver(); else _g.diagramView.showDustBox();
 		_g.refresh();
 	},function(x,y) {
 		_g.prev_pos.setX(0);
@@ -4632,13 +4602,11 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	},function(x,y) {
 		_g.refresh();
 		_g.jobController.changePos(_g.pos.getX(),_g.pos.getY());
-		var right = js.Browser.document.body.clientWidth;
-		if(right - 150 < _g.pos.getX() && _g.pos.getX() < right && _g.pos.getY() < 150) _g.diagramController.removeJob(_g.jobController.getJob());
+		if(inDustBox) {
+			_g.diagramController.removeJob(_g.jobController.getJob());
+			_g.diagramView.showDustBox();
+		}
 	});
-	this.group.append(this.graphic);
-	this.group.append(text);
-	this.group.append(line);
-	this.group.append(this.coll);
 };
 retro.view.JobView.__name__ = ["retro","view","JobView"];
 retro.view.JobView.prototype = {
@@ -4729,24 +4697,14 @@ retro.view.JobView.prototype = {
 		return energy;
 	}
 	,cal2: function() {
-		var h = 63;
-		var _g = 0, _g1 = this.inputportviews;
-		while(_g < _g1.length) {
-			var pv = _g1[_g];
-			++_g;
-			pv.setPos(0,h);
-			h += 53;
-		}
-		h = 63;
-		var _g = 0, _g1 = this.outputportviews;
-		while(_g < _g1.length) {
-			var pv = _g1[_g];
-			++_g;
-			pv.setPos(216,h);
-			h += 53;
-		}
-		this.graphic.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 53 + 36:this.outputportviews.length * 53 + 36});
-		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 53 + 36:this.outputportviews.length * 53 + 36});
+		Lambda.mapi(this.inputportviews,function(i,view) {
+			return view.setPos(0,i * 54 + 36 + 27.);
+		});
+		Lambda.mapi(this.outputportviews,function(i,view) {
+			return view.setPos(216,i * 54 + 36 + 27.);
+		});
+		this.portRect.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54:this.outputportviews.length * 54});
+		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54 + 36:this.outputportviews.length * 54 + 36});
 	}
 	,cal: function() {
 		var th = 2 * Math.PI / (this.inputportviews.length + this.outputportviews.length);
@@ -4769,17 +4727,13 @@ retro.view.JobView.prototype = {
 	,OnAddOutputPortView: function(port) {
 		var snap = this.jobController.getEditor().snap;
 		var portView = new retro.view.OutputPortView(this.diagramController,this,port,snap);
-		this.group.append(portView.group);
 		this.outputportviews.push(portView);
-		this.cal2();
 		return portView;
 	}
 	,OnAddInputPortView: function(port) {
 		var snap = this.jobController.getEditor().snap;
 		var portView = new retro.view.InputPortView(this.diagramController,this,port,snap);
-		this.group.append(portView.group);
 		this.inputportviews.push(portView);
-		this.cal2();
 		return portView;
 	}
 	,visible_config_btn: function() {
@@ -4787,12 +4741,43 @@ retro.view.JobView.prototype = {
 		this.config_timer = new haxe.Timer(3000);
 		this.config_timer.run = function() {
 			_g.config_timer.stop();
-			_g.config_graphic.attr({ visibility : "hidden"});
+			_g.configGraphic.attr({ visibility : "hidden"});
 		};
-		this.config_graphic.attr({ visibility : "visible"});
+		this.configGraphic.attr({ visibility : "visible"});
 	}
 	,removeSelf: function() {
 		this.group.remove();
+	}
+	,drawView: function() {
+		var _g = 0, _g1 = this.inputportviews;
+		while(_g < _g1.length) {
+			var portView = _g1[_g];
+			++_g;
+			this.group.append(portView.group);
+		}
+		var _g = 0, _g1 = this.outputportviews;
+		while(_g < _g1.length) {
+			var portView = _g1[_g];
+			++_g;
+			this.group.append(portView.group);
+		}
+		this.group.append(this.titleRect);
+		this.group.append(this.portRect);
+		this.group.append(this.titleText);
+		this.group.append(this.coll);
+		var _g = 0, _g1 = this.inputportviews;
+		while(_g < _g1.length) {
+			var portView = _g1[_g];
+			++_g;
+			this.group.append(portView.upperGroup);
+		}
+		var _g = 0, _g1 = this.outputportviews;
+		while(_g < _g1.length) {
+			var portView = _g1[_g];
+			++_g;
+			this.group.append(portView.upperGroup);
+		}
+		this.cal2();
 	}
 	,__class__: retro.view.JobView
 }
@@ -4802,13 +4787,12 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap) {
 	this.port = port;
 	this.port.onConnected($bind(this,this.OnConnected));
 	this.graphic.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(-70,0,port.getName());
+	var text = snap.text(-60,0,port.getName());
 	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
-	this.group.append(text);
+	this.upperGroup.append(text);
 	this.coll.mousedown(function(e,x,y) {
 		_g.diagramController.setRubberbandStart(_g.port);
 	});
-	this.setPos(160,0);
 	this.port.onSelected = function() {
 		_g.graphic.attr({ fill : "#FF39A6", stroke : "#E3E3E3", strokeWidth : 0});
 	};
@@ -4900,14 +4884,10 @@ retro.view.PathView.prototype = {
 	}
 	,visible_remove_btn: function() {
 		var _g = this;
-		var xx = this.target.getPos().getX() + this.source.getPos().getX();
-		var yy = this.target.getPos().getY() + this.source.getPos().getY();
-		xx /= 2;
-		yy /= 2;
-		xx -= 22;
-		yy -= 22;
+		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 108. - 22;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 36;
 		this.remove_graphic.transform("translate(" + xx + "," + yy + ")");
-		this.remove_timer = new haxe.Timer(3000);
+		this.remove_timer = new haxe.Timer(2000);
 		this.remove_timer.run = function() {
 			_g.remove_graphic.attr({ visibility : "hidden"});
 			_g.remove_timer.stop();
@@ -4946,41 +4926,47 @@ retro.view.ProjectView = function(projectController,exportController) {
 	var project = this.projectController.getProject();
 	project.onDiagramAdded($bind(this,this.OnDiagramAdded));
 	this.control_group = snap1.group();
-	var rect = snap1.rect(5,5,140,61,5,5);
-	rect.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#FCFCFC"});
-	var coll = snap1.rect(5,5,70,61);
-	coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
-	var line = snap1.line(75,5,75,66);
-	line.attr({ strokeWidth : 1, stroke : "#E3E3E3"});
 	Snap.load("/images/play.svg",function(f) {
 		var g = f.select("svg");
-		var path = g.select("path");
-		path.transform("translate(" + 8 + "," + 5 + ")");
-		path.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-		coll.click(function(e) {
-			if(_g.mode == retro.view.RunMode.Stop) {
-				_g.projectController.run();
-				_g.mode = retro.view.RunMode.Run;
-				path.attr({ fill : "#FF39A6", stroke : "#FF39A6", strokeWidth : 0});
-			} else if(_g.mode == retro.view.RunMode.Run) {
-				_g.projectController.stop();
-				_g.mode = retro.view.RunMode.Stop;
-				path.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-			}
+		_g.control_group.append(g);
+		_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
+		Snap.load("/images/play-over.svg",function(f1) {
+			var g2 = f1.select("svg");
+			_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
+			g.click(function(e) {
+				console.log("click");
+				if(_g.mode == retro.view.RunMode.Stop) {
+					_g.projectController.run();
+					_g.mode = retro.view.RunMode.Run;
+					_g.control_group.append(g2);
+				}
+			});
+			g2.click(function(e) {
+				if(_g.mode == retro.view.RunMode.Run) {
+					_g.projectController.stop();
+					_g.mode = retro.view.RunMode.Stop;
+					g2.remove();
+				}
+			});
 		});
 		Snap.load("/images/save.svg",function(f1) {
 			var g1 = f1.select("g");
-			g1.transform("translate(" + 160 + "," + 5 + ")");
-			g1.click(function(e) {
-				var exported = _g.exportController.do_export();
-				console.log(exported);
-				_g.projectController.getEditor().save_all(exported);
+			g1.transform("translate(" + 220 + "," + 2 + ")");
+			Snap.load("/images/save-over.svg",function(f2) {
+				var g21 = f2.select("g");
+				g21.transform("translate(" + 220 + "," + 2 + ")");
+				_g.control_group.append(g1);
+				g1.click(function(e) {
+					var exported = _g.exportController.do_export();
+					_g.projectController.getEditor().save_all(exported);
+					_g.control_group.append(g21);
+					var timer = new haxe.Timer(500);
+					timer.run = function() {
+						g21.remove();
+					};
+				});
 			});
-			_g.control_group.append(g1);
 		});
-		_g.control_group.append(rect);
-		_g.control_group.append(g);
-		_g.control_group.append(coll);
 	});
 };
 retro.view.ProjectView.__name__ = ["retro","view","ProjectView"];
@@ -5003,7 +4989,7 @@ retro.view.ValueCarrierView = function(editor,valueCarrier,diagramView) {
 	var t = this.value2String(valueCarrier.getValue().value);
 	var text = snap.text(-2,4,t);
 	text.attr({ 'font-size' : "10pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
-	this.graphic = snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+	this.graphic = snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
 	this.graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
 	this.group.append(this.graphic);
 	this.group.append(text);
@@ -5040,7 +5026,9 @@ retro.view.ValueCarrierView.prototype = {
 		this.remove();
 	}
 	,value2String: function(v) {
-		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) return v; else {
+		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) {
+			if(v == true) return "True"; else return "False";
+		} else {
 			var class_name = Type.getClassName(Type.getClass(v));
 			if(class_name == "String") return v; else return class_name;
 		}
@@ -5211,12 +5199,20 @@ retro.view.Thema.strokeWidth = 1;
 retro.view.Thema.fontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.fontSize = "10pt";
 retro.view.Thema.fontFill = "#696969";
-retro.view.Thema.jobFill = "#FCFCFC";
-retro.view.Thema.jobStroke = "#E3E3E3";
-retro.view.Thema.jobStrokeWidth = 1;
-retro.view.Thema.jobFontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.jobFontSize = "10pt";
-retro.view.Thema.jobFontFill = "#696969";
+retro.view.Thema.radius = 20;
+retro.view.Thema.jobTitleFontFamily = "Helvetica, Arial, sans-serif";
+retro.view.Thema.jobTitleFontSize = "10pt";
+retro.view.Thema.jobTitleFontFill = "#ffffff";
+retro.view.Thema.jobWidth = 216;
+retro.view.Thema.jobTitleHeight = 36;
+retro.view.Thema.jobTitleFill = "#2C3E50";
+retro.view.Thema.jobTitleStroke = "#E3E3E3";
+retro.view.Thema.jobTitleStrokeWidth = 1;
+retro.view.Thema.jobOnePortHeight = 54;
+retro.view.Thema.jobPortFill = "#FCFCFC";
+retro.view.Thema.jobPortStroke = "#E3E3E3";
+retro.view.Thema.jobPortStrokeWidth = 1;
+retro.view.Thema.portRadius = 20;
 retro.view.Thema.inputPortFill = "#E9E9E9";
 retro.view.Thema.inputPortStroke = "#E3E3E3";
 retro.view.Thema.inputPortStrokeWidth = 0;
@@ -5229,9 +5225,13 @@ retro.view.Thema.outputPortStrokeWidth = 0;
 retro.view.Thema.outputPortFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.outputPortFontSize = "10pt";
 retro.view.Thema.outputPortFontFill = "#696969";
+retro.view.Thema.outputPortTextX = -60;
+retro.view.Thema.outputPortTextY = 0;
 retro.view.Thema.selectedOutputPortFill = "#FF39A6";
 retro.view.Thema.selectedOutputPortStroke = "#E3E3E3";
 retro.view.Thema.selectedOutputPortStrokeWidth = 0;
+retro.view.Thema.inputPortTextX = 20;
+retro.view.Thema.inputPortTextY = 0;
 retro.view.Thema.pathLineStroke = "#E3E3E3";
 retro.view.Thema.pathLineStrokeWidth = 1;
 retro.view.Thema.consoleFill = "#CCCCCC";
@@ -5246,30 +5246,25 @@ retro.view.Thema.constantValueStrokeWidth = 1;
 retro.view.Thema.constantValueFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.constantValueFontSize = "10pt";
 retro.view.Thema.constantValueFontFill = "#ffffff";
+retro.view.Thema.constantValueRadius = 20;
 retro.view.Thema.valueCarrierFill = "#FF39A6";
 retro.view.Thema.valueCarrierStroke = "#FF39A6";
 retro.view.Thema.valueCarrierStrokeWidth = 1;
 retro.view.Thema.valueCarrierFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.valueCarrierFontSize = "10pt";
 retro.view.Thema.valueCarrierFontFill = "#FFFFFF";
-retro.view.Thema.buttonBackgroundFill = "#FCFCFC";
-retro.view.Thema.buttonBackgroundStroke = "#E3E3E3";
-retro.view.Thema.buttonBackgroundStrokeWidth = 1;
-retro.view.Thema.dustboxBackgroundFill = "#FCFCFC";
-retro.view.Thema.dustboxBackgroundStroke = "#E3E3E3";
-retro.view.Thema.dustboxBackgroundStrokeWidth = 1;
-retro.view.Thema.playSvgFill = "#D3D3D3";
-retro.view.Thema.playSvgStroke = "#E3E3E3";
-retro.view.Thema.playSvgStrokeWidth = 0;
-retro.view.Thema.playModeFill = "#FF39A6";
-retro.view.Thema.playModeStroke = "#FF39A6";
-retro.view.Thema.playModeStrokeWidth = 0;
-retro.view.Thema.createSvgFill = "#D3D3D3";
-retro.view.Thema.createSvgStroke = "#E3E3E3";
-retro.view.Thema.createSvgStrokeWidth = 0;
-retro.view.Thema.dustboxSvgFill = "#D3D3D3";
-retro.view.Thema.dustboxSvgStroke = "#E3E3E3";
-retro.view.Thema.dustboxSvgStrokeWidth = 0;
+retro.view.Thema.valueCarrierRadius = 20;
+retro.view.Thema.playSvgX = 5;
+retro.view.Thema.playSvgY = 5;
+retro.view.Thema.createSvgX = 115;
+retro.view.Thema.createSvgY = 5;
+retro.view.Thema.saveSvgX = 220;
+retro.view.Thema.saveSvgY = 2;
+retro.view.Thema.dustboxRightX = 100;
+retro.view.Thema.dustboxY = 5;
+retro.view.Thema.dustboxWidth = 100;
+retro.view.Thema.dustboxHeight = 100;
+retro.view.Thema.removeRadius = 22;
 Main.main();
 function $hxExpose(src, path) {
 	var o = typeof window != "undefined" ? window : exports;

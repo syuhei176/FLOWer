@@ -28,17 +28,17 @@ class OutputPortView extends PortView{
 			stroke : Thema.outputPortStroke,
 			strokeWidth: Thema.outputPortStrokeWidth
 		});
-		var text = snap.text(-70, 0, port.getName());
+		var text = snap.text(Thema.outputPortTextX, Thema.outputPortTextY, port.getName());
 		text.attr({
 			"font-size" : Thema.outputPortFontSize,
 			fill : Thema.outputPortFontFill,
 			"font-family" : Thema.outputPortFontFamily,
 		});
-		this.group.append(text);
+		this.upperGroup.append(text);
 		this.coll.mousedown(function(e, x, y) {
 			this.diagramController.setRubberbandStart(this.port);
 		});
-		this.setPos(160, 0);
+		//this.setPos(160, 0);
 
 		this.port.onSelected = function(){
 			this.graphic.attr({ 

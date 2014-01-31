@@ -19,18 +19,19 @@ class ChatAt implements JobComponent {
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("string", RetroType.RNumber);
-    		this.inputs.add("index", RetroType.RNumber);
+    	this.inputs.add("index", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var index = params.get("index");
+		if(string.isEmpty() && index.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new Result();
-		result.set("output", (input.getValue()));
+		result.set("output", (string.getValue().charAt(index.getValue())));
 		cb(result);
 	}
 
