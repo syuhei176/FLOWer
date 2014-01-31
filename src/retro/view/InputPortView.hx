@@ -98,7 +98,7 @@ class InputPortView extends PortView{
 				});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
-		this.group.append(this.constantValueGraphic);
+		this.upperGroup.append(this.constantValueGraphic);
 		graphic.click(function(e) {
 			this.port.removeConstant();
 		});

@@ -38,7 +38,7 @@ class OutputPortView extends PortView{
 		this.coll.mousedown(function(e, x, y) {
 			this.diagramController.setRubberbandStart(this.port);
 		});
-		this.setPos(160, 0);
+		//this.setPos(160, 0);
 
 		this.port.onSelected = function(){
 			this.graphic.attr({ 

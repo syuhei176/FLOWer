@@ -56,7 +56,7 @@ class ProjectView{
         #if raspi
         Snap.load("/images/save.svg", function (f) {
     		var g:SnapElement = f.select("g");
-    		g.transform("translate("+160+","+5+")");
+    		g.transform("translate("+Thema.saveSvgX+","+Thema.saveSvgY+")");
         	g.click(function(e){
         		var exported = this.exportController.do_export();
         		trace(exported);

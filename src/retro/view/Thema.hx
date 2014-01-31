@@ -99,10 +99,17 @@ class Thema {
 	inline public static var createSvgX = 105;
 	inline public static var createSvgY = 5;
 
+	// save svg 
+	inline public static var saveSvgX = 210;
+	inline public static var saveSvgY = 5;
+
 	// dustbox svg
 	inline public static var dustboxRightX = 100;
 	inline public static var dustboxY = 5;
 
 	inline public static var dustboxWidth = 100;
 	inline public static var dustboxHeight = 100;
+
+	// remove svg
+	inline public static var removeRadius = 22;
 }

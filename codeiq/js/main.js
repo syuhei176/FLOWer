@@ -4557,7 +4557,7 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 		graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
-		this.group.append(this.constantValueGraphic);
+		this.upperGroup.append(this.constantValueGraphic);
 		graphic.click(function(e) {
 			_g.port.removeConstant();
 		});
@@ -4826,7 +4826,6 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap) {
 	this.coll.mousedown(function(e,x,y) {
 		_g.diagramController.setRubberbandStart(_g.port);
 	});
-	this.setPos(160,0);
 	this.port.onSelected = function() {
 		_g.graphic.attr({ fill : "#FF39A6", stroke : "#E3E3E3", strokeWidth : 0});
 	};
@@ -4918,14 +4917,10 @@ retro.view.PathView.prototype = {
 	}
 	,visible_remove_btn: function() {
 		var _g = this;
-		var xx = this.target.getPos().getX() + this.source.getPos().getX();
-		var yy = this.target.getPos().getY() + this.source.getPos().getY();
-		xx /= 2;
-		yy /= 2;
-		xx -= 22;
-		yy -= 22;
+		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 108. - 22;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 36;
 		this.remove_graphic.transform("translate(" + xx + "," + yy + ")");
-		this.remove_timer = new haxe.Timer(3000);
+		this.remove_timer = new haxe.Timer(2000);
 		this.remove_timer.run = function() {
 			_g.remove_graphic.attr({ visibility : "hidden"});
 			_g.remove_timer.stop();
@@ -5267,10 +5262,13 @@ retro.view.Thema.playSvgX = 5;
 retro.view.Thema.playSvgY = 5;
 retro.view.Thema.createSvgX = 105;
 retro.view.Thema.createSvgY = 5;
+retro.view.Thema.saveSvgX = 210;
+retro.view.Thema.saveSvgY = 5;
 retro.view.Thema.dustboxRightX = 100;
 retro.view.Thema.dustboxY = 5;
 retro.view.Thema.dustboxWidth = 100;
 retro.view.Thema.dustboxHeight = 100;
+retro.view.Thema.removeRadius = 22;
 Main.main();
 function $hxExpose(src, path) {
 	var o = typeof window != "undefined" ? window : exports;
