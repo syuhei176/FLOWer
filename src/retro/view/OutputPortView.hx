@@ -28,7 +28,7 @@ class OutputPortView extends PortView{
 			stroke : Thema.outputPortStroke,
 			strokeWidth: Thema.outputPortStrokeWidth
 		});
-		var text = snap.text(-70, 0, port.getName());
+		var text = snap.text(Thema.outputPortTextX, Thema.outputPortTextY, port.getName());
 		text.attr({
 			"font-size" : Thema.outputPortFontSize,
 			fill : Thema.outputPortFontFill,

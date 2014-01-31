@@ -55,16 +55,22 @@ class DiagramView{
     		var g:SnapElement = f.select("svg");
     		this.control_group.append(g);
     		this.control_group.transform("translate("+Thema.createSvgX+","+Thema.createSvgY+")");
-    		g.click(function(e){
-    			var createJobDialog = new CreateJobDialog();
-				createJobDialog.on(function(pkg, cmp, x, y) {
-					var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
-					var job = this.diagramController.addSymbolicLink(jobComponent);
-					job.setPos(x, y);
-				});
-				createJobDialog.open();
-    			});
+    		Snap.load(#if codeiq "images/create-over.svg" #else "/images/create-over.svg" #end, function (f) {
+    			var g2:SnapElement = f.select("svg");
+	    		g.click(function(e){
+	    			this.control_group.append(g2);
+	    			var createJobDialog = new CreateJobDialog();
+					createJobDialog.on(function(pkg, cmp, x, y) {
+						var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
+						var job = this.diagramController.addSymbolicLink(jobComponent);
+						job.setPos(x, y);
+					});
+					createJobDialog.open();
+					var timer = new Timer(1000);
+					timer.run = function() g2.remove();
+	    		});
         	});
+        });
 
 
 

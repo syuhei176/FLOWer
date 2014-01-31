@@ -11,6 +11,8 @@ class Thema {
 	inline public static var fontSize = "10pt";
 	inline public static var fontFill = "#696969";
 
+	inline public static var radius = 20;
+
 	// ここに変数をテキトーに追加していいぽよ
 	//例 : つかってないぽよ
 	//inline public static var customfontFill = "";
@@ -36,6 +38,8 @@ class Thema {
 	inline public static var jobPortStroke = stroke;
 	inline public static var jobPortStrokeWidth = Thema.strokeWidth;
 
+	inline public static var portRadius = radius;
+
 	//InputPortView Thema
 	inline public static var inputPortFill = "#E9E9E9";
 	inline public static var inputPortStroke = stroke;
@@ -44,6 +48,7 @@ class Thema {
 	inline public static var inputPortFontFamily = fontFamily;
 	inline public static var inputPortFontSize = fontSize;
 	inline public static var inputPortFontFill = fontFill;
+
 
 	//OutputPortView Thema
 	inline public static var outputPortFill = "#D3D3D3";
@@ -54,10 +59,16 @@ class Thema {
 	inline public static var outputPortFontSize = fontSize;
 	inline public static var outputPortFontFill = fontFill;
 
+	inline public static var outputPortTextX = -60;
+	inline public static var outputPortTextY = 0;
+
 	//OutputPortView Selected Thema
 	inline public static var selectedOutputPortFill = "#FF39A6";
 	inline public static var selectedOutputPortStroke = stroke;
 	inline public static var selectedOutputPortStrokeWidth = 0;
+
+	inline public static var inputPortTextX = 20;
+	inline public static var inputPortTextY = 0;
 
 	// PathLine
 	inline public static var pathLineStroke = stroke;
@@ -81,6 +92,8 @@ class Thema {
 	inline public static var constantValueFontSize = fontSize;
 	inline public static var constantValueFontFill = "#ffffff";
 
+	inline public static var constantValueRadius = radius;
+
 	// Value Carrier
 	inline public static var valueCarrierFill = "#FF39A6";
 	inline public static var valueCarrierStroke = "#FF39A6";
@@ -90,18 +103,20 @@ class Thema {
 	inline public static var valueCarrierFontSize = fontSize;
 	inline public static var valueCarrierFontFill = "#FFFFFF";
 
+	inline public static var valueCarrierRadius = radius;
+
 
 	// play svg
 	inline public static var playSvgX = 5;
 	inline public static var playSvgY = 5;
 
 	// create svg
-	inline public static var createSvgX = 105;
+	inline public static var createSvgX = 115;
 	inline public static var createSvgY = 5;
 
 	// save svg 
-	inline public static var saveSvgX = 210;
-	inline public static var saveSvgY = 5;
+	inline public static var saveSvgX = 220;
+	inline public static var saveSvgY = 2;
 
 	// dustbox svg
 	inline public static var dustboxRightX = 100;

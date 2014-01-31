@@ -37,6 +37,7 @@ class ProjectView{
     		this.control_group.transform("translate("+Thema.playSvgX+","+Thema.playSvgY+")");
     		Snap.load(#if codeiq "images/play-over.svg" #else "/images/play-over.svg" #end, function (f) {
     			var g2:SnapElement = f.select("svg");
+    			this.control_group.transform("translate("+Thema.playSvgX+","+Thema.playSvgY+")");
     			g.click(function(e){
     				trace("click");
     				if(this.mode == RunMode.Stop) {
@@ -57,12 +58,20 @@ class ProjectView{
         Snap.load("/images/save.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+Thema.saveSvgX+","+Thema.saveSvgY+")");
-        	g.click(function(e){
-        		var exported = this.exportController.do_export();
-        		trace(exported);
-        		this.projectController.getEditor().save_all(exported);
-        	});
-        	this.control_group.append(g);
+    		Snap.load("/images/save-over.svg", function (f) {
+    			var g2:SnapElement = f.select("g");
+    			g2.transform("translate("+Thema.saveSvgX+","+Thema.saveSvgY+")");
+    			this.control_group.append(g);
+    			g.click(function(e){
+	        		var exported = this.exportController.do_export();
+	        		this.projectController.getEditor().save_all(exported);
+	        		this.control_group.append(g2);
+	        		var timer = new haxe.Timer(500);
+	        		timer.run = function(){
+	        			g2.remove();
+	        		};
+    			});
+    		});
     	});
     	#end
     	});

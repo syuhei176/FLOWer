@@ -51,8 +51,8 @@ class ImportController {
 		for( j in jobs ) {
 			if(j.meta == "retro.model.EntryJob") {
 				var entry = new EntryJob(j.id);
-				diagram.setEntryPoint(entry);
 				entry.addOutputPort(new OutputPort(entry, RetroType.RString, "output"));
+				diagram.setEntryPoint(entry);
 				entry.setPos(j.pos.x, j.pos.y);
 			}else if(j.meta == "retro.model.SymbolicLink"){
 				var jobComponent = this.getModule(j.ref);

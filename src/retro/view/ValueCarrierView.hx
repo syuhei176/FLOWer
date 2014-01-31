@@ -35,7 +35,9 @@ class ValueCarrierView {
 			fill : Thema.valueCarrierFontFill,
 			"font-family" : Thema.valueCarrierFontFamily,
 		});
-		this.graphic = snap.rect(-21, -21, 42 + (t.length - 1) * 6, 42, 21, 21);
+		this.graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
+			Thema.valueCarrierRadius * 2 + (t.length - 1) * 6, Thema.valueCarrierRadius * 2, 
+			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
 		this.graphic.attr({
 				fill: Thema.valueCarrierFill,
 				strokeWidth: Thema.valueCarrierStrokeWidth,

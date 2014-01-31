@@ -747,6 +747,9 @@ js.Boot.__instanceof = function(o,cl) {
 		return o.__enum__ == cl;
 	}
 }
+js.Boot.__cast = function(o,t) {
+	if(js.Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
+}
 js.Browser = function() { }
 js.Browser.__name__ = ["js","Browser"];
 js.Browser.createXMLHttpRequest = function() {
@@ -800,8 +803,8 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Circle());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.point2d.Add());
 	this.modules.push(new retro.library.point2d.Sub());
 	this.modules.push(new retro.library.point2d.Create());
@@ -1019,8 +1022,8 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Circle());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.point2d.Add());
 	this.modules.push(new retro.library.point2d.Sub());
 	this.modules.push(new retro.library.point2d.Create());
@@ -1096,8 +1099,8 @@ retro.controller.ImportController.prototype = {
 			++_g;
 			if(j.meta == "retro.model.EntryJob") {
 				var entry = new retro.model.EntryJob(j.id);
-				diagram.setEntryPoint(entry);
 				entry.addOutputPort(new retro.model.OutputPort(entry,retro.pub.RetroType.RString,"output"));
+				diagram.setEntryPoint(entry);
 				entry.setPos(j.pos.x,j.pos.y);
 			} else if(j.meta == "retro.model.SymbolicLink") {
 				var jobComponent = this.getModule(j.ref);
@@ -2080,13 +2083,13 @@ retro.library.list.First.prototype = {
 		return "list.First";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue()[0]);
 		cb(result);
 	}
 	,__class__: retro.library.list.First
@@ -2105,13 +2108,13 @@ retro.library.list.IsEmpty.prototype = {
 		return "list.IsEmpty";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().length == 0);
 		cb(result);
 	}
 	,__class__: retro.library.list.IsEmpty
@@ -2121,7 +2124,7 @@ retro.library.list.Join = function() {
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
 	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
+	this.inputs.add("sep",retro.pub.RetroType.RNumber);
 	this.outputs.add("output",retro.pub.RetroType.RNumber);
 };
 retro.library.list.Join.__name__ = ["retro","library","list","Join"];
@@ -2131,13 +2134,14 @@ retro.library.list.Join.prototype = {
 		return "list.Join";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		var sep = params.get("sep");
+		if(list.isEmpty() && sep.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().join(sep.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.list.Join
@@ -2156,13 +2160,13 @@ retro.library.list.Last.prototype = {
 		return "list.Last";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue()[js.Boot.__cast(list.getValue().length - 1 , Int)]);
 		cb(result);
 	}
 	,__class__: retro.library.list.Last
@@ -2181,13 +2185,13 @@ retro.library.list.Length.prototype = {
 		return "list.Length";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var list = params.get("list");
+		if(list.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",list.getValue().length);
 		cb(result);
 	}
 	,__class__: retro.library.list.Length
@@ -3107,15 +3111,15 @@ retro.library.snapelement.Translate.prototype = {
 	,__class__: retro.library.snapelement.Translate
 }
 retro.library.snapsvg = {}
-retro.library.snapsvg.Circle = function() {
+retro.library.snapsvg.Circle = function(virtualDevice) {
 	this.name = "Circle";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("snapsvg",retro.pub.RetroType.RNumber);
 	this.inputs.add("x",retro.pub.RetroType.RNumber);
 	this.inputs.add("y",retro.pub.RetroType.RNumber);
 	this.inputs.add("r",retro.pub.RetroType.RNumber);
 	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.virtualDevice = virtualDevice;
 };
 retro.library.snapsvg.Circle.__name__ = ["retro","library","snapsvg","Circle"];
 retro.library.snapsvg.Circle.__interfaces__ = [retro.core.JobComponent];
@@ -3124,13 +3128,16 @@ retro.library.snapsvg.Circle.prototype = {
 		return "snapsvg.Circle";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var x = params.get("x");
+		var y = params.get("y");
+		var r = params.get("r");
+		if(x.isEmpty() && y.isEmpty() && r.isEmpty()) {
 			cb(null);
 			return;
 		}
+		var snapElement = this.virtualDevice.getSnap().circle(x.getValue(),y.getValue(),r.getValue());
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",snapElement);
 		cb(result);
 	}
 	,__class__: retro.library.snapsvg.Circle
@@ -3263,13 +3270,14 @@ retro.library.string.ChatAt.prototype = {
 		return "string.ChatAt";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var index = params.get("index");
+		if(string.isEmpty() && index.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().charAt(index.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.ChatAt
@@ -3289,13 +3297,14 @@ retro.library.string.IndexOf.prototype = {
 		return "string.IndexOf";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var $char = params.get("char");
+		if(string.isEmpty() && $char.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().indexOf($char.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.IndexOf
@@ -3315,13 +3324,14 @@ retro.library.string.LastIndexOf.prototype = {
 		return "string.LastIndexOf";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var $char = params.get("char");
+		if(string.isEmpty() && $char.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().lastIndexOf($char.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.LastIndexOf
@@ -3340,13 +3350,13 @@ retro.library.string.Length.prototype = {
 		return "string.Length";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		if(string.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().length);
 		cb(result);
 	}
 	,__class__: retro.library.string.Length
@@ -3355,8 +3365,9 @@ retro.library.string.Split = function() {
 	this.name = "Split";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("string",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.inputs.add("string",retro.pub.RetroType.RString);
+	this.inputs.add("delimiter",retro.pub.RetroType.RString);
+	this.outputs.add("output",retro.pub.RetroType.RString);
 };
 retro.library.string.Split.__name__ = ["retro","library","string","Split"];
 retro.library.string.Split.__interfaces__ = [retro.core.JobComponent];
@@ -3365,13 +3376,14 @@ retro.library.string.Split.prototype = {
 		return "string.Split";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var string = params.get("string");
+		var delimiter = params.get("delimiter");
+		if(string.isEmpty() && delimiter.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("output",string.getValue().split(delimiter.getValue()));
 		cb(result);
 	}
 	,__class__: retro.library.string.Split
@@ -4325,15 +4337,23 @@ retro.view.DiagramView = function(diagramController) {
 	Snap.load("images/create.svg",function(f) {
 		var g = f.select("svg");
 		_g.control_group.append(g);
-		_g.control_group.transform("translate(" + 105 + "," + 5 + ")");
-		g.click(function(e) {
-			var createJobDialog = new CreateJobDialog();
-			createJobDialog.on(function(pkg,cmp,x,y) {
-				var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
-				var job = _g.diagramController.addSymbolicLink(jobComponent);
-				job.setPos(x,y);
+		_g.control_group.transform("translate(" + 115 + "," + 5 + ")");
+		Snap.load("images/create-over.svg",function(f1) {
+			var g2 = f1.select("svg");
+			g.click(function(e) {
+				_g.control_group.append(g2);
+				var createJobDialog = new CreateJobDialog();
+				createJobDialog.on(function(pkg,cmp,x,y) {
+					var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
+					var job = _g.diagramController.addSymbolicLink(jobComponent);
+					job.setPos(x,y);
+				});
+				createJobDialog.open();
+				var timer = new haxe.Timer(1000);
+				timer.run = function() {
+					g2.remove();
+				};
 			});
-			createJobDialog.open();
 		});
 	});
 	Snap.load("images/dustbox.svg",function(f) {
@@ -4343,14 +4363,14 @@ retro.view.DiagramView = function(diagramController) {
 		dustbox_group.transform("translate(" + (right - 100) + "," + 5 + ")");
 		dustbox_group.append(g1);
 		Snap.load("images/dustbox-over.svg",function(f1) {
-			var g2 = f1.select("g");
+			var g21 = f1.select("g");
 			_g.showDustBox = function() {
-				g2.remove();
+				g21.remove();
 				dustbox_group.append(g1);
 			};
 			_g.showDustBoxOver = function() {
 				g1.remove();
-				dustbox_group.append(g2);
+				dustbox_group.append(g21);
 			};
 		});
 	});
@@ -4466,8 +4486,8 @@ retro.view.PortView = function(diagramController,jobview,snap) {
 	this.snap = snap;
 	this.group = snap.group();
 	this.upperGroup = snap.group();
-	this.graphic = snap.circle(0,0,21);
-	this.coll = snap.circle(0,0,21);
+	this.graphic = snap.circle(0,0,20);
+	this.coll = snap.circle(0,0,20);
 	this.th = 0;
 	this.pos = new retro.pub.Point2D(0,0);
 	this.velocity = 0;
@@ -4527,7 +4547,7 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 	this.port.onSetConstantValue($bind(this,this.OnSetConstant));
 	this.port.onRemoveConstantValue($bind(this,this.OnRemoveConstant));
 	this.graphic.attr({ fill : "#E9E9E9", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(26,0,port.getName());
+	var text = snap.text(20,0,port.getName());
 	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
 	this.coll.mouseup(function(e,x,y) {
@@ -4553,7 +4573,7 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 		var t = Std.string(v.value);
 		var text = this.snap.text(-2,4,t);
 		text.attr({ 'font-size' : "10pt", fill : "#ffffff", 'font-family' : "Helvetica, Arial, sans-serif"});
-		var graphic = this.snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+		var graphic = this.snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
 		graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
@@ -4820,7 +4840,7 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap) {
 	this.port = port;
 	this.port.onConnected($bind(this,this.OnConnected));
 	this.graphic.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(-70,0,port.getName());
+	var text = snap.text(-60,0,port.getName());
 	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
 	this.coll.mousedown(function(e,x,y) {
@@ -4965,6 +4985,7 @@ retro.view.ProjectView = function(projectController,exportController) {
 		_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
 		Snap.load("images/play-over.svg",function(f1) {
 			var g2 = f1.select("svg");
+			_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
 			g.click(function(e) {
 				console.log("click");
 				if(_g.mode == retro.view.RunMode.Stop) {
@@ -5003,7 +5024,7 @@ retro.view.ValueCarrierView = function(editor,valueCarrier,diagramView) {
 	var t = this.value2String(valueCarrier.getValue().value);
 	var text = snap.text(-2,4,t);
 	text.attr({ 'font-size' : "10pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
-	this.graphic = snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+	this.graphic = snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
 	this.graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
 	this.group.append(this.graphic);
 	this.group.append(text);
@@ -5040,7 +5061,9 @@ retro.view.ValueCarrierView.prototype = {
 		this.remove();
 	}
 	,value2String: function(v) {
-		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) return v; else {
+		if(Type["typeof"](v) == ValueType.TObject) return "Object"; else if(Type["typeof"](v) == ValueType.TNull) return "Null"; else if(Type["typeof"](v) == ValueType.TFloat) return Std.string(v); else if(Type["typeof"](v) == ValueType.TInt) return haxe.Json.stringify(v); else if(Type["typeof"](v) == ValueType.TFloat) return v; else if(Type["typeof"](v) == ValueType.TBool) {
+			if(v == true) return "True"; else return "False";
+		} else {
 			var class_name = Type.getClassName(Type.getClass(v));
 			if(class_name == "String") return v; else return class_name;
 		}
@@ -5211,6 +5234,7 @@ retro.view.Thema.strokeWidth = 1;
 retro.view.Thema.fontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.fontSize = "10pt";
 retro.view.Thema.fontFill = "#696969";
+retro.view.Thema.radius = 20;
 retro.view.Thema.jobTitleFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.jobTitleFontSize = "10pt";
 retro.view.Thema.jobTitleFontFill = "#ffffff";
@@ -5223,6 +5247,7 @@ retro.view.Thema.jobOnePortHeight = 54;
 retro.view.Thema.jobPortFill = "#FCFCFC";
 retro.view.Thema.jobPortStroke = "#E3E3E3";
 retro.view.Thema.jobPortStrokeWidth = 1;
+retro.view.Thema.portRadius = 20;
 retro.view.Thema.inputPortFill = "#E9E9E9";
 retro.view.Thema.inputPortStroke = "#E3E3E3";
 retro.view.Thema.inputPortStrokeWidth = 0;
@@ -5235,9 +5260,13 @@ retro.view.Thema.outputPortStrokeWidth = 0;
 retro.view.Thema.outputPortFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.outputPortFontSize = "10pt";
 retro.view.Thema.outputPortFontFill = "#696969";
+retro.view.Thema.outputPortTextX = -60;
+retro.view.Thema.outputPortTextY = 0;
 retro.view.Thema.selectedOutputPortFill = "#FF39A6";
 retro.view.Thema.selectedOutputPortStroke = "#E3E3E3";
 retro.view.Thema.selectedOutputPortStrokeWidth = 0;
+retro.view.Thema.inputPortTextX = 20;
+retro.view.Thema.inputPortTextY = 0;
 retro.view.Thema.pathLineStroke = "#E3E3E3";
 retro.view.Thema.pathLineStrokeWidth = 1;
 retro.view.Thema.consoleFill = "#CCCCCC";
@@ -5252,18 +5281,20 @@ retro.view.Thema.constantValueStrokeWidth = 1;
 retro.view.Thema.constantValueFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.constantValueFontSize = "10pt";
 retro.view.Thema.constantValueFontFill = "#ffffff";
+retro.view.Thema.constantValueRadius = 20;
 retro.view.Thema.valueCarrierFill = "#FF39A6";
 retro.view.Thema.valueCarrierStroke = "#FF39A6";
 retro.view.Thema.valueCarrierStrokeWidth = 1;
 retro.view.Thema.valueCarrierFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.valueCarrierFontSize = "10pt";
 retro.view.Thema.valueCarrierFontFill = "#FFFFFF";
+retro.view.Thema.valueCarrierRadius = 20;
 retro.view.Thema.playSvgX = 5;
 retro.view.Thema.playSvgY = 5;
-retro.view.Thema.createSvgX = 105;
+retro.view.Thema.createSvgX = 115;
 retro.view.Thema.createSvgY = 5;
-retro.view.Thema.saveSvgX = 210;
-retro.view.Thema.saveSvgY = 5;
+retro.view.Thema.saveSvgX = 220;
+retro.view.Thema.saveSvgY = 2;
 retro.view.Thema.dustboxRightX = 100;
 retro.view.Thema.dustboxY = 5;
 retro.view.Thema.dustboxWidth = 100;

@@ -40,8 +40,8 @@ class PortView{
 		
 		this.group = snap.group();
 		this.upperGroup = snap.group();
-		this.graphic = snap.circle(0, 0, 21);
-		this.coll = snap.circle(0, 0, 21);
+		this.graphic = snap.circle(0, 0, Thema.portRadius);
+		this.coll = snap.circle(0, 0, Thema.portRadius);
 		this.th = 0;
 		this.pos = new Point2D(0, 0);
 		this.velocity = 0;

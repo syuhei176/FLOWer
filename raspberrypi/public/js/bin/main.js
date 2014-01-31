@@ -1095,8 +1095,8 @@ retro.controller.ImportController.prototype = {
 			++_g;
 			if(j.meta == "retro.model.EntryJob") {
 				var entry = new retro.model.EntryJob(j.id);
-				diagram.setEntryPoint(entry);
 				entry.addOutputPort(new retro.model.OutputPort(entry,retro.pub.RetroType.RString,"output"));
+				diagram.setEntryPoint(entry);
 				entry.setPos(j.pos.x,j.pos.y);
 			} else if(j.meta == "retro.model.SymbolicLink") {
 				var jobComponent = this.getModule(j.ref);
@@ -4284,15 +4284,23 @@ retro.view.DiagramView = function(diagramController) {
 	Snap.load("/images/create.svg",function(f) {
 		var g = f.select("svg");
 		_g.control_group.append(g);
-		_g.control_group.transform("translate(" + 105 + "," + 5 + ")");
-		g.click(function(e) {
-			var createJobDialog = new CreateJobDialog();
-			createJobDialog.on(function(pkg,cmp,x,y) {
-				var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
-				var job = _g.diagramController.addSymbolicLink(jobComponent);
-				job.setPos(x,y);
+		_g.control_group.transform("translate(" + 115 + "," + 5 + ")");
+		Snap.load("/images/create-over.svg",function(f1) {
+			var g2 = f1.select("svg");
+			g.click(function(e) {
+				_g.control_group.append(g2);
+				var createJobDialog = new CreateJobDialog();
+				createJobDialog.on(function(pkg,cmp,x,y) {
+					var jobComponent = _g.diagramController.getModule(pkg + "." + cmp);
+					var job = _g.diagramController.addSymbolicLink(jobComponent);
+					job.setPos(x,y);
+				});
+				createJobDialog.open();
+				var timer = new haxe.Timer(1000);
+				timer.run = function() {
+					g2.remove();
+				};
 			});
-			createJobDialog.open();
 		});
 	});
 	Snap.load("/images/dustbox.svg",function(f) {
@@ -4302,14 +4310,14 @@ retro.view.DiagramView = function(diagramController) {
 		dustbox_group.transform("translate(" + (right - 100) + "," + 5 + ")");
 		dustbox_group.append(g1);
 		Snap.load("/images/dustbox-over.svg",function(f1) {
-			var g2 = f1.select("g");
+			var g21 = f1.select("g");
 			_g.showDustBox = function() {
-				g2.remove();
+				g21.remove();
 				dustbox_group.append(g1);
 			};
 			_g.showDustBoxOver = function() {
 				g1.remove();
-				dustbox_group.append(g2);
+				dustbox_group.append(g21);
 			};
 		});
 	});
@@ -4425,8 +4433,8 @@ retro.view.PortView = function(diagramController,jobview,snap) {
 	this.snap = snap;
 	this.group = snap.group();
 	this.upperGroup = snap.group();
-	this.graphic = snap.circle(0,0,21);
-	this.coll = snap.circle(0,0,21);
+	this.graphic = snap.circle(0,0,20);
+	this.coll = snap.circle(0,0,20);
 	this.th = 0;
 	this.pos = new retro.pub.Point2D(0,0);
 	this.velocity = 0;
@@ -4486,7 +4494,7 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 	this.port.onSetConstantValue($bind(this,this.OnSetConstant));
 	this.port.onRemoveConstantValue($bind(this,this.OnRemoveConstant));
 	this.graphic.attr({ fill : "#E9E9E9", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(26,0,port.getName());
+	var text = snap.text(20,0,port.getName());
 	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
 	this.coll.mouseup(function(e,x,y) {
@@ -4512,7 +4520,7 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 		var t = Std.string(v.value);
 		var text = this.snap.text(-2,4,t);
 		text.attr({ 'font-size' : "10pt", fill : "#ffffff", 'font-family' : "Helvetica, Arial, sans-serif"});
-		var graphic = this.snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+		var graphic = this.snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
 		graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
@@ -4779,7 +4787,7 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap) {
 	this.port = port;
 	this.port.onConnected($bind(this,this.OnConnected));
 	this.graphic.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(-70,0,port.getName());
+	var text = snap.text(-60,0,port.getName());
 	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
 	this.coll.mousedown(function(e,x,y) {
@@ -4924,6 +4932,7 @@ retro.view.ProjectView = function(projectController,exportController) {
 		_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
 		Snap.load("/images/play-over.svg",function(f1) {
 			var g2 = f1.select("svg");
+			_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
 			g.click(function(e) {
 				console.log("click");
 				if(_g.mode == retro.view.RunMode.Stop) {
@@ -4942,13 +4951,21 @@ retro.view.ProjectView = function(projectController,exportController) {
 		});
 		Snap.load("/images/save.svg",function(f1) {
 			var g1 = f1.select("g");
-			g1.transform("translate(" + 210 + "," + 5 + ")");
-			g1.click(function(e) {
-				var exported = _g.exportController.do_export();
-				console.log(exported);
-				_g.projectController.getEditor().save_all(exported);
+			g1.transform("translate(" + 220 + "," + 2 + ")");
+			Snap.load("/images/save-over.svg",function(f2) {
+				var g21 = f2.select("g");
+				g21.transform("translate(" + 220 + "," + 2 + ")");
+				_g.control_group.append(g1);
+				g1.click(function(e) {
+					var exported = _g.exportController.do_export();
+					_g.projectController.getEditor().save_all(exported);
+					_g.control_group.append(g21);
+					var timer = new haxe.Timer(500);
+					timer.run = function() {
+						g21.remove();
+					};
+				});
 			});
-			_g.control_group.append(g1);
 		});
 	});
 };
@@ -4972,7 +4989,7 @@ retro.view.ValueCarrierView = function(editor,valueCarrier,diagramView) {
 	var t = this.value2String(valueCarrier.getValue().value);
 	var text = snap.text(-2,4,t);
 	text.attr({ 'font-size' : "10pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
-	this.graphic = snap.rect(-21,-21,42 + (t.length - 1) * 6,42,21,21);
+	this.graphic = snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
 	this.graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
 	this.group.append(this.graphic);
 	this.group.append(text);
@@ -5182,6 +5199,7 @@ retro.view.Thema.strokeWidth = 1;
 retro.view.Thema.fontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.fontSize = "10pt";
 retro.view.Thema.fontFill = "#696969";
+retro.view.Thema.radius = 20;
 retro.view.Thema.jobTitleFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.jobTitleFontSize = "10pt";
 retro.view.Thema.jobTitleFontFill = "#ffffff";
@@ -5194,6 +5212,7 @@ retro.view.Thema.jobOnePortHeight = 54;
 retro.view.Thema.jobPortFill = "#FCFCFC";
 retro.view.Thema.jobPortStroke = "#E3E3E3";
 retro.view.Thema.jobPortStrokeWidth = 1;
+retro.view.Thema.portRadius = 20;
 retro.view.Thema.inputPortFill = "#E9E9E9";
 retro.view.Thema.inputPortStroke = "#E3E3E3";
 retro.view.Thema.inputPortStrokeWidth = 0;
@@ -5206,9 +5225,13 @@ retro.view.Thema.outputPortStrokeWidth = 0;
 retro.view.Thema.outputPortFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.outputPortFontSize = "10pt";
 retro.view.Thema.outputPortFontFill = "#696969";
+retro.view.Thema.outputPortTextX = -60;
+retro.view.Thema.outputPortTextY = 0;
 retro.view.Thema.selectedOutputPortFill = "#FF39A6";
 retro.view.Thema.selectedOutputPortStroke = "#E3E3E3";
 retro.view.Thema.selectedOutputPortStrokeWidth = 0;
+retro.view.Thema.inputPortTextX = 20;
+retro.view.Thema.inputPortTextY = 0;
 retro.view.Thema.pathLineStroke = "#E3E3E3";
 retro.view.Thema.pathLineStrokeWidth = 1;
 retro.view.Thema.consoleFill = "#CCCCCC";
@@ -5223,18 +5246,20 @@ retro.view.Thema.constantValueStrokeWidth = 1;
 retro.view.Thema.constantValueFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.constantValueFontSize = "10pt";
 retro.view.Thema.constantValueFontFill = "#ffffff";
+retro.view.Thema.constantValueRadius = 20;
 retro.view.Thema.valueCarrierFill = "#FF39A6";
 retro.view.Thema.valueCarrierStroke = "#FF39A6";
 retro.view.Thema.valueCarrierStrokeWidth = 1;
 retro.view.Thema.valueCarrierFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.valueCarrierFontSize = "10pt";
 retro.view.Thema.valueCarrierFontFill = "#FFFFFF";
+retro.view.Thema.valueCarrierRadius = 20;
 retro.view.Thema.playSvgX = 5;
 retro.view.Thema.playSvgY = 5;
-retro.view.Thema.createSvgX = 105;
+retro.view.Thema.createSvgX = 115;
 retro.view.Thema.createSvgY = 5;
-retro.view.Thema.saveSvgX = 210;
-retro.view.Thema.saveSvgY = 5;
+retro.view.Thema.saveSvgX = 220;
+retro.view.Thema.saveSvgY = 2;
 retro.view.Thema.dustboxRightX = 100;
 retro.view.Thema.dustboxY = 5;
 retro.view.Thema.dustboxWidth = 100;
