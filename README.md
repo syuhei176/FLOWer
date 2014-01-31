@@ -24,5 +24,7 @@ http://localhost:8888
 
 src/retro/view/Thema.hx にて変数をまとめている
 
+## svgの適用
 
+imagesフォルダ内のsvgをbuild時に各コンパイル先にコピーし、適用している。
 
