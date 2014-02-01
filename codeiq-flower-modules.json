@@ -56,7 +56,7 @@
 		"virtualDevice" : []
 	},
 	"system" : {
-			"none" : [],
+			"none" : ["Speed"],
 			"virtualDevice" : ["Print","Scan"]
 		}
 	}
