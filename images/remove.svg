@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" width="70px" height="61px" viewBox="0 0 70 61" enable-background="new 0 0 70 61" xml:space="preserve">
- <g>
-  <title>Layer 1</title>
-  <path id="svg_2" d="m185.5,453" stroke-miterlimit="10" stroke="#E5E5E5" fill="none"/>
-  <g id="svg_34">
-   <circle id="svg_35" r="24.083" cy="25.855" cx="25.167" fill="#FF39A6"/>
-   <g id="svg_36">
-    <path id="svg_37" d="m14.437012,19.552994c-0.946991,-0.947006 -0.946991,-2.48201 0,-3.430008s2.481995,-0.946991 3.429993,0l5.570007,5.570007c0.976013,0.975998 2.557983,0.97699 3.535004,0l5.285004,-5.287003c0.90799,-0.908005 2.380981,-0.906998 3.289001,0c0.906982,0.908005 0.906982,2.380005 -0.001007,3.287994l-5.286011,5.286011c-0.97699,0.97699 -0.97699,2.557999 0,3.534988l5.641022,5.640991c0.946991,0.947021 0.945984,2.482025 -0.001007,3.430023c-0.946014,0.946991 -2.481018,0.946991 -3.429016,0l-5.640991,-5.641022c-0.97699,-0.97699 -2.55899,-0.97699 -3.535004,0l-5.286987,5.287018c-0.907013,0.90799 -2.378998,0.90799 -3.287018,0s-0.90799,-2.381012 0,-3.287018l5.286011,-5.286987c0.97699,-0.977005 0.97699,-2.559006 0.001007,-3.535004l-5.570007,-5.569992z" fill="#FFFFFF"/>
-   </g>
-  </g>
- </g>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="43.51px" height="43.509px" viewBox="0 0 43.51 43.509" enable-background="new 0 0 43.51 43.509" xml:space="preserve">
+<circle fill="#FFFFFF" stroke="#FFFFFF" stroke-miterlimit="10" cx="21.755" cy="21.754" r="21.255"/>
+<path fill="#3498DB" d="M27.479,25.479l-2,2L21.72,23.72l-3.448,3.448l-1.932-1.931l3.449-3.449l-3.759-3.758l2-2l3.759,3.758
+	l3.447-3.448l1.932,1.932L23.72,21.72L27.479,25.479z"/>
 </svg>
