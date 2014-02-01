@@ -4,88 +4,91 @@ class Thema {
 	// 色のデフォルト設定
 	// dafaults Thema
 	inline public static var fill = "#FCFCFC";
-	inline public static var stroke = "#E3E3E3";
+	inline public static var stroke = "#FFFFFF";
 	inline public static var strokeWidth = 1;
 
 	inline public static var fontFamily = "Helvetica, Arial, sans-serif";
-	inline public static var fontSize = "10pt";
-	inline public static var fontFill = "#696969";
+	inline public static var fontSize = "8pt";
+	inline public static var fontFill = "#2C3E50";
 
 	inline public static var radius = 20;
+
 
 	// ここに変数をテキトーに追加していいぽよ
 	//例 : つかってないぽよ
 	//inline public static var customfontFill = "";
-	
+	inline public static var white = "#FFFFFF";
+	inline public static var orange = "#E67E22";
+	inline public static var blue = "#3498DB";
 	// ここまでー
 
 	// 以下の変数名は代えないでぽよー。
 	// jobView Thema
 	inline public static var jobTitleFontFamily = fontFamily;
 	inline public static var jobTitleFontSize = fontSize;
-	inline public static var jobTitleFontFill = "#ffffff";
+	inline public static var jobTitleFontFill = Thema.white;
 
 	inline public static var jobWidth = 216;
-	inline public static var jobTitleHeight = 36;
+	inline public static var jobTitleHeight = 40;
 
-	inline public static var jobTitleFill = "#2C3E50";
+	inline public static var jobTitleFill = Thema.orange;
 	inline public static var jobTitleStroke = stroke;
-	inline public static var jobTitleStrokeWidth = Thema.strokeWidth;
+	inline public static var jobTitleStrokeWidth = 0;
 
 	inline public static var jobOnePortHeight = 54;
 
-	inline public static var jobPortFill = fill;
-	inline public static var jobPortStroke = stroke;
-	inline public static var jobPortStrokeWidth = Thema.strokeWidth;
+	inline public static var jobPortFill = Thema.white;
+	inline public static var jobPortStroke = Thema.white;
+	inline public static var jobPortStrokeWidth = 0;
 
 	inline public static var portRadius = radius;
 
 	//InputPortView Thema
-	inline public static var inputPortFill = "#E9E9E9";
+	inline public static var inputPortFill = Thema.blue;
 	inline public static var inputPortStroke = stroke;
-	inline public static var inputPortStrokeWidth = 0;
+	inline public static var inputPortStrokeWidth = Thema.strokeWidth;
 
 	inline public static var inputPortFontFamily = fontFamily;
 	inline public static var inputPortFontSize = fontSize;
-	inline public static var inputPortFontFill = fontFill;
+	inline public static var inputPortFontFill = Thema.white;
 
 
 	//OutputPortView Thema
-	inline public static var outputPortFill = "#D3D3D3";
+	inline public static var outputPortFill = Thema.white;
 	inline public static var outputPortStroke = stroke;
 	inline public static var outputPortStrokeWidth = 0;
 
 	inline public static var outputPortFontFamily = fontFamily;
 	inline public static var outputPortFontSize = fontSize;
-	inline public static var outputPortFontFill = fontFill;
+	inline public static var outputPortFontFill = Thema.fontFill;
 
-	inline public static var outputPortTextX = -60;
-	inline public static var outputPortTextY = 0;
+	inline public static var outputPortTextX = -50;
+	inline public static var outputPortTextY = 3;
 
 	//OutputPortView Selected Thema
-	inline public static var selectedOutputPortFill = "#FF39A6";
+	inline public static var selectedOutputPortFill = Thema.orange;
 	inline public static var selectedOutputPortStroke = stroke;
 	inline public static var selectedOutputPortStrokeWidth = 0;
 
-	inline public static var inputPortTextX = 20;
-	inline public static var inputPortTextY = 0;
+	inline public static var inputPortTextX = 10;
+	inline public static var inputPortTextY = 3;
 
 	// PathLine
-	inline public static var pathLineStroke = stroke;
+	inline public static var pathLineStroke = Thema.white;
 	inline public static var pathLineStrokeWidth = strokeWidth;
 
 	//Console View
-	inline public static var consoleFill = "#CCCCCC";
-	inline public static var consoleStroke = "#CCCCCC";
-	inline public static var consoleStrokeWidth = strokeWidth;
+	inline public static var consoleFill = Thema.white;
+	inline public static var consoleStroke = Thema.white;
+	inline public static var consoleStrokeWidth = 0;
 
 	inline public static var consoleFontFamily = fontFamily;
 	inline public static var consoleFontSize = fontSize;
-	inline public static var consoleFontFill = "#FFFFFF";
+	inline public static var consoleFontFill = Thema.orange;
 
 	// Constant Value 
-	inline public static var constantValueFill = "#FF39A6";
-	inline public static var constantValueStroke = "#FF39A6";
+	inline public static var constantValueFill = Thema.orange;
+	inline public static var constantValueStroke = Thema.orange;
 	inline public static var constantValueStrokeWidth = strokeWidth;
 
 	inline public static var constantValueFontFamily = fontFamily;
@@ -95,8 +98,8 @@ class Thema {
 	inline public static var constantValueRadius = radius;
 
 	// Value Carrier
-	inline public static var valueCarrierFill = "#FF39A6";
-	inline public static var valueCarrierStroke = "#FF39A6";
+	inline public static var valueCarrierFill = Thema.orange;
+	inline public static var valueCarrierStroke = Thema.orange;
 	inline public static var valueCarrierStrokeWidth = strokeWidth;
 
 	inline public static var valueCarrierFontFamily = fontFamily;
