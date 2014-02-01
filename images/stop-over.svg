@@ -4,8 +4,6 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="43.509px" height="43.509px" viewBox="0 0 43.509 43.509" enable-background="new 0 0 43.509 43.509" xml:space="preserve">
 <circle fill="#FFFFFF" stroke="#FFFFFF" stroke-miterlimit="10" cx="21.755" cy="21.754" r="21.255"/>
-<polygon fill="#3498DB" points="19.711,20.342 17.661,20.342 21.711,26.258 25.711,20.342 23.711,20.342 23.711,13.342 
-	19.711,13.342 "/>
-<polygon fill="#3498DB" points="12.711,23.342 15.711,23.342 15.711,27.342 27.711,27.342 27.711,23.342 30.711,23.342 
-	30.711,30.342 12.711,30.342 "/>
+<rect x="14.833" y="16.342" fill="#3498DB" width="5" height="12"/>
+<rect x="22.833" y="16.342" fill="#3498DB" width="5" height="12"/>
 </svg>

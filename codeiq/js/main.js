@@ -4235,9 +4235,9 @@ retro.view.ConsoleView = function(snap) {
 	while(_g1 < _g11.length) {
 		var t = _g11[_g1];
 		++_g1;
-		t.attr({ 'font-size' : "10pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif", width : 220});
+		t.attr({ 'font-size' : "8pt", fill : "#E67E22", 'font-family' : "Helvetica, Arial, sans-serif", width : 220});
 	}
-	this.graphic.attr({ fill : "#CCCCCC", stroke : "#CCCCCC", strokeWidth : 1});
+	this.graphic.attr({ fill : "#FFFFFF", stroke : "#FFFFFF", strokeWidth : 0});
 	this.pos = new retro.pub.Point2D(0,0);
 	this.prev_pos = new retro.pub.Point2D(0,0);
 	this.setPos(200,80);
@@ -4546,9 +4546,9 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 	this.port = port;
 	this.port.onSetConstantValue($bind(this,this.OnSetConstant));
 	this.port.onRemoveConstantValue($bind(this,this.OnRemoveConstant));
-	this.graphic.attr({ fill : "#E9E9E9", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(20,0,port.getName());
-	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
+	this.graphic.attr({ fill : "#3498DB", stroke : "#FFFFFF", strokeWidth : 1});
+	var text = snap.text(10,3,port.getName());
+	text.attr({ 'font-size' : "8pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
 	this.coll.mouseup(function(e,x,y) {
 		if(_g.diagramController.setRubberbandEnd(_g.port)) {
@@ -4572,9 +4572,9 @@ retro.view.InputPortView.prototype = $extend(retro.view.PortView.prototype,{
 		this.constantValueGraphic = this.snap.group();
 		var t = Std.string(v.value);
 		var text = this.snap.text(-2,4,t);
-		text.attr({ 'font-size' : "10pt", fill : "#ffffff", 'font-family' : "Helvetica, Arial, sans-serif"});
+		text.attr({ 'font-size' : "8pt", fill : "#ffffff", 'font-family' : "Helvetica, Arial, sans-serif"});
 		var graphic = this.snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
-		graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
+		graphic.attr({ fill : "#E67E22", strokeWidth : 1, stroke : "#E67E22"});
 		this.constantValueGraphic.append(graphic);
 		this.constantValueGraphic.append(text);
 		this.upperGroup.append(this.constantValueGraphic);
@@ -4625,13 +4625,13 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	this.job.onPosChanged($bind(this,this.OnPosChanged));
 	this.snap = this.jobController.getEditor().snap;
 	this.group = this.snap.group();
-	this.titleRect = this.snap.rect(0,0,216,36);
-	this.titleRect.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#2C3E50"});
-	this.portRect = this.snap.rect(0,36,216,0);
-	this.portRect.attr({ strokeWidth : 1, stroke : "#E3E3E3", fill : "#FCFCFC"});
-	this.coll = this.snap.rect(0,0,216,36);
+	this.titleRect = this.snap.rect(0,0,216,40);
+	this.titleRect.attr({ strokeWidth : 0, stroke : "#FFFFFF", fill : "#E67E22"});
+	this.portRect = this.snap.rect(0,40,216,0);
+	this.portRect.attr({ strokeWidth : 0, stroke : "#FFFFFF", fill : "#FFFFFF"});
+	this.coll = this.snap.rect(0,0,216,40);
 	this.titleText = this.snap.text(12,24,this.job.getName());
-	this.titleText.attr({ 'font-size' : "10pt", fill : "#ffffff", 'font-family' : "Helvetica, Arial, sans-serif"});
+	this.titleText.attr({ 'font-size' : "8pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.pos = new retro.pub.Point2D(0,0);
 	this.prev_pos = new retro.pub.Point2D(0,0);
 	this.setPos(100,100);
@@ -4751,13 +4751,13 @@ retro.view.JobView.prototype = {
 	}
 	,cal2: function() {
 		Lambda.mapi(this.inputportviews,function(i,view) {
-			return view.setPos(0,i * 54 + 36 + 27.);
+			return view.setPos(0,i * 54 + 40 + 27.);
 		});
 		Lambda.mapi(this.outputportviews,function(i,view) {
-			return view.setPos(216,i * 54 + 36 + 27.);
+			return view.setPos(216,i * 54 + 40 + 27.);
 		});
 		this.portRect.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54:this.outputportviews.length * 54});
-		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54 + 36:this.outputportviews.length * 54 + 36});
+		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54 + 40:this.outputportviews.length * 54 + 40});
 	}
 	,cal: function() {
 		var th = 2 * Math.PI / (this.inputportviews.length + this.outputportviews.length);
@@ -4839,18 +4839,18 @@ retro.view.OutputPortView = function(diagramController,jobview,port,snap) {
 	retro.view.PortView.call(this,diagramController,jobview,snap);
 	this.port = port;
 	this.port.onConnected($bind(this,this.OnConnected));
-	this.graphic.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
-	var text = snap.text(-60,0,port.getName());
-	text.attr({ 'font-size' : "10pt", fill : "#696969", 'font-family' : "Helvetica, Arial, sans-serif"});
+	this.graphic.attr({ fill : "#FFFFFF", stroke : "#FFFFFF", strokeWidth : 0});
+	var text = snap.text(-50,3,port.getName());
+	text.attr({ 'font-size' : "8pt", fill : "#2C3E50", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
 	this.coll.mousedown(function(e,x,y) {
 		_g.diagramController.setRubberbandStart(_g.port);
 	});
 	this.port.onSelected = function() {
-		_g.graphic.attr({ fill : "#FF39A6", stroke : "#E3E3E3", strokeWidth : 0});
+		_g.graphic.attr({ fill : "#E67E22", stroke : "#FFFFFF", strokeWidth : 0});
 	};
 	this.port.onNormal = function() {
-		_g.graphic.attr({ fill : "#D3D3D3", stroke : "#E3E3E3", strokeWidth : 0});
+		_g.graphic.attr({ fill : "#FFFFFF", stroke : "#FFFFFF", strokeWidth : 0});
 	};
 };
 retro.view.OutputPortView.__name__ = ["retro","view","OutputPortView"];
@@ -4905,7 +4905,7 @@ retro.view.PathView = function(diagramController,diagramView,source_port,target_
 	this.group = this.snap.group();
 	this.graphic = this.snap.line(0,0,0,0);
 	this.coll = this.snap.line(0,0,0,0);
-	this.graphic.attr({ stroke : "#E3E3E3", strokeWidth : 1});
+	this.graphic.attr({ stroke : "#FFFFFF", strokeWidth : 1});
 	this.coll.attr({ stroke : "#a0a000", 'stroke-opacity' : 0, strokeWidth : 30});
 	diagramView.path_group.append(this.group);
 	this.coll.mousedown(function(e,x,y) {
@@ -4938,7 +4938,7 @@ retro.view.PathView.prototype = {
 	,visible_remove_btn: function() {
 		var _g = this;
 		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 108. - 22;
-		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 36;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 40;
 		this.remove_graphic.transform("translate(" + xx + "," + yy + ")");
 		this.remove_timer = new haxe.Timer(2000);
 		this.remove_timer.run = function() {
@@ -5023,9 +5023,9 @@ retro.view.ValueCarrierView = function(editor,valueCarrier,diagramView) {
 	this.group = snap.group();
 	var t = this.value2String(valueCarrier.getValue().value);
 	var text = snap.text(-2,4,t);
-	text.attr({ 'font-size' : "10pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
+	text.attr({ 'font-size' : "8pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.graphic = snap.rect(-20,-20,40 + (t.length - 1) * 6,40,20,20);
-	this.graphic.attr({ fill : "#FF39A6", strokeWidth : 1, stroke : "#FF39A6"});
+	this.graphic.attr({ fill : "#E67E22", strokeWidth : 1, stroke : "#E67E22"});
 	this.group.append(this.graphic);
 	this.group.append(text);
 	this.startPosition();
@@ -5229,64 +5229,67 @@ js.JQuery = q;
 js.Browser.window = typeof window != "undefined" ? window : null;
 js.Browser.document = typeof window != "undefined" ? window.document : null;
 retro.view.Thema.fill = "#FCFCFC";
-retro.view.Thema.stroke = "#E3E3E3";
+retro.view.Thema.stroke = "#FFFFFF";
 retro.view.Thema.strokeWidth = 1;
 retro.view.Thema.fontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.fontSize = "10pt";
-retro.view.Thema.fontFill = "#696969";
+retro.view.Thema.fontSize = "8pt";
+retro.view.Thema.fontFill = "#2C3E50";
 retro.view.Thema.radius = 20;
+retro.view.Thema.white = "#FFFFFF";
+retro.view.Thema.orange = "#E67E22";
+retro.view.Thema.blue = "#3498DB";
 retro.view.Thema.jobTitleFontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.jobTitleFontSize = "10pt";
-retro.view.Thema.jobTitleFontFill = "#ffffff";
+retro.view.Thema.jobTitleFontSize = "8pt";
+retro.view.Thema.jobTitleFontFill = "#FFFFFF";
 retro.view.Thema.jobWidth = 216;
-retro.view.Thema.jobTitleHeight = 36;
-retro.view.Thema.jobTitleFill = "#2C3E50";
-retro.view.Thema.jobTitleStroke = "#E3E3E3";
-retro.view.Thema.jobTitleStrokeWidth = 1;
+retro.view.Thema.jobTitleHeight = 40;
+retro.view.Thema.jobTitleFill = "#E67E22";
+retro.view.Thema.jobTitleStroke = "#FFFFFF";
+retro.view.Thema.jobTitleStrokeWidth = 0;
 retro.view.Thema.jobOnePortHeight = 54;
-retro.view.Thema.jobPortFill = "#FCFCFC";
-retro.view.Thema.jobPortStroke = "#E3E3E3";
-retro.view.Thema.jobPortStrokeWidth = 1;
+retro.view.Thema.jobPortFill = "#FFFFFF";
+retro.view.Thema.jobPortStroke = "#FFFFFF";
+retro.view.Thema.jobPortStrokeWidth = 0;
 retro.view.Thema.portRadius = 20;
-retro.view.Thema.inputPortFill = "#E9E9E9";
-retro.view.Thema.inputPortStroke = "#E3E3E3";
-retro.view.Thema.inputPortStrokeWidth = 0;
+retro.view.Thema.inputPortFill = "#3498DB";
+retro.view.Thema.inputPortStroke = "#FFFFFF";
+retro.view.Thema.inputPortStrokeWidth = 1;
 retro.view.Thema.inputPortFontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.inputPortFontSize = "10pt";
-retro.view.Thema.inputPortFontFill = "#696969";
-retro.view.Thema.outputPortFill = "#D3D3D3";
-retro.view.Thema.outputPortStroke = "#E3E3E3";
+retro.view.Thema.inputPortFontSize = "8pt";
+retro.view.Thema.inputPortFontFill = "#FFFFFF";
+retro.view.Thema.outputPortFill = "#FFFFFF";
+retro.view.Thema.outputPortStroke = "#FFFFFF";
 retro.view.Thema.outputPortStrokeWidth = 0;
 retro.view.Thema.outputPortFontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.outputPortFontSize = "10pt";
-retro.view.Thema.outputPortFontFill = "#696969";
-retro.view.Thema.outputPortTextX = -60;
-retro.view.Thema.outputPortTextY = 0;
-retro.view.Thema.selectedOutputPortFill = "#FF39A6";
-retro.view.Thema.selectedOutputPortStroke = "#E3E3E3";
+retro.view.Thema.outputPortFontSize = "8pt";
+retro.view.Thema.outputPortFontFill = "#2C3E50";
+retro.view.Thema.outputPortTextX = -50;
+retro.view.Thema.outputPortTextY = 3;
+retro.view.Thema.selectedOutputPortFill = "#E67E22";
+retro.view.Thema.selectedOutputPortStroke = "#FFFFFF";
 retro.view.Thema.selectedOutputPortStrokeWidth = 0;
-retro.view.Thema.inputPortTextX = 20;
-retro.view.Thema.inputPortTextY = 0;
-retro.view.Thema.pathLineStroke = "#E3E3E3";
+retro.view.Thema.inputPortTextX = 10;
+retro.view.Thema.inputPortTextY = 3;
+retro.view.Thema.pathLineStroke = "#FFFFFF";
 retro.view.Thema.pathLineStrokeWidth = 1;
-retro.view.Thema.consoleFill = "#CCCCCC";
-retro.view.Thema.consoleStroke = "#CCCCCC";
-retro.view.Thema.consoleStrokeWidth = 1;
+retro.view.Thema.consoleFill = "#FFFFFF";
+retro.view.Thema.consoleStroke = "#FFFFFF";
+retro.view.Thema.consoleStrokeWidth = 0;
 retro.view.Thema.consoleFontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.consoleFontSize = "10pt";
-retro.view.Thema.consoleFontFill = "#FFFFFF";
-retro.view.Thema.constantValueFill = "#FF39A6";
-retro.view.Thema.constantValueStroke = "#FF39A6";
+retro.view.Thema.consoleFontSize = "8pt";
+retro.view.Thema.consoleFontFill = "#E67E22";
+retro.view.Thema.constantValueFill = "#E67E22";
+retro.view.Thema.constantValueStroke = "#E67E22";
 retro.view.Thema.constantValueStrokeWidth = 1;
 retro.view.Thema.constantValueFontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.constantValueFontSize = "10pt";
+retro.view.Thema.constantValueFontSize = "8pt";
 retro.view.Thema.constantValueFontFill = "#ffffff";
 retro.view.Thema.constantValueRadius = 20;
-retro.view.Thema.valueCarrierFill = "#FF39A6";
-retro.view.Thema.valueCarrierStroke = "#FF39A6";
+retro.view.Thema.valueCarrierFill = "#E67E22";
+retro.view.Thema.valueCarrierStroke = "#E67E22";
 retro.view.Thema.valueCarrierStrokeWidth = 1;
 retro.view.Thema.valueCarrierFontFamily = "Helvetica, Arial, sans-serif";
-retro.view.Thema.valueCarrierFontSize = "10pt";
+retro.view.Thema.valueCarrierFontSize = "8pt";
 retro.view.Thema.valueCarrierFontFill = "#FFFFFF";
 retro.view.Thema.valueCarrierRadius = 20;
 retro.view.Thema.playSvgX = 5;

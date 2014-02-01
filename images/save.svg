@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" width="100px" height="80px" viewBox="0 0 100 80" enable-background="new 0 0 100 80" xml:space="preserve">
-    <g id="svg_1">
-   <rect x="-1" y="-1" fill="#2C3E50" width="95" height="81" id="svg_2"/>
-   <path fill="#ffffff" d="m25.490999,19.604v40.93h35.814001l5.115997,-5.116001v-35.813999h-40.929998l0,0l0,0zm28.140001,38.373001h-15.350002v-10.233002h15.350002v10.233002l0,0zm5.114998,-17.908001h-25.579998v-17.906h25.579998v17.906l0,0z" id="svg_3"/>
-  </g>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="43.509px" height="43.509px" viewBox="0 0 43.509 43.509" enable-background="new 0 0 43.509 43.509" xml:space="preserve">
+<circle fill="none" stroke="#FFFFFF" stroke-miterlimit="10" cx="21.755" cy="21.754" r="21.255"/>
+<polygon fill="#FFFFFF" points="19.711,20.342 17.661,20.342 21.711,26.258 25.711,20.342 23.711,20.342 23.711,13.342 
+	19.711,13.342 "/>
+<polygon fill="#FFFFFF" points="12.711,23.342 15.711,23.342 15.711,27.342 27.711,27.342 27.711,23.342 30.711,23.342 
+	30.711,30.342 12.711,30.342 "/>
 </svg>
