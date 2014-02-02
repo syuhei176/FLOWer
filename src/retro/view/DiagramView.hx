@@ -45,11 +45,6 @@ class DiagramView{
 		this.count = 0;
 		
 		this.control_group = snap.group();
-		var create_coll = snap.rect(75,5,70,61);
-		create_coll.attr({
-    	    fill: "#ffffff",
-    	    "fill-opacity" : 0,
-    	});
 
 		Snap.load(#if codeiq "images/create.svg" #else "/images/create.svg" #end, function (f) {
     		var g:SnapElement = f.select("svg");

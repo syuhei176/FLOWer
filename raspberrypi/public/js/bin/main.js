@@ -4279,12 +4279,10 @@ retro.view.DiagramView = function(diagramController) {
 	this.path_group = snap1.group();
 	this.count = 0;
 	this.control_group = snap1.group();
-	var create_coll = snap1.rect(75,5,70,61);
-	create_coll.attr({ fill : "#ffffff", 'fill-opacity' : 0});
 	Snap.load("/images/create.svg",function(f) {
 		var g = f.select("svg");
 		_g.control_group.append(g);
-		_g.control_group.transform("translate(" + 115 + "," + 5 + ")");
+		_g.control_group.transform("translate(" + 80 + "," + 15 + ")");
 		Snap.load("/images/create-over.svg",function(f1) {
 			var g2 = f1.select("svg");
 			g.click(function(e) {
@@ -4307,7 +4305,7 @@ retro.view.DiagramView = function(diagramController) {
 		var g1 = f.select("g");
 		var right = js.Browser.document.body.clientWidth;
 		var dustbox_group = snap1.group();
-		dustbox_group.transform("translate(" + (right - 100) + "," + 5 + ")");
+		dustbox_group.transform("translate(" + (right - 90) + "," + 10 + ")");
 		dustbox_group.append(g1);
 		Snap.load("/images/dustbox-over.svg",function(f1) {
 			var g21 = f1.select("g");
@@ -4493,9 +4491,9 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 	this.port = port;
 	this.port.onSetConstantValue($bind(this,this.OnSetConstant));
 	this.port.onRemoveConstantValue($bind(this,this.OnRemoveConstant));
-	this.graphic.attr({ fill : "#3498DB", stroke : "#FFFFFF", strokeWidth : 1});
-	var text = snap.text(10,3,port.getName());
-	text.attr({ 'font-size' : "8pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
+	this.graphic.attr({ fill : "#3498DB", stroke : "#FFFFFF", strokeWidth : 1, 'fill-opacity' : 0});
+	var text = snap.text(20,3,port.getName());
+	text.attr({ 'font-size' : "8pt", fill : "#2C3E50", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
 	this.coll.mouseup(function(e,x,y) {
 		if(_g.diagramController.setRubberbandEnd(_g.port)) {
@@ -4929,10 +4927,10 @@ retro.view.ProjectView = function(projectController,exportController) {
 	Snap.load("/images/play.svg",function(f) {
 		var g = f.select("svg");
 		_g.control_group.append(g);
-		_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
+		_g.control_group.transform("translate(" + 15 + "," + 15 + ")");
 		Snap.load("/images/play-over.svg",function(f1) {
 			var g2 = f1.select("svg");
-			_g.control_group.transform("translate(" + 5 + "," + 5 + ")");
+			_g.control_group.transform("translate(" + 15 + "," + 15 + ")");
 			g.click(function(e) {
 				console.log("click");
 				if(_g.mode == retro.view.RunMode.Stop) {
@@ -5217,11 +5215,12 @@ retro.view.Thema.jobPortStroke = "#FFFFFF";
 retro.view.Thema.jobPortStrokeWidth = 0;
 retro.view.Thema.portRadius = 20;
 retro.view.Thema.inputPortFill = "#3498DB";
+retro.view.Thema.inputPortFillOpacity = 0;
 retro.view.Thema.inputPortStroke = "#FFFFFF";
 retro.view.Thema.inputPortStrokeWidth = 1;
 retro.view.Thema.inputPortFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.inputPortFontSize = "8pt";
-retro.view.Thema.inputPortFontFill = "#FFFFFF";
+retro.view.Thema.inputPortFontFill = "#2C3E50";
 retro.view.Thema.outputPortFill = "#FFFFFF";
 retro.view.Thema.outputPortStroke = "#FFFFFF";
 retro.view.Thema.outputPortStrokeWidth = 0;
@@ -5233,7 +5232,7 @@ retro.view.Thema.outputPortTextY = 3;
 retro.view.Thema.selectedOutputPortFill = "#E67E22";
 retro.view.Thema.selectedOutputPortStroke = "#FFFFFF";
 retro.view.Thema.selectedOutputPortStrokeWidth = 0;
-retro.view.Thema.inputPortTextX = 10;
+retro.view.Thema.inputPortTextX = 20;
 retro.view.Thema.inputPortTextY = 3;
 retro.view.Thema.pathLineStroke = "#FFFFFF";
 retro.view.Thema.pathLineStrokeWidth = 1;
@@ -5257,14 +5256,14 @@ retro.view.Thema.valueCarrierFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.valueCarrierFontSize = "8pt";
 retro.view.Thema.valueCarrierFontFill = "#FFFFFF";
 retro.view.Thema.valueCarrierRadius = 20;
-retro.view.Thema.playSvgX = 5;
-retro.view.Thema.playSvgY = 5;
-retro.view.Thema.createSvgX = 115;
-retro.view.Thema.createSvgY = 5;
+retro.view.Thema.playSvgX = 15;
+retro.view.Thema.playSvgY = 15;
+retro.view.Thema.createSvgX = 80;
+retro.view.Thema.createSvgY = 15;
 retro.view.Thema.saveSvgX = 220;
 retro.view.Thema.saveSvgY = 2;
-retro.view.Thema.dustboxRightX = 100;
-retro.view.Thema.dustboxY = 5;
+retro.view.Thema.dustboxRightX = 90;
+retro.view.Thema.dustboxY = 10;
 retro.view.Thema.dustboxWidth = 100;
 retro.view.Thema.dustboxHeight = 100;
 retro.view.Thema.removeRadius = 22;
