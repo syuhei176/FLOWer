@@ -1,7 +1,16 @@
-body{
+html, body{
         background-color: #3498DB;
         font-family: Helvetica, Arial, sans-serif;
-        margin: 0;
+        height:100%;
+        overflow: hidden;
+}
+svg { position:fixed; top:0; left:0; height:100%; width:100% }
+.container{
+     width: 100%;
+     position: relative;
+     height:auto !important; /*IE6対策*/
+     height: 100%; /*IE6対策*/
+     min-height: 100%;
 }
 
 #lean_overlay{

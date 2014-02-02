@@ -29,11 +29,14 @@ class Thema {
 	inline public static var jobTitleFontFill = Thema.white;
 
 	inline public static var jobWidth = 216;
-	inline public static var jobTitleHeight = 40;
+	inline public static var jobTitleHeight = 35;
+	inline public static var jobTitleTextX = 12;
+	inline public static var jobTitleTextY = 21;
 
 	inline public static var jobTitleFill = Thema.orange;
 	inline public static var jobTitleStroke = stroke;
 	inline public static var jobTitleStrokeWidth = 0;
+
 
 	inline public static var jobOnePortHeight = 54;
 

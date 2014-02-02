@@ -4623,12 +4623,12 @@ retro.view.JobView = function(diagramController,jobController,diagramView) {
 	this.job.onPosChanged($bind(this,this.OnPosChanged));
 	this.snap = this.jobController.getEditor().snap;
 	this.group = this.snap.group();
-	this.titleRect = this.snap.rect(0,0,216,40);
+	this.titleRect = this.snap.rect(0,0,216,35);
 	this.titleRect.attr({ strokeWidth : 0, stroke : "#FFFFFF", fill : "#E67E22"});
-	this.portRect = this.snap.rect(0,40,216,0);
+	this.portRect = this.snap.rect(0,35,216,0);
 	this.portRect.attr({ strokeWidth : 0, stroke : "#FFFFFF", fill : "#FFFFFF"});
-	this.coll = this.snap.rect(0,0,216,40);
-	this.titleText = this.snap.text(12,24,this.job.getName());
+	this.coll = this.snap.rect(0,0,216,35);
+	this.titleText = this.snap.text(12,21,this.job.getName());
 	this.titleText.attr({ 'font-size' : "8pt", fill : "#FFFFFF", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.pos = new retro.pub.Point2D(0,0);
 	this.prev_pos = new retro.pub.Point2D(0,0);
@@ -4749,13 +4749,13 @@ retro.view.JobView.prototype = {
 	}
 	,cal2: function() {
 		Lambda.mapi(this.inputportviews,function(i,view) {
-			return view.setPos(0,i * 54 + 40 + 27.);
+			return view.setPos(0,i * 54 + 35 + 27.);
 		});
 		Lambda.mapi(this.outputportviews,function(i,view) {
-			return view.setPos(216,i * 54 + 40 + 27.);
+			return view.setPos(216,i * 54 + 35 + 27.);
 		});
 		this.portRect.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54:this.outputportviews.length * 54});
-		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54 + 40:this.outputportviews.length * 54 + 40});
+		this.coll.attr({ height : this.inputportviews.length > this.outputportviews.length?this.inputportviews.length * 54 + 35:this.outputportviews.length * 54 + 35});
 	}
 	,cal: function() {
 		var th = 2 * Math.PI / (this.inputportviews.length + this.outputportviews.length);
@@ -4936,7 +4936,7 @@ retro.view.PathView.prototype = {
 	,visible_remove_btn: function() {
 		var _g = this;
 		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 108. - 22;
-		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 40;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 35;
 		this.remove_graphic.transform("translate(" + xx + "," + yy + ")");
 		this.remove_timer = new haxe.Timer(2000);
 		this.remove_timer.run = function() {
@@ -5240,7 +5240,9 @@ retro.view.Thema.jobTitleFontFamily = "Helvetica, Arial, sans-serif";
 retro.view.Thema.jobTitleFontSize = "8pt";
 retro.view.Thema.jobTitleFontFill = "#FFFFFF";
 retro.view.Thema.jobWidth = 216;
-retro.view.Thema.jobTitleHeight = 40;
+retro.view.Thema.jobTitleHeight = 35;
+retro.view.Thema.jobTitleTextX = 12;
+retro.view.Thema.jobTitleTextY = 21;
 retro.view.Thema.jobTitleFill = "#E67E22";
 retro.view.Thema.jobTitleStroke = "#FFFFFF";
 retro.view.Thema.jobTitleStrokeWidth = 0;
