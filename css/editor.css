@@ -1,6 +1,7 @@
 body{
         background-color: #3498DB;
         font-family: Helvetica, Arial, sans-serif;
+        margin: 0;
 }
 
 #lean_overlay{
