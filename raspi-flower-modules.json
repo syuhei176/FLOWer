@@ -48,7 +48,7 @@
 		"virtualDevice" : [] 
 	},
 	"pigpio" :{
-		"none" : ["Write","Read"],
+		"none" : ["Write","Read","Tweet"],
 		"virtualDevice" : ["ReadWait"]
 	},
 	"system" : {
