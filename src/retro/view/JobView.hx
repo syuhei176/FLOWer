@@ -77,7 +77,7 @@ class JobView{
 			});
 		this.coll = this.snap.rect(0, 0, Thema.jobWidth, Thema.jobTitleHeight);
 		
-		this.titleText = this.snap.text(12, 24, this.job.getName());
+		this.titleText = this.snap.text(Thema.jobTitleTextX, Thema.jobTitleTextY, this.job.getName());
 		titleText.attr({
 			"font-size" : Thema.jobTitleFontSize,
 			fill : Thema.jobTitleFontFill,

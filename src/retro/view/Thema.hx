@@ -29,11 +29,14 @@ class Thema {
 	inline public static var jobTitleFontFill = Thema.white;
 
 	inline public static var jobWidth = 216;
-	inline public static var jobTitleHeight = 40;
+	inline public static var jobTitleHeight = 35;
+	inline public static var jobTitleTextX = 12;
+	inline public static var jobTitleTextY = 21;
 
 	inline public static var jobTitleFill = Thema.orange;
 	inline public static var jobTitleStroke = stroke;
 	inline public static var jobTitleStrokeWidth = 0;
+
 
 	inline public static var jobOnePortHeight = 54;
 
@@ -45,12 +48,13 @@ class Thema {
 
 	//InputPortView Thema
 	inline public static var inputPortFill = Thema.blue;
+	inline public static var inputPortFillOpacity = 0;
 	inline public static var inputPortStroke = stroke;
 	inline public static var inputPortStrokeWidth = Thema.strokeWidth;
 
 	inline public static var inputPortFontFamily = fontFamily;
 	inline public static var inputPortFontSize = fontSize;
-	inline public static var inputPortFontFill = Thema.white;
+	inline public static var inputPortFontFill = Thema.fontFill;
 
 
 	//OutputPortView Thema
@@ -70,7 +74,7 @@ class Thema {
 	inline public static var selectedOutputPortStroke = stroke;
 	inline public static var selectedOutputPortStrokeWidth = 0;
 
-	inline public static var inputPortTextX = 10;
+	inline public static var inputPortTextX = 20;
 	inline public static var inputPortTextY = 3;
 
 	// PathLine
@@ -110,20 +114,20 @@ class Thema {
 
 
 	// play svg
-	inline public static var playSvgX = 5;
-	inline public static var playSvgY = 5;
+	inline public static var playSvgX = 15;
+	inline public static var playSvgY = 15;
 
 	// create svg
-	inline public static var createSvgX = 115;
-	inline public static var createSvgY = 5;
+	inline public static var createSvgX = 80;
+	inline public static var createSvgY = 15;
 
 	// save svg 
 	inline public static var saveSvgX = 220;
 	inline public static var saveSvgY = 2;
 
 	// dustbox svg
-	inline public static var dustboxRightX = 100;
-	inline public static var dustboxY = 5;
+	inline public static var dustboxRightX = 90;
+	inline public static var dustboxY = 10;
 
 	inline public static var dustboxWidth = 100;
 	inline public static var dustboxHeight = 100;

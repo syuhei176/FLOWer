@@ -1,6 +1,6 @@
 {
 	"core":{
-		"none" : ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor"],
+		"none" : ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate"],
 		"virtualDevice" : []
 	},
 	"array": {

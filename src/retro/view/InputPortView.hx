@@ -28,7 +28,8 @@ class InputPortView extends PortView{
 		this.graphic.attr({
 			fill: Thema.inputPortFill,
 			stroke : Thema.inputPortStroke,
-			strokeWidth: Thema.inputPortStrokeWidth,
+			strokeWidth: Thema.inputPortStrokeWidth, 
+			"fill-opacity": Thema.inputPortFillOpacity
 		});
 		
 		var text = snap.text(Thema.inputPortTextX, Thema.inputPortTextY, port.getName());
