@@ -131,6 +131,7 @@ class JobView{
 		for( portView in this.inputportviews ) this.group.append(portView.upperGroup);
 		for( portView in this.outputportviews ) this.group.append(portView.upperGroup);
 		this.cal2();
+		if( this.job.customDraw != null ) this.job.customDraw(this);
 	}
 
 

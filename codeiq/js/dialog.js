@@ -1,7 +1,7 @@
 (function(){
 
 	var packages =  {
-	 "core": ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate",], 
+	 "core": ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate","TextBox",], 
 	 "data": ["Stack",], 
 	 "list": ["Length","Add","Clear","First","IsEmpty","Join","Last","Pop","Push","Remove",], 
 	 "math": ["Abs","Acos","Asin","Atan","Atan2","Cos","Sin","Floor","Log","Max","Min","Pow","Random","Sqrt",], 

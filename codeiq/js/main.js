@@ -94,6 +94,10 @@ Reflect.field = function(o,field) {
 	}
 	return v;
 }
+Reflect.getProperty = function(o,field) {
+	var tmp;
+	return o == null?null:o.__properties__ && (tmp = o.__properties__["get_" + field])?o[tmp]():o[field];
+}
 Reflect.fields = function(o) {
 	var a = [];
 	if(o != null) {
@@ -782,6 +786,7 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
 	this.modules.push(new retro.library.core.Gate());
+	this.modules.push(new retro.library.core.TextBox());
 	this.modules.push(new retro.library.data.Stack());
 	this.modules.push(new retro.library.list.Length());
 	this.modules.push(new retro.library.list.Add());
@@ -1004,6 +1009,7 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
 	this.modules.push(new retro.library.core.Gate());
+	this.modules.push(new retro.library.core.TextBox());
 	this.modules.push(new retro.library.data.Stack());
 	this.modules.push(new retro.library.list.Length());
 	this.modules.push(new retro.library.list.Add());
@@ -1837,6 +1843,38 @@ retro.library.core.Remainder.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.core.Remainder
+}
+retro.library.core.TextBox = function() {
+	this.name = "Through";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("tigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("text",retro.pub.RetroType.RNumber);
+	retro.library.core.TextBox.id++;
+};
+retro.library.core.TextBox.__name__ = ["retro","library","core","TextBox"];
+retro.library.core.TextBox.__interfaces__ = [retro.core.JobComponent];
+retro.library.core.TextBox.prototype = {
+	getModuleName: function() {
+		return "core.TextBox";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		cb(result);
+	}
+	,customDraw: function(jobView) {
+		var document = js.Browser.document;
+		var div = document.createElement("div");
+		document.body.appendChild(div);
+		var textarea = document.createElement("textarea");
+		div.appendChild(textarea);
+	}
+	,__class__: retro.library.core.TextBox
 }
 retro.library.core.Through = function() {
 	this.name = "Through";
@@ -4093,6 +4131,7 @@ retro.model.Project.prototype = {
 retro.model.SymbolicLink = function(id,jobComponent) {
 	retro.model.Job.call(this,id);
 	this.prototype = jobComponent;
+	this.customDraw = Reflect.getProperty(jobComponent,"customDraw");
 	var _g = 0, _g1 = this.prototype.inputs.getArray();
 	while(_g < _g1.length) {
 		var ip = _g1[_g];
@@ -4943,6 +4982,7 @@ retro.view.JobView.prototype = {
 			this.group.append(portView.upperGroup);
 		}
 		this.cal2();
+		if(this.job.customDraw != null) this.job.customDraw(this);
 	}
 	,__class__: retro.view.JobView
 }
@@ -5340,6 +5380,7 @@ var q = window.jQuery;
 js.JQuery = q;
 js.Browser.window = typeof window != "undefined" ? window : null;
 js.Browser.document = typeof window != "undefined" ? window.document : null;
+retro.library.core.TextBox.id = 0;
 retro.view.Thema.fill = "#FCFCFC";
 retro.view.Thema.stroke = "#FFFFFF";
 retro.view.Thema.strokeWidth = 1;

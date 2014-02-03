@@ -94,6 +94,10 @@ Reflect.field = function(o,field) {
 	}
 	return v;
 }
+Reflect.getProperty = function(o,field) {
+	var tmp;
+	return o == null?null:o.__properties__ && (tmp = o.__properties__["get_" + field])?o[tmp]():o[field];
+}
 Reflect.fields = function(o) {
 	var a = [];
 	if(o != null) {
@@ -4040,6 +4044,7 @@ retro.model.Project.prototype = {
 retro.model.SymbolicLink = function(id,jobComponent) {
 	retro.model.Job.call(this,id);
 	this.prototype = jobComponent;
+	this.customDraw = Reflect.getProperty(jobComponent,"customDraw");
 	var _g = 0, _g1 = this.prototype.inputs.getArray();
 	while(_g < _g1.length) {
 		var ip = _g1[_g];
@@ -4890,6 +4895,7 @@ retro.view.JobView.prototype = {
 			this.group.append(portView.upperGroup);
 		}
 		this.cal2();
+		if(this.job.customDraw != null) this.job.customDraw(this);
 	}
 	,__class__: retro.view.JobView
 }
