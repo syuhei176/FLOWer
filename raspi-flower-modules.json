@@ -56,7 +56,7 @@
 		"virtualDevice" : ["ReadWait", "ReadWait24"]
 	},
 	"system" : {
-			"none" : [],
+			"none" : ["Speed"],
 			"virtualDevice" : ["Print","Scan"]
 		}
 	}
