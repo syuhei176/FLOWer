@@ -30,7 +30,7 @@ class Circle implements JobComponent {
 		var x = params.get("x");
 		var y = params.get("y");
 		var r = params.get("r");
-		if(x.isEmpty() && y.isEmpty() && r.isEmpty()) {
+		if(x.isEmpty() || y.isEmpty() || r.isEmpty()) {
 			cb(null);
 			return;
 		}

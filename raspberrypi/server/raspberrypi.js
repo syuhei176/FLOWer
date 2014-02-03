@@ -1,4 +1,12 @@
 var gpio = require('pi-gpio');
+var twitter = require('twitter');
+
+var twitter_client = new twitter({
+	consumer_key        : 'tLIWbsemslWlsKxSlh4Q',
+	consumer_secret     : 'VNNSoQKhjxMAFhs9NV3Sqbh5BZ2uBtZSvDkDLIU',
+	access_token_key    : '2324856098-QwMzsiLC5tMckxZZvQNs5uhRbyPWoGGZAQwissD',
+	access_token_secret : 'mFAKt4LO5Ezzgiff3sN3bAfq6dKp6bYArnyYsCZJbJYyf'
+});
 
 module.exports.write = function(pin, value){
 	gpio.open(pin, "output", function(err) {
@@ -33,5 +41,12 @@ module.exports.readWait = function(pin, cb){
 
 module.exports.closePin = function(pin){
 	gpio.close(pin);
+}
+
+
+module.exports.tweet = function(message, cb){
+	twitter_client.updateStatus(message, function (data) {
+		cb(null, data);
+	});
 }
 

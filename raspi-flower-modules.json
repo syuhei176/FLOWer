@@ -40,7 +40,7 @@
 		"virtualDevice" : ["Rect","Circle"]
 	},
 	"snapelement": {
-		"none" : ["Translate","Fill"],
+		"none" : ["Translate","Fill","MouseDown"],
 		"virtualDevice" : []
 	},
 	"jquery": {
@@ -52,11 +52,11 @@
 		"virtualDevice" : [] 
 	},
 	"pigpio" :{
-		"none" : ["Write","Read"],
-		"virtualDevice" : ["ReadWait"]
+		"none" : ["Write","Read","Tweet"],
+		"virtualDevice" : ["ReadWait", "ReadWait24"]
 	},
 	"system" : {
-			"none" : [],
+			"none" : ["Speed"],
 			"virtualDevice" : ["Print","Scan"]
 		}
 	}

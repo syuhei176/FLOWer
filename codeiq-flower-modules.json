@@ -44,7 +44,7 @@
 		"virtualDevice" : ["Rect","Circle"]
 	},
 	"snapelement": {
-		"none" : ["Translate","Fill"],
+		"none" : ["Translate","Fill","MouseDown"],
 		"virtualDevice" : []
 	},
 	"jquery": {
@@ -60,7 +60,7 @@
 		"virtualDevice" : []
 	},
 	"system" : {
-			"none" : [],
+			"none" : ["Speed"],
 			"virtualDevice" : ["Print","Scan"]
 		}
 	}
