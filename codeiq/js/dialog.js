@@ -1,7 +1,7 @@
 (function(){
 
 	var packages =  {
-	 "core": ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor",], 
+	 "core": ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate",], 
 	 "data": ["Stack",], 
 	 "list": ["Length","Add","Clear","First","IsEmpty","Join","Last","Pop","Push","Remove",], 
 	 "math": ["Abs","Acos","Asin","Atan","Atan2","Cos","Sin","Floor","Log","Max","Min","Pow","Random","Sqrt",], 
@@ -10,6 +10,7 @@
 	 "line2d": ["Create","Distance",], 
 	 "system": ["Print","Scan",], 
 	 "snapelement": ["Translate","Fill",], 
+	 "map": ["Setter","Getter",], 
 	 "pigpio": ["Write","Read",], 
 	 "string": ["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf",], 
 	 "number": ["C0","C1","C2","C3","C4","C5","C6","C7","C8","C9",], 

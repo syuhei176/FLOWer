@@ -628,6 +628,9 @@ haxe.ds.StringMap.prototype = {
 		}
 		return HxOverrides.iter(a);
 	}
+	,exists: function(key) {
+		return this.h.hasOwnProperty("$" + key);
+	}
 	,get: function(key) {
 		return this.h["$" + key];
 	}
@@ -778,6 +781,7 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.core.Or());
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
+	this.modules.push(new retro.library.core.Gate());
 	this.modules.push(new retro.library.data.Stack());
 	this.modules.push(new retro.library.list.Length());
 	this.modules.push(new retro.library.list.Add());
@@ -815,6 +819,8 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.map.Setter());
+	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
 	this.modules.push(new retro.library.pigpio.ReadWait(virtualDevice));
@@ -995,6 +1001,7 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.core.Or());
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
+	this.modules.push(new retro.library.core.Gate());
 	this.modules.push(new retro.library.data.Stack());
 	this.modules.push(new retro.library.list.Length());
 	this.modules.push(new retro.library.list.Add());
@@ -1032,6 +1039,8 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.map.Setter());
+	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
 	this.modules.push(new retro.library.pigpio.ReadWait(virtualDevice));
@@ -1718,6 +1727,34 @@ retro.library.core.Filter.prototype = {
 	}
 	,__class__: retro.library.core.Filter
 }
+retro.library.core.Gate = function() {
+	this.name = "Gate";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("input",retro.pub.RetroType.RNumber);
+	this.inputs.add("gate",retro.pub.RetroType.RNumber);
+	this.outputs.add("true",retro.pub.RetroType.RNumber);
+	this.outputs.add("false",retro.pub.RetroType.RNumber);
+};
+retro.library.core.Gate.__name__ = ["retro","library","core","Gate"];
+retro.library.core.Gate.__interfaces__ = [retro.core.JobComponent];
+retro.library.core.Gate.prototype = {
+	getModuleName: function() {
+		return "core.Gate";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("input");
+		var gate = params.get("gate");
+		if(input.isEmpty() || gate.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		if(gate.getValue()) result.set("true",input.getValue()); else result.set("false",input.getValue());
+		cb(result);
+	}
+	,__class__: retro.library.core.Gate
+}
 retro.library.core.Not = function() {
 	this.name = "Not";
 	this.inputs = new retro.core.Inputs();
@@ -2268,6 +2305,83 @@ retro.library.list.Remove.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.list.Remove
+}
+retro.library.map = {}
+retro.library.map.Getter = function() {
+	this.name = "Getter";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("key",retro.pub.RetroType.RNumber);
+	this.outputs.add("value",retro.pub.RetroType.RNumber);
+	this.outputs.add("exists",retro.pub.RetroType.RNumber);
+};
+retro.library.map.Getter.__name__ = ["retro","library","map","Getter"];
+retro.library.map.Getter.__interfaces__ = [retro.core.JobComponent];
+retro.library.map.Getter.prototype = {
+	getModuleName: function() {
+		return "map.Getter";
+	}
+	,onInputRecieved: function(params,cb) {
+		var key = params.get("key");
+		if(key.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var exists = retro.library.map.Pod.getInstance().exists(key.getValue());
+		var value = retro.library.map.Pod.getInstance().get(key.getValue());
+		var result = new retro.core.Result();
+		result.set("exists",exists);
+		result.set("value",value);
+		cb(result);
+	}
+	,__class__: retro.library.map.Getter
+}
+retro.library.map.Pod = function() {
+	this.map = new haxe.ds.StringMap();
+};
+retro.library.map.Pod.__name__ = ["retro","library","map","Pod"];
+retro.library.map.Pod.getInstance = function() {
+	return retro.library.map.Pod.instance == null?retro.library.map.Pod.instance = new retro.library.map.Pod():retro.library.map.Pod.instance;
+}
+retro.library.map.Pod.prototype = {
+	set: function(key,value) {
+		return this.map.set(key,value);
+	}
+	,get: function(key) {
+		return this.map.get(key);
+	}
+	,exists: function(key) {
+		return this.map.exists(key);
+	}
+	,__class__: retro.library.map.Pod
+}
+retro.library.map.Setter = function() {
+	this.name = "Setter";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("key",retro.pub.RetroType.RNumber);
+	this.inputs.add("value",retro.pub.RetroType.RNumber);
+	this.outputs.add("result",retro.pub.RetroType.RNumber);
+};
+retro.library.map.Setter.__name__ = ["retro","library","map","Setter"];
+retro.library.map.Setter.__interfaces__ = [retro.core.JobComponent];
+retro.library.map.Setter.prototype = {
+	getModuleName: function() {
+		return "map.Setter";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input1 = params.get("key");
+		var input2 = params.get("value");
+		if(input1.isEmpty() || input2.isEmpty()) {
+			cb(null);
+			return;
+		}
+		retro.library.map.Pod.getInstance().set(input1.getValue(),input2.getValue());
+		var result = new retro.core.Result();
+		result.set("result",true);
+		cb(result);
+	}
+	,__class__: retro.library.map.Setter
 }
 retro.library.math = {}
 retro.library.math.Abs = function() {
