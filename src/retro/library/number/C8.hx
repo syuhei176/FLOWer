@@ -34,6 +34,6 @@ class C8 implements JobComponent {
 	}
 
 	public function getModuleName() {
-		return "number.8";
+		return "number.C8";
 	}
 }

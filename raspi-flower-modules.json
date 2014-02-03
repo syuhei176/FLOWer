@@ -11,6 +11,10 @@
 		"none" : ["Stack"],
 		"virtualDevice" : []
 	},
+        "map": {
+	        "none" : ["Setter", "Getter"],
+                "virtualDevice" : []
+	},
 	"string": {
 		"none" :	["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf"],
 		"virtualDevice" : []
@@ -49,7 +53,7 @@
 	},
 	"pigpio" :{
 		"none" : ["Write","Read","Tweet"],
-		"virtualDevice" : ["ReadWait"]
+		"virtualDevice" : ["ReadWait", "ReadWait24"]
 	},
 	"system" : {
 			"none" : [],

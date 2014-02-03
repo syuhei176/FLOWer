@@ -4,8 +4,8 @@ var twitter = require('twitter');
 var twitter_client = new twitter({
 	consumer_key        : 'tLIWbsemslWlsKxSlh4Q',
 	consumer_secret     : 'VNNSoQKhjxMAFhs9NV3Sqbh5BZ2uBtZSvDkDLIU',
-	access_token_key    : '2324856098-OcK3hIitRSX7Lb9dwC9iqbaneUUoLDOwA2OHHYT',
-	access_token_secret : 'HhANip2PYuq9EdByZn9OMzZiVYKc47DXBhfY6Vn9rPAwk'
+	access_token_key    : '2324856098-QwMzsiLC5tMckxZZvQNs5uhRbyPWoGGZAQwissD',
+	access_token_secret : 'mFAKt4LO5Ezzgiff3sN3bAfq6dKp6bYArnyYsCZJbJYyf'
 });
 
 module.exports.write = function(pin, value){
