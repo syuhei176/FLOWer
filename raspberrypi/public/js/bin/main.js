@@ -819,15 +819,19 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.point2d.Distance());
 	this.modules.push(new retro.library.line2d.Create());
 	this.modules.push(new retro.library.line2d.Distance());
+	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.snapelement.MouseDown());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
+	this.modules.push(new retro.library.pigpio.Tweet());
 	this.modules.push(new retro.library.pigpio.ReadWait(virtualDevice));
+	this.modules.push(new retro.library.pigpio.ReadWait24(virtualDevice));
 	this.modules.push(new retro.library.string.Split());
 	this.modules.push(new retro.library.string.IndexOf());
 	this.modules.push(new retro.library.string.ChatAt());
@@ -1039,15 +1043,19 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.point2d.Distance());
 	this.modules.push(new retro.library.line2d.Create());
 	this.modules.push(new retro.library.line2d.Distance());
+	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.snapelement.MouseDown());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.pigpio.Write());
 	this.modules.push(new retro.library.pigpio.Read());
+	this.modules.push(new retro.library.pigpio.Tweet());
 	this.modules.push(new retro.library.pigpio.ReadWait(virtualDevice));
+	this.modules.push(new retro.library.pigpio.ReadWait24(virtualDevice));
 	this.modules.push(new retro.library.string.Split());
 	this.modules.push(new retro.library.string.IndexOf());
 	this.modules.push(new retro.library.string.ChatAt());
@@ -3058,6 +3066,65 @@ retro.library.pigpio.ReadWait.prototype = {
 	}
 	,__class__: retro.library.pigpio.ReadWait
 }
+retro.library.pigpio.ReadWait24 = function(virtualDevice) {
+	this.name = "ReadWait24";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("value",retro.pub.RetroType.RNumber);
+	this.virtualDevice = virtualDevice;
+};
+retro.library.pigpio.ReadWait24.__name__ = ["retro","library","pigpio","ReadWait24"];
+retro.library.pigpio.ReadWait24.__interfaces__ = [retro.core.JobComponent];
+retro.library.pigpio.ReadWait24.prototype = {
+	getModuleName: function() {
+		return "pigpio.ReadWait24";
+	}
+	,onInputRecieved: function(params,cb) {
+		var trigger = params.get("trigger");
+		if(trigger.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var pin_no = 24;
+		this.virtualDevice.getRetroClient().readwait(pin_no,function(data) {
+			var result = new retro.core.Result();
+			result.set("value",data);
+			cb(result);
+		});
+	}
+	,__class__: retro.library.pigpio.ReadWait24
+}
+retro.library.pigpio.Tweet = function() {
+	this.name = "Tweet";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("message",retro.pub.RetroType.RNumber);
+	this.outputs.add("output",retro.pub.RetroType.RNumber);
+};
+retro.library.pigpio.Tweet.__name__ = ["retro","library","pigpio","Tweet"];
+retro.library.pigpio.Tweet.__interfaces__ = [retro.core.JobComponent];
+retro.library.pigpio.Tweet.prototype = {
+	getModuleName: function() {
+		return "pigpio.Tweet";
+	}
+	,onInputRecieved: function(params,cb) {
+		var message = params.get("message");
+		if(message.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var http = new haxe.Http("/pigpio/tweet");
+		http.onData = function(data) {
+			var result = new retro.core.Result();
+			result.set("output",0);
+			cb(result);
+		};
+		http.setParameter("message",message.getValue());
+		http.request(true);
+	}
+	,__class__: retro.library.pigpio.Tweet
+}
 retro.library.pigpio.Write = function() {
 	this.name = "Write";
 	this.inputs = new retro.core.Inputs();
@@ -3203,7 +3270,7 @@ retro.library.snapelement.Fill = function() {
 	this.outputs = new retro.core.Outputs();
 	this.inputs.add("snapelement",retro.pub.RetroType.RNumber);
 	this.inputs.add("color",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.outputs.add("snapelement",retro.pub.RetroType.RNumber);
 };
 retro.library.snapelement.Fill.__name__ = ["retro","library","snapelement","Fill"];
 retro.library.snapelement.Fill.__interfaces__ = [retro.core.JobComponent];
@@ -3212,16 +3279,51 @@ retro.library.snapelement.Fill.prototype = {
 		return "snapelement.Fill";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var snapelementParam = params.get("snapelement");
+		var colorParam = params.get("color");
+		if(snapelementParam.isEmpty() || colorParam.isEmpty()) {
 			cb(null);
 			return;
 		}
+		var snapelement = snapelementParam.getValue();
+		snapelement.attr({ fill : colorParam.getValue()});
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("snapelement",snapelement);
 		cb(result);
 	}
 	,__class__: retro.library.snapelement.Fill
+}
+retro.library.snapelement.MouseDown = function() {
+	this.name = "MouseDown";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("snapelement",retro.pub.RetroType.RNumber);
+	this.outputs.add("e",retro.pub.RetroType.RNumber);
+	this.outputs.add("x",retro.pub.RetroType.RNumber);
+	this.outputs.add("y",retro.pub.RetroType.RNumber);
+};
+retro.library.snapelement.MouseDown.__name__ = ["retro","library","snapelement","MouseDown"];
+retro.library.snapelement.MouseDown.__interfaces__ = [retro.core.JobComponent];
+retro.library.snapelement.MouseDown.prototype = {
+	getModuleName: function() {
+		return "snapelement.MouseDown";
+	}
+	,onInputRecieved: function(params,cb) {
+		var snapelementParam = params.get("snapelement");
+		if(snapelementParam.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var snapelement = snapelementParam.getValue();
+		snapelement.mousedown(function(e,x,y) {
+			var result = new retro.core.Result();
+			result.set("e",e);
+			result.set("x",x);
+			result.set("y",y);
+			cb(result);
+		});
+	}
+	,__class__: retro.library.snapelement.MouseDown
 }
 retro.library.snapelement.Translate = function() {
 	this.name = "Translate";
@@ -3274,7 +3376,7 @@ retro.library.snapsvg.Circle.prototype = {
 		var x = params.get("x");
 		var y = params.get("y");
 		var r = params.get("r");
-		if(x.isEmpty() && y.isEmpty() && r.isEmpty()) {
+		if(x.isEmpty() || y.isEmpty() || r.isEmpty()) {
 			cb(null);
 			return;
 		}
@@ -3535,6 +3637,32 @@ retro.library.system.Scan.prototype = {
 		});
 	}
 	,__class__: retro.library.system.Scan
+}
+retro.library.system.Speed = function() {
+	this.name = "Speed";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("speed",retro.pub.RetroType.RNumber);
+	this.outputs.add("output",retro.pub.RetroType.RNumber);
+};
+retro.library.system.Speed.__name__ = ["retro","library","system","Speed"];
+retro.library.system.Speed.__interfaces__ = [retro.core.JobComponent];
+retro.library.system.Speed.prototype = {
+	getModuleName: function() {
+		return "system.Speed";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("speed");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		js.Browser.window.sessionStorage.setItem("speed","" + Std.string(input.getValue()));
+		var result = new retro.core.Result();
+		result.set("output",input.getValue());
+		cb(result);
+	}
+	,__class__: retro.library.system.Speed
 }
 retro.model = {}
 retro.model.Diagram = function() {
@@ -4111,7 +4239,7 @@ retro.model.ValueCarrier.prototype = {
 		return this.value;
 	}
 	,step: function() {
-		if(this.count > 9) return this.destPort; else {
+		if(this.count > 39) return this.destPort; else {
 			this.count++;
 			this.fireOnStepListeners();
 			return null;
@@ -4165,7 +4293,9 @@ retro.pub.Editor.createCodeIQ = function() {
 	editor.virtualDevice = virtualDevice;
 	var consoleDevice = new retro.view.ConsoleView(editor.snap);
 	virtualDevice.setConsoleDevice(consoleDevice);
-	virtualDevice.setSVGDevice(editor.snap);
+	var snap1 = new Snap();
+	snap1.attr({ id : "sub_svg", 'class' : "modal"});
+	virtualDevice.setSVGDevice(snap1);
 	var diagram = new retro.model.Diagram();
 	project.setRootDiagram(diagram);
 	var diagramController = new retro.controller.DiagramController(editor,diagram,virtualDevice);
@@ -5131,7 +5261,7 @@ retro.view.ValueCarrierView.prototype = {
 		var outputPortView = this.diagramView.getOutputPortView(this.valueCarrier.srcPort);
 		var inputPortView = this.diagramView.getInputPortView(this.valueCarrier.destPort);
 		this.vec = retro.pub.Point2D.sub(inputPortView.getPos(),outputPortView.getPos());
-		retro.pub.Point2D.timesToSelf(this.vec,0.1);
+		retro.pub.Point2D.timesToSelf(this.vec,0.025);
 		this.setPos(outputPortView.getPos().getX(),outputPortView.getPos().getY());
 	}
 	,remove: function() {
@@ -5253,7 +5383,9 @@ retro.vm.Runtime.prototype = {
 	,run: function(entry,v) {
 		var _g = this;
 		this.invoke_entry(entry,new retro.model.Value(retro.pub.RetroType.RNumber,v));
-		this.timer = new haxe.Timer(100);
+		var speed = js.Browser.window.sessionStorage.getItem("speed");
+		if(speed == null) speed = "50";
+		this.timer = new haxe.Timer(Std.parseInt(speed));
 		this.timer.run = function() {
 			_g.run_step();
 		};

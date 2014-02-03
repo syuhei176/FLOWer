@@ -7,6 +7,7 @@ import retro.core.Params;
 import retro.core.Outputs;
 import retro.core.Result;
 import retro.pub.RetroType;
+import snap.Snap;
 
 class Circle implements JobComponent {
 	public var name:String;

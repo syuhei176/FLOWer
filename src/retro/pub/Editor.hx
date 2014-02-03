@@ -96,7 +96,12 @@ class Editor{
 		editor.virtualDevice = virtualDevice;
 		var consoleDevice = new ConsoleView(editor.snap);
 		virtualDevice.setConsoleDevice(consoleDevice);
-		virtualDevice.setSVGDevice(editor.snap);
+		var snap = new Snap();
+		snap.attr({
+			"id" : "sub_svg",
+			"class" : "modal"
+			});
+		virtualDevice.setSVGDevice(snap);
 		var diagram = new Diagram();
 		project.setRootDiagram(diagram);
 		var diagramController = new DiagramController(editor, diagram, virtualDevice);

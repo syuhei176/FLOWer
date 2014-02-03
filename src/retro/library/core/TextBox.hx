@@ -27,11 +27,11 @@ class TextBox implements JobComponent {
 	}
 
 	public function customDraw(jobView: JobView){
-		var document = js.Browser.document;
+		/*var document = js.Browser.document;
 		var div = document.createDivElement();
 		document.body.appendChild(div);
 		var textarea : js.html.TextAreaElement = cast document.createElement("textarea");
-		div.appendChild(textarea);
+		div.appendChild(textarea);*/
 	}
 	
 	public function onInputRecieved(params:Params, cb) {

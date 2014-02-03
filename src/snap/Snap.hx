@@ -115,7 +115,7 @@ extern class Snap {
 		return untyped __js__("Snap.filter.shadow(dx1, dy1, blur1, color1)");
 	}
 
-
+	public function attr(?p0:Dynamic, ?p1:Dynamic):Dynamic;
 	public function circle(x:Float, y:Float, r:Float):SnapElement;
 	public function el(name:String, attr:Dynamic):SnapElement;
 	public function ellipse(x:Float, y:Float, rx:Float, ry:Float):SnapElement;
