@@ -40,7 +40,7 @@
 		"virtualDevice" : ["Rect","Circle"]
 	},
 	"snapelement": {
-		"none" : ["Translate","Fill"],
+		"none" : ["Translate","Fill","MouseDown"],
 		"virtualDevice" : []
 	},
 	"jquery": {

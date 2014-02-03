@@ -10,37 +10,38 @@ import retro.core.Outputs;
 import retro.core.Result;
 import retro.pub.RetroType;
 
-class Fill implements JobComponent {
+class MouseDown implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
 	public function new() {
-		this.name = "Fill";
+		this.name = "MouseDown";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("snapelement", RetroType.RNumber);
-    	this.inputs.add("color", RetroType.RNumber);
-		this.outputs.add("snapelement", RetroType.RNumber);
+		this.outputs.add("e", RetroType.RNumber);
+		this.outputs.add("x", RetroType.RNumber);
+		this.outputs.add("y", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
 		var snapelementParam = params.get("snapelement");
-		var colorParam = params.get("color");
-		if(snapelementParam.isEmpty() || colorParam.isEmpty()) {
+		if(snapelementParam.isEmpty()) {
 			cb(null);
 			return;
 		}
 		var snapelement:SnapElement = snapelementParam.getValue();
-		snapelement.attr({
-			fill : colorParam.getValue()
-		});
+		snapelement.mousedown(function(e, x, y) {
 		var result = new Result();
-		result.set("snapelement", snapelement);
+		result.set("e", (e));
+		result.set("x", (x));
+		result.set("y", (y));
 		cb(result);
+		});
 	}
 
 	public function getModuleName() {
-		return "snapelement.Fill";
+		return "snapelement.MouseDown";
 	}
 }
