@@ -17,7 +17,7 @@ class C9 implements JobComponent {
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("trigger", RetroType.RNumber);
-		this.outputs.add("0", RetroType.RNumber);
+		this.outputs.add("9", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
@@ -27,11 +27,11 @@ class C9 implements JobComponent {
 			return;
 		}
 		var result = new Result();
-		result.set("9", 1);
+		result.set("9", 9);
 		cb(result);
 	}
 
 	public function getModuleName() {
-		return "number.9";
+		return "number.C9";
 	}
 }

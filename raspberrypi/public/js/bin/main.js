@@ -2754,7 +2754,7 @@ retro.library.number.C0.__name__ = ["retro","library","number","C0"];
 retro.library.number.C0.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C0.prototype = {
 	getModuleName: function() {
-		return "number.0";
+		return "number.C0";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2779,7 +2779,7 @@ retro.library.number.C1.__name__ = ["retro","library","number","C1"];
 retro.library.number.C1.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C1.prototype = {
 	getModuleName: function() {
-		return "number.1";
+		return "number.C1";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2804,7 +2804,7 @@ retro.library.number.C2.__name__ = ["retro","library","number","C2"];
 retro.library.number.C2.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C2.prototype = {
 	getModuleName: function() {
-		return "number.2";
+		return "number.C2";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2829,7 +2829,7 @@ retro.library.number.C3.__name__ = ["retro","library","number","C3"];
 retro.library.number.C3.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C3.prototype = {
 	getModuleName: function() {
-		return "number.3";
+		return "number.C3";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2854,7 +2854,7 @@ retro.library.number.C4.__name__ = ["retro","library","number","C4"];
 retro.library.number.C4.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C4.prototype = {
 	getModuleName: function() {
-		return "number.4";
+		return "number.C4";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2879,7 +2879,7 @@ retro.library.number.C5.__name__ = ["retro","library","number","C5"];
 retro.library.number.C5.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C5.prototype = {
 	getModuleName: function() {
-		return "number.5";
+		return "number.C5";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2904,7 +2904,7 @@ retro.library.number.C6.__name__ = ["retro","library","number","C6"];
 retro.library.number.C6.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C6.prototype = {
 	getModuleName: function() {
-		return "number.6";
+		return "number.C6";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2929,7 +2929,7 @@ retro.library.number.C7.__name__ = ["retro","library","number","C7"];
 retro.library.number.C7.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C7.prototype = {
 	getModuleName: function() {
-		return "number.7";
+		return "number.C7";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2954,7 +2954,7 @@ retro.library.number.C8.__name__ = ["retro","library","number","C8"];
 retro.library.number.C8.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C8.prototype = {
 	getModuleName: function() {
-		return "number.8";
+		return "number.C8";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2973,13 +2973,13 @@ retro.library.number.C9 = function() {
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
 	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
-	this.outputs.add("0",retro.pub.RetroType.RNumber);
+	this.outputs.add("9",retro.pub.RetroType.RNumber);
 };
 retro.library.number.C9.__name__ = ["retro","library","number","C9"];
 retro.library.number.C9.__interfaces__ = [retro.core.JobComponent];
 retro.library.number.C9.prototype = {
 	getModuleName: function() {
-		return "number.9";
+		return "number.C9";
 	}
 	,onInputRecieved: function(params,cb) {
 		var input = params.get("trigger");
@@ -2988,7 +2988,7 @@ retro.library.number.C9.prototype = {
 			return;
 		}
 		var result = new retro.core.Result();
-		result.set("9",1);
+		result.set("9",9);
 		cb(result);
 	}
 	,__class__: retro.library.number.C9

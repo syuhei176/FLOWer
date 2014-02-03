@@ -34,6 +34,6 @@ class C2 implements JobComponent {
 	}
 
 	public function getModuleName() {
-		return "number.2";
+		return "number.C2";
 	}
 }
