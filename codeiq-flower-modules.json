@@ -11,6 +11,10 @@
 		"none" : ["Stack"],
 		"virtualDevice" : []
 	},
+        "map": {
+	        "none" : ["Setter", "Getter"],
+                "virtualDevice" : []
+	},
 	"sphero": { 
 		"none" : ["SetBackLED","SetHeading","Roll"],
 		"virtualDevice" : []

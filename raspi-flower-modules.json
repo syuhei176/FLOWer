@@ -11,6 +11,10 @@
 		"none" : ["Stack"],
 		"virtualDevice" : []
 	},
+        "map": {
+	        "none" : ["Setter", "Getter"],
+                "virtualDevice" : []
+	},
 	"string": {
 		"none" :	["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf"],
 		"virtualDevice" : []
