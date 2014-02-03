@@ -7,32 +7,12 @@
 		"none" : ["Create","Length","Push","Pop","Shift","Get"],
 		"virtualDevice" : []
 	},
-	"data": {
-		"none" : ["Stack"],
-		"virtualDevice" : []
-	},
-        "map": {
+	"map": {
 	        "none" : ["Setter", "Getter"],
                 "virtualDevice" : []
 	},
-	"sphero": { 
-		"none" : ["SetBackLED","SetHeading","Roll"],
-		"virtualDevice" : []
-	},
 	"string": {
 		"none" :	["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf"],
-		"virtualDevice" : []
-	},
-	"point2d": {
-		"none" : ["Add","Sub","Create","Distance"],"http":["Post","Get"],
-		"virtualDevice" : []
-	},
-	"line2d" : {
-		"none" : ["Create","Distance"],
-		"virtualDevice" : []
-	},
-	"list" : {
-		"none" : ["Length","Add","Clear","First","IsEmpty","Join","Last","Pop","Push","Remove"],
 		"virtualDevice" : []
 	},
 	"math": {
@@ -47,17 +27,9 @@
 		"none" : ["Translate","Fill","MouseDown"],
 		"virtualDevice" : []
 	},
-	"jquery": {
-		"none" : ["Find","Html"],
-		"virtualDevice" : []
-	},
 	"number" : {
 		"none" : ["C0","C1","C2","C3","C4","C5","C6","C7","C8","C9"],
 		"virtualDevice" : [] 
-	},
-	"pigpio" :{
-		"none" : ["Write","Read"],
-		"virtualDevice" : []
 	},
 	"system" : {
 			"none" : ["Speed"],
