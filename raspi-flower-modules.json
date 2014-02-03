@@ -21,7 +21,7 @@
 	},
 	"snapsvg": {
 		"none" : [],
-		"virtualDevice" : ["Rect","Circle"]
+		"virtualDevice" : ["Rect","Circle","RandomColor"]
 	},
 	"snapelement": {
 		"none" : ["Translate","Fill","MouseDown"],
