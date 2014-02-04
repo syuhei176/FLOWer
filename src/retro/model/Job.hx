@@ -7,6 +7,8 @@ import retro.vm.Worker;
 import retro.core.JobComponent;
 import retro.core.Params;
 import retro.core.Result;
+import retro.view.JobView;
+import snap.Snap;
 
 class Job{
 
@@ -25,6 +27,7 @@ class Job{
 	
 	// 実行を移譲
 	public var worker : Worker;
+	public var customDraw : JobView -> Void;
 	
 	public function new(id){
 		this.id = id;

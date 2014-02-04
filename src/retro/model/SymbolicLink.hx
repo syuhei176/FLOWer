@@ -11,6 +11,7 @@ class SymbolicLink extends Job{
 	public function new(id, jobComponent) {
 		super(id);
 		this.prototype = jobComponent;
+		this.customDraw = Reflect.getProperty(jobComponent,"customDraw");
 		for(ip in this.prototype.inputs.getArray()) {
 			this.addInputPort(new InputPort(this, ip.getType(), ip.getName()));
 		}

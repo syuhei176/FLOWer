@@ -1,22 +1,16 @@
 (function(){
 
 	var packages =  {
-	 "core": ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate",], 
-	 "data": ["Stack",], 
-	 "list": ["Length","Add","Clear","First","IsEmpty","Join","Last","Pop","Push","Remove",], 
+	 "core": ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate","TextBox",], 
 	 "math": ["Abs","Acos","Asin","Atan","Atan2","Cos","Sin","Floor","Log","Max","Min","Pow","Random","Sqrt",], 
-	 "snapsvg": ["Rect","Circle",], 
-	 "point2d": ["Add","Sub","Create","Distance","Post","Get",], 
-	 "line2d": ["Create","Distance",], 
-	 "system": ["Print","Scan",], 
-	 "snapelement": ["Translate","Fill",], 
+	 "snapsvg": ["Rect","Circle","Draw",], 
+	 "system": ["Print","Scan","Speed",], 
+	 "snapelement": ["Translate","Fill","MouseDown",], 
+	 "slide": ["Slide",], 
 	 "map": ["Setter","Getter",], 
-	 "pigpio": ["Write","Read",], 
 	 "string": ["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf",], 
 	 "number": ["C0","C1","C2","C3","C4","C5","C6","C7","C8","C9",], 
 	 "array": ["Create","Length","Push","Pop","Shift","Get",], 
-	 "sphero": ["SetBackLED","SetHeading","Roll",], 
-	 "jquery": ["Find","Html",], 
 	 "" : []};
 
 	var modalMemu = $("#joblist");

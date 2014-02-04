@@ -1,6 +1,6 @@
 {
 	"core":{
-		"none" : ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate"],
+		"none" : ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate","TextBox"],
 		"virtualDevice" : []
 	},
 	"array": {
@@ -20,7 +20,7 @@
 		"virtualDevice" : []
 	},
 	"snapsvg": {
-		"none" : [],
+		"none" : ["Draw"],
 		"virtualDevice" : ["Rect","Circle"]
 	},
 	"snapelement": {
@@ -32,8 +32,12 @@
 		"virtualDevice" : [] 
 	},
 	"system" : {
-			"none" : ["Speed"],
-			"virtualDevice" : ["Print","Scan"]
-		}
+		"none" : ["Speed"],
+		"virtualDevice" : ["Print","Scan"]
+	},
+	"slide" : {
+		"none" : ["Slide"],
+		"virtualDevice" : []
 	}
 }
+

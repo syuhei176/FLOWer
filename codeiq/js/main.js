@@ -94,6 +94,10 @@ Reflect.field = function(o,field) {
 	}
 	return v;
 }
+Reflect.getProperty = function(o,field) {
+	var tmp;
+	return o == null?null:o.__properties__ && (tmp = o.__properties__["get_" + field])?o[tmp]():o[field];
+}
 Reflect.fields = function(o) {
 	var a = [];
 	if(o != null) {
@@ -130,11 +134,6 @@ StringBuf.prototype = {
 		this.b += len == null?HxOverrides.substr(s,pos,null):HxOverrides.substr(s,pos,len);
 	}
 	,__class__: StringBuf
-}
-var StringTools = function() { }
-StringTools.__name__ = ["StringTools"];
-StringTools.urlEncode = function(s) {
-	return encodeURIComponent(s);
 }
 var ValueType = { __ename__ : true, __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TNull = ["TNull",0];
@@ -200,84 +199,6 @@ Type.enumIndex = function(e) {
 	return e[1];
 }
 var haxe = {}
-haxe.Http = function(url) {
-	this.url = url;
-	this.headers = new haxe.ds.StringMap();
-	this.params = new haxe.ds.StringMap();
-	this.async = true;
-};
-haxe.Http.__name__ = ["haxe","Http"];
-haxe.Http.prototype = {
-	onStatus: function(status) {
-	}
-	,onError: function(msg) {
-	}
-	,onData: function(data) {
-	}
-	,request: function(post) {
-		var me = this;
-		me.responseData = null;
-		var r = js.Browser.createXMLHttpRequest();
-		var onreadystatechange = function(_) {
-			if(r.readyState != 4) return;
-			var s = (function($this) {
-				var $r;
-				try {
-					$r = r.status;
-				} catch( e ) {
-					$r = null;
-				}
-				return $r;
-			}(this));
-			if(s == undefined) s = null;
-			if(s != null) me.onStatus(s);
-			if(s != null && s >= 200 && s < 400) me.onData(me.responseData = r.responseText); else if(s == null) me.onError("Failed to connect or resolve host"); else switch(s) {
-			case 12029:
-				me.onError("Failed to connect to host");
-				break;
-			case 12007:
-				me.onError("Unknown host");
-				break;
-			default:
-				me.responseData = r.responseText;
-				me.onError("Http Error #" + r.status);
-			}
-		};
-		if(this.async) r.onreadystatechange = onreadystatechange;
-		var uri = this.postData;
-		if(uri != null) post = true; else {
-			var $it0 = this.params.keys();
-			while( $it0.hasNext() ) {
-				var p = $it0.next();
-				if(uri == null) uri = ""; else uri += "&";
-				uri += StringTools.urlEncode(p) + "=" + StringTools.urlEncode(this.params.get(p));
-			}
-		}
-		try {
-			if(post) r.open("POST",this.url,this.async); else if(uri != null) {
-				var question = this.url.split("?").length <= 1;
-				r.open("GET",this.url + (question?"?":"&") + uri,this.async);
-				uri = null;
-			} else r.open("GET",this.url,this.async);
-		} catch( e ) {
-			this.onError(e.toString());
-			return;
-		}
-		if(this.headers.get("Content-Type") == null && post && this.postData == null) r.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		var $it1 = this.headers.keys();
-		while( $it1.hasNext() ) {
-			var h = $it1.next();
-			r.setRequestHeader(h,this.headers.get(h));
-		}
-		r.send(uri);
-		if(!this.async) onreadystatechange(null);
-	}
-	,setParameter: function(param,value) {
-		this.params.set(param,value);
-		return this;
-	}
-	,__class__: haxe.Http
-}
 haxe.Json = function() {
 };
 haxe.Json.__name__ = ["haxe","Json"];
@@ -750,16 +671,8 @@ js.Boot.__instanceof = function(o,cl) {
 		return o.__enum__ == cl;
 	}
 }
-js.Boot.__cast = function(o,t) {
-	if(js.Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
-}
 js.Browser = function() { }
 js.Browser.__name__ = ["js","Browser"];
-js.Browser.createXMLHttpRequest = function() {
-	if(typeof XMLHttpRequest != "undefined") return new XMLHttpRequest();
-	if(typeof ActiveXObject != "undefined") return new ActiveXObject("Microsoft.XMLHTTP");
-	throw "Unable to create XMLHttpRequest object.";
-}
 var retro = {}
 retro.controller = {}
 retro.controller.Controller = function() { }
@@ -782,17 +695,7 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
 	this.modules.push(new retro.library.core.Gate());
-	this.modules.push(new retro.library.data.Stack());
-	this.modules.push(new retro.library.list.Length());
-	this.modules.push(new retro.library.list.Add());
-	this.modules.push(new retro.library.list.Clear());
-	this.modules.push(new retro.library.list.First());
-	this.modules.push(new retro.library.list.IsEmpty());
-	this.modules.push(new retro.library.list.Join());
-	this.modules.push(new retro.library.list.Last());
-	this.modules.push(new retro.library.list.Pop());
-	this.modules.push(new retro.library.list.Push());
-	this.modules.push(new retro.library.list.Remove());
+	this.modules.push(new retro.library.core.TextBox());
 	this.modules.push(new retro.library.math.Abs());
 	this.modules.push(new retro.library.math.Acos());
 	this.modules.push(new retro.library.math.Asin());
@@ -807,22 +710,18 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
+	this.modules.push(new retro.library.snapsvg.Draw());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
-	this.modules.push(new retro.library.point2d.Add());
-	this.modules.push(new retro.library.point2d.Sub());
-	this.modules.push(new retro.library.point2d.Create());
-	this.modules.push(new retro.library.point2d.Distance());
-	this.modules.push(new retro.library.line2d.Create());
-	this.modules.push(new retro.library.line2d.Distance());
+	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.snapelement.MouseDown());
+	this.modules.push(new retro.library.slide.Slide());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
-	this.modules.push(new retro.library.pigpio.Write());
-	this.modules.push(new retro.library.pigpio.Read());
 	this.modules.push(new retro.library.string.Split());
 	this.modules.push(new retro.library.string.IndexOf());
 	this.modules.push(new retro.library.string.ChatAt());
@@ -845,11 +744,6 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.array.Pop());
 	this.modules.push(new retro.library.array.Shift());
 	this.modules.push(new retro.library.array.Get());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
-	this.modules.push(new retro.library.jquery.Find());
-	this.modules.push(new retro.library.jquery.Html());
 };
 retro.controller.DiagramController.__name__ = ["retro","controller","DiagramController"];
 retro.controller.DiagramController.__interfaces__ = [retro.controller.Controller];
@@ -1004,17 +898,7 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.core.Not());
 	this.modules.push(new retro.library.core.Transistor());
 	this.modules.push(new retro.library.core.Gate());
-	this.modules.push(new retro.library.data.Stack());
-	this.modules.push(new retro.library.list.Length());
-	this.modules.push(new retro.library.list.Add());
-	this.modules.push(new retro.library.list.Clear());
-	this.modules.push(new retro.library.list.First());
-	this.modules.push(new retro.library.list.IsEmpty());
-	this.modules.push(new retro.library.list.Join());
-	this.modules.push(new retro.library.list.Last());
-	this.modules.push(new retro.library.list.Pop());
-	this.modules.push(new retro.library.list.Push());
-	this.modules.push(new retro.library.list.Remove());
+	this.modules.push(new retro.library.core.TextBox());
 	this.modules.push(new retro.library.math.Abs());
 	this.modules.push(new retro.library.math.Acos());
 	this.modules.push(new retro.library.math.Asin());
@@ -1029,22 +913,18 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
+	this.modules.push(new retro.library.snapsvg.Draw());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
-	this.modules.push(new retro.library.point2d.Add());
-	this.modules.push(new retro.library.point2d.Sub());
-	this.modules.push(new retro.library.point2d.Create());
-	this.modules.push(new retro.library.point2d.Distance());
-	this.modules.push(new retro.library.line2d.Create());
-	this.modules.push(new retro.library.line2d.Distance());
+	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
+	this.modules.push(new retro.library.snapelement.MouseDown());
+	this.modules.push(new retro.library.slide.Slide());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
-	this.modules.push(new retro.library.pigpio.Write());
-	this.modules.push(new retro.library.pigpio.Read());
 	this.modules.push(new retro.library.string.Split());
 	this.modules.push(new retro.library.string.IndexOf());
 	this.modules.push(new retro.library.string.ChatAt());
@@ -1067,11 +947,6 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.array.Pop());
 	this.modules.push(new retro.library.array.Shift());
 	this.modules.push(new retro.library.array.Get());
-	this.modules.push(new retro.library.sphero.SetBackLED());
-	this.modules.push(new retro.library.sphero.SetHeading());
-	this.modules.push(new retro.library.sphero.Roll());
-	this.modules.push(new retro.library.jquery.Find());
-	this.modules.push(new retro.library.jquery.Html());
 };
 retro.controller.ImportController.__name__ = ["retro","controller","ImportController"];
 retro.controller.ImportController.prototype = {
@@ -1838,6 +1713,33 @@ retro.library.core.Remainder.prototype = {
 	}
 	,__class__: retro.library.core.Remainder
 }
+retro.library.core.TextBox = function() {
+	this.name = "Through";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("tigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("text",retro.pub.RetroType.RNumber);
+	retro.library.core.TextBox.id++;
+};
+retro.library.core.TextBox.__name__ = ["retro","library","core","TextBox"];
+retro.library.core.TextBox.__interfaces__ = [retro.core.JobComponent];
+retro.library.core.TextBox.prototype = {
+	getModuleName: function() {
+		return "core.TextBox";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("trigger");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var result = new retro.core.Result();
+		cb(result);
+	}
+	,customDraw: function(jobView) {
+	}
+	,__class__: retro.library.core.TextBox
+}
 retro.library.core.Through = function() {
 	this.name = "Through";
 	this.inputs = new retro.core.Inputs();
@@ -1916,399 +1818,6 @@ retro.library.core.Transistor.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.core.Transistor
-}
-retro.library.data = {}
-retro.library.data.Stack = function() {
-	this.name = "Stack";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("push",retro.pub.RetroType.RNumber);
-	this.inputs.add("pop",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-	this.datas = new Array();
-};
-retro.library.data.Stack.__name__ = ["retro","library","data","Stack"];
-retro.library.data.Stack.__interfaces__ = [retro.core.JobComponent];
-retro.library.data.Stack.prototype = {
-	getModuleName: function() {
-		return "data.Stack";
-	}
-	,onInputRecieved: function(params,cb) {
-		var push = params.get("push");
-		var pop = params.get("pop");
-		if(!push.isEmpty()) {
-			this.datas.push(push.getValue());
-			cb(null);
-			return;
-		} else if(!pop.isEmpty()) {
-			var result = new retro.core.Result();
-			result.set("output",this.datas.pop());
-			cb(result);
-		}
-	}
-	,__class__: retro.library.data.Stack
-}
-retro.library.jquery = {}
-retro.library.jquery.Find = function() {
-	this.name = "Find";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("selector",retro.pub.RetroType.RNumber);
-	this.outputs.add("jquery",retro.pub.RetroType.RNumber);
-};
-retro.library.jquery.Find.__name__ = ["retro","library","jquery","Find"];
-retro.library.jquery.Find.__interfaces__ = [retro.core.JobComponent];
-retro.library.jquery.Find.prototype = {
-	getModuleName: function() {
-		return "jquery.Find";
-	}
-	,onInputRecieved: function(params,cb) {
-		var selector = params.get("selector");
-		if(selector.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("jquery",new js.JQuery("body").find(selector.getValue()));
-		cb(result);
-	}
-	,__class__: retro.library.jquery.Find
-}
-retro.library.jquery.Html = function() {
-	this.name = "Html";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("jquery",retro.pub.RetroType.RNumber);
-	this.inputs.add("html",retro.pub.RetroType.RNumber);
-	this.outputs.add("jquery",retro.pub.RetroType.RNumber);
-};
-retro.library.jquery.Html.__name__ = ["retro","library","jquery","Html"];
-retro.library.jquery.Html.__interfaces__ = [retro.core.JobComponent];
-retro.library.jquery.Html.prototype = {
-	getModuleName: function() {
-		return "jquery.Html";
-	}
-	,onInputRecieved: function(params,cb) {
-		var jquery = params.get("jquery");
-		var html = params.get("html");
-		if(html.isEmpty() || jquery.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("jquery",jquery.getValue().html(html.getValue()));
-		cb(result);
-	}
-	,__class__: retro.library.jquery.Html
-}
-retro.library.line2d = {}
-retro.library.line2d.Create = function() {
-	this.name = "Create";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("line2d",retro.pub.RetroType.RNumber);
-	this.inputs.add("p1",retro.pub.RetroType.RNumber);
-	this.inputs.add("p2",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.line2d.Create.__name__ = ["retro","library","line2d","Create"];
-retro.library.line2d.Create.__interfaces__ = [retro.core.JobComponent];
-retro.library.line2d.Create.prototype = {
-	getModuleName: function() {
-		return "line2d.Create";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.line2d.Create
-}
-retro.library.line2d.Distance = function() {
-	this.name = "Distance";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("line2d",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.line2d.Distance.__name__ = ["retro","library","line2d","Distance"];
-retro.library.line2d.Distance.__interfaces__ = [retro.core.JobComponent];
-retro.library.line2d.Distance.prototype = {
-	getModuleName: function() {
-		return "line2d.Distance";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.line2d.Distance
-}
-retro.library.list = {}
-retro.library.list.Add = function() {
-	this.name = "Add";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.inputs.add("item",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Add.__name__ = ["retro","library","list","Add"];
-retro.library.list.Add.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Add.prototype = {
-	getModuleName: function() {
-		return "list.Add";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.list.Add
-}
-retro.library.list.Clear = function() {
-	this.name = "Clear";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Clear.__name__ = ["retro","library","list","Clear"];
-retro.library.list.Clear.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Clear.prototype = {
-	getModuleName: function() {
-		return "list.Clear";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.list.Clear
-}
-retro.library.list.First = function() {
-	this.name = "First";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.First.__name__ = ["retro","library","list","First"];
-retro.library.list.First.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.First.prototype = {
-	getModuleName: function() {
-		return "list.First";
-	}
-	,onInputRecieved: function(params,cb) {
-		var list = params.get("list");
-		if(list.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",list.getValue()[0]);
-		cb(result);
-	}
-	,__class__: retro.library.list.First
-}
-retro.library.list.IsEmpty = function() {
-	this.name = "IsEmpty";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.IsEmpty.__name__ = ["retro","library","list","IsEmpty"];
-retro.library.list.IsEmpty.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.IsEmpty.prototype = {
-	getModuleName: function() {
-		return "list.IsEmpty";
-	}
-	,onInputRecieved: function(params,cb) {
-		var list = params.get("list");
-		if(list.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",list.getValue().length == 0);
-		cb(result);
-	}
-	,__class__: retro.library.list.IsEmpty
-}
-retro.library.list.Join = function() {
-	this.name = "Join";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.inputs.add("sep",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Join.__name__ = ["retro","library","list","Join"];
-retro.library.list.Join.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Join.prototype = {
-	getModuleName: function() {
-		return "list.Join";
-	}
-	,onInputRecieved: function(params,cb) {
-		var list = params.get("list");
-		var sep = params.get("sep");
-		if(list.isEmpty() && sep.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",list.getValue().join(sep.getValue()));
-		cb(result);
-	}
-	,__class__: retro.library.list.Join
-}
-retro.library.list.Last = function() {
-	this.name = "Last";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Last.__name__ = ["retro","library","list","Last"];
-retro.library.list.Last.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Last.prototype = {
-	getModuleName: function() {
-		return "list.Last";
-	}
-	,onInputRecieved: function(params,cb) {
-		var list = params.get("list");
-		if(list.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",list.getValue()[js.Boot.__cast(list.getValue().length - 1 , Int)]);
-		cb(result);
-	}
-	,__class__: retro.library.list.Last
-}
-retro.library.list.Length = function() {
-	this.name = "Length";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Length.__name__ = ["retro","library","list","Length"];
-retro.library.list.Length.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Length.prototype = {
-	getModuleName: function() {
-		return "list.Length";
-	}
-	,onInputRecieved: function(params,cb) {
-		var list = params.get("list");
-		if(list.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",list.getValue().length);
-		cb(result);
-	}
-	,__class__: retro.library.list.Length
-}
-retro.library.list.Pop = function() {
-	this.name = "Pop";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Pop.__name__ = ["retro","library","list","Pop"];
-retro.library.list.Pop.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Pop.prototype = {
-	getModuleName: function() {
-		return "list.Pop";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.list.Pop
-}
-retro.library.list.Push = function() {
-	this.name = "Push";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.inputs.add("item",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Push.__name__ = ["retro","library","list","Push"];
-retro.library.list.Push.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Push.prototype = {
-	getModuleName: function() {
-		return "list.Push";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.list.Push
-}
-retro.library.list.Remove = function() {
-	this.name = "Remove";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("list",retro.pub.RetroType.RNumber);
-	this.inputs.add("index",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.list.Remove.__name__ = ["retro","library","list","Remove"];
-retro.library.list.Remove.__interfaces__ = [retro.core.JobComponent];
-retro.library.list.Remove.prototype = {
-	getModuleName: function() {
-		return "list.Remove";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.list.Remove
 }
 retro.library.map = {}
 retro.library.map.Getter = function() {
@@ -2997,175 +2506,37 @@ retro.library.number.C9.prototype = {
 	}
 	,__class__: retro.library.number.C9
 }
-retro.library.pigpio = {}
-retro.library.pigpio.Read = function() {
-	this.name = "Read";
+retro.library.slide = {}
+retro.library.slide.Slide = function() {
+	this.name = "Slide";
 	this.inputs = new retro.core.Inputs();
 	this.outputs = new retro.core.Outputs();
-	this.inputs.add("pin",retro.pub.RetroType.RNumber);
-	this.outputs.add("value",retro.pub.RetroType.RNumber);
+	this.inputs.add("id",retro.pub.RetroType.RNumber);
+	this.outputs.add("result",retro.pub.RetroType.RNumber);
 };
-retro.library.pigpio.Read.__name__ = ["retro","library","pigpio","Read"];
-retro.library.pigpio.Read.__interfaces__ = [retro.core.JobComponent];
-retro.library.pigpio.Read.prototype = {
+retro.library.slide.Slide.__name__ = ["retro","library","slide","Slide"];
+retro.library.slide.Slide.__interfaces__ = [retro.core.JobComponent];
+retro.library.slide.Slide.prototype = {
 	getModuleName: function() {
-		return "pigpio.Read";
+		return "slide.Slide";
 	}
 	,onInputRecieved: function(params,cb) {
-		var pin = params.get("pin");
-		if(pin.isEmpty()) {
+		var id = params.get("id");
+		if(id.isEmpty()) {
 			cb(null);
 			return;
 		}
-		var pin_no = pin.getValue();
-		var http = new haxe.Http("/pigpio/read");
-		http.onData = function(data) {
-			var result = new retro.core.Result();
-			result.set("value",haxe.Json.parse(data));
+		if(this.dialog == null) this.dialog = new CreateSlideDialog();
+		var result = new retro.core.Result();
+		result.set("result",true);
+		this.dialog.close(function() {
 			cb(result);
-		};
-		http.setParameter("pin",pin_no);
-		http.request(true);
-	}
-	,__class__: retro.library.pigpio.Read
-}
-retro.library.pigpio.Write = function() {
-	this.name = "Write";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("pin",retro.pub.RetroType.RNumber);
-	this.inputs.add("value",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.pigpio.Write.__name__ = ["retro","library","pigpio","Write"];
-retro.library.pigpio.Write.__interfaces__ = [retro.core.JobComponent];
-retro.library.pigpio.Write.prototype = {
-	getModuleName: function() {
-		return "pigpio.Write";
-	}
-	,onInputRecieved: function(params,cb) {
-		var pin = params.get("pin");
-		var valueParam = params.get("value");
-		if(pin.isEmpty() || valueParam.isEmpty()) {
+		},function() {
 			cb(null);
-			return;
-		}
-		var pin_no = pin.getValue();
-		var value = valueParam.getValue();
-		var http = new haxe.Http("/pigpio/write");
-		http.onData = function(data) {
-			var result = new retro.core.Result();
-			result.set("output",0);
-			cb(result);
-		};
-		http.setParameter("pin",pin_no);
-		http.setParameter("value",value);
-		http.request(true);
+		});
+		this.dialog.open(id.getValue());
 	}
-	,__class__: retro.library.pigpio.Write
-}
-retro.library.point2d = {}
-retro.library.point2d.Add = function() {
-	this.name = "Add";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("point2d",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.point2d.Add.__name__ = ["retro","library","point2d","Add"];
-retro.library.point2d.Add.__interfaces__ = [retro.core.JobComponent];
-retro.library.point2d.Add.prototype = {
-	getModuleName: function() {
-		return "point2d.Add";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.point2d.Add
-}
-retro.library.point2d.Create = function() {
-	this.name = "Create";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("point2d",retro.pub.RetroType.RNumber);
-	this.inputs.add("x",retro.pub.RetroType.RNumber);
-	this.inputs.add("y",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.point2d.Create.__name__ = ["retro","library","point2d","Create"];
-retro.library.point2d.Create.__interfaces__ = [retro.core.JobComponent];
-retro.library.point2d.Create.prototype = {
-	getModuleName: function() {
-		return "point2d.Create";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.point2d.Create
-}
-retro.library.point2d.Distance = function() {
-	this.name = "Distance";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("point2d",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.point2d.Distance.__name__ = ["retro","library","point2d","Distance"];
-retro.library.point2d.Distance.__interfaces__ = [retro.core.JobComponent];
-retro.library.point2d.Distance.prototype = {
-	getModuleName: function() {
-		return "point2d.Distance";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.point2d.Distance
-}
-retro.library.point2d.Sub = function() {
-	this.name = "Sub";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("point2d",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.point2d.Sub.__name__ = ["retro","library","point2d","Sub"];
-retro.library.point2d.Sub.__interfaces__ = [retro.core.JobComponent];
-retro.library.point2d.Sub.prototype = {
-	getModuleName: function() {
-		return "point2d.Sub";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.point2d.Sub
+	,__class__: retro.library.slide.Slide
 }
 retro.library.snapelement = {}
 retro.library.snapelement.Fill = function() {
@@ -3174,7 +2545,7 @@ retro.library.snapelement.Fill = function() {
 	this.outputs = new retro.core.Outputs();
 	this.inputs.add("snapelement",retro.pub.RetroType.RNumber);
 	this.inputs.add("color",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
+	this.outputs.add("snapelement",retro.pub.RetroType.RNumber);
 };
 retro.library.snapelement.Fill.__name__ = ["retro","library","snapelement","Fill"];
 retro.library.snapelement.Fill.__interfaces__ = [retro.core.JobComponent];
@@ -3183,16 +2554,51 @@ retro.library.snapelement.Fill.prototype = {
 		return "snapelement.Fill";
 	}
 	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var snapelementParam = params.get("snapelement");
+		var colorParam = params.get("color");
+		if(snapelementParam.isEmpty() || colorParam.isEmpty()) {
 			cb(null);
 			return;
 		}
+		var snapelement = snapelementParam.getValue();
+		snapelement.attr({ fill : colorParam.getValue()});
 		var result = new retro.core.Result();
-		result.set("output",input.getValue());
+		result.set("snapelement",snapelement);
 		cb(result);
 	}
 	,__class__: retro.library.snapelement.Fill
+}
+retro.library.snapelement.MouseDown = function() {
+	this.name = "MouseDown";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("snapelement",retro.pub.RetroType.RNumber);
+	this.outputs.add("e",retro.pub.RetroType.RNumber);
+	this.outputs.add("x",retro.pub.RetroType.RNumber);
+	this.outputs.add("y",retro.pub.RetroType.RNumber);
+};
+retro.library.snapelement.MouseDown.__name__ = ["retro","library","snapelement","MouseDown"];
+retro.library.snapelement.MouseDown.__interfaces__ = [retro.core.JobComponent];
+retro.library.snapelement.MouseDown.prototype = {
+	getModuleName: function() {
+		return "snapelement.MouseDown";
+	}
+	,onInputRecieved: function(params,cb) {
+		var snapelementParam = params.get("snapelement");
+		if(snapelementParam.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var snapelement = snapelementParam.getValue();
+		snapelement.mousedown(function(e,x,y) {
+			var result = new retro.core.Result();
+			result.set("e",e);
+			result.set("x",x);
+			result.set("y",y);
+			cb(result);
+		});
+	}
+	,__class__: retro.library.snapelement.MouseDown
 }
 retro.library.snapelement.Translate = function() {
 	this.name = "Translate";
@@ -3245,7 +2651,7 @@ retro.library.snapsvg.Circle.prototype = {
 		var x = params.get("x");
 		var y = params.get("y");
 		var r = params.get("r");
-		if(x.isEmpty() && y.isEmpty() && r.isEmpty()) {
+		if(x.isEmpty() || y.isEmpty() || r.isEmpty()) {
 			cb(null);
 			return;
 		}
@@ -3255,6 +2661,29 @@ retro.library.snapsvg.Circle.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.snapsvg.Circle
+}
+retro.library.snapsvg.Draw = function() {
+	this.name = "Draw";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("draw",retro.pub.RetroType.RNumber);
+};
+retro.library.snapsvg.Draw.__name__ = ["retro","library","snapsvg","Draw"];
+retro.library.snapsvg.Draw.__interfaces__ = [retro.core.JobComponent];
+retro.library.snapsvg.Draw.prototype = {
+	getModuleName: function() {
+		return "snapsvg.Draw";
+	}
+	,onInputRecieved: function(params,cb) {
+		var draw = params.get("draw");
+		if(draw.isEmpty()) {
+			cb(null);
+			return;
+		}
+		new CreateSvgDialog().open();
+		cb(null);
+	}
+	,__class__: retro.library.snapsvg.Draw
 }
 retro.library.snapsvg.Rect = function(virtualDevice) {
 	this.name = "Rect";
@@ -3288,85 +2717,6 @@ retro.library.snapsvg.Rect.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.snapsvg.Rect
-}
-retro.library.sphero = {}
-retro.library.sphero.Roll = function() {
-	this.name = "Roll";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.inputs.add("speed",retro.pub.RetroType.RNumber);
-	this.inputs.add("angle",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.Roll.__name__ = ["retro","library","sphero","Roll"];
-retro.library.sphero.Roll.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.Roll.prototype = {
-	getModuleName: function() {
-		return "sphero.Roll";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.Roll
-}
-retro.library.sphero.SetBackLED = function() {
-	this.name = "SetBackLED";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.SetBackLED.__name__ = ["retro","library","sphero","SetBackLED"];
-retro.library.sphero.SetBackLED.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.SetBackLED.prototype = {
-	getModuleName: function() {
-		return "sphero.SetBackLED";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.SetBackLED
-}
-retro.library.sphero.SetHeading = function() {
-	this.name = "SetHeading";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("sphero",retro.pub.RetroType.RNumber);
-	this.inputs.add("r",retro.pub.RetroType.RNumber);
-	this.outputs.add("output",retro.pub.RetroType.RNumber);
-};
-retro.library.sphero.SetHeading.__name__ = ["retro","library","sphero","SetHeading"];
-retro.library.sphero.SetHeading.__interfaces__ = [retro.core.JobComponent];
-retro.library.sphero.SetHeading.prototype = {
-	getModuleName: function() {
-		return "sphero.SetHeading";
-	}
-	,onInputRecieved: function(params,cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new retro.core.Result();
-		result.set("output",input.getValue());
-		cb(result);
-	}
-	,__class__: retro.library.sphero.SetHeading
 }
 retro.library.string = {}
 retro.library.string.ChatAt = function() {
@@ -3584,6 +2934,32 @@ retro.library.system.Scan.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.system.Scan
+}
+retro.library.system.Speed = function() {
+	this.name = "Speed";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("speed",retro.pub.RetroType.RNumber);
+	this.outputs.add("output",retro.pub.RetroType.RNumber);
+};
+retro.library.system.Speed.__name__ = ["retro","library","system","Speed"];
+retro.library.system.Speed.__interfaces__ = [retro.core.JobComponent];
+retro.library.system.Speed.prototype = {
+	getModuleName: function() {
+		return "system.Speed";
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("speed");
+		if(input.isEmpty()) {
+			cb(null);
+			return;
+		}
+		js.Browser.window.sessionStorage.setItem("speed","" + Std.string(input.getValue()));
+		var result = new retro.core.Result();
+		result.set("output",input.getValue());
+		cb(result);
+	}
+	,__class__: retro.library.system.Speed
 }
 retro.model = {}
 retro.model.Diagram = function() {
@@ -4093,6 +3469,7 @@ retro.model.Project.prototype = {
 retro.model.SymbolicLink = function(id,jobComponent) {
 	retro.model.Job.call(this,id);
 	this.prototype = jobComponent;
+	this.customDraw = Reflect.getProperty(jobComponent,"customDraw");
 	var _g = 0, _g1 = this.prototype.inputs.getArray();
 	while(_g < _g1.length) {
 		var ip = _g1[_g];
@@ -4159,7 +3536,7 @@ retro.model.ValueCarrier.prototype = {
 		return this.value;
 	}
 	,step: function() {
-		if(this.count > 9) return this.destPort; else {
+		if(this.count > 39) return this.destPort; else {
 			this.count++;
 			this.fireOnStepListeners();
 			return null;
@@ -4188,7 +3565,9 @@ retro.pub.Editor.create = function(editorkey,id_header) {
 		editor.virtualDevice = virtualDevice;
 		var consoleDevice = new retro.view.ConsoleView(editor.snap);
 		virtualDevice.setConsoleDevice(consoleDevice);
-		virtualDevice.setSVGDevice(editor.snap);
+		var snap1 = new Snap();
+		snap1.attr({ id : "sub_svg", 'class' : "modal"});
+		virtualDevice.setSVGDevice(snap1);
 		virtualDevice.setSocketDevice(retroClient);
 		if(data.model.diagram) {
 			var importController = new retro.controller.ImportController(project,virtualDevice);
@@ -4213,7 +3592,9 @@ retro.pub.Editor.createCodeIQ = function() {
 	editor.virtualDevice = virtualDevice;
 	var consoleDevice = new retro.view.ConsoleView(editor.snap);
 	virtualDevice.setConsoleDevice(consoleDevice);
-	virtualDevice.setSVGDevice(editor.snap);
+	var snap1 = new Snap();
+	snap1.attr({ id : "sub_svg", 'class' : "modal"});
+	virtualDevice.setSVGDevice(snap1);
 	var diagram = new retro.model.Diagram();
 	project.setRootDiagram(diagram);
 	var diagramController = new retro.controller.DiagramController(editor,diagram,virtualDevice);
@@ -4943,6 +4324,7 @@ retro.view.JobView.prototype = {
 			this.group.append(portView.upperGroup);
 		}
 		this.cal2();
+		if(this.job.customDraw != null) this.job.customDraw(this);
 	}
 	,__class__: retro.view.JobView
 }
@@ -5160,7 +4542,7 @@ retro.view.ValueCarrierView.prototype = {
 		var outputPortView = this.diagramView.getOutputPortView(this.valueCarrier.srcPort);
 		var inputPortView = this.diagramView.getInputPortView(this.valueCarrier.destPort);
 		this.vec = retro.pub.Point2D.sub(inputPortView.getPos(),outputPortView.getPos());
-		retro.pub.Point2D.timesToSelf(this.vec,0.1);
+		retro.pub.Point2D.timesToSelf(this.vec,0.025);
 		this.setPos(outputPortView.getPos().getX(),outputPortView.getPos().getY());
 	}
 	,remove: function() {
@@ -5282,7 +4664,9 @@ retro.vm.Runtime.prototype = {
 	,run: function(entry,v) {
 		var _g = this;
 		this.invoke_entry(entry,new retro.model.Value(retro.pub.RetroType.RNumber,v));
-		this.timer = new haxe.Timer(100);
+		var speed = js.Browser.window.sessionStorage.getItem("speed");
+		if(speed == null) speed = "50";
+		this.timer = new haxe.Timer(Std.parseInt(speed));
 		this.timer.run = function() {
 			_g.run_step();
 		};
@@ -5340,6 +4724,7 @@ var q = window.jQuery;
 js.JQuery = q;
 js.Browser.window = typeof window != "undefined" ? window : null;
 js.Browser.document = typeof window != "undefined" ? window.document : null;
+retro.library.core.TextBox.id = 0;
 retro.view.Thema.fill = "#FCFCFC";
 retro.view.Thema.stroke = "#FFFFFF";
 retro.view.Thema.strokeWidth = 1;
