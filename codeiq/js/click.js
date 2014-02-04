@@ -32,7 +32,9 @@ $(function(){
 	CreateSlideDialog.prototype.open = function(id) {
 		if( $("#slide_" + id).size() > 0 && modal_open == false){
 			var modal =	$('<a href="#slide_'+id+'"></a>');
-			modal.leanModal({top: 20, closes : this.listener.push(function(){ modal_open = false; })});
+			var array = this.listener;
+			array.push(function(){ modal_open = false; });
+			modal.leanModal({top: 20, closes : array});
 			$(modal).click();
 		}else{
 			this.no_modal_listener[0]();
