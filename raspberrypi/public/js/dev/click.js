@@ -30,9 +30,18 @@ $(function(){
 	CreateSlideDialog.prototype.on = function(listener) {}
 
 	CreateSlideDialog.prototype.open = function(id) {
+		var self = this;
 		if( $("#slide_" + id).size() > 0 && modal_open == false){
+			modal_open = true;
 			var modal =	$('<a href="#slide_'+id+'"></a>');
-			modal.leanModal({top: 20, closes : this.listener.push(function(){ modal_open = false; })});
+			//var array = this.listener;
+			//array.push(function(){ modal_open = false;	console.log("aaa"); });
+			modal.leanModal({top: 20, closes : [function() {
+				if(modal_open) {
+					self.listener[0]()
+				}
+				modal_open = false;
+			}]});
 			$(modal).click();
 		}else{
 			this.no_modal_listener[0]();

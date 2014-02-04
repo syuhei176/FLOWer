@@ -30,7 +30,7 @@ class Slide implements JobComponent {
 		}
 		if( this.dialog == null ) this.dialog = new CreateSlideDialog();
 		var result = new Result();
-		result.set("result", true);
+		result.set("result", id.getValue());
 		dialog.close(function() cb(result), function() cb(null) );
 		dialog.open(id.getValue());
 	}
