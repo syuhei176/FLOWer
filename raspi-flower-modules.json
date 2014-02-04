@@ -36,8 +36,11 @@
 		"virtualDevice" : ["ReadWait", "ReadWait18", "ReadWait24","ReadWaitTrigger"]
 	},
 	"system" : {
-			"none" : ["Speed"],
-			"virtualDevice" : ["Print","Scan"]
-		}
+		"none" : ["Speed"],
+		"virtualDevice" : ["Print","Scan"]
+	},
+	"slide" : {
+		"none" : ["Slide"],
+		"virtualDevice" : []
 	}
 }

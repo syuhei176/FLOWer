@@ -140,6 +140,16 @@ StringTools.__name__ = ["StringTools"];
 StringTools.urlEncode = function(s) {
 	return encodeURIComponent(s);
 }
+StringTools.hex = function(n,digits) {
+	var s = "";
+	var hexChars = "0123456789ABCDEF";
+	do {
+		s = hexChars.charAt(n & 15) + s;
+		n >>>= 4;
+	} while(n > 0);
+	if(digits != null) while(s.length < digits) s = "0" + s;
+	return s;
+}
 var ValueType = { __ename__ : true, __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] }
 ValueType.TNull = ["TNull",0];
 ValueType.TNull.toString = $estr;
@@ -800,12 +810,14 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.snapsvg.Draw());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.RandomColor(virtualDevice));
 	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.snapelement.MouseDown());
+	this.modules.push(new retro.library.slide.Slide());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.pigpio.Write());
@@ -1008,12 +1020,14 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.snapsvg.Draw());
 	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
 	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.RandomColor(virtualDevice));
 	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.snapelement.MouseDown());
+	this.modules.push(new retro.library.slide.Slide());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.pigpio.Write());
@@ -2792,6 +2806,38 @@ retro.library.pigpio.Write.prototype = {
 	}
 	,__class__: retro.library.pigpio.Write
 }
+retro.library.slide = {}
+retro.library.slide.Slide = function() {
+	this.name = "Slide";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("id",retro.pub.RetroType.RNumber);
+	this.outputs.add("result",retro.pub.RetroType.RNumber);
+};
+retro.library.slide.Slide.__name__ = ["retro","library","slide","Slide"];
+retro.library.slide.Slide.__interfaces__ = [retro.core.JobComponent];
+retro.library.slide.Slide.prototype = {
+	getModuleName: function() {
+		return "slide.Slide";
+	}
+	,onInputRecieved: function(params,cb) {
+		var id = params.get("id");
+		if(id.isEmpty()) {
+			cb(null);
+			return;
+		}
+		if(this.dialog == null) this.dialog = new CreateSlideDialog();
+		var result = new retro.core.Result();
+		result.set("result",true);
+		this.dialog.close(function() {
+			cb(result);
+		},function() {
+			cb(null);
+		});
+		this.dialog.open(id.getValue());
+	}
+	,__class__: retro.library.slide.Slide
+}
 retro.library.snapelement = {}
 retro.library.snapelement.Fill = function() {
 	this.name = "Fill";
@@ -2938,6 +2984,33 @@ retro.library.snapsvg.Draw.prototype = {
 		cb(null);
 	}
 	,__class__: retro.library.snapsvg.Draw
+}
+retro.library.snapsvg.RandomColor = function(virtualDevice) {
+	this.name = "RandomColor";
+	this.inputs = new retro.core.Inputs();
+	this.outputs = new retro.core.Outputs();
+	this.inputs.add("trigger",retro.pub.RetroType.RNumber);
+	this.outputs.add("color",retro.pub.RetroType.RNumber);
+	this.virtualDevice = virtualDevice;
+};
+retro.library.snapsvg.RandomColor.__name__ = ["retro","library","snapsvg","RandomColor"];
+retro.library.snapsvg.RandomColor.__interfaces__ = [retro.core.JobComponent];
+retro.library.snapsvg.RandomColor.prototype = {
+	getModuleName: function() {
+		return "snapsvg.RandomColor";
+	}
+	,onInputRecieved: function(params,cb) {
+		var trigger = params.get("trigger");
+		if(trigger.isEmpty()) {
+			cb(null);
+			return;
+		}
+		var col = Math.floor(16777215 * Math.random());
+		var result = new retro.core.Result();
+		result.set("color","#" + HxOverrides.substr(StringTools.hex(col,16),10,6));
+		cb(result);
+	}
+	,__class__: retro.library.snapsvg.RandomColor
 }
 retro.library.snapsvg.Rect = function(virtualDevice) {
 	this.name = "Rect";
