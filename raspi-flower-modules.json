@@ -20,7 +20,7 @@
 		"virtualDevice" : []
 	},
 	"snapsvg": {
-		"none" : [],
+		"none" : ["Draw"],
 		"virtualDevice" : ["Rect","Circle"]
 	},
 	"snapelement": {

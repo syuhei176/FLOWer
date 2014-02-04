@@ -32,8 +32,12 @@
 		"virtualDevice" : [] 
 	},
 	"system" : {
-			"none" : ["Speed"],
-			"virtualDevice" : ["Print","Scan"]
-		}
+		"none" : ["Speed"],
+		"virtualDevice" : ["Print","Scan"]
+	},
+	"slide" : {
+		"none" : ["Slide"],
+		"virtualDevice" : []
 	}
 }
+
