@@ -88,8 +88,10 @@ class PathView{
     	});
 	}
 	private function visible_remove_btn() {
-		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - Thema.jobWidth / 2 - Thema.removeRadius;
-		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - Thema.jobTitleHeight;
+		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 
+		- Thema.createSvgX - Thema.playSvgX - 6;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 
+		- Thema.createSvgY - Thema.playSvgY - 6;
     	this.remove_graphic.transform("translate("+xx+","+yy+")");
 		this.remove_timer = new Timer(2000);
 		this.remove_timer.run = function() {
