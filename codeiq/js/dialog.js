@@ -6,7 +6,6 @@
 	 "snapsvg": ["Rect","Circle","Draw",], 
 	 "system": ["Print","Scan","Speed",], 
 	 "snapelement": ["Translate","Fill","MouseDown",], 
-	 "slide": ["Slide",], 
 	 "map": ["Setter","Getter",], 
 	 "string": ["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf",], 
 	 "number": ["C0","C1","C2","C3","C4","C5","C6","C7","C8","C9",], 

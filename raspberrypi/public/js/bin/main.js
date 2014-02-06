@@ -2828,7 +2828,7 @@ retro.library.slide.Slide.prototype = {
 		}
 		if(this.dialog == null) this.dialog = new CreateSlideDialog();
 		var result = new retro.core.Result();
-		result.set("result",true);
+		result.set("result",id.getValue());
 		this.dialog.close(function() {
 			cb(result);
 		},function() {
@@ -4759,8 +4759,8 @@ retro.view.PathView.prototype = {
 	}
 	,visible_remove_btn: function() {
 		var _g = this;
-		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 108. - 22;
-		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 35;
+		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 80 - 15 - 6;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 15 - 15 - 6;
 		this.remove_graphic.transform("translate(" + xx + "," + yy + ")");
 		this.remove_timer = new haxe.Timer(2000);
 		this.remove_timer.run = function() {

@@ -719,7 +719,6 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.snapelement.MouseDown());
-	this.modules.push(new retro.library.slide.Slide());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.string.Split());
@@ -922,7 +921,6 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.snapelement.MouseDown());
-	this.modules.push(new retro.library.slide.Slide());
 	this.modules.push(new retro.library.map.Setter());
 	this.modules.push(new retro.library.map.Getter());
 	this.modules.push(new retro.library.string.Split());
@@ -2505,38 +2503,6 @@ retro.library.number.C9.prototype = {
 		cb(result);
 	}
 	,__class__: retro.library.number.C9
-}
-retro.library.slide = {}
-retro.library.slide.Slide = function() {
-	this.name = "Slide";
-	this.inputs = new retro.core.Inputs();
-	this.outputs = new retro.core.Outputs();
-	this.inputs.add("id",retro.pub.RetroType.RNumber);
-	this.outputs.add("result",retro.pub.RetroType.RNumber);
-};
-retro.library.slide.Slide.__name__ = ["retro","library","slide","Slide"];
-retro.library.slide.Slide.__interfaces__ = [retro.core.JobComponent];
-retro.library.slide.Slide.prototype = {
-	getModuleName: function() {
-		return "slide.Slide";
-	}
-	,onInputRecieved: function(params,cb) {
-		var id = params.get("id");
-		if(id.isEmpty()) {
-			cb(null);
-			return;
-		}
-		if(this.dialog == null) this.dialog = new CreateSlideDialog();
-		var result = new retro.core.Result();
-		result.set("result",true);
-		this.dialog.close(function() {
-			cb(result);
-		},function() {
-			cb(null);
-		});
-		this.dialog.open(id.getValue());
-	}
-	,__class__: retro.library.slide.Slide
 }
 retro.library.snapelement = {}
 retro.library.snapelement.Fill = function() {
@@ -4431,8 +4397,8 @@ retro.view.PathView.prototype = {
 	}
 	,visible_remove_btn: function() {
 		var _g = this;
-		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 108. - 22;
-		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 35;
+		var xx = (this.target.getPos().getX() + this.source.getPos().getX()) / 2 - 80 - 15 - 6;
+		var yy = (this.target.getPos().getY() + this.source.getPos().getY()) / 2 - 15 - 15 - 6;
 		this.remove_graphic.transform("translate(" + xx + "," + yy + ")");
 		this.remove_timer = new haxe.Timer(2000);
 		this.remove_timer.run = function() {
