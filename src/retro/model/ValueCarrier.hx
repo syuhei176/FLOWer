@@ -20,7 +20,7 @@ class ValueCarrier {
 	}
 	
 	public function step() {
-		if(this.count > 9) {
+		if(this.count > 39) {
 			return this.destPort;
 		}else{
 			this.count++;

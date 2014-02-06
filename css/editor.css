@@ -92,3 +92,12 @@ ul#joblist, ul.sub_menu{
         margin: 0 0 0 0;
         border-bottom: 1px solid #FFFFFF;
 }
+
+ #sub_svg{
+    top : 20px;
+    left : 12%;
+    width: 76%;
+    height: 95%;
+    background: #cccccc;
+    border-bottom: 1px solid #FFFFFF;
+ }

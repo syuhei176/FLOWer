@@ -7,24 +7,12 @@
 		"none" : ["Create","Length","Push","Pop","Shift","Get"],
 		"virtualDevice" : []
 	},
-	"data": {
-		"none" : ["Stack"],
+	"map": {
+		"none" : ["Setter", "Getter"],
 		"virtualDevice" : []
 	},
 	"string": {
 		"none" :	["Split","IndexOf","ChatAt","Substr","Length","LastIndexOf"],
-		"virtualDevice" : []
-	},
-	"point2d": {
-		"none" : ["Add","Sub","Create","Distance"],"http":["Post","Get"],
-		"virtualDevice" : []
-	},
-	"line2d" : {
-		"none" : ["Create","Distance"],
-		"virtualDevice" : []
-	},
-	"list" : {
-		"none" : ["Length","Add","Clear","First","IsEmpty","Join","Last","Pop","Push","Remove"],
 		"virtualDevice" : []
 	},
 	"math": {
@@ -32,15 +20,11 @@
 		"virtualDevice" : []
 	},
 	"snapsvg": {
-		"none" : [],
-		"virtualDevice" : ["Rect","Circle"]
+		"none" : ["Draw"],
+		"virtualDevice" : ["Rect","Circle","RandomColor"]
 	},
 	"snapelement": {
-		"none" : ["Translate","Fill"],
-		"virtualDevice" : []
-	},
-	"jquery": {
-		"none" : ["Find","Html"],
+		"none" : ["Translate","Fill","MouseDown"],
 		"virtualDevice" : []
 	},
 	"number" : {
@@ -48,12 +32,15 @@
 		"virtualDevice" : [] 
 	},
 	"pigpio" :{
-		"none" : ["Write","Read"],
-		"virtualDevice" : ["ReadWait"]
+		"none" : ["Write","Read","Tweet"],
+		"virtualDevice" : ["ReadWait", "ReadWait18", "ReadWait24","ReadWaitTrigger"]
 	},
 	"system" : {
-			"none" : [],
-			"virtualDevice" : ["Print","Scan"]
-		}
+		"none" : ["Speed"],
+		"virtualDevice" : ["Print","Scan"]
+	},
+	"slide" : {
+		"none" : ["Slide"],
+		"virtualDevice" : []
 	}
 }

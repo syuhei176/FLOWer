@@ -85,7 +85,7 @@ class ValueCarrierView {
 		var outputPortView = this.diagramView.getOutputPortView(this.valueCarrier.srcPort);
 		var inputPortView = this.diagramView.getInputPortView(this.valueCarrier.destPort);
 		this.vec = Point2D.sub(inputPortView.getPos(), outputPortView.getPos());
-		Point2D.timesToSelf(this.vec, 0.1);
+		Point2D.timesToSelf(this.vec, 1/40);
 		this.setPos(outputPortView.getPos().getX(), outputPortView.getPos().getY());
 	}
 	public function addPos(x, y) {

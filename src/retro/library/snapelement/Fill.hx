@@ -2,6 +2,7 @@
 
 package retro.library.snapelement;
 
+import snap.Snap;
 import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
@@ -19,18 +20,23 @@ class Fill implements JobComponent {
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("snapelement", RetroType.RNumber);
-    		this.inputs.add("color", RetroType.RNumber);
-		this.outputs.add("output", RetroType.RNumber);
+    	this.inputs.add("color", RetroType.RNumber);
+		this.outputs.add("snapelement", RetroType.RNumber);
 	}
 	
 	public function onInputRecieved(params:Params, cb) {
-		var input = params.get("input");
-		if(input.isEmpty()) {
+		var snapelementParam = params.get("snapelement");
+		var colorParam = params.get("color");
+		if(snapelementParam.isEmpty() || colorParam.isEmpty()) {
 			cb(null);
 			return;
 		}
+		var snapelement:SnapElement = snapelementParam.getValue();
+		snapelement.attr({
+			fill : colorParam.getValue()
+		});
 		var result = new Result();
-		result.set("output", (input.getValue()));
+		result.set("snapelement", snapelement);
 		cb(result);
 	}
 
