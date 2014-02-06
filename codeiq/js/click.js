@@ -1,7 +1,6 @@
 $(function(){
-	$('#joblist > li > .main_menu').click(function(){
+	$('.main_menu').click(function(){
 		$(this).toggleClass("active");
-		retrun false;
 	});
 
 	var modal_open = false;
