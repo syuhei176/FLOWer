@@ -263,7 +263,7 @@ extern class SnapElement {
 	public function touchcancel(handler:Event->Void):SnapElement;
 	public function touchend(handler:Event->Void):SnapElement;
 	public function touchmove(handler:Event->Void):SnapElement;
-	public function touchstart(handler:Event->Void):SnapElement;
+	public function touchstart(handler:Event->Int->Int->Void):SnapElement;
 	public function transform(tstr:String):Dynamic;
 	public function unclick(handler:Event->Void):SnapElement;
 	public function undblclick(handler:Event->Void):SnapElement;

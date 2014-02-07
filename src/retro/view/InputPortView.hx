@@ -6,6 +6,7 @@ import snap.Snap;
 import retro.pub.Editor;
 import retro.pub.Point2D;
 import retro.pub.RetroType;
+import retro.pub.UserAgent;
 import retro.model.Port;
 import retro.model.InputPort;
 import retro.model.OutputPort;
@@ -40,8 +41,7 @@ class InputPortView extends PortView{
 		});
 		this.upperGroup.append(text);
 		
-		
-		this.coll.mouseup(function(e, x, y) {
+		var touchListener = function(e, x, y) {
 			if(this.diagramController.setRubberbandEnd(this.port)) {
 				this.diagramController.clearRubberband();
 				this.isConnected = true;
@@ -54,7 +54,12 @@ class InputPortView extends PortView{
 					}
 				}
 			}
-		});
+		}
+		if(UserAgent.checkTablet()) {
+			this.coll.touchstart(touchListener);
+		}else{
+			this.coll.mouseup(touchListener);
+		}
 		this.setPos(0, 0);
 	}
 	
