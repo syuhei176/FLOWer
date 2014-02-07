@@ -40,7 +40,7 @@ class Runtime{
 		#else
 		var speed = js.Browser.window.sessionStorage.getItem("speed");
 		if(speed == null) {
-			speed = "50";
+			speed = "32";
 		}
 		this.timer = new Timer(Std.parseInt(speed));
 		this.timer.run = function() {
