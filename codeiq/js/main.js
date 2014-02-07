@@ -3675,6 +3675,13 @@ retro.pub.RetroTypeChecker.__name__ = ["retro","pub","RetroTypeChecker"];
 retro.pub.RetroTypeChecker.check = function(type1,type2) {
 	return true;
 }
+retro.pub.UserAgent = function() { }
+retro.pub.UserAgent.__name__ = ["retro","pub","UserAgent"];
+retro.pub.UserAgent.checkTablet = function() {
+	if(js.Browser.window.navigator.userAgent.indexOf("iPad") > 0) return true;
+	if(js.Browser.window.navigator.userAgent.indexOf("iPhone") > 0) return true;
+	return false;
+}
 retro.view = {}
 retro.view.ConsoleView = function(snap) {
 	this.current_line = 0;
@@ -4009,7 +4016,7 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 	var text = snap.text(20,3,port.getName());
 	text.attr({ 'font-size' : "8pt", fill : "#2C3E50", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
-	this.coll.mouseup(function(e,x,y) {
+	var touchListener = function(e,x,y) {
 		if(_g.diagramController.setRubberbandEnd(_g.port)) {
 			_g.diagramController.clearRubberband();
 			_g.isConnected = true;
@@ -4017,7 +4024,8 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 			var v = js.Browser.window.prompt("","");
 			if(v != null) _g.port.setConstant(new retro.model.Value(retro.pub.RetroType.RNumber,haxe.Json.parse(v)));
 		}
-	});
+	};
+	if(retro.pub.UserAgent.checkTablet()) this.coll.touchstart(touchListener); else this.coll.mouseup(touchListener);
 	this.setPos(0,0);
 };
 retro.view.InputPortView.__name__ = ["retro","view","InputPortView"];
