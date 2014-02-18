@@ -11,20 +11,13 @@ class Main{
 		var inputFilename = args[0];
 		var outputFilename = args[1];
 
-		var inputJson = Json.parse(File.getContent(inputFilename));
-		var keys : Array<String> = Reflect.fields(inputJson);
-
+		var inputJson:Array<Dynamic> = Json.parse(File.getContent(inputFilename));
+		
 		var outputJson : Array<{key : String, value : Array<String>}>  = [];
-
-		for( key in keys) outputJson.push({ key : key, value : {
-			var content = Reflect.getProperty(inputJson, key);
-			var contentKeys = Reflect.fields(content);
-			contentKeys.map(function(contentKey){
-				return Reflect.getProperty(content, contentKey);
-				}).fold(function(a,b){ return a.concat(b); }, []);
-			}});
-
-
+		for(pkg in inputJson) {
+			outputJson.push({key : pkg.name, value : pkg.none.concat(pkg.virtualDevice)});
+		}
+		
 		 var str = haxe.Resource.getString("template");
 		 var template = new haxe.Template(str);
 

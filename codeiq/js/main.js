@@ -696,6 +696,16 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.core.Transistor());
 	this.modules.push(new retro.library.core.Gate());
 	this.modules.push(new retro.library.core.TextBox());
+	this.modules.push(new retro.library.number.C0());
+	this.modules.push(new retro.library.number.C1());
+	this.modules.push(new retro.library.number.C2());
+	this.modules.push(new retro.library.number.C3());
+	this.modules.push(new retro.library.number.C4());
+	this.modules.push(new retro.library.number.C5());
+	this.modules.push(new retro.library.number.C6());
+	this.modules.push(new retro.library.number.C7());
+	this.modules.push(new retro.library.number.C8());
+	this.modules.push(new retro.library.number.C9());
 	this.modules.push(new retro.library.math.Abs());
 	this.modules.push(new retro.library.math.Acos());
 	this.modules.push(new retro.library.math.Asin());
@@ -710,12 +720,12 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Draw());
-	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
-	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Draw());
+	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.snapelement.MouseDown());
@@ -727,16 +737,6 @@ retro.controller.DiagramController = function(editor,diagram,virtualDevice) {
 	this.modules.push(new retro.library.string.Substr());
 	this.modules.push(new retro.library.string.Length());
 	this.modules.push(new retro.library.string.LastIndexOf());
-	this.modules.push(new retro.library.number.C0());
-	this.modules.push(new retro.library.number.C1());
-	this.modules.push(new retro.library.number.C2());
-	this.modules.push(new retro.library.number.C3());
-	this.modules.push(new retro.library.number.C4());
-	this.modules.push(new retro.library.number.C5());
-	this.modules.push(new retro.library.number.C6());
-	this.modules.push(new retro.library.number.C7());
-	this.modules.push(new retro.library.number.C8());
-	this.modules.push(new retro.library.number.C9());
 	this.modules.push(new retro.library.array.Create());
 	this.modules.push(new retro.library.array.Length());
 	this.modules.push(new retro.library.array.Push());
@@ -898,6 +898,16 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.core.Transistor());
 	this.modules.push(new retro.library.core.Gate());
 	this.modules.push(new retro.library.core.TextBox());
+	this.modules.push(new retro.library.number.C0());
+	this.modules.push(new retro.library.number.C1());
+	this.modules.push(new retro.library.number.C2());
+	this.modules.push(new retro.library.number.C3());
+	this.modules.push(new retro.library.number.C4());
+	this.modules.push(new retro.library.number.C5());
+	this.modules.push(new retro.library.number.C6());
+	this.modules.push(new retro.library.number.C7());
+	this.modules.push(new retro.library.number.C8());
+	this.modules.push(new retro.library.number.C9());
 	this.modules.push(new retro.library.math.Abs());
 	this.modules.push(new retro.library.math.Acos());
 	this.modules.push(new retro.library.math.Asin());
@@ -912,12 +922,12 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.math.Pow());
 	this.modules.push(new retro.library.math.Random());
 	this.modules.push(new retro.library.math.Sqrt());
-	this.modules.push(new retro.library.snapsvg.Draw());
-	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
-	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.system.Speed());
 	this.modules.push(new retro.library.system.Print(virtualDevice));
 	this.modules.push(new retro.library.system.Scan(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Draw());
+	this.modules.push(new retro.library.snapsvg.Rect(virtualDevice));
+	this.modules.push(new retro.library.snapsvg.Circle(virtualDevice));
 	this.modules.push(new retro.library.snapelement.Translate());
 	this.modules.push(new retro.library.snapelement.Fill());
 	this.modules.push(new retro.library.snapelement.MouseDown());
@@ -929,16 +939,6 @@ retro.controller.ImportController = function(project,virtualDevice) {
 	this.modules.push(new retro.library.string.Substr());
 	this.modules.push(new retro.library.string.Length());
 	this.modules.push(new retro.library.string.LastIndexOf());
-	this.modules.push(new retro.library.number.C0());
-	this.modules.push(new retro.library.number.C1());
-	this.modules.push(new retro.library.number.C2());
-	this.modules.push(new retro.library.number.C3());
-	this.modules.push(new retro.library.number.C4());
-	this.modules.push(new retro.library.number.C5());
-	this.modules.push(new retro.library.number.C6());
-	this.modules.push(new retro.library.number.C7());
-	this.modules.push(new retro.library.number.C8());
-	this.modules.push(new retro.library.number.C9());
 	this.modules.push(new retro.library.array.Create());
 	this.modules.push(new retro.library.array.Length());
 	this.modules.push(new retro.library.array.Push());
@@ -3675,6 +3675,13 @@ retro.pub.RetroTypeChecker.__name__ = ["retro","pub","RetroTypeChecker"];
 retro.pub.RetroTypeChecker.check = function(type1,type2) {
 	return true;
 }
+retro.pub.UserAgent = function() { }
+retro.pub.UserAgent.__name__ = ["retro","pub","UserAgent"];
+retro.pub.UserAgent.checkTablet = function() {
+	if(js.Browser.window.navigator.userAgent.indexOf("iPad") > 0) return true;
+	if(js.Browser.window.navigator.userAgent.indexOf("iPhone") > 0) return true;
+	return false;
+}
 retro.view = {}
 retro.view.ConsoleView = function(snap) {
 	this.current_line = 0;
@@ -4009,7 +4016,7 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 	var text = snap.text(20,3,port.getName());
 	text.attr({ 'font-size' : "8pt", fill : "#2C3E50", 'font-family' : "Helvetica, Arial, sans-serif"});
 	this.upperGroup.append(text);
-	this.coll.mouseup(function(e,x,y) {
+	var touchListener = function(e,x,y) {
 		if(_g.diagramController.setRubberbandEnd(_g.port)) {
 			_g.diagramController.clearRubberband();
 			_g.isConnected = true;
@@ -4017,7 +4024,8 @@ retro.view.InputPortView = function(diagramController,jobview,port,snap) {
 			var v = js.Browser.window.prompt("","");
 			if(v != null) _g.port.setConstant(new retro.model.Value(retro.pub.RetroType.RNumber,haxe.Json.parse(v)));
 		}
-	});
+	};
+	if(retro.pub.UserAgent.checkTablet()) this.coll.touchstart(touchListener); else this.coll.mouseup(touchListener);
 	this.setPos(0,0);
 };
 retro.view.InputPortView.__name__ = ["retro","view","InputPortView"];

@@ -4,11 +4,12 @@ import haxe.macro.Context;
 class ModuleAdder{
 	macro public static function add(filename : String){
 		var jsonString = haxe.Resource.getString(filename);
-		var json : { packages : List<String> } = haxe.Json.parse(jsonString);
+		var json : List<Dynamic> = haxe.Json.parse(jsonString);
 		var result : Array<Expr> = [];
-		for( pkgName in Reflect.fields(json)  ){
+		for( pkg in json  ){
+			var pkgName = pkg.name;
 			var classNames : { none : List<String>, 
-							 virtualDevice : List<String> } = Reflect.getProperty(json, pkgName);
+							 virtualDevice : List<String> } = pkg;
 			for( className in classNames.none ){
 				var newExpr = { 
 						expr : ENew({ name : className, params : [],  pack : ["retro","library",pkgName]}, []),
