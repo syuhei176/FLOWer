@@ -5,12 +5,13 @@ using retro.vm.Application;
 import retro.model.Diagram;
 import retro.model.Job;
 import retro.model.EntryJob;
-import retro.vm.Worker;
 import retro.model.ValueCarrier;
 import retro.model.Value;
 import retro.core.Result;
 import retro.pub.RetroType;
 import haxe.Timer;
+
+using Lambda;
 
 //Flowerで作成されたアプリケーションの実行を管理するクラス
 class Runtime{
@@ -59,8 +60,7 @@ class Runtime{
 	
 	//エントリを起こす
 	public function invoke_entry(entry:Job, v) {
-		var worker = entry.getWorker();
-		worker.act(null, function(script_result:Result) {
+		entry.work(null, function(script_result:Result) {
 			for(p in entry.getOutputPorts()) {
 				for(c in p.connection) {
 					var newValueCarrier = new ValueCarrier(v, p, c);
@@ -69,6 +69,13 @@ class Runtime{
 			}
 		});
 		return true;
+	}
+
+	public function run_step_acc(jobs : Array<Job>, readyJobs : Array<Job>){
+		for( readyJob  in readyJobs ) {
+			var inputPorts = readyJob.getInputPorts();
+			
+		}
 	}
 	
 	//ステップ実行
@@ -80,7 +87,6 @@ class Runtime{
 			}
 			port.setValueCarrier(valueCarrier);
 			var params = port.parent.getParams();
-			var worker = port.parent.getWorker();
 			//インプットがすべて埋まっているときに消費
 			var flg:Bool = true;
 			for(p in port.parent.getInputPorts()) {
@@ -93,7 +99,7 @@ class Runtime{
 					this.diagram.removeValueCarrier(p.useValueCarrier());
 				}
 			}
-			worker.act(params, function(script_result) {
+			port.parent.work(params, function(script_result) {
 				if(script_result == null) {
 					return;
 				}

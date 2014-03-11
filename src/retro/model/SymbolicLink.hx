@@ -2,7 +2,8 @@ package retro.model;
 
 import retro.core.JobComponent;
 import retro.pub.RetroType;
-import retro.vm.Worker;
+import retro.core.Params;
+import retro.core.Result;
 
 class SymbolicLink extends Job{
 
@@ -28,9 +29,9 @@ class SymbolicLink extends Job{
 		return this.prototype.getModuleName();
 	}
 	
-	override function getWorker() {
-		return new Worker(this, this.prototype.onInputRecieved);
-	}
+	override function work(params:Params, cb : Result -> Void) : Void 
+		this.prototype.onInputRecieved(params, cb);
+	
 	
 	override function getJSON() {
 		var json:Dynamic = {};

@@ -3,7 +3,6 @@ package retro.model;
 import retro.pub.IdGenerator;
 import retro.pub.RetroType;
 import retro.pub.Point2D;
-import retro.vm.Worker;
 import retro.core.JobComponent;
 import retro.core.Params;
 import retro.core.Result;
@@ -25,8 +24,6 @@ class Job{
 	private var onOutputPortRemovedListeners:Array<OutputPort->Void>;
 	private var onPosChangedListeners:Array<Float->Float->Void>;
 	
-	// 実行を移譲
-	public var worker : Worker;
 	public var customDraw : JobView -> Void;
 	
 	public function new(id){
@@ -96,11 +93,8 @@ class Job{
 		return params;
 	}
 	
-	public function getWorker(){
-		return new Worker(this, function(params:Params, cb) {
-			cb(new Result());
-		});
-	}
+	public function work(params:Params, cb : Result ->Void) : Void
+		cb(new Result());
 	
 	public function getInputPort(name:String) {
 		for(p in inputPorts) {
