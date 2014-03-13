@@ -4,7 +4,6 @@ import retro.pub.Editor;
 import retro.pub.RetroType;
 import retro.model.Diagram;
 import retro.model.Job;
-import retro.model.EntryJob;
 import retro.model.Logic;
 import retro.model.SymbolicLink;
 import retro.model.InputPort;
@@ -54,13 +53,6 @@ class DiagramController implements Controller{
 		return job;
 	}
 	
-	public function addEntryJob() {
-		var id = this.editor.IdGenerator.genID();
-		var job = new EntryJob(id);
-		job.addOutputPort(new OutputPort(job, RetroType.RString, "output"));
-		diagram.setEntryPoint(job);
-		return job;
-	}
 	public function addLogic(id) {
 		var job = new Logic(id);
 		diagram.addJob(job);

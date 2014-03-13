@@ -54,6 +54,7 @@ class Editor{
 	  	this.runtime = new retro.vm.Runtime(this.projectController.getProject().getRootDiagram());
 	  	return this.runtime;
 	}
+	
 	public static function create(editorkey, id_header){
 		var retroClient = new RetroClient(editorkey);
 		retroClient.init(function(data) {
@@ -83,8 +84,6 @@ class Editor{
 			}else{
 				var diagram = new Diagram();
 				project.setRootDiagram(diagram);
-				var diagramController = new DiagramController(editor, diagram, virtualDevice);
-				diagramController.addEntryJob();
 			}
 		});
 	}
@@ -110,11 +109,5 @@ class Editor{
 		var diagram = new Diagram();
 		project.setRootDiagram(diagram);
 		var diagramController = new DiagramController(editor, diagram, virtualDevice);
-		var entryJob = diagramController.addEntryJob();
-		entryJob.setPos(80,300);
-		/*var printJob = diagramController.getModule("system.Print");
-		diagramController.addSymbolicLink(printJob).setPos(380, 300);*/
 	}
-
-
 }

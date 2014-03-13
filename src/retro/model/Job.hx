@@ -8,6 +8,8 @@ import retro.core.Params;
 import retro.view.JobView;
 import snap.Snap;
 
+using Lambda;
+
 enum Message{
 	NoMsg;
 	Msg(i:Dynamic);
@@ -31,6 +33,9 @@ class Job{
 	private var onPosChangedListeners:Array<Float->Float->Void>;
 	
 	public var customDraw : JobView -> Void;
+
+	public var onPlay : Void -> Void;
+	public var onStop : Void -> Void;
 	
 	public function new(id){
 		this.id = id;
@@ -42,6 +47,8 @@ class Job{
 		this.onInputPortRemovedListeners = new Array<InputPort->Void>();
 		this.onOutputPortRemovedListeners = new Array<OutputPort->Void>();
 		this.onPosChangedListeners = new Array<Float->Float->Void>();
+		this.onPlay = function(){};
+		this.onStop = function(){};
 	}
 	
 	public function getId() {
@@ -101,6 +108,9 @@ class Job{
 	
 	public function work(cb : Result ->Void) : Void
 		cb(new Result());
+	
+	public function isReady()
+		return this.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);
 	
 	public function getInputPort(name:String) {
 		for(p in inputPorts) {

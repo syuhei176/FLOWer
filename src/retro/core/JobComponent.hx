@@ -5,11 +5,11 @@ import retro.core.Outputs;
 import retro.model.Job;
 import snap.Snap;
 
-interface JobComponent {
-	public var name:String;
-	public var inputs:Inputs;
-	public var outputs:Outputs;
-
-	public function onInputRecieved(params:Params, cb:Result->Void):Void;
-	public function getModuleName():String;
+interface JobComponent{
+	var name:String;
+	var inputs:Inputs;
+	var outputs:Outputs;
+	
+	function onInputRecieved(params:Params, cb:Result->Void):Void;
+	function getModuleName():String;
 }

@@ -4,7 +4,6 @@ import retro.vm.Application;
 using retro.vm.Application;
 import retro.model.Diagram;
 import retro.model.Job;
-import retro.model.EntryJob;
 import retro.model.ValueCarrier;
 import retro.model.Value;
 import retro.model.Job;
@@ -31,8 +30,10 @@ class Runtime{
 	}
 	
 	//実行
-	public function run(entry:EntryJob) {
-		this.invoke_entry(entry);
+	public function run() {
+		this.diagram.getJobs().map(function(job){
+			job.onPlay();
+			});
 		#if cpp
 		while(true) {
 			run_step();
@@ -57,23 +58,6 @@ class Runtime{
 		this.timer = null;
 		#end
 	}
-	
-	//エントリを起こす
-	public function invoke_entry(entry:Job) {
-		entry.work(function(result:Result) {
-				entry.getOutputPorts().map(function(p) 
-						if(result != null) switch (result.get(p.name)) {
-							case NoMsg: return;
-							case Msg(v):
-							p.connection.map(function(c)
-								this.diagram.addValueCarrier(new ValueCarrier(
-									new Value(p.type, v), p, c)));
-						});
-		});
-		return true;
-	}
-
-
 
 	public function run_step(){
 		this.diagram.getValueCarriers()
@@ -97,7 +81,7 @@ class Runtime{
 	}
 
 	private function isReady(job : Job){
-		return job.getName() != "Entry" && job.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);
+		return job.isReady();
 	}
 }
 
