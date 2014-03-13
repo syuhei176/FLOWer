@@ -14,7 +14,7 @@ class Params {
 	public function get(name) {
 		for(param in params) {
 		if(param.name == name) {
-			return param;
+			return param.getValue();
 		}
 		}
 		return null;
