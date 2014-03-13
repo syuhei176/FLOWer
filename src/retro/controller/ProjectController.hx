@@ -35,7 +35,7 @@ class ProjectController implements Controller{
 			this.runtime = new Runtime(this.project.getRootDiagram());
 		}
 		var entry = this.getProject().getRootDiagram().getEntryPoint();
-	  	this.runtime.run(entry, 0);
+	  	this.runtime.run(entry);
 	}
 	
 	public function stop() {

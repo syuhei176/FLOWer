@@ -5,9 +5,15 @@ import retro.pub.RetroType;
 import retro.pub.Point2D;
 import retro.core.JobComponent;
 import retro.core.Params;
-import retro.core.Result;
 import retro.view.JobView;
 import snap.Snap;
+
+enum Message{
+	NoMsg;
+	Msg(i:Dynamic);
+}
+typedef Result = Map<String,Message>;
+
 
 class Job{
 
@@ -16,7 +22,7 @@ class Job{
 	private var inputPorts : Array<InputPort>;
 	private var outputPorts : Array<OutputPort>;
 	private var pos : Point2D;
-	
+
 	//モデルの変更を伝えるためのリスナー
 	private var onInputPortAddedListeners:Array<InputPort->Void>;
 	private var onOutputPortAddedListeners:Array<OutputPort->Void>;
@@ -93,7 +99,7 @@ class Job{
 		return params;
 	}
 	
-	public function work(params:Params, cb : Result ->Void) : Void
+	public function work(cb : Result ->Void) : Void
 		cb(new Result());
 	
 	public function getInputPort(name:String) {

@@ -1,5 +1,7 @@
 package retro.model;
 
+import retro.model.Job;
+
 class EntryJob extends Job{
 
 	public function new(id){
@@ -10,4 +12,6 @@ class EntryJob extends Job{
 		return "Entry";
 	}
 	
+	override public function work(cb)
+		return cb([ "output" => Msg(1) ]);
 }

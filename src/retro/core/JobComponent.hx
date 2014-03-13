@@ -2,7 +2,7 @@ package retro.core;
 
 import retro.core.Inputs;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import snap.Snap;
 
 interface JobComponent {

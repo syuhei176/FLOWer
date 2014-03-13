@@ -7,7 +7,7 @@ import retro.model.Job;
 import retro.model.EntryJob;
 import retro.model.ValueCarrier;
 import retro.model.Value;
-import retro.core.Result;
+import retro.model.Job;
 import retro.pub.RetroType;
 import haxe.Timer;
 
@@ -31,8 +31,8 @@ class Runtime{
 	}
 	
 	//実行
-	public function run(entry:EntryJob, ?v) {
-		this.invoke_entry(entry, new Value(RetroType.RNumber, v));
+	public function run(entry:EntryJob) {
+		this.invoke_entry(entry);
 		#if cpp
 		while(true) {
 			run_step();
@@ -59,66 +59,45 @@ class Runtime{
 	}
 	
 	//エントリを起こす
-	public function invoke_entry(entry:Job, v) {
-		entry.work(null, function(script_result:Result) {
-			for(p in entry.getOutputPorts()) {
-				for(c in p.connection) {
-					var newValueCarrier = new ValueCarrier(v, p, c);
-					this.diagram.addValueCarrier(newValueCarrier);
-				}
-			}
+	public function invoke_entry(entry:Job) {
+		entry.work(function(result:Result) {
+				entry.getOutputPorts().map(function(p) 
+						if(result != null) switch (result.get(p.name)) {
+							case NoMsg: return;
+							case Msg(v):
+							p.connection.map(function(c)
+								this.diagram.addValueCarrier(new ValueCarrier(
+									new Value(p.type, v), p, c)));
+						});
 		});
 		return true;
 	}
 
-	public function run_step_acc(jobs : Array<Job>, readyJobs : Array<Job>){
-		for( readyJob  in readyJobs ) {
-			var inputPorts = readyJob.getInputPorts();
-			
-		}
-	}
-	
-	//ステップ実行
-	public function run_step() {
-		for(valueCarrier in this.diagram.getValueCarriers()) {
-			var port = valueCarrier.step();
-			if(port == null) {
-				continue;
-			}
-			port.setValueCarrier(valueCarrier);
-			var params = port.parent.getParams();
-			//インプットがすべて埋まっているときに消費
-			var flg:Bool = true;
-			for(p in port.parent.getInputPorts()) {
-				if(p.getValue() == null) {
-					flg = false;
-				}
-			}
-			if(flg) {
-				for(p in port.parent.getInputPorts()) {
-					this.diagram.removeValueCarrier(p.useValueCarrier());
-				}
-			}
-			port.parent.work(params, function(script_result) {
-				if(script_result == null) {
-					return;
-				}
-				for(p in port.parent.getInputPorts()) {
-					this.diagram.removeValueCarrier(p.useValueCarrier());
-				}
-				this.diagram.removeValueCarrier(valueCarrier);
-				//出力ポート分ループ
-				for(p in port.parent.getOutputPorts()) {
-					var sr = script_result.get(p.name);
-					//コネクションの先の分ループ
-					if(sr == null) continue;
-					for(c in p.connection) {
-						var newValueCarrier = new ValueCarrier(new Value(p.type, sr.value), p, c);
-						this.diagram.addValueCarrier(newValueCarrier);
-					}
-				}
+
+
+	public function run_step(){
+		this.diagram.getValueCarriers()
+			.map(function(valueCarrier){
+				var port = valueCarrier.step();
+				if( port != null) port.setValueCarrier(valueCarrier);
+				});
+		this.diagram.getJobs().filter(this.isReady).map(function(job){
+			job.work(function(result){
+				job.getInputPorts().map(function(p) this.diagram.removeValueCarrier(p.useValueCarrier()));
+				job.getOutputPorts().map(function(p) 
+					switch (result.get(p.name)) {
+						case NoMsg: return;
+						case Msg(v):
+						p.connection.map(function(c)
+							this.diagram.addValueCarrier(new ValueCarrier(
+								new Value(p.type, v), p, c)));
+					});
+				});
 			});
-		}
+	}
+
+	private function isReady(job : Job){
+		return job.getName() != "Entry" && job.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);
 	}
 }
 

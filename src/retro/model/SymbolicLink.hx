@@ -3,7 +3,7 @@ package retro.model;
 import retro.core.JobComponent;
 import retro.pub.RetroType;
 import retro.core.Params;
-import retro.core.Result;
+import retro.model.Job;
 
 class SymbolicLink extends Job{
 
@@ -29,8 +29,8 @@ class SymbolicLink extends Job{
 		return this.prototype.getModuleName();
 	}
 	
-	override function work(params:Params, cb : Result -> Void) : Void 
-		this.prototype.onInputRecieved(params, cb);
+	override function work(cb : Result -> Void) : Void 
+		this.prototype.onInputRecieved(this.getParams(), cb);
 	
 	
 	override function getJSON() {
