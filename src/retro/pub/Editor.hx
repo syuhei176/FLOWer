@@ -120,5 +120,9 @@ class Editor{
 		var diagram = new Diagram();
 		project.setRootDiagram(diagram);
 		var diagramController = new DiagramController(editor, diagram, virtualDevice);
+		var entryJob = diagramController.addEntryJob();
+		entryJob.setPos(80,300);
+		var printJob = diagramController.getModule("system.Print");
+		diagramController.addSymbolicLink(printJob).setPos(380, 300);
 	}
 }
