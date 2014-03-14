@@ -6,6 +6,7 @@ import retro.model.Diagram;
 import retro.controller.ProjectController;
 import retro.controller.DiagramController;
 import retro.controller.ExportController;
+import retro.controller.ImportController;
 
 enum RunMode{
 	Stop;
@@ -19,11 +20,13 @@ class ProjectView{
 	private var diagramView : DiagramView;
 	private var control_group : SnapElement;
 	private var exportController : ExportController;
+	private var importController : ImportController;
 	private var mode:RunMode;
 	
-	public function new(projectController, exportController) {
+	public function new(projectController, exportController, ?importController) {
 		this.projectController = projectController;
 		this.exportController = exportController;
+		this.importController = importController;
 		this.mode = RunMode.Stop;
 		var snap = this.projectController.getEditor().snap;
 		var project = this.projectController.getProject();
@@ -54,7 +57,6 @@ class ProjectView{
 	        		}
 	        	});
         	});
-        #if raspi
         Snap.load("/images/save.svg", function (f) {
     		var g:SnapElement = f.select("g");
     		g.transform("translate("+Thema.saveSvgX+","+Thema.saveSvgY+")");
@@ -63,18 +65,51 @@ class ProjectView{
     			g2.transform("translate("+Thema.saveSvgX+","+Thema.saveSvgY+")");
     			this.control_group.append(g);
     			g.click(function(e){
-	        		var exported = this.exportController.do_export();
+    				var exported = this.exportController.do_export();
 	        		this.projectController.getEditor().save_all(exported);
 	        		this.control_group.append(g2);
 	        		var timer = new haxe.Timer(500);
 	        		timer.run = function(){
-	        			g2.remove();
-	        		};
+	        				g2.remove();
+	        			};
+    				});
     			});
     		});
     	});
-    	#end
-    	});
+
+		Snap.load("/images/load.svg", function (f) {
+    		var g:SnapElement = f.select("g");
+    		g.transform("translate("+Thema.loadSvgX+","+Thema.loadSvgY+")");
+    		Snap.load("/images/load-over.svg", function (f) {
+    			var g2:SnapElement = f.select("g");
+    			g2.transform("translate("+Thema.loadSvgX+","+Thema.loadSvgY+")");
+    			this.control_group.append(g);
+    			g.click(function(e){
+    				#if codeiq
+    				var input = js.Browser.document.createInputElement();
+    				input.type = "file";
+    				input.onchange = function(event){
+		    				var file = input.files.item(0);
+		    				var fileReader = new js.html.FileReader();
+		    				fileReader.onload = function(event){
+		    					var data = haxe.Json.parse(fileReader.result);
+		    					var diagram = this.projectController.getProject().getRootDiagram();
+		    					for( job in diagram.getJobs() )  diagram.removeJob(job);
+		    					this.importController.import_diagram(this.projectController.getProject().getRootDiagram(),
+		    						data.diagram);
+		    				}
+		    				fileReader.readAsText(file);
+    				};
+    				input.click();
+    				#end
+	        		this.control_group.append(g2);
+	        		var timer = new haxe.Timer(500);
+	        		timer.run = function(){
+	        				g2.remove();
+	        			};
+    				});
+    			});
+    		});
 	}
 	
 	public function OnDiagramAdded(diagram:Diagram) {

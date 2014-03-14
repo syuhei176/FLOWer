@@ -125,6 +125,10 @@ class Thema {
 	inline public static var saveSvgX = 220;
 	inline public static var saveSvgY = 2;
 
+	// save svg 
+	inline public static var loadSvgX = 300;
+	inline public static var loadSvgY = 2;
+
 	// dustbox svg
 	inline public static var dustboxRightX = 90;
 	inline public static var dustboxY = 10;
