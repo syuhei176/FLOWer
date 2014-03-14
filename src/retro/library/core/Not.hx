@@ -4,7 +4,7 @@ import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import retro.pub.RetroType;
 
 class Not implements JobComponent {
@@ -22,13 +22,7 @@ class Not implements JobComponent {
 	
 	public function onInputRecieved(params:Params, cb) {
 		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new Result();
-		result.set("output", (!input.getValue()));
-		cb(result);
+		cb(["output" => Msg(!input.getValue()) ]);
 	}
 	
 	public function getModuleName() {

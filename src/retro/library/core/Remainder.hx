@@ -4,7 +4,7 @@ import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import retro.pub.RetroType;
 
 class Remainder implements JobComponent {
@@ -24,13 +24,7 @@ class Remainder implements JobComponent {
 	public function onInputRecieved(params:Params, cb) {
 		var input1 = params.get("input1");
 		var input2 = params.get("input2");
-		if(input1.isEmpty() || input2.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new Result();
-		result.set("output", (input1.getValue() % input2.getValue()));
-		cb(result);
+		cb(["output"=> Msg(input1.getValue() % input2.getValue())]);
 	}
 	
 	public function getModuleName() {

@@ -4,7 +4,7 @@ import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import retro.view.JobView;
 import retro.pub.RetroType;
 import snap.Snap;

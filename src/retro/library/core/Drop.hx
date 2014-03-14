@@ -4,7 +4,7 @@ import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import retro.pub.RetroType;
 
 class Drop implements JobComponent {
@@ -25,8 +25,7 @@ class Drop implements JobComponent {
 			cb(null);
 			return;
 		}
-		var result = new Result();
-		cb(result);
+		cb();
 	}
 
 	public function getModuleName() {

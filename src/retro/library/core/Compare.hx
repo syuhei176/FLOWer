@@ -4,7 +4,7 @@ import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import retro.pub.RetroType;
 
 class Compare implements JobComponent {
@@ -26,10 +26,6 @@ class Compare implements JobComponent {
 		var value = params.get("value");
 		var comparison = params.get("comparison");
 		var operator = params.get("operator");
-		if(value.isEmpty() || comparison.isEmpty() || operator.isEmpty()) {
-			cb(null);
-			return;
-		}
 		var pass = false;
 		switch(operator.getValue()) {
 			case "eq","==":
@@ -48,9 +44,7 @@ class Compare implements JobComponent {
 				cb(null);
 				return;
 		}
-		var result = new Result();
-		result.set("pass", pass);
-		cb(result);
+		cb(["pass" => Msg(pass)]);
 	}
 
 	public function getModuleName() {

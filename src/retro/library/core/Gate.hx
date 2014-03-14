@@ -4,7 +4,7 @@ import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import retro.pub.RetroType;
 
 class Gate implements JobComponent {
@@ -25,17 +25,11 @@ class Gate implements JobComponent {
 	public function onInputRecieved(params:Params, cb) {
 		var input = params.get("input");
 		var gate = params.get("gate");
-		if(input.isEmpty() || gate.isEmpty()){
-			cb(null);
-			return;
-		}
-		var result = new Result();
-		if( gate.getValue() ){
-			result.set("true", input.getValue());
+		if( gate ){
+			cb(["true" => Msg(input), "false" => NoMsg]);
 		}else{
-			result.set("false", input.getValue());
+			cb(["true" => NoMsg, "false" => Msg(input)]);
 		};
-		cb(result);
 	}
 	
 	public function getModuleName() {

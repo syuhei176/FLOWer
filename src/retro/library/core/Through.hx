@@ -4,10 +4,10 @@ import retro.core.JobComponent;
 import retro.core.Inputs;
 import retro.core.Params;
 import retro.core.Outputs;
-import retro.core.Result;
+import retro.model.Job;
 import retro.pub.RetroType;
 
-class Through implements JobComponent {
+class Through implements JobComponent{
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
@@ -22,13 +22,7 @@ class Through implements JobComponent {
 	
 	public function onInputRecieved(params:Params, cb) {
 		var input = params.get("input");
-		if(input.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new Result();
-		result.set("output", (input.getValue()));
-		cb(result);
+		cb(["output" => Msg(input)]);
 	}
 
 	public function getModuleName() {
