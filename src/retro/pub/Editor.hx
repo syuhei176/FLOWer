@@ -105,10 +105,10 @@ class Editor{
 		var project = new Project();
 		var projectController = new ProjectController(editor, project);
 		editor.setProjectController(projectController);
-		var projectView = new ProjectView(projectController, new ExportController(editor, project));
-		editor.setProjectView(projectView);
 		var virtualDevice = new VirtualDevice();
 		editor.virtualDevice = virtualDevice;
+		var projectView = new ProjectView(projectController, new ExportController(editor, project), new ImportController(project, virtualDevice));
+		editor.setProjectView(projectView);
 		var consoleDevice = new ConsoleView(editor.snap);
 		virtualDevice.setConsoleDevice(consoleDevice);
 		var snap = new Snap();
