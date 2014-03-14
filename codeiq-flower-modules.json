@@ -1,7 +1,7 @@
-{
-	"core":{
+[
+	{
+		"name" : "core",
 		"none" : ["Through","Add","Times","Remainder","Filter","Compare","And","Or","Not","Transistor","Gate","Equal"],
-
 		"virtualDevice" : []
 	},
 	{
@@ -42,4 +42,3 @@
 		"virtualDevice" : []
 	}
 ]
-

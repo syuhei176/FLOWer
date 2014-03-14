@@ -29,6 +29,9 @@ class Editor{
 	
 	public function new(?id_header, ?retroClient, ?editorkey){
 		this.snap = new Snap("#svg");
+		var rect = snap.rect(0,0, js.Browser.window.screen.width, js.Browser.window.screen.height);
+		rect.attr({ fill: "#3498DB" });
+		snap.append(rect);
 		this.IdGenerator = retro.pub.IDGenerator.getInstance(id_header);
 		this.retroClient = retroClient;
 		this.editorkey = editorkey;
@@ -47,7 +50,15 @@ class Editor{
 	}
 	
 	public function save_all(data) {
+		#if raspi
 		this.retroClient.save_all(data);
+		#elseif codeiq
+		var zip = new JSZip();
+		zip.file("flower.json", haxe.Json.stringify(data));
+		zip.file("flower.svg", snap.toString());
+		var content = zip.generate();
+		js.Browser.location.href = "data:application/zip;base64,"+content;
+		#end
 	}
 	
 	public function getRuntime() {
