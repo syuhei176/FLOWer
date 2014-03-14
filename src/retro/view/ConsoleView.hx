@@ -91,6 +91,8 @@ class ConsoleView {
 		for(i in 0...str.length) {
 			this.putChar(str.charAt(i));
 		}
+		this.putChar(",");
+		this.putChar(" ");
 	}
 	public function println(str:String) {
 		this.print(str + "\n");
