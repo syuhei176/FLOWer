@@ -2,6 +2,7 @@ package retro.core;
 
 import retro.pub.RetroType;
 
+@:expose("externs.Outputs")
 class Outputs {
 
 	private var outputs:Array<Output>;

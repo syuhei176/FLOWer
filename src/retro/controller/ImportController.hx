@@ -20,9 +20,10 @@ class ImportController {
 	
 	public function new(project, virtualDevice){
 		this.project = project;
-		this.modules = new Array<JobComponent>();
-		ModuleAdder.add("flower-modules");
+		this.modules = Library.get();
 	}
+
+	public function addModule(job) this.modules.push(job);
 	
 	public function getProject() {
 		return this.project;

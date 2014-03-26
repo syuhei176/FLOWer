@@ -2,8 +2,9 @@ package retro.core;
 
 import retro.pub.RetroType;
 import retro.model.Value;
-import retro.core.Input;
+import retro.core.Inputs;
 
+@:expose("externs.Params")
 class Params {
 
 	private var params:Array<Param>;

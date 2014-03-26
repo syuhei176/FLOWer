@@ -1,17 +1,16 @@
-package retro.library.core;
+package library.core;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Entry implements JobComponent{
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
-	public var ready : Bool;
 
 	public function new() {
 		this.name = "Entry";

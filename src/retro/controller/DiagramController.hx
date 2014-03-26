@@ -27,11 +27,11 @@ class DiagramController implements Controller{
 	public function new(editor, diagram, virtualDevice){
 		this.editor = editor;
 		this.diagram = diagram;
-		this.modules = new Array<JobComponent>();
-
-		ModuleAdder.add("flower-modules");
+		this.modules = Library.get();
 	}
 	
+	public function addModule(job) this.modules.push(job);
+
 	public function getEditor() {
 		return this.editor;
 	}

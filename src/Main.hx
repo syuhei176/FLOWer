@@ -1,4 +1,4 @@
-package;
+package ;
 
 import haxe.macro.Expr;
 import retro.pub.Editor;
