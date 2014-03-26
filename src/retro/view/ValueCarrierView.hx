@@ -14,15 +14,13 @@ class ValueCarrierView {
 	public var diagramView:DiagramView;
 	
 	public var pos : Point2D;
-	public var vec : Point2D;
-	var timer:Timer;
-	var count:Int;
+	
+	private static var speed : Int;
 	
 	public function new(editor, valueCarrier, diagramView) {
 		this.valueCarrier = valueCarrier;
 		this.diagramView = diagramView;
 		this.valueCarrier.onStep(OnStep);
-		this.count = 0;
 		
 		var snap = editor.snap;
 		this.pos = new Point2D(0, 0);
@@ -73,32 +71,32 @@ class ValueCarrierView {
 	public function OnUsed() {
 		this.remove();
 	}
-	public function OnStep() {
-		this.addPos(this.vec.getX(), this.vec.getY());
+
+	public function OnStep(endCallback) {
+		var destPortView = this.diagramView.getInputPortView(this.valueCarrier.destPort);
+		var destTransform = { transform : "translate(" + destPortView.getPos().getX()+ "," + destPortView.getPos().getY() + ")" }; 
+		this.group.animate(destTransform, ValueCarrierView.speed, null, endCallback);
 	}
-	
+
 	public function remove() {
+		this.group.stop();
 		this.group.remove();
 	}
-	
+
 	public function startPosition() {
-		var outputPortView = this.diagramView.getOutputPortView(this.valueCarrier.srcPort);
-		var inputPortView = this.diagramView.getInputPortView(this.valueCarrier.destPort);
-		this.vec = Point2D.sub(inputPortView.getPos(), outputPortView.getPos());
-		Point2D.timesToSelf(this.vec, 1/40);
-		this.setPos(outputPortView.getPos().getX(), outputPortView.getPos().getY());
-	}
-	public function addPos(x, y) {
-		this.pos.setX(this.pos.getX() + x);
-		this.pos.setY(this.pos.getY() + y);
-		this.group.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
-	}
-	public function setPos(x, y) {
-		this.pos.setX(x);
-		this.pos.setY(y);
-		this.group.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
-	}
-	public function endPosition() {
-	
+        var outputPortView = this.diagramView.getOutputPortView(this.valueCarrier.srcPort);
+        this.setPos(outputPortView.getPos().getX(), outputPortView.getPos().getY());
+    }
+    public function setPos(x, y) {
+        this.pos.setX(x);
+        this.pos.setY(y);
+        this.group.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
+    }
+
+    public static function __init__(){
+    	speed = Std.parseInt(js.Browser.window.sessionStorage.getItem("speed"));
+		if(speed == null) {
+			speed = 1000;
+		}
 	}
 }

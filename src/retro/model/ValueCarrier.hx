@@ -7,7 +7,7 @@ class ValueCarrier {
 	public var srcPort : OutputPort;
 	public var destPort : InputPort;
 	//listeners
-	private var onStepListeners:Array<Void->Void>;
+	private var onStepListeners:Array<(Void->Void)->Void>;
 	
 	public var count = 0;
 	
@@ -16,17 +16,13 @@ class ValueCarrier {
 		this.srcPort = src;
 		this.destPort = dest;
 		this.count = 0;
-		this.onStepListeners = new Array<Void->Void>();
+		this.onStepListeners = new Array<(Void->Void)->Void>();
 	}
 	
-	public function step() {
-		if(this.count > 39) {
-			return this.destPort;
-		}else{
-			this.count++;
-			this.fireOnStepListeners();
-			return null;
-		}
+	public function step( callback : InputPort -> Void ) {
+		this.fireOnStepListeners(function(){
+			callback(this.destPort);
+			});
 	}
 	
 	public function getValue() {
@@ -37,9 +33,9 @@ class ValueCarrier {
 		this.onStepListeners.push(listener);
 	}
 	
-	private function fireOnStepListeners() {
+	private function fireOnStepListeners(callback : Void -> Void) {
 		for(l in this.onStepListeners) {
-			l();
+			l(callback);
 		}
 	}
 }

@@ -42,7 +42,6 @@ class ProjectView{
     			var g2:SnapElement = f.select("svg");
     			this.control_group.transform("translate("+Thema.playSvgX+","+Thema.playSvgY+")");
     			g.click(function(e){
-    				trace("click");
     				if(this.mode == RunMode.Stop) {
     					this.projectController.run();
     					this.mode = RunMode.Run;

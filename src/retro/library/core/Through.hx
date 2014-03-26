@@ -19,6 +19,8 @@ class Through implements JobComponent{
 		this.inputs.add("input", RetroType.RNumber);
 		this.outputs.add("output", RetroType.RNumber);
 	}
+
+	public function onPlay(cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		var input = params.get("input");

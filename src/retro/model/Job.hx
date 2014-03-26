@@ -33,9 +33,6 @@ class Job{
 	private var onPosChangedListeners:Array<Float->Float->Void>;
 	
 	public var customDraw : JobView -> Void;
-
-	public var onPlay : Void -> Void;
-	public var onStop : Void -> Void;
 	
 	public function new(id){
 		this.id = id;
@@ -47,8 +44,6 @@ class Job{
 		this.onInputPortRemovedListeners = new Array<InputPort->Void>();
 		this.onOutputPortRemovedListeners = new Array<OutputPort->Void>();
 		this.onPosChangedListeners = new Array<Float->Float->Void>();
-		this.onPlay = function(){};
-		this.onStop = function(){};
 	}
 	
 	public function getId() {
@@ -106,8 +101,8 @@ class Job{
 		return params;
 	}
 	
-	public function work(cb : Result ->Void) : Void
-		cb(new Result());
+	public function work(cb : Result ->Void) : Void return;
+	public function onPlay(cb : Result -> Void) : Void return;
 	
 	public function isReady()
 		return this.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);

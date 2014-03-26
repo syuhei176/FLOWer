@@ -10,6 +10,7 @@ interface JobComponent{
 	var inputs:Inputs;
 	var outputs:Outputs;
 	
+	function onPlay(cb : Result -> Void ) : Void;
 	function onInputRecieved(params:Params, cb:Result->Void):Void;
 	function getModuleName():String;
 }

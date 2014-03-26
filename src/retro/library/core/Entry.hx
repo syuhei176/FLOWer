@@ -20,17 +20,12 @@ class Entry implements JobComponent{
 		this.outputs.add("output", RetroType.RNumber);
 	}
 	
-	public function onPlay() this.ready = true;
-	public function isReady()return this.ready;
-
-	public function onInputRecieved(params:Params, cb) {
-		cb(["output"=>Msg(1)]);
-		this.ready = false;
-	}
+	public function onPlay(cb : Result -> Void)
+		cb( ["output"=>Msg(1)] );
+	
+	public function onInputRecieved(params:Params, cb) return;
 	
 	public function getModuleName() {
 		return "core.Entry";
 	}
-	
-
 }

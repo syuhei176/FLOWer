@@ -10,7 +10,7 @@ extern class Snap {
 	static public function Matrix(a:Dynamic, ?b:Float, ?c:Float, ?d:Float, ?e:Float, ?f:Float):SnapMatrix;
 	static public function ajax(url:String, postData:Dynamic, callbackFunction:Dynamic, scope:Dynamic):Dynamic;  // XmlHttpRequest
 	static public function angle(x1:Float, y1:Float, x2:Float, y2:Float, ?x3:Float, ?y3:Float):Float;
-	static public function animation(params:Dynamic, ms:Float, easing:String, ?callbackFunction:Dynamic):Dynamic;
+	static public function animation(params:Dynamic, ms:Float, easing:Float->Float, ?callbackFunction:Dynamic):Dynamic;
 	static public function color(clr:String):SnapColor;
 	static public function deg(rad:Float):Float;
 	static public function format(token:String, json:Dynamic):String;
@@ -224,7 +224,7 @@ extern class SnapFragment {
 extern class SnapElement {
 	public function new();
 	public function after(el:SnapElement):SnapElement;
-	public function animate(newAttrs:Dynamic, duration:Float, ?easing:String, ?callbackFunction:Dynamic):SnapElement;
+	public function animate(newAttrs:Dynamic, duration:Float, ?easing: Float->Float, ?callbackFunction:Dynamic):SnapElement;
 	public function append(el:SnapElement):SnapElement;
 	public function asPx(attr:String, ?value:String):String;
 	public function attr(?p0:Dynamic, ?p1:Dynamic):Dynamic;
