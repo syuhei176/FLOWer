@@ -52,7 +52,7 @@ class Editor{
 	public function save_all(data) {
 		#if raspi
 		this.retroClient.save_all(data);
-		#elseif codeiq
+		#elseif browser
 		var zip = new JSZip();
 		zip.file("flower.json", haxe.Json.stringify(data));
 		zip.file("flower.svg", snap.toString());

@@ -46,11 +46,11 @@ class DiagramView{
 		
 		this.control_group = snap.group();
 
-		Snap.load(#if codeiq "images/create.svg" #else "/images/create.svg" #end, function (f) {
+		Snap.load(#if browser "images/create.svg" #else "/images/create.svg" #end, function (f) {
     		var g:SnapElement = f.select("svg");
     		this.control_group.append(g);
     		this.control_group.transform("translate("+Thema.createSvgX+","+Thema.createSvgY+")");
-    		Snap.load(#if codeiq "images/create-over.svg" #else "/images/create-over.svg" #end, function (f) {
+    		Snap.load(#if browser "images/create-over.svg" #else "/images/create-over.svg" #end, function (f) {
     			var g2:SnapElement = f.select("svg");
 	    		g.click(function(e){
 	    			this.control_group.append(g2);
@@ -69,13 +69,13 @@ class DiagramView{
 
 
 
-		Snap.load(#if codeiq "images/dustbox.svg" #else "/images/dustbox.svg" #end, function (f) {
+		Snap.load(#if browser "images/dustbox.svg" #else "/images/dustbox.svg" #end, function (f) {
     		var g:SnapElement = f.select("g");
     		var right = js.Browser.document.body.clientWidth;
     		var dustbox_group = snap.group();
     		dustbox_group.transform("translate("+(right - Thema.dustboxRightX)+","+Thema.dustboxY+")");
         	dustbox_group.append(g);
-        	Snap.load(#if codeiq "images/dustbox-over.svg" #else "/images/dustbox-over.svg"#end, function(f){
+        	Snap.load(#if browser "images/dustbox-over.svg" #else "/images/dustbox-over.svg"#end, function(f){
         		var g2:SnapElement = f.select("g");
 
         		this.showDustBox = function(){

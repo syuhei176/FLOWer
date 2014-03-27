@@ -1,4 +1,4 @@
 -main Main
 -cp src
 -js browser/js/flower.js
--D codeiq
+-D browser

@@ -34,11 +34,11 @@ class ProjectView{
 		
 		this.control_group = snap.group();
 
-    	Snap.load(#if codeiq "images/play.svg" #else "/images/play.svg" #end, function (f) {
+    	Snap.load(#if browser "images/play.svg" #else "/images/play.svg" #end, function (f) {
     		var g:SnapElement = f.select("svg");
     		this.control_group.append(g);
     		this.control_group.transform("translate("+Thema.playSvgX+","+Thema.playSvgY+")");
-    		Snap.load(#if codeiq "images/play-over.svg" #else "/images/play-over.svg" #end, function (f) {
+    		Snap.load(#if browser "images/play-over.svg" #else "/images/play-over.svg" #end, function (f) {
     			var g2:SnapElement = f.select("svg");
     			this.control_group.transform("translate("+Thema.playSvgX+","+Thema.playSvgY+")");
     			g.click(function(e){
@@ -84,7 +84,7 @@ class ProjectView{
     			g2.transform("translate("+Thema.loadSvgX+","+Thema.loadSvgY+")");
     			this.control_group.append(g);
     			g.click(function(e){
-    				#if codeiq
+    				#if browser
     				var input = js.Browser.document.createInputElement();
     				input.type = "file";
     				input.onchange = function(event){
