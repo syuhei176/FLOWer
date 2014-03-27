@@ -278,7 +278,7 @@ $hxClasses["Library"] = Library;
 Library.__name__ = ["Library"];
 Library.jobComponents = null;
 Library.init = function() {
-	var libraryClasses = CompileTimeClassList.get("library.core,true,");
+	var libraryClasses = CompileTimeClassList.get("library,true,");
 	Library.jobComponents = Lambda.fold(libraryClasses.map(function(c) {
 		return Type.createInstance(c,[]);
 	}),function(job,array) {
@@ -482,6 +482,28 @@ IMap.prototype = {
 	,__class__: IMap
 };
 Math.__name__ = ["Math"];
+var Pod = function() {
+	this.map = new haxe.ds.StringMap();
+};
+$hxClasses["Pod"] = Pod;
+Pod.__name__ = ["Pod"];
+Pod.instance = null;
+Pod.getInstance = function() {
+	if(Pod.instance == null) return Pod.instance = new Pod(); else return Pod.instance;
+};
+Pod.prototype = {
+	map: null
+	,exists: function(key) {
+		return this.map.exists(key);
+	}
+	,get: function(key) {
+		return this.map.get(key);
+	}
+	,set: function(key,value) {
+		return this.map.set(key,value);
+	}
+	,__class__: Pod
+};
 var Reflect = function() { };
 $hxClasses["Reflect"] = Reflect;
 Reflect.__name__ = ["Reflect"];
@@ -1830,6 +1852,158 @@ js.Boot.__cast = function(o,t) {
 };
 var library = {};
 library.core = {};
+library.core.Add = function() {
+	this.name = "Add";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input1",flower.RetroType.RNumber);
+	this.inputs.add("input2",flower.RetroType.RNumber);
+	this.outputs.add("output",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Add"] = library.core.Add;
+library.core.Add.__name__ = ["library","core","Add"];
+library.core.Add.__interfaces__ = [flower.JobComponent];
+library.core.Add.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input1 = params.get("input1");
+		var input2 = params.get("input2");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("output",flower.Message.Msg(input1 + input2));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Add";
+	}
+	,__class__: library.core.Add
+};
+library.core.And = function() {
+	this.name = "And";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input1",flower.RetroType.RNumber);
+	this.inputs.add("input2",flower.RetroType.RNumber);
+	this.outputs.add("output",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.And"] = library.core.And;
+library.core.And.__name__ = ["library","core","And"];
+library.core.And.__interfaces__ = [flower.JobComponent];
+library.core.And.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input1 = params.get("input1");
+		var input2 = params.get("input2");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("output",flower.Message.Msg(input1 && input2));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.And";
+	}
+	,__class__: library.core.And
+};
+library.core.Compare = function() {
+	this.name = "Compare";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("value",flower.RetroType.RNumber);
+	this.inputs.add("comparison",flower.RetroType.RNumber);
+	this.inputs.add("operator",flower.RetroType.RString);
+	this.outputs.add("pass",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Compare"] = library.core.Compare;
+library.core.Compare.__name__ = ["library","core","Compare"];
+library.core.Compare.__interfaces__ = [flower.JobComponent];
+library.core.Compare.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var value = params.get("value");
+		var comparison = params.get("comparison");
+		var operator = params.get("operator");
+		var pass = false;
+		switch(operator) {
+		case "eq":case "==":
+			pass = value == comparison;
+			break;
+		case "ne":case "!=":
+			pass = value != comparison;
+			break;
+		case "gt":case ">":
+			pass = value > comparison;
+			break;
+		case "lt":case "<":
+			pass = value < comparison;
+			break;
+		case "ge":case ">=":
+			pass = value >= comparison;
+			break;
+		case "le":case "<=":
+			pass = value <= comparison;
+			break;
+		default:
+			cb(null);
+			return;
+		}
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("pass",flower.Message.Msg(pass));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Compare";
+	}
+	,__class__: library.core.Compare
+};
+library.core.Drop = function() {
+	this.name = "Drop";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Drop"] = library.core.Drop;
+library.core.Drop.__name__ = ["library","core","Drop"];
+library.core.Drop.__interfaces__ = [flower.JobComponent];
+library.core.Drop.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		cb(null);
+	}
+	,getModuleName: function() {
+		return "core.Drop";
+	}
+	,__class__: library.core.Drop
+};
 library.core.Entry = function() {
 	this.name = "Entry";
 	this.inputs = new externs.Inputs();
@@ -1859,6 +2033,248 @@ library.core.Entry.prototype = {
 		return "core.Entry";
 	}
 	,__class__: library.core.Entry
+};
+library.core.Equal = function() {
+	this.name = "Equal";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("value",flower.RetroType.RNumber);
+	this.inputs.add("comparison",flower.RetroType.RNumber);
+	this.outputs.add("result",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Equal"] = library.core.Equal;
+library.core.Equal.__name__ = ["library","core","Equal"];
+library.core.Equal.__interfaces__ = [flower.JobComponent];
+library.core.Equal.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var value = params.get("value");
+		var comparison = params.get("comparison");
+		var result = new haxe.ds.StringMap();
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("result",flower.Message.Msg(value == comparison));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Equal";
+	}
+	,__class__: library.core.Equal
+};
+library.core.Filter = function() {
+	this.name = "Filter";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("value",flower.RetroType.RNumber);
+	this.inputs.add("comparison",flower.RetroType.RNumber);
+	this.inputs.add("operator",flower.RetroType.RString);
+	this.outputs.add("pass",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Filter"] = library.core.Filter;
+library.core.Filter.__name__ = ["library","core","Filter"];
+library.core.Filter.__interfaces__ = [flower.JobComponent];
+library.core.Filter.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var value = params.get("value");
+		var comparison = params.get("comparison");
+		var operator = params.get("operator");
+		var pass = false;
+		switch(operator) {
+		case "eq":case "==":
+			pass = value == comparison;
+			break;
+		case "ne":case "!=":
+			pass = value != comparison;
+			break;
+		case "gt":case ">":
+			pass = value > comparison;
+			break;
+		case "lt":case "<":
+			pass = value < comparison;
+			break;
+		case "ge":case ">=":
+			pass = value >= comparison;
+			break;
+		case "le":case "<=":
+			pass = value <= comparison;
+			break;
+		default:
+			cb(null);
+			return;
+		}
+		if(pass == false) {
+			cb(null);
+			return;
+		}
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("pass",flower.Message.Msg(value));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Filter";
+	}
+	,__class__: library.core.Filter
+};
+library.core.Gate = function() {
+	this.name = "Gate";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input",flower.RetroType.RNumber);
+	this.inputs.add("gate",flower.RetroType.RNumber);
+	this.outputs.add("true",flower.RetroType.RNumber);
+	this.outputs.add("false",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Gate"] = library.core.Gate;
+library.core.Gate.__name__ = ["library","core","Gate"];
+library.core.Gate.__interfaces__ = [flower.JobComponent];
+library.core.Gate.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("input");
+		var gate = params.get("gate");
+		if(gate) cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("true",flower.Message.Msg(input));
+			_g.set("false",flower.Message.NoMsg);
+			$r = _g;
+			return $r;
+		}(this))); else cb((function($this) {
+			var $r;
+			var _g1 = new haxe.ds.StringMap();
+			_g1.set("true",flower.Message.NoMsg);
+			_g1.set("false",flower.Message.Msg(input));
+			$r = _g1;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Gate";
+	}
+	,__class__: library.core.Gate
+};
+library.core.Not = function() {
+	this.name = "Not";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input",flower.RetroType.RNumber);
+	this.outputs.add("output",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Not"] = library.core.Not;
+library.core.Not.__name__ = ["library","core","Not"];
+library.core.Not.__interfaces__ = [flower.JobComponent];
+library.core.Not.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input = params.get("input");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("output",flower.Message.Msg(!input));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Not";
+	}
+	,__class__: library.core.Not
+};
+library.core.Or = function() {
+	this.name = "Or";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input1",flower.RetroType.RNumber);
+	this.inputs.add("input2",flower.RetroType.RNumber);
+	this.outputs.add("output",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Or"] = library.core.Or;
+library.core.Or.__name__ = ["library","core","Or"];
+library.core.Or.__interfaces__ = [flower.JobComponent];
+library.core.Or.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input1 = params.get("input1");
+		var input2 = params.get("input2");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("output",flower.Message.Msg(input1 || input2));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Or";
+	}
+	,__class__: library.core.Or
+};
+library.core.Remainder = function() {
+	this.name = "Remainder";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input1",flower.RetroType.RNumber);
+	this.inputs.add("input2",flower.RetroType.RNumber);
+	this.outputs.add("output",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Remainder"] = library.core.Remainder;
+library.core.Remainder.__name__ = ["library","core","Remainder"];
+library.core.Remainder.__interfaces__ = [flower.JobComponent];
+library.core.Remainder.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input1 = params.get("input1");
+		var input2 = params.get("input2");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("output",flower.Message.Msg(input1 % input2));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Remainder";
+	}
+	,__class__: library.core.Remainder
 };
 library.core.Through = function() {
 	this.name = "Through";
@@ -1891,6 +2307,145 @@ library.core.Through.prototype = {
 		return "core.Through";
 	}
 	,__class__: library.core.Through
+};
+library.core.Times = function() {
+	this.name = "Times";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("input1",flower.RetroType.RNumber);
+	this.inputs.add("input2",flower.RetroType.RNumber);
+	this.outputs.add("output",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Times"] = library.core.Times;
+library.core.Times.__name__ = ["library","core","Times"];
+library.core.Times.__interfaces__ = [flower.JobComponent];
+library.core.Times.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input1 = params.get("input1");
+		var input2 = params.get("input2");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("output",flower.Message.Msg(input1 * input2));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Times";
+	}
+	,__class__: library.core.Times
+};
+library.core.Transistor = function() {
+	this.name = "Transistor";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("emitter",flower.RetroType.RNumber);
+	this.inputs.add("base",flower.RetroType.RNumber);
+	this.outputs.add("collector",flower.RetroType.RNumber);
+};
+$hxClasses["library.core.Transistor"] = library.core.Transistor;
+library.core.Transistor.__name__ = ["library","core","Transistor"];
+library.core.Transistor.__interfaces__ = [flower.JobComponent];
+library.core.Transistor.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var emitter = params.get("emitter");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("collector",flower.Message.Msg(emitter));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "core.Transistor";
+	}
+	,__class__: library.core.Transistor
+};
+library.map = {};
+library.map.Getter = function() {
+	this.name = "Getter";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("key",flower.RetroType.RNumber);
+	this.outputs.add("value",flower.RetroType.RNumber);
+	this.outputs.add("exists",flower.RetroType.RNumber);
+};
+$hxClasses["library.map.Getter"] = library.map.Getter;
+library.map.Getter.__name__ = ["library","map","Getter"];
+library.map.Getter.__interfaces__ = [flower.JobComponent];
+library.map.Getter.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var key = params.get("key");
+		var exists = Pod.getInstance().exists(key);
+		var value = Pod.getInstance().get(key);
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("exists",flower.Message.Msg(exists));
+			_g.set("value",flower.Message.Msg(value));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "map.Getter";
+	}
+	,__class__: library.map.Getter
+};
+library.map.Setter = function() {
+	this.name = "Setter";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("key",flower.RetroType.RNumber);
+	this.inputs.add("value",flower.RetroType.RNumber);
+	this.outputs.add("result",flower.RetroType.RNumber);
+};
+$hxClasses["library.map.Setter"] = library.map.Setter;
+library.map.Setter.__name__ = ["library","map","Setter"];
+library.map.Setter.__interfaces__ = [flower.JobComponent];
+library.map.Setter.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,onPlay: function(cb) {
+		return;
+	}
+	,onInputRecieved: function(params,cb) {
+		var input1 = params.get("key");
+		var input2 = params.get("value");
+		Pod.getInstance().set(input1,input2);
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("result",flower.Message.Msg(true));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "map.Setter";
+	}
+	,__class__: library.map.Setter
 };
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
@@ -1947,7 +2502,7 @@ if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
 	}
 	return a1;
 };
-CompileTimeClassList.__meta__ = { obj : { classLists : [["library.core,true,","library.core.Entry,library.core.Through"]]}};
+CompileTimeClassList.__meta__ = { obj : { classLists : [["library,true,","library.core.Add,library.core.And,library.core.Compare,library.core.Drop,library.core.Entry,library.core.Equal,library.core.Filter,library.core.Gate,library.core.Not,library.core.Or,library.core.Remainder,library.core.Through,library.core.Times,library.core.Transistor,library.map.Getter,library.map.Setter"]]}};
 CompileTimeClassList.lists = null;
 haxe.ds.ObjectMap.count = 0;
 })(typeof window != "undefined" ? window : exports);

@@ -1,11 +1,11 @@
-package retro.library.core;
+package library.core;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Gate implements JobComponent {
 	public var name:String;
@@ -21,6 +21,8 @@ class Gate implements JobComponent {
 		this.outputs.add("true", RetroType.RNumber);
 		this.outputs.add("false", RetroType.RNumber);
 	}
+
+	public function onPlay(cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		var input = params.get("input");

@@ -1,11 +1,11 @@
-package retro.library.core;
+package library.core;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Compare implements JobComponent {
 	public var name:String;
@@ -21,25 +21,27 @@ class Compare implements JobComponent {
 		this.inputs.add("operator", RetroType.RString);
 		this.outputs.add("pass", RetroType.RNumber);
 	}
+
+	public function onPlay(cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		var value = params.get("value");
 		var comparison = params.get("comparison");
 		var operator = params.get("operator");
 		var pass = false;
-		switch(operator.getValue()) {
+		switch(operator) {
 			case "eq","==":
-				pass = (value.getValue() == comparison.getValue());
+				pass = (value == comparison);
 			case "ne","!=":
-				pass = (value.getValue() != comparison.getValue());
+				pass = (value != comparison);
 			case "gt",">":
-				pass = (value.getValue() > comparison.getValue());
+				pass = (value > comparison);
 			case "lt","<":
-				pass = (value.getValue() < comparison.getValue());
+				pass = (value < comparison);
 			case "ge",">=":
-				pass = (value.getValue() >= comparison.getValue());
+				pass = (value >= comparison);
 			case "le","<=":
-				pass = (value.getValue() <= comparison.getValue());
+				pass = (value <= comparison);
 			default:
 				cb(null);
 				return;

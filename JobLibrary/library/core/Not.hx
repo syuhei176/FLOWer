@@ -1,11 +1,11 @@
-package retro.library.core;
+package library.core;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Not implements JobComponent {
 	public var name:String;
@@ -20,9 +20,11 @@ class Not implements JobComponent {
 		this.outputs.add("output", RetroType.RNumber);
 	}
 	
+	public function onPlay(cb : Result -> Void) : Void return;
+	
 	public function onInputRecieved(params:Params, cb) {
 		var input = params.get("input");
-		cb(["output" => Msg(!input.getValue()) ]);
+		cb(["output" => Msg(!input) ]);
 	}
 	
 	public function getModuleName() {

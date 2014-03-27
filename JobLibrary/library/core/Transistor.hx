@@ -1,11 +1,11 @@
-package retro.library.core;
+package library.core;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Transistor implements JobComponent {
 	public var name:String;
@@ -21,16 +21,11 @@ class Transistor implements JobComponent {
 		this.outputs.add("collector", RetroType.RNumber);
 	}
 	
+	public function onPlay(cb : Result -> Void) : Void return;
+	
 	public function onInputRecieved(params:Params, cb) {
 		var emitter = params.get("emitter");
-		var base = params.get("base");
-		if(emitter.isEmpty() || base.isEmpty()) {
-			cb(null);
-			return;
-		}
-		var result = new Result();
-		result.set("collector", emitter.getValue());
-		cb(result);
+		cb(["collector" => Msg(emitter)]);
 	}
 	
 	public function getModuleName() {

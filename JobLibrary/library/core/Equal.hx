@@ -1,11 +1,11 @@
-package retro.library.core;
+package library.core;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Equal implements JobComponent {
 	public var name:String;
@@ -20,12 +20,14 @@ class Equal implements JobComponent {
 		this.inputs.add("comparison", RetroType.RNumber);
 		this.outputs.add("result", RetroType.RNumber);
 	}
+
+	public function onPlay(cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		var value = params.get("value");
 		var comparison = params.get("comparison");
 		var result = new Result();
-		cb(["result" => Msg(value.getValue() == comparison.getValue()) ]);
+		cb(["result" => Msg(value == comparison) ]);
 	}
 
 	public function getModuleName() {

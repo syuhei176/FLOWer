@@ -8,8 +8,8 @@ class Library{
 	private static var jobComponents : Array<JobComponent>;
 
 	public static function init(){
-		CompileTime.importPackage("library.core");
-		var libraryClasses = CompileTime.getAllClasses("library.core");
+		CompileTime.importPackage("library");
+		var libraryClasses = CompileTime.getAllClasses("library");
 		Library.jobComponents = libraryClasses
 			.map(function(c) : JobComponent return Type.createInstance(c,[]))
 			.fold(function(job, array : Array<JobComponent>){ array.push(job); return array;}, []);

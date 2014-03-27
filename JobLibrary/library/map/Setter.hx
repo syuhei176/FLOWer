@@ -1,11 +1,11 @@
-package retro.library.map;
+package library.map;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Setter implements JobComponent {
 	public var name:String;
@@ -20,18 +20,14 @@ class Setter implements JobComponent {
 		this.inputs.add("value", RetroType.RNumber);
 		this.outputs.add("result", RetroType.RNumber);
 	}
+
+	public function onPlay(cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		var input1 = params.get("key");
 		var input2 = params.get("value");
-		if(input1.isEmpty() || input2.isEmpty()) {
-			cb(null);
-			return;
-		}
-                Pod.getInstance().set(input1.getValue(), input2.getValue());
-		var result = new Result();
-                result.set("result", true);
-		cb(result);
+		Pod.getInstance().set(input1, input2);
+		cb(["result" => Msg(true)]);
 	}
 	
 	public function getModuleName() {

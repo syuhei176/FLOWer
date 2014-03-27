@@ -1,11 +1,11 @@
-package retro.library.map;
+package library.map;
 
-import retro.core.JobComponent;
-import retro.core.Inputs;
-import retro.core.Params;
-import retro.core.Outputs;
-import retro.model.Job;
-import retro.pub.RetroType;
+import flower.JobComponent;
+import externs.Inputs;
+import externs.Params;
+import externs.Outputs;
+import flower.Result;
+import flower.RetroType;
 
 class Getter implements JobComponent {
     public var name:String;
@@ -20,19 +20,14 @@ class Getter implements JobComponent {
         this.outputs.add("value", RetroType.RNumber);
         this.outputs.add("exists", RetroType.RNumber);
     }
+
+    public function onPlay(cb : Result -> Void) : Void return;
     
     public function onInputRecieved(params:Params, cb) {
         var key = params.get("key");
-        if(key.isEmpty()) {
-            cb(null);
-            return;
-        }
-        var exists = Pod.getInstance().exists(key.getValue());
-        var value = Pod.getInstance().get(key.getValue());
-        var result = new Result();
-        result.set("exists",exists);
-        result.set("value", value);
-        cb(result);
+        var exists = Pod.getInstance().exists(key);
+        var value = Pod.getInstance().get(key);
+        cb(["exists"=> Msg(exists), "value"=>Msg(value)]);
     }
     
     public function getModuleName() {
