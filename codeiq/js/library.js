@@ -6,6 +6,34 @@ function $extend(from, fields) {
 	if( fields.toString !== Object.prototype.toString ) proto.toString = fields.toString;
 	return proto;
 }
+var CompileTime = function() { };
+$hxClasses["CompileTime"] = CompileTime;
+CompileTime.__name__ = ["CompileTime"];
+var CompileTimeClassList = function() { };
+$hxClasses["CompileTimeClassList"] = CompileTimeClassList;
+CompileTimeClassList.__name__ = ["CompileTimeClassList"];
+CompileTimeClassList.get = function(id) {
+	if(CompileTimeClassList.lists == null) CompileTimeClassList.initialise();
+	return CompileTimeClassList.lists.get(id);
+};
+CompileTimeClassList.initialise = function() {
+	CompileTimeClassList.lists = new haxe.ds.StringMap();
+	var m = haxe.rtti.Meta.getType(CompileTimeClassList);
+	if(m.classLists != null) {
+		var _g = 0;
+		var _g1 = m.classLists;
+		while(_g < _g1.length) {
+			var item = _g1[_g];
+			++_g;
+			var array = item;
+			var listID = array[0];
+			var classes = item[1].split(",").map(function(typeName) {
+				return Type.resolveClass(typeName);
+			});
+			CompileTimeClassList.lists.set(listID,classes);
+		}
+	}
+};
 var HxOverrides = function() { };
 $hxClasses["HxOverrides"] = HxOverrides;
 HxOverrides.__name__ = ["HxOverrides"];
@@ -105,14 +133,289 @@ IntIterator.prototype = {
 	}
 	,__class__: IntIterator
 };
+var Lambda = function() { };
+$hxClasses["Lambda"] = Lambda;
+Lambda.__name__ = ["Lambda"];
+Lambda.array = function(it) {
+	var a = new Array();
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var i = $it0.next();
+		a.push(i);
+	}
+	return a;
+};
+Lambda.list = function(it) {
+	var l = new List();
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var i = $it0.next();
+		l.add(i);
+	}
+	return l;
+};
+Lambda.map = function(it,f) {
+	var l = new List();
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		l.add(f(x));
+	}
+	return l;
+};
+Lambda.mapi = function(it,f) {
+	var l = new List();
+	var i = 0;
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		l.add(f(i++,x));
+	}
+	return l;
+};
+Lambda.has = function(it,elt) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		if(x == elt) return true;
+	}
+	return false;
+};
+Lambda.exists = function(it,f) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		if(f(x)) return true;
+	}
+	return false;
+};
+Lambda.foreach = function(it,f) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		if(!f(x)) return false;
+	}
+	return true;
+};
+Lambda.iter = function(it,f) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		f(x);
+	}
+};
+Lambda.filter = function(it,f) {
+	var l = new List();
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		if(f(x)) l.add(x);
+	}
+	return l;
+};
+Lambda.fold = function(it,f,first) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		first = f(x,first);
+	}
+	return first;
+};
+Lambda.count = function(it,pred) {
+	var n = 0;
+	if(pred == null) {
+		var $it0 = $iterator(it)();
+		while( $it0.hasNext() ) {
+			var _ = $it0.next();
+			n++;
+		}
+	} else {
+		var $it1 = $iterator(it)();
+		while( $it1.hasNext() ) {
+			var x = $it1.next();
+			if(pred(x)) n++;
+		}
+	}
+	return n;
+};
+Lambda.empty = function(it) {
+	return !$iterator(it)().hasNext();
+};
+Lambda.indexOf = function(it,v) {
+	var i = 0;
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var v2 = $it0.next();
+		if(v == v2) return i;
+		i++;
+	}
+	return -1;
+};
+Lambda.find = function(it,f) {
+	var $it0 = $iterator(it)();
+	while( $it0.hasNext() ) {
+		var v = $it0.next();
+		if(f(v)) return v;
+	}
+	return null;
+};
+Lambda.concat = function(a,b) {
+	var l = new List();
+	var $it0 = $iterator(a)();
+	while( $it0.hasNext() ) {
+		var x = $it0.next();
+		l.add(x);
+	}
+	var $it1 = $iterator(b)();
+	while( $it1.hasNext() ) {
+		var x1 = $it1.next();
+		l.add(x1);
+	}
+	return l;
+};
 var Library = $hx_exports.Library = function() { };
 $hxClasses["Library"] = Library;
 Library.__name__ = ["Library"];
+Library.jobComponents = null;
+Library.init = function() {
+	var libraryClasses = CompileTimeClassList.get("library.core,true,");
+	Library.jobComponents = Lambda.fold(libraryClasses.map(function(c) {
+		return Type.createInstance(c,[]);
+	}),function(job,array) {
+		array.push(job);
+		return array;
+	},[]);
+};
 Library.get = function() {
-	var jobComponent = new Array();
-	jobComponent.push(new library.core.Entry());
-	jobComponent.push(new library.core.Through());
-	return jobComponent;
+	return Library.jobComponents;
+};
+Library.getPackage = function() {
+	var moduleNames = Library.jobComponents.map(function(job) {
+		return job.getModuleName();
+	});
+	return Lambda.fold(moduleNames.map(function(moduleNames1) {
+		return moduleNames1.split(".");
+	}),function(splitNames,packages) {
+		var modules = Reflect.field(packages,splitNames[0]);
+		if(modules == null) modules = [];
+		modules.push(splitNames[1]);
+		packages[splitNames[0]] = modules;
+		return packages;
+	},{ });
+};
+var List = function() {
+	this.length = 0;
+};
+$hxClasses["List"] = List;
+List.__name__ = ["List"];
+List.prototype = {
+	h: null
+	,q: null
+	,length: null
+	,add: function(item) {
+		var x = [item];
+		if(this.h == null) this.h = x; else this.q[1] = x;
+		this.q = x;
+		this.length++;
+	}
+	,push: function(item) {
+		var x = [item,this.h];
+		this.h = x;
+		if(this.q == null) this.q = x;
+		this.length++;
+	}
+	,first: function() {
+		if(this.h == null) return null; else return this.h[0];
+	}
+	,last: function() {
+		if(this.q == null) return null; else return this.q[0];
+	}
+	,pop: function() {
+		if(this.h == null) return null;
+		var x = this.h[0];
+		this.h = this.h[1];
+		if(this.h == null) this.q = null;
+		this.length--;
+		return x;
+	}
+	,isEmpty: function() {
+		return this.h == null;
+	}
+	,clear: function() {
+		this.h = null;
+		this.q = null;
+		this.length = 0;
+	}
+	,remove: function(v) {
+		var prev = null;
+		var l = this.h;
+		while(l != null) {
+			if(l[0] == v) {
+				if(prev == null) this.h = l[1]; else prev[1] = l[1];
+				if(this.q == l) this.q = prev;
+				this.length--;
+				return true;
+			}
+			prev = l;
+			l = l[1];
+		}
+		return false;
+	}
+	,iterator: function() {
+		return { h : this.h, hasNext : function() {
+			return this.h != null;
+		}, next : function() {
+			if(this.h == null) return null;
+			var x = this.h[0];
+			this.h = this.h[1];
+			return x;
+		}};
+	}
+	,toString: function() {
+		var s = new StringBuf();
+		var first = true;
+		var l = this.h;
+		s.b += "{";
+		while(l != null) {
+			if(first) first = false; else s.b += ", ";
+			s.add(Std.string(l[0]));
+			l = l[1];
+		}
+		s.b += "}";
+		return s.b;
+	}
+	,join: function(sep) {
+		var s = new StringBuf();
+		var first = true;
+		var l = this.h;
+		while(l != null) {
+			if(first) first = false; else s.b += sep;
+			s.b += Std.string(l[0]);
+			l = l[1];
+		}
+		return s.b;
+	}
+	,filter: function(f) {
+		var l2 = new List();
+		var l = this.h;
+		while(l != null) {
+			var v = l[0];
+			l = l[1];
+			if(f(v)) l2.add(v);
+		}
+		return l2;
+	}
+	,map: function(f) {
+		var b = new List();
+		var l = this.h;
+		while(l != null) {
+			var v = l[0];
+			l = l[1];
+			b.add(f(v));
+		}
+		return b;
+	}
+	,__class__: List
 };
 var _Map = {};
 _Map.Map_Impl_ = function() { };
@@ -308,6 +611,78 @@ StringBuf.prototype = {
 	}
 	,__class__: StringBuf
 	,__properties__: {get_length:"get_length"}
+};
+var StringTools = function() { };
+$hxClasses["StringTools"] = StringTools;
+StringTools.__name__ = ["StringTools"];
+StringTools.urlEncode = function(s) {
+	return encodeURIComponent(s);
+};
+StringTools.urlDecode = function(s) {
+	return decodeURIComponent(s.split("+").join(" "));
+};
+StringTools.htmlEscape = function(s,quotes) {
+	s = s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
+	if(quotes) return s.split("\"").join("&quot;").split("'").join("&#039;"); else return s;
+};
+StringTools.htmlUnescape = function(s) {
+	return s.split("&gt;").join(">").split("&lt;").join("<").split("&quot;").join("\"").split("&#039;").join("'").split("&amp;").join("&");
+};
+StringTools.startsWith = function(s,start) {
+	return s.length >= start.length && HxOverrides.substr(s,0,start.length) == start;
+};
+StringTools.endsWith = function(s,end) {
+	var elen = end.length;
+	var slen = s.length;
+	return slen >= elen && HxOverrides.substr(s,slen - elen,elen) == end;
+};
+StringTools.isSpace = function(s,pos) {
+	var c = HxOverrides.cca(s,pos);
+	return c > 8 && c < 14 || c == 32;
+};
+StringTools.ltrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,r)) r++;
+	if(r > 0) return HxOverrides.substr(s,r,l - r); else return s;
+};
+StringTools.rtrim = function(s) {
+	var l = s.length;
+	var r = 0;
+	while(r < l && StringTools.isSpace(s,l - r - 1)) r++;
+	if(r > 0) return HxOverrides.substr(s,0,l - r); else return s;
+};
+StringTools.trim = function(s) {
+	return StringTools.ltrim(StringTools.rtrim(s));
+};
+StringTools.lpad = function(s,c,l) {
+	if(c.length <= 0) return s;
+	while(s.length < l) s = c + s;
+	return s;
+};
+StringTools.rpad = function(s,c,l) {
+	if(c.length <= 0) return s;
+	while(s.length < l) s = s + c;
+	return s;
+};
+StringTools.replace = function(s,sub,by) {
+	return s.split(sub).join(by);
+};
+StringTools.hex = function(n,digits) {
+	var s = "";
+	var hexChars = "0123456789ABCDEF";
+	do {
+		s = hexChars.charAt(n & 15) + s;
+		n >>>= 4;
+	} while(n > 0);
+	if(digits != null) while(s.length < digits) s = "0" + s;
+	return s;
+};
+StringTools.fastCodeAt = function(s,index) {
+	return s.charCodeAt(index);
+};
+StringTools.isEof = function(c) {
+	return c != c;
 };
 var ValueType = $hxClasses["ValueType"] = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] };
 ValueType.TNull = ["TNull",0];
@@ -959,6 +1334,352 @@ haxe.ds.WeakMap.prototype = {
 	}
 	,__class__: haxe.ds.WeakMap
 };
+haxe.macro = {};
+haxe.macro.Context = function() { };
+$hxClasses["haxe.macro.Context"] = haxe.macro.Context;
+haxe.macro.Context.__name__ = ["haxe","macro","Context"];
+haxe.macro.Constant = $hxClasses["haxe.macro.Constant"] = { __ename__ : ["haxe","macro","Constant"], __constructs__ : ["CInt","CFloat","CString","CIdent","CRegexp"] };
+haxe.macro.Constant.CInt = function(v) { var $x = ["CInt",0,v]; $x.__enum__ = haxe.macro.Constant; $x.toString = $estr; return $x; };
+haxe.macro.Constant.CFloat = function(f) { var $x = ["CFloat",1,f]; $x.__enum__ = haxe.macro.Constant; $x.toString = $estr; return $x; };
+haxe.macro.Constant.CString = function(s) { var $x = ["CString",2,s]; $x.__enum__ = haxe.macro.Constant; $x.toString = $estr; return $x; };
+haxe.macro.Constant.CIdent = function(s) { var $x = ["CIdent",3,s]; $x.__enum__ = haxe.macro.Constant; $x.toString = $estr; return $x; };
+haxe.macro.Constant.CRegexp = function(r,opt) { var $x = ["CRegexp",4,r,opt]; $x.__enum__ = haxe.macro.Constant; $x.toString = $estr; return $x; };
+haxe.macro.Binop = $hxClasses["haxe.macro.Binop"] = { __ename__ : ["haxe","macro","Binop"], __constructs__ : ["OpAdd","OpMult","OpDiv","OpSub","OpAssign","OpEq","OpNotEq","OpGt","OpGte","OpLt","OpLte","OpAnd","OpOr","OpXor","OpBoolAnd","OpBoolOr","OpShl","OpShr","OpUShr","OpMod","OpAssignOp","OpInterval","OpArrow"] };
+haxe.macro.Binop.OpAdd = ["OpAdd",0];
+haxe.macro.Binop.OpAdd.toString = $estr;
+haxe.macro.Binop.OpAdd.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpMult = ["OpMult",1];
+haxe.macro.Binop.OpMult.toString = $estr;
+haxe.macro.Binop.OpMult.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpDiv = ["OpDiv",2];
+haxe.macro.Binop.OpDiv.toString = $estr;
+haxe.macro.Binop.OpDiv.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpSub = ["OpSub",3];
+haxe.macro.Binop.OpSub.toString = $estr;
+haxe.macro.Binop.OpSub.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpAssign = ["OpAssign",4];
+haxe.macro.Binop.OpAssign.toString = $estr;
+haxe.macro.Binop.OpAssign.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpEq = ["OpEq",5];
+haxe.macro.Binop.OpEq.toString = $estr;
+haxe.macro.Binop.OpEq.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpNotEq = ["OpNotEq",6];
+haxe.macro.Binop.OpNotEq.toString = $estr;
+haxe.macro.Binop.OpNotEq.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpGt = ["OpGt",7];
+haxe.macro.Binop.OpGt.toString = $estr;
+haxe.macro.Binop.OpGt.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpGte = ["OpGte",8];
+haxe.macro.Binop.OpGte.toString = $estr;
+haxe.macro.Binop.OpGte.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpLt = ["OpLt",9];
+haxe.macro.Binop.OpLt.toString = $estr;
+haxe.macro.Binop.OpLt.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpLte = ["OpLte",10];
+haxe.macro.Binop.OpLte.toString = $estr;
+haxe.macro.Binop.OpLte.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpAnd = ["OpAnd",11];
+haxe.macro.Binop.OpAnd.toString = $estr;
+haxe.macro.Binop.OpAnd.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpOr = ["OpOr",12];
+haxe.macro.Binop.OpOr.toString = $estr;
+haxe.macro.Binop.OpOr.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpXor = ["OpXor",13];
+haxe.macro.Binop.OpXor.toString = $estr;
+haxe.macro.Binop.OpXor.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpBoolAnd = ["OpBoolAnd",14];
+haxe.macro.Binop.OpBoolAnd.toString = $estr;
+haxe.macro.Binop.OpBoolAnd.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpBoolOr = ["OpBoolOr",15];
+haxe.macro.Binop.OpBoolOr.toString = $estr;
+haxe.macro.Binop.OpBoolOr.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpShl = ["OpShl",16];
+haxe.macro.Binop.OpShl.toString = $estr;
+haxe.macro.Binop.OpShl.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpShr = ["OpShr",17];
+haxe.macro.Binop.OpShr.toString = $estr;
+haxe.macro.Binop.OpShr.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpUShr = ["OpUShr",18];
+haxe.macro.Binop.OpUShr.toString = $estr;
+haxe.macro.Binop.OpUShr.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpMod = ["OpMod",19];
+haxe.macro.Binop.OpMod.toString = $estr;
+haxe.macro.Binop.OpMod.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpAssignOp = function(op) { var $x = ["OpAssignOp",20,op]; $x.__enum__ = haxe.macro.Binop; $x.toString = $estr; return $x; };
+haxe.macro.Binop.OpInterval = ["OpInterval",21];
+haxe.macro.Binop.OpInterval.toString = $estr;
+haxe.macro.Binop.OpInterval.__enum__ = haxe.macro.Binop;
+haxe.macro.Binop.OpArrow = ["OpArrow",22];
+haxe.macro.Binop.OpArrow.toString = $estr;
+haxe.macro.Binop.OpArrow.__enum__ = haxe.macro.Binop;
+haxe.macro.Unop = $hxClasses["haxe.macro.Unop"] = { __ename__ : ["haxe","macro","Unop"], __constructs__ : ["OpIncrement","OpDecrement","OpNot","OpNeg","OpNegBits"] };
+haxe.macro.Unop.OpIncrement = ["OpIncrement",0];
+haxe.macro.Unop.OpIncrement.toString = $estr;
+haxe.macro.Unop.OpIncrement.__enum__ = haxe.macro.Unop;
+haxe.macro.Unop.OpDecrement = ["OpDecrement",1];
+haxe.macro.Unop.OpDecrement.toString = $estr;
+haxe.macro.Unop.OpDecrement.__enum__ = haxe.macro.Unop;
+haxe.macro.Unop.OpNot = ["OpNot",2];
+haxe.macro.Unop.OpNot.toString = $estr;
+haxe.macro.Unop.OpNot.__enum__ = haxe.macro.Unop;
+haxe.macro.Unop.OpNeg = ["OpNeg",3];
+haxe.macro.Unop.OpNeg.toString = $estr;
+haxe.macro.Unop.OpNeg.__enum__ = haxe.macro.Unop;
+haxe.macro.Unop.OpNegBits = ["OpNegBits",4];
+haxe.macro.Unop.OpNegBits.toString = $estr;
+haxe.macro.Unop.OpNegBits.__enum__ = haxe.macro.Unop;
+haxe.macro.ExprDef = $hxClasses["haxe.macro.ExprDef"] = { __ename__ : ["haxe","macro","ExprDef"], __constructs__ : ["EConst","EArray","EBinop","EField","EParenthesis","EObjectDecl","EArrayDecl","ECall","ENew","EUnop","EVars","EFunction","EBlock","EFor","EIn","EIf","EWhile","ESwitch","ETry","EReturn","EBreak","EContinue","EUntyped","EThrow","ECast","EDisplay","EDisplayNew","ETernary","ECheckType","EMeta"] };
+haxe.macro.ExprDef.EConst = function(c) { var $x = ["EConst",0,c]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EArray = function(e1,e2) { var $x = ["EArray",1,e1,e2]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EBinop = function(op,e1,e2) { var $x = ["EBinop",2,op,e1,e2]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EField = function(e,field) { var $x = ["EField",3,e,field]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EParenthesis = function(e) { var $x = ["EParenthesis",4,e]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EObjectDecl = function(fields) { var $x = ["EObjectDecl",5,fields]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EArrayDecl = function(values) { var $x = ["EArrayDecl",6,values]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.ECall = function(e,params) { var $x = ["ECall",7,e,params]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.ENew = function(t,params) { var $x = ["ENew",8,t,params]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EUnop = function(op,postFix,e) { var $x = ["EUnop",9,op,postFix,e]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EVars = function(vars) { var $x = ["EVars",10,vars]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EFunction = function(name,f) { var $x = ["EFunction",11,name,f]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EBlock = function(exprs) { var $x = ["EBlock",12,exprs]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EFor = function(it,expr) { var $x = ["EFor",13,it,expr]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EIn = function(e1,e2) { var $x = ["EIn",14,e1,e2]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EIf = function(econd,eif,eelse) { var $x = ["EIf",15,econd,eif,eelse]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EWhile = function(econd,e,normalWhile) { var $x = ["EWhile",16,econd,e,normalWhile]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.ESwitch = function(e,cases,edef) { var $x = ["ESwitch",17,e,cases,edef]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.ETry = function(e,catches) { var $x = ["ETry",18,e,catches]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EReturn = function(e) { var $x = ["EReturn",19,e]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EBreak = ["EBreak",20];
+haxe.macro.ExprDef.EBreak.toString = $estr;
+haxe.macro.ExprDef.EBreak.__enum__ = haxe.macro.ExprDef;
+haxe.macro.ExprDef.EContinue = ["EContinue",21];
+haxe.macro.ExprDef.EContinue.toString = $estr;
+haxe.macro.ExprDef.EContinue.__enum__ = haxe.macro.ExprDef;
+haxe.macro.ExprDef.EUntyped = function(e) { var $x = ["EUntyped",22,e]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EThrow = function(e) { var $x = ["EThrow",23,e]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.ECast = function(e,t) { var $x = ["ECast",24,e,t]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EDisplay = function(e,isCall) { var $x = ["EDisplay",25,e,isCall]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EDisplayNew = function(t) { var $x = ["EDisplayNew",26,t]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.ETernary = function(econd,eif,eelse) { var $x = ["ETernary",27,econd,eif,eelse]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.ECheckType = function(e,t) { var $x = ["ECheckType",28,e,t]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ExprDef.EMeta = function(s,e) { var $x = ["EMeta",29,s,e]; $x.__enum__ = haxe.macro.ExprDef; $x.toString = $estr; return $x; };
+haxe.macro.ComplexType = $hxClasses["haxe.macro.ComplexType"] = { __ename__ : ["haxe","macro","ComplexType"], __constructs__ : ["TPath","TFunction","TAnonymous","TParent","TExtend","TOptional"] };
+haxe.macro.ComplexType.TPath = function(p) { var $x = ["TPath",0,p]; $x.__enum__ = haxe.macro.ComplexType; $x.toString = $estr; return $x; };
+haxe.macro.ComplexType.TFunction = function(args,ret) { var $x = ["TFunction",1,args,ret]; $x.__enum__ = haxe.macro.ComplexType; $x.toString = $estr; return $x; };
+haxe.macro.ComplexType.TAnonymous = function(fields) { var $x = ["TAnonymous",2,fields]; $x.__enum__ = haxe.macro.ComplexType; $x.toString = $estr; return $x; };
+haxe.macro.ComplexType.TParent = function(t) { var $x = ["TParent",3,t]; $x.__enum__ = haxe.macro.ComplexType; $x.toString = $estr; return $x; };
+haxe.macro.ComplexType.TExtend = function(p,fields) { var $x = ["TExtend",4,p,fields]; $x.__enum__ = haxe.macro.ComplexType; $x.toString = $estr; return $x; };
+haxe.macro.ComplexType.TOptional = function(t) { var $x = ["TOptional",5,t]; $x.__enum__ = haxe.macro.ComplexType; $x.toString = $estr; return $x; };
+haxe.macro.TypeParam = $hxClasses["haxe.macro.TypeParam"] = { __ename__ : ["haxe","macro","TypeParam"], __constructs__ : ["TPType","TPExpr"] };
+haxe.macro.TypeParam.TPType = function(t) { var $x = ["TPType",0,t]; $x.__enum__ = haxe.macro.TypeParam; $x.toString = $estr; return $x; };
+haxe.macro.TypeParam.TPExpr = function(e) { var $x = ["TPExpr",1,e]; $x.__enum__ = haxe.macro.TypeParam; $x.toString = $estr; return $x; };
+haxe.macro.Access = $hxClasses["haxe.macro.Access"] = { __ename__ : ["haxe","macro","Access"], __constructs__ : ["APublic","APrivate","AStatic","AOverride","ADynamic","AInline","AMacro"] };
+haxe.macro.Access.APublic = ["APublic",0];
+haxe.macro.Access.APublic.toString = $estr;
+haxe.macro.Access.APublic.__enum__ = haxe.macro.Access;
+haxe.macro.Access.APrivate = ["APrivate",1];
+haxe.macro.Access.APrivate.toString = $estr;
+haxe.macro.Access.APrivate.__enum__ = haxe.macro.Access;
+haxe.macro.Access.AStatic = ["AStatic",2];
+haxe.macro.Access.AStatic.toString = $estr;
+haxe.macro.Access.AStatic.__enum__ = haxe.macro.Access;
+haxe.macro.Access.AOverride = ["AOverride",3];
+haxe.macro.Access.AOverride.toString = $estr;
+haxe.macro.Access.AOverride.__enum__ = haxe.macro.Access;
+haxe.macro.Access.ADynamic = ["ADynamic",4];
+haxe.macro.Access.ADynamic.toString = $estr;
+haxe.macro.Access.ADynamic.__enum__ = haxe.macro.Access;
+haxe.macro.Access.AInline = ["AInline",5];
+haxe.macro.Access.AInline.toString = $estr;
+haxe.macro.Access.AInline.__enum__ = haxe.macro.Access;
+haxe.macro.Access.AMacro = ["AMacro",6];
+haxe.macro.Access.AMacro.toString = $estr;
+haxe.macro.Access.AMacro.__enum__ = haxe.macro.Access;
+haxe.macro.FieldType = $hxClasses["haxe.macro.FieldType"] = { __ename__ : ["haxe","macro","FieldType"], __constructs__ : ["FVar","FFun","FProp"] };
+haxe.macro.FieldType.FVar = function(t,e) { var $x = ["FVar",0,t,e]; $x.__enum__ = haxe.macro.FieldType; $x.toString = $estr; return $x; };
+haxe.macro.FieldType.FFun = function(f) { var $x = ["FFun",1,f]; $x.__enum__ = haxe.macro.FieldType; $x.toString = $estr; return $x; };
+haxe.macro.FieldType.FProp = function(get,set,t,e) { var $x = ["FProp",2,get,set,t,e]; $x.__enum__ = haxe.macro.FieldType; $x.toString = $estr; return $x; };
+haxe.macro.TypeDefKind = $hxClasses["haxe.macro.TypeDefKind"] = { __ename__ : ["haxe","macro","TypeDefKind"], __constructs__ : ["TDEnum","TDStructure","TDClass","TDAlias","TDAbstract"] };
+haxe.macro.TypeDefKind.TDEnum = ["TDEnum",0];
+haxe.macro.TypeDefKind.TDEnum.toString = $estr;
+haxe.macro.TypeDefKind.TDEnum.__enum__ = haxe.macro.TypeDefKind;
+haxe.macro.TypeDefKind.TDStructure = ["TDStructure",1];
+haxe.macro.TypeDefKind.TDStructure.toString = $estr;
+haxe.macro.TypeDefKind.TDStructure.__enum__ = haxe.macro.TypeDefKind;
+haxe.macro.TypeDefKind.TDClass = function(superClass,interfaces,isInterface) { var $x = ["TDClass",2,superClass,interfaces,isInterface]; $x.__enum__ = haxe.macro.TypeDefKind; $x.toString = $estr; return $x; };
+haxe.macro.TypeDefKind.TDAlias = function(t) { var $x = ["TDAlias",3,t]; $x.__enum__ = haxe.macro.TypeDefKind; $x.toString = $estr; return $x; };
+haxe.macro.TypeDefKind.TDAbstract = function(tthis,from,to) { var $x = ["TDAbstract",4,tthis,from,to]; $x.__enum__ = haxe.macro.TypeDefKind; $x.toString = $estr; return $x; };
+haxe.macro.Error = function(m,p) {
+	this.message = m;
+	this.pos = p;
+};
+$hxClasses["haxe.macro.Error"] = haxe.macro.Error;
+haxe.macro.Error.__name__ = ["haxe","macro","Error"];
+haxe.macro.Error.prototype = {
+	message: null
+	,pos: null
+	,toString: function() {
+		return this.message;
+	}
+	,__class__: haxe.macro.Error
+};
+haxe.macro.Format = function() { };
+$hxClasses["haxe.macro.Format"] = haxe.macro.Format;
+haxe.macro.Format.__name__ = ["haxe","macro","Format"];
+haxe.macro.Type = $hxClasses["haxe.macro.Type"] = { __ename__ : ["haxe","macro","Type"], __constructs__ : ["TMono","TEnum","TInst","TType","TFun","TAnonymous","TDynamic","TLazy","TAbstract"] };
+haxe.macro.Type.TMono = function(t) { var $x = ["TMono",0,t]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TEnum = function(t,params) { var $x = ["TEnum",1,t,params]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TInst = function(t,params) { var $x = ["TInst",2,t,params]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TType = function(t,params) { var $x = ["TType",3,t,params]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TFun = function(args,ret) { var $x = ["TFun",4,args,ret]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TAnonymous = function(a) { var $x = ["TAnonymous",5,a]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TDynamic = function(t) { var $x = ["TDynamic",6,t]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TLazy = function(f) { var $x = ["TLazy",7,f]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.Type.TAbstract = function(t,params) { var $x = ["TAbstract",8,t,params]; $x.__enum__ = haxe.macro.Type; $x.toString = $estr; return $x; };
+haxe.macro.AnonStatus = $hxClasses["haxe.macro.AnonStatus"] = { __ename__ : ["haxe","macro","AnonStatus"], __constructs__ : ["AClosed","AOpened","AConst","AClassStatics","AEnumStatics","AAbstractStatics"] };
+haxe.macro.AnonStatus.AClosed = ["AClosed",0];
+haxe.macro.AnonStatus.AClosed.toString = $estr;
+haxe.macro.AnonStatus.AClosed.__enum__ = haxe.macro.AnonStatus;
+haxe.macro.AnonStatus.AOpened = ["AOpened",1];
+haxe.macro.AnonStatus.AOpened.toString = $estr;
+haxe.macro.AnonStatus.AOpened.__enum__ = haxe.macro.AnonStatus;
+haxe.macro.AnonStatus.AConst = ["AConst",2];
+haxe.macro.AnonStatus.AConst.toString = $estr;
+haxe.macro.AnonStatus.AConst.__enum__ = haxe.macro.AnonStatus;
+haxe.macro.AnonStatus.AClassStatics = function(t) { var $x = ["AClassStatics",3,t]; $x.__enum__ = haxe.macro.AnonStatus; $x.toString = $estr; return $x; };
+haxe.macro.AnonStatus.AEnumStatics = function(t) { var $x = ["AEnumStatics",4,t]; $x.__enum__ = haxe.macro.AnonStatus; $x.toString = $estr; return $x; };
+haxe.macro.AnonStatus.AAbstractStatics = function(t) { var $x = ["AAbstractStatics",5,t]; $x.__enum__ = haxe.macro.AnonStatus; $x.toString = $estr; return $x; };
+haxe.macro.ClassKind = $hxClasses["haxe.macro.ClassKind"] = { __ename__ : ["haxe","macro","ClassKind"], __constructs__ : ["KNormal","KTypeParameter","KExtension","KExpr","KGeneric","KGenericInstance","KMacroType","KAbstractImpl","KGenericBuild"] };
+haxe.macro.ClassKind.KNormal = ["KNormal",0];
+haxe.macro.ClassKind.KNormal.toString = $estr;
+haxe.macro.ClassKind.KNormal.__enum__ = haxe.macro.ClassKind;
+haxe.macro.ClassKind.KTypeParameter = function(constraints) { var $x = ["KTypeParameter",1,constraints]; $x.__enum__ = haxe.macro.ClassKind; $x.toString = $estr; return $x; };
+haxe.macro.ClassKind.KExtension = function(cl,params) { var $x = ["KExtension",2,cl,params]; $x.__enum__ = haxe.macro.ClassKind; $x.toString = $estr; return $x; };
+haxe.macro.ClassKind.KExpr = function(expr) { var $x = ["KExpr",3,expr]; $x.__enum__ = haxe.macro.ClassKind; $x.toString = $estr; return $x; };
+haxe.macro.ClassKind.KGeneric = ["KGeneric",4];
+haxe.macro.ClassKind.KGeneric.toString = $estr;
+haxe.macro.ClassKind.KGeneric.__enum__ = haxe.macro.ClassKind;
+haxe.macro.ClassKind.KGenericInstance = function(cl,params) { var $x = ["KGenericInstance",5,cl,params]; $x.__enum__ = haxe.macro.ClassKind; $x.toString = $estr; return $x; };
+haxe.macro.ClassKind.KMacroType = ["KMacroType",6];
+haxe.macro.ClassKind.KMacroType.toString = $estr;
+haxe.macro.ClassKind.KMacroType.__enum__ = haxe.macro.ClassKind;
+haxe.macro.ClassKind.KAbstractImpl = function(a) { var $x = ["KAbstractImpl",7,a]; $x.__enum__ = haxe.macro.ClassKind; $x.toString = $estr; return $x; };
+haxe.macro.ClassKind.KGenericBuild = ["KGenericBuild",8];
+haxe.macro.ClassKind.KGenericBuild.toString = $estr;
+haxe.macro.ClassKind.KGenericBuild.__enum__ = haxe.macro.ClassKind;
+haxe.macro.FieldKind = $hxClasses["haxe.macro.FieldKind"] = { __ename__ : ["haxe","macro","FieldKind"], __constructs__ : ["FVar","FMethod"] };
+haxe.macro.FieldKind.FVar = function(read,write) { var $x = ["FVar",0,read,write]; $x.__enum__ = haxe.macro.FieldKind; $x.toString = $estr; return $x; };
+haxe.macro.FieldKind.FMethod = function(k) { var $x = ["FMethod",1,k]; $x.__enum__ = haxe.macro.FieldKind; $x.toString = $estr; return $x; };
+haxe.macro.VarAccess = $hxClasses["haxe.macro.VarAccess"] = { __ename__ : ["haxe","macro","VarAccess"], __constructs__ : ["AccNormal","AccNo","AccNever","AccResolve","AccCall","AccInline","AccRequire"] };
+haxe.macro.VarAccess.AccNormal = ["AccNormal",0];
+haxe.macro.VarAccess.AccNormal.toString = $estr;
+haxe.macro.VarAccess.AccNormal.__enum__ = haxe.macro.VarAccess;
+haxe.macro.VarAccess.AccNo = ["AccNo",1];
+haxe.macro.VarAccess.AccNo.toString = $estr;
+haxe.macro.VarAccess.AccNo.__enum__ = haxe.macro.VarAccess;
+haxe.macro.VarAccess.AccNever = ["AccNever",2];
+haxe.macro.VarAccess.AccNever.toString = $estr;
+haxe.macro.VarAccess.AccNever.__enum__ = haxe.macro.VarAccess;
+haxe.macro.VarAccess.AccResolve = ["AccResolve",3];
+haxe.macro.VarAccess.AccResolve.toString = $estr;
+haxe.macro.VarAccess.AccResolve.__enum__ = haxe.macro.VarAccess;
+haxe.macro.VarAccess.AccCall = ["AccCall",4];
+haxe.macro.VarAccess.AccCall.toString = $estr;
+haxe.macro.VarAccess.AccCall.__enum__ = haxe.macro.VarAccess;
+haxe.macro.VarAccess.AccInline = ["AccInline",5];
+haxe.macro.VarAccess.AccInline.toString = $estr;
+haxe.macro.VarAccess.AccInline.__enum__ = haxe.macro.VarAccess;
+haxe.macro.VarAccess.AccRequire = function(r,msg) { var $x = ["AccRequire",6,r,msg]; $x.__enum__ = haxe.macro.VarAccess; $x.toString = $estr; return $x; };
+haxe.macro.MethodKind = $hxClasses["haxe.macro.MethodKind"] = { __ename__ : ["haxe","macro","MethodKind"], __constructs__ : ["MethNormal","MethInline","MethDynamic","MethMacro"] };
+haxe.macro.MethodKind.MethNormal = ["MethNormal",0];
+haxe.macro.MethodKind.MethNormal.toString = $estr;
+haxe.macro.MethodKind.MethNormal.__enum__ = haxe.macro.MethodKind;
+haxe.macro.MethodKind.MethInline = ["MethInline",1];
+haxe.macro.MethodKind.MethInline.toString = $estr;
+haxe.macro.MethodKind.MethInline.__enum__ = haxe.macro.MethodKind;
+haxe.macro.MethodKind.MethDynamic = ["MethDynamic",2];
+haxe.macro.MethodKind.MethDynamic.toString = $estr;
+haxe.macro.MethodKind.MethDynamic.__enum__ = haxe.macro.MethodKind;
+haxe.macro.MethodKind.MethMacro = ["MethMacro",3];
+haxe.macro.MethodKind.MethMacro.toString = $estr;
+haxe.macro.MethodKind.MethMacro.__enum__ = haxe.macro.MethodKind;
+haxe.macro.TConstant = $hxClasses["haxe.macro.TConstant"] = { __ename__ : ["haxe","macro","TConstant"], __constructs__ : ["TInt","TFloat","TString","TBool","TNull","TThis","TSuper"] };
+haxe.macro.TConstant.TInt = function(i) { var $x = ["TInt",0,i]; $x.__enum__ = haxe.macro.TConstant; $x.toString = $estr; return $x; };
+haxe.macro.TConstant.TFloat = function(s) { var $x = ["TFloat",1,s]; $x.__enum__ = haxe.macro.TConstant; $x.toString = $estr; return $x; };
+haxe.macro.TConstant.TString = function(s) { var $x = ["TString",2,s]; $x.__enum__ = haxe.macro.TConstant; $x.toString = $estr; return $x; };
+haxe.macro.TConstant.TBool = function(b) { var $x = ["TBool",3,b]; $x.__enum__ = haxe.macro.TConstant; $x.toString = $estr; return $x; };
+haxe.macro.TConstant.TNull = ["TNull",4];
+haxe.macro.TConstant.TNull.toString = $estr;
+haxe.macro.TConstant.TNull.__enum__ = haxe.macro.TConstant;
+haxe.macro.TConstant.TThis = ["TThis",5];
+haxe.macro.TConstant.TThis.toString = $estr;
+haxe.macro.TConstant.TThis.__enum__ = haxe.macro.TConstant;
+haxe.macro.TConstant.TSuper = ["TSuper",6];
+haxe.macro.TConstant.TSuper.toString = $estr;
+haxe.macro.TConstant.TSuper.__enum__ = haxe.macro.TConstant;
+haxe.macro.ModuleType = $hxClasses["haxe.macro.ModuleType"] = { __ename__ : ["haxe","macro","ModuleType"], __constructs__ : ["TClassDecl","TEnumDecl","TTypeDecl","TAbstract"] };
+haxe.macro.ModuleType.TClassDecl = function(c) { var $x = ["TClassDecl",0,c]; $x.__enum__ = haxe.macro.ModuleType; $x.toString = $estr; return $x; };
+haxe.macro.ModuleType.TEnumDecl = function(e) { var $x = ["TEnumDecl",1,e]; $x.__enum__ = haxe.macro.ModuleType; $x.toString = $estr; return $x; };
+haxe.macro.ModuleType.TTypeDecl = function(t) { var $x = ["TTypeDecl",2,t]; $x.__enum__ = haxe.macro.ModuleType; $x.toString = $estr; return $x; };
+haxe.macro.ModuleType.TAbstract = function(a) { var $x = ["TAbstract",3,a]; $x.__enum__ = haxe.macro.ModuleType; $x.toString = $estr; return $x; };
+haxe.macro.FieldAccess = $hxClasses["haxe.macro.FieldAccess"] = { __ename__ : ["haxe","macro","FieldAccess"], __constructs__ : ["FInstance","FStatic","FAnon","FDynamic","FClosure","FEnum"] };
+haxe.macro.FieldAccess.FInstance = function(c,cf) { var $x = ["FInstance",0,c,cf]; $x.__enum__ = haxe.macro.FieldAccess; $x.toString = $estr; return $x; };
+haxe.macro.FieldAccess.FStatic = function(c,cf) { var $x = ["FStatic",1,c,cf]; $x.__enum__ = haxe.macro.FieldAccess; $x.toString = $estr; return $x; };
+haxe.macro.FieldAccess.FAnon = function(cf) { var $x = ["FAnon",2,cf]; $x.__enum__ = haxe.macro.FieldAccess; $x.toString = $estr; return $x; };
+haxe.macro.FieldAccess.FDynamic = function(s) { var $x = ["FDynamic",3,s]; $x.__enum__ = haxe.macro.FieldAccess; $x.toString = $estr; return $x; };
+haxe.macro.FieldAccess.FClosure = function(c,cf) { var $x = ["FClosure",4,c,cf]; $x.__enum__ = haxe.macro.FieldAccess; $x.toString = $estr; return $x; };
+haxe.macro.FieldAccess.FEnum = function(e,ef) { var $x = ["FEnum",5,e,ef]; $x.__enum__ = haxe.macro.FieldAccess; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef = $hxClasses["haxe.macro.TypedExprDef"] = { __ename__ : ["haxe","macro","TypedExprDef"], __constructs__ : ["TConst","TLocal","TArray","TBinop","TField","TTypeExpr","TParenthesis","TObjectDecl","TArrayDecl","TCall","TNew","TUnop","TFunction","TVar","TBlock","TFor","TIf","TWhile","TSwitch","TPatMatch","TTry","TReturn","TBreak","TContinue","TThrow","TCast","TMeta","TEnumParameter"] };
+haxe.macro.TypedExprDef.TConst = function(c) { var $x = ["TConst",0,c]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TLocal = function(v) { var $x = ["TLocal",1,v]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TArray = function(e1,e2) { var $x = ["TArray",2,e1,e2]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TBinop = function(op,e1,e2) { var $x = ["TBinop",3,op,e1,e2]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TField = function(e,fa) { var $x = ["TField",4,e,fa]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TTypeExpr = function(m) { var $x = ["TTypeExpr",5,m]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TParenthesis = function(e) { var $x = ["TParenthesis",6,e]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TObjectDecl = function(fields) { var $x = ["TObjectDecl",7,fields]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TArrayDecl = function(el) { var $x = ["TArrayDecl",8,el]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TCall = function(e,el) { var $x = ["TCall",9,e,el]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TNew = function(c,params,el) { var $x = ["TNew",10,c,params,el]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TUnop = function(op,postFix,e) { var $x = ["TUnop",11,op,postFix,e]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TFunction = function(tfunc) { var $x = ["TFunction",12,tfunc]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TVar = function(v,expr) { var $x = ["TVar",13,v,expr]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TBlock = function(el) { var $x = ["TBlock",14,el]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TFor = function(v,e1,e2) { var $x = ["TFor",15,v,e1,e2]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TIf = function(econd,eif,eelse) { var $x = ["TIf",16,econd,eif,eelse]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TWhile = function(econd,e,normalWhile) { var $x = ["TWhile",17,econd,e,normalWhile]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TSwitch = function(e,cases,edef) { var $x = ["TSwitch",18,e,cases,edef]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TPatMatch = ["TPatMatch",19];
+haxe.macro.TypedExprDef.TPatMatch.toString = $estr;
+haxe.macro.TypedExprDef.TPatMatch.__enum__ = haxe.macro.TypedExprDef;
+haxe.macro.TypedExprDef.TTry = function(e,catches) { var $x = ["TTry",20,e,catches]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TReturn = function(e) { var $x = ["TReturn",21,e]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TBreak = ["TBreak",22];
+haxe.macro.TypedExprDef.TBreak.toString = $estr;
+haxe.macro.TypedExprDef.TBreak.__enum__ = haxe.macro.TypedExprDef;
+haxe.macro.TypedExprDef.TContinue = ["TContinue",23];
+haxe.macro.TypedExprDef.TContinue.toString = $estr;
+haxe.macro.TypedExprDef.TContinue.__enum__ = haxe.macro.TypedExprDef;
+haxe.macro.TypedExprDef.TThrow = function(e) { var $x = ["TThrow",24,e]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TCast = function(e,m) { var $x = ["TCast",25,e,m]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TMeta = function(m,e1) { var $x = ["TMeta",26,m,e1]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.macro.TypedExprDef.TEnumParameter = function(e1,ef,index) { var $x = ["TEnumParameter",27,e1,ef,index]; $x.__enum__ = haxe.macro.TypedExprDef; $x.toString = $estr; return $x; };
+haxe.rtti = {};
+haxe.rtti.Meta = function() { };
+$hxClasses["haxe.rtti.Meta"] = haxe.rtti.Meta;
+haxe.rtti.Meta.__name__ = ["haxe","rtti","Meta"];
+haxe.rtti.Meta.getType = function(t) {
+	var meta = t.__meta__;
+	if(meta == null || meta.obj == null) return { }; else return meta.obj;
+};
+haxe.rtti.Meta.getStatics = function(t) {
+	var meta = t.__meta__;
+	if(meta == null || meta.statics == null) return { }; else return meta.statics;
+};
+haxe.rtti.Meta.getFields = function(t) {
+	var meta = t.__meta__;
+	if(meta == null || meta.fields == null) return { }; else return meta.fields;
+};
 var js = {};
 js.Boot = function() { };
 $hxClasses["js.Boot"] = js.Boot;
@@ -1226,5 +1947,7 @@ if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
 	}
 	return a1;
 };
+CompileTimeClassList.__meta__ = { obj : { classLists : [["library.core,true,","library.core.Entry,library.core.Through"]]}};
+CompileTimeClassList.lists = null;
 haxe.ds.ObjectMap.count = 0;
 })(typeof window != "undefined" ? window : exports);

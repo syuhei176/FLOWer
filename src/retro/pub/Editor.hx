@@ -100,6 +100,8 @@ class Editor{
 	}
 
 	public static function createCodeIQ(){
+		Library.init();
+		CreateJobDialog.init();
 		var editor = new Editor();
 		editor.IdGenerator = retro.pub.IDGenerator.getInstance("codeIQ");
 		var project = new Project();

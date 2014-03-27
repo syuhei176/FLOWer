@@ -2,4 +2,3 @@
 -cp src
 -js temp.js
 -D codeiq
--resource codeiq-flower-modules.json@flower-modules
