@@ -1,8 +1,0 @@
-[
-	{
-		"name" : "core",
-		"none" : ["Entry","Through"],
-
-		"virtualDevice" : []
-	}
-]

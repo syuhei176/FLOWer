@@ -1,1 +1,0 @@
-if (typeof ordRC0601=='undefined') {ordRC0601=Math.random()*10000000000000000;}document.write('<img src="//pubads.g.doubleclick.net/activity;dc_iu=/80050253/r_dc_seg;dc_seg=18043330;ord=' + ordRC0601 + '?" width=1 height=1 border=0/>');
