@@ -14,6 +14,8 @@ import retro.model.Value;
 import retro.model.ValueCarrier;
 import retro.controller.DiagramController;
 
+using Lambda;
+
 class InputPortView extends PortView{
 
 	public var port:InputPort;
@@ -50,7 +52,11 @@ class InputPortView extends PortView{
 				if( this.isConnected == false ){ 
 					var v = window.prompt("","");
 					if(v != null) {
-						this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)));
+						var jsonCodes = ["1","2","3","4","5","6","7","8","9","0","[","{","'",'"'];
+						if( jsonCodes.map(function(code) return v.charAt(0) == code).fold(function(e,acc) return e || acc, false) )
+							this.port.setConstant(new Value(RetroType.RNumber, haxe.Json.parse(v)))
+						else
+							this.port.setConstant(new Value(RetroType.RNumber,v));
 					}
 				}
 			}
@@ -97,7 +103,7 @@ class InputPortView extends PortView{
 			"font-family" : Thema.constantValueFontFamily
 		});
 		var graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
-			Thema.valueCarrierRadius * 2 + (t.length - 1) * 6, Thema.valueCarrierRadius * 2, 
+			Thema.valueCarrierRadius * 2 + (t.length - 1) * 10, Thema.valueCarrierRadius * 2, 
 			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
 		graphic.attr({
 				fill: Thema.constantValueFill,
