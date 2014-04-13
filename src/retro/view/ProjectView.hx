@@ -93,9 +93,8 @@ class ProjectView{
 		    				fileReader.onload = function(event){
 		    					var data = haxe.Json.parse(fileReader.result);
 		    					var diagram = this.projectController.getProject().getRootDiagram();
-		    					for( job in diagram.getJobs() )  diagram.removeJob(job);
-		    					this.importController.import_diagram(this.projectController.getProject().getRootDiagram(),
-		    						data.diagram);
+		    					diagram.removeAllJob();
+		    					this.importController.import_diagram(diagram,data.diagram);
 		    				}
 		    				fileReader.readAsText(file);
     				};

@@ -46,6 +46,25 @@ class Diagram{
 		}
 		this.jobs.remove(job);
 	}
+
+	public function removeAllJob(){
+		for( job in this.jobs ){
+			this.fireOnJobRemoved(job);
+		}
+		for( job in this.jobs ){
+			for(inputPort in job.getInputPorts()) {
+				for(srcPort in inputPort.connection) {
+					srcPort.disconnectToInputPort(inputPort);
+				}
+			}
+			for(outputPort in job.getOutputPorts()) {
+				for(destPort in outputPort.connection) {
+					outputPort.disconnectToInputPort(destPort);
+				}
+			}
+		}
+		this.jobs = new Array<Job>();
+	}
 	
 	public function getJob(id){
 		for( job in this.jobs ){

@@ -65,6 +65,39 @@ class Editor{
 	  	this.runtime = new retro.vm.Runtime(this.projectController.getProject().getRootDiagram());
 	  	return this.runtime;
 	}
+	
+	/*public static function create(editorkey, id_header){
+		var retroClient = new RetroClient(editorkey);
+		retroClient.init(function(data) {
+			var editor = new Editor(id_header, retroClient, editorkey);
+			var project = new Project();
+			//コントローラを作成
+			var projectController = new ProjectController(editor, project);
+			editor.setProjectController(projectController);
+			//ビューを作成
+			var projectView = new ProjectView(projectController, new ExportController(editor, project));
+			editor.setProjectView(projectView);
+			var virtualDevice = new VirtualDevice();
+			editor.virtualDevice = virtualDevice;
+			var consoleDevice = new ConsoleView(editor.snap);
+			virtualDevice.setConsoleDevice(consoleDevice);
+			var snap = new Snap();
+			snap.attr({
+				"id" : "sub_svg",
+				"class" : "modal"
+			});
+			virtualDevice.setSVGDevice(snap);
+			virtualDevice.setSocketDevice(retroClient);
+			if(data.model.diagram) {
+				//インポートを実行
+				var importController = new ImportController(project, virtualDevice);
+				importController.do_import(data);
+			}else{
+				var diagram = new Diagram();
+				project.setRootDiagram(diagram);
+			}
+		});
+	}*/
 
 	public static function create(){
 		Library.init();
