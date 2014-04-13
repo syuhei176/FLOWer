@@ -1,4 +1,4 @@
--main Main
+FLOWer
 -cp src
 -js browser/js/flower.js
 -D browser
