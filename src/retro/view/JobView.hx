@@ -95,7 +95,7 @@ class JobView{
 		});
 		var inDustBox = false;
 		var isInDustBox = function(x,y){
-			var right = js.Browser.document.body.clientWidth;
+			var right = this.diagramController.getEditor().width;
 			return inDustBox = (right - Thema.dustboxWidth) < x && (x < right) &&
 					y < Thema.dustboxHeight;
 		};

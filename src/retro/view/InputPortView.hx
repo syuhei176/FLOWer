@@ -97,13 +97,24 @@ class InputPortView extends PortView{
 		this.constantValueGraphic = this.snap.group();
 		var t = Std.string(v.value);
 		var text : SnapElement = snap.text(-2, 4, t);
+		var id =  Reflect.field(text,"id");
 		text.attr({
+			"id" : id,
 			"font-size" : Thema.constantValueFontSize,
 			fill : Thema.constantValueFontFill,
-			"font-family" : Thema.constantValueFontFamily
+			"font-family" : Thema.constantValueFontFamily,
 		});
+		var length = 0;
+		function textLength(text){
+			this.diagramController.getEditor().snap.append(text);
+			var textDom = js.Browser.document.getElementById(id);
+			length = textDom.offsetWidth;
+			text.remove();
+		}
+		textLength(text);
+		trace(length);
 		var graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
-			Thema.valueCarrierRadius * 2 + (t.length - 1) * 10, Thema.valueCarrierRadius * 2, 
+			Thema.valueCarrierRadius * 1.5  + length , Thema.valueCarrierRadius * 2, 
 			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
 		graphic.attr({
 				fill: Thema.constantValueFill,

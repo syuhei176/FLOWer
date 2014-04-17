@@ -1,16 +1,13 @@
-logic-on-canvas
+# FLOWer!
+
 ===============
+
+## Setup
 
 
 ## Build
 コードの変更して、適用するときにビルド
 
-    # build all
-    >> neko build.n
-    # build codeiq
-    neko build.n codeiq
-    # build raspberrypi
-    neko build.n raspberrypi
 
 ## codeiqサーバ起動
     

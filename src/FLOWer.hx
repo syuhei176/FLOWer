@@ -7,9 +7,9 @@ import retro.controller.DiagramController;
 @:expose
 class FLOWer{
 	private var diagramController : DiagramController;
-	public function new(){
-		this.diagramController = Editor.create();
-	}
+	public function new(view){
+            this.diagramController = Editor.create(view);
+        }
 
 	public function setJob(pkg, cmp, x, y){
 		var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
@@ -17,4 +17,5 @@ class FLOWer{
 		job.setPos(x, y);
 	}
 }
+
 

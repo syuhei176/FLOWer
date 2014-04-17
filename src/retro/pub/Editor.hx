@@ -23,13 +23,17 @@ class Editor{
 	public var IdGenerator : retro.pub.IDGenerator;
 	public var snap:Snap;
 	public var virtualDevice:VirtualDevice;
+	public var width : Int;
+	public var height : Int;
 	
 	private var runtime:Runtime;
 	private var retroClient:RetroClient;
 	
-	public function new(?id_header, ?retroClient, ?editorkey){
+	public function new(?view, ?id_header, ?retroClient, ?editorkey){
+		this.width = if(view!=null) view.width else new js.JQuery("svg").width();
+		this.height = if(view!=null) view.height else new js.JQuery("svg").height();
 		this.snap = new Snap("#svg");
-		var rect = snap.rect(0,0, js.Browser.window.screen.width, js.Browser.window.screen.height);
+		var rect = snap.rect(0, 0, this.width, this.height);
 		rect.attr({ fill: "#3498DB" });
 		snap.append(rect);
 		this.IdGenerator = retro.pub.IDGenerator.getInstance(id_header);
@@ -67,10 +71,10 @@ class Editor{
 	}
 	
 
-	public static function create(){
+	public static function create(view){
 		Library.init();
 		CreateJobDialog.init();
-		var editor = new Editor();
+		var editor = new Editor(view);
 		editor.IdGenerator = retro.pub.IDGenerator.getInstance("codeIQ");
 		var project = new Project();
 		var projectController = new ProjectController(editor, project);
@@ -79,8 +83,8 @@ class Editor{
 		editor.virtualDevice = virtualDevice;
 		var projectView = new ProjectView(projectController, new ExportController(editor, project), new ImportController(project, virtualDevice));
 		editor.setProjectView(projectView);
-		var consoleDevice = new ConsoleView(editor.snap);
-		virtualDevice.setConsoleDevice(consoleDevice);
+		/*var consoleDevice = new ConsoleView(editor.snap);
+		virtualDevice.setConsoleDevice(consoleDevice);*/
 		var snap = new Snap();
 		snap.attr({
 			"id" : "sub_svg",

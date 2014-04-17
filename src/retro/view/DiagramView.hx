@@ -71,7 +71,7 @@ class DiagramView{
 
 		Snap.load(#if browser "images/dustbox.svg" #else "/images/dustbox.svg" #end, function (f) {
     		var g:SnapElement = f.select("g");
-    		var right = js.Browser.document.body.clientWidth;
+    		var right = this.diagramController.getEditor().width;
     		var dustbox_group = snap.group();
     		dustbox_group.transform("translate("+(right - Thema.dustboxRightX)+","+Thema.dustboxY+")");
         	dustbox_group.append(g);
