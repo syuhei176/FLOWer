@@ -28,13 +28,23 @@ class ValueCarrierView {
 		//var text = snap.text(0, 0, haxe.Json.stringify(valueCarrier.getValue().value));
 		var t = this.value2String(valueCarrier.getValue().value);
 		var text : SnapElement = snap.text(-2, 4, t);
+		var id =  Reflect.field(text,"id");
 		text.attr({
-			"font-size" : Thema.valueCarrierFontSize,
-			fill : Thema.valueCarrierFontFill,
-			"font-family" : Thema.valueCarrierFontFamily,
+			"id" : id,
+			"font-size" : Thema.constantValueFontSize,
+			fill : Thema.constantValueFontFill,
+			"font-family" : Thema.constantValueFontFamily,
 		});
+		var length = 0;
+		function textLength(text){
+			this.group.append(text);
+			var textDom = js.Browser.document.getElementById(id);
+			length = textDom.offsetWidth;
+			text.remove();
+		}
+		textLength(text);
 		this.graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
-			Thema.valueCarrierRadius * 2 + (t.length - 1) * 10, Thema.valueCarrierRadius * 2, 
+			Thema.valueCarrierRadius * 1.5  + length , Thema.valueCarrierRadius * 2, 
 			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
 		this.graphic.attr({
 				fill: Thema.valueCarrierFill,

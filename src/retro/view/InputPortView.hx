@@ -112,7 +112,6 @@ class InputPortView extends PortView{
 			text.remove();
 		}
 		textLength(text);
-		trace(length);
 		var graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
 			Thema.valueCarrierRadius * 1.5  + length , Thema.valueCarrierRadius * 2, 
 			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
