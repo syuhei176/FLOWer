@@ -20,6 +20,8 @@ class Editor{
 	private var editorkey:String;
 	public var projectController : ProjectController;
 	public var projectView : ProjectView;
+	public var exportController : ExportController;
+	public var importController : ImportController;
 	public var IdGenerator : retro.pub.IDGenerator;
 	public var snap:Snap;
 	public var virtualDevice:VirtualDevice;
@@ -81,7 +83,9 @@ class Editor{
 		editor.setProjectController(projectController);
 		var virtualDevice = new VirtualDevice();
 		editor.virtualDevice = virtualDevice;
-		var projectView = new ProjectView(projectController, new ExportController(editor, project), new ImportController(project, virtualDevice));
+		editor.exportController = new ExportController(editor, project);
+		editor.importController = new ImportController(project, virtualDevice);
+		var projectView = new ProjectView(projectController, editor.exportController, editor.importController);
 		editor.setProjectView(projectView);
 		/*var consoleDevice = new ConsoleView(editor.snap);
 		virtualDevice.setConsoleDevice(consoleDevice);*/

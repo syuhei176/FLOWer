@@ -109,7 +109,7 @@ class ProjectView{
     			});
     		});
 	}
-	
+
 	public function OnDiagramAdded(diagram:Diagram) {
 		this.diagramView = new DiagramView(new DiagramController(this.projectController.getEditor(), diagram, this.projectController.getEditor().virtualDevice));
 	}
