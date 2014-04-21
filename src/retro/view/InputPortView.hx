@@ -113,7 +113,7 @@ class InputPortView extends PortView{
 		}
 		textLength(text);
 		var graphic = snap.rect(-Thema.valueCarrierRadius, -Thema.valueCarrierRadius, 
-			Thema.valueCarrierRadius * 1.5  + length , Thema.valueCarrierRadius * 2, 
+			Thema.valueCarrierRadius * 2 , Thema.valueCarrierRadius * 2, 
 			Thema.valueCarrierRadius, Thema.valueCarrierRadius);
 		graphic.attr({
 				fill: Thema.constantValueFill,
@@ -121,10 +121,30 @@ class InputPortView extends PortView{
 				stroke : Thema.constantValueStroke
 				});
 		this.constantValueGraphic.append(graphic);
-		this.constantValueGraphic.append(text);
 		this.upperGroup.append(this.constantValueGraphic);
+		var open = false;
+		
+		var g : Dynamic;
+		Snap.load(#if browser "images/remove.svg" #else "/images/remove.svg" #end, function (f) {
+    		g = f.select("g");
+        	g.click(function(e, x, y) {
+    			this.port.removeConstant();
+        	});
+    	});
+
 		graphic.click(function(e) {
-			this.port.removeConstant();
+			if(open){
+				text.remove();
+				g.remove();
+				graphic.attr({ width : Thema.valueCarrierRadius * 2 });
+				open = false;
+			}else{
+				g.transform("translate("+Std.string(length-20)+",-20)");
+				this.constantValueGraphic.append(g);
+				this.constantValueGraphic.append(text);
+				graphic.attr({ width : Thema.valueCarrierRadius * 1.5  + length });
+				open = true;
+			}
 		});
 	}
 	

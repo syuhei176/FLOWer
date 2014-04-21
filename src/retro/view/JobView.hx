@@ -122,14 +122,14 @@ class JobView{
 	}
 
 	public function drawView(){
-		for( portView in this.inputportviews ) this.group.append(portView.group);
 		for( portView in this.outputportviews ) this.group.append(portView.group);
+		for( portView in this.inputportviews ) this.group.append(portView.group);
 		this.group.append(this.titleRect);
 		this.group.append(this.portRect);
 		this.group.append(this.titleText);
 		this.group.append(this.coll);
-		for( portView in this.inputportviews ) this.group.append(portView.upperGroup);
 		for( portView in this.outputportviews ) this.group.append(portView.upperGroup);
+		for( portView in this.inputportviews ) this.group.append(portView.upperGroup);
 		this.cal2();
 		if( this.job.customDraw != null ) this.job.customDraw(this);
 	}
