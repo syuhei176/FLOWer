@@ -19,7 +19,7 @@ class Entry implements JobComponent{
 		this.outputs.add("output", RetroType.RNumber);
 	}
 	
-	public function onPlay(cb : Result -> Void)
+	public function onPlay(params:Params,cb : Result -> Void)
 		cb( ["output"=>Msg(1)] );
 	
 	public function onInputRecieved(params:Params, cb) return;

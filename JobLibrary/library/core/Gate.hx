@@ -22,7 +22,7 @@ class Gate implements JobComponent {
 		this.outputs.add("false", RetroType.RNumber);
 	}
 
-	public function onPlay(cb : Result -> Void) : Void return;
+	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		var input = params.get("input");

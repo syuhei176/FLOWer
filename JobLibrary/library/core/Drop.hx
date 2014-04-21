@@ -19,7 +19,7 @@ class Drop implements JobComponent {
 		this.inputs.add("input", RetroType.RNumber);
 	}
 
-	public function onPlay(cb : Result -> Void) : Void return;
+	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		cb(null);

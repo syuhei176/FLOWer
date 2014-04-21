@@ -1,4 +1,5 @@
-package library.core;
+package library.milkclient;
+
 
 import flower.JobComponent;
 import externs.Inputs;
@@ -7,29 +8,30 @@ import externs.Outputs;
 import flower.Result;
 import flower.RetroType;
 
-class Transistor implements JobComponent {
+class MilkClient implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
 	
 	public function new() {
-		this.name = "Transistor";
+		this.name = "MlikCCocoa";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("emitter", RetroType.RNumber);
-		this.inputs.add("base", RetroType.RNumber);
-		this.outputs.add("collector", RetroType.RNumber);
+		this.inputs.add("host", RetroType.RNumber);
+		this.outputs.add("milkcocoa", RetroType.RNumber);
 	}
 	
-	public function onPlay(params:Params,cb : Result -> Void) : Void return;
+	public function onPlay(params:Params, cb : Result -> Void) : Void{
+		var host = params.get("host");
+		var milkcocoa = new MilkCocoa(host);
+		cb(["milkcocoa"=>Msg(milkcocoa)]);
+	};
 	
 	public function onInputRecieved(params:Params, cb) {
-		var emitter = params.get("emitter");
-		cb(["collector" => Msg(emitter)]);
 	}
 	
 	public function getModuleName() {
-		return "core.Transistor";
+		return "milkcocoa.MilkCocoa";
 	}
 	
 

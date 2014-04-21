@@ -34,7 +34,7 @@ class SymbolicLink extends Job{
 		this.prototype.onInputRecieved(this.getParams(), cb);
 
 	override function onPlay(cb : Result -> Void )  : Void
-		this.prototype.onPlay(cb);
+		this.prototype.onPlay(this.getParams(), cb);
 	
 	
 	override function getJSON() {

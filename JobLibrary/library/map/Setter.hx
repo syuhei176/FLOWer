@@ -21,7 +21,7 @@ class Setter implements JobComponent {
 		this.outputs.add("result", RetroType.RNumber);
 	}
 
-	public function onPlay(cb : Result -> Void) : Void return;
+	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
 	public function onInputRecieved(params:Params, cb) {
 		var input1 = params.get("key");
