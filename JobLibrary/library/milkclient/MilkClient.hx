@@ -1,6 +1,6 @@
 package library.milkclient;
 
-
+import milkcocoa.*;
 import flower.JobComponent;
 import externs.Inputs;
 import externs.Params;
@@ -18,14 +18,14 @@ class MilkClient implements JobComponent {
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
 		this.inputs.add("host", RetroType.RNumber);
-		this.outputs.add("milkcocoa", RetroType.RNumber);
 	}
 	
 	public function onPlay(params:Params, cb : Result -> Void) : Void{
 		var host = params.get("host");
 		var milkcocoa = new MilkCocoa(host);
-		cb(["milkcocoa"=>Msg(milkcocoa)]);
-	};
+	}
+
+	
 	
 	public function onInputRecieved(params:Params, cb) {
 	}

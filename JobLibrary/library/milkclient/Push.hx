@@ -1,5 +1,6 @@
 package library.milkclient;
 
+import milkcocoa.*;
 import flower.JobComponent;
 import externs.Inputs;
 import externs.Params;

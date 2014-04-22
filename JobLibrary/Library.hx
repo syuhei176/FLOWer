@@ -10,7 +10,11 @@ class Library{
 	public static function init(){
 		CompileTime.importPackage("library");
 		var libraryClasses = CompileTime.getAllClasses("library");
+			
 		Library.jobComponents = libraryClasses
+			.filter(function(c) return Type.getInstanceFields(JobComponent)
+			.map(function(field) return Type.getInstanceFields(c).indexOf(field) > -1 )
+			.fold(function(a, acc)return a && acc, true))
 			.map(function(c) : JobComponent return Type.createInstance(c,[]))
 			.fold(function(job, array : Array<JobComponent>){ array.push(job); return array;}, []);
 	}

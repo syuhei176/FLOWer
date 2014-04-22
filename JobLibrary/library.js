@@ -279,8 +279,19 @@ Library.__name__ = ["Library"];
 Library.jobComponents = null;
 Library.init = function() {
 	var libraryClasses = CompileTimeClassList.get("library,true,");
-	Library.jobComponents = Lambda.fold(libraryClasses.map(function(c) {
-		return Type.createInstance(c,[]);
+	Library.jobComponents = Lambda.fold(libraryClasses.filter(function(c) {
+		return Lambda.fold(Type.getInstanceFields(flower.JobComponent).map(function(field) {
+			return (function($this) {
+				var $r;
+				var _this = Type.getInstanceFields(c);
+				$r = HxOverrides.indexOf(_this,field,0);
+				return $r;
+			}(this)) > -1;
+		}),function(a,acc) {
+			return a && acc;
+		},true);
+	}).map(function(c1) {
+		return Type.createInstance(c1,[]);
 	}),function(job,array) {
 		array.push(job);
 		return array;
@@ -482,28 +493,6 @@ IMap.prototype = {
 	,__class__: IMap
 };
 Math.__name__ = ["Math"];
-var Pod = function() {
-	this.map = new haxe.ds.StringMap();
-};
-$hxClasses["Pod"] = Pod;
-Pod.__name__ = ["Pod"];
-Pod.instance = null;
-Pod.getInstance = function() {
-	if(Pod.instance == null) return Pod.instance = new Pod(); else return Pod.instance;
-};
-Pod.prototype = {
-	map: null
-	,exists: function(key) {
-		return this.map.exists(key);
-	}
-	,get: function(key) {
-		return this.map.get(key);
-	}
-	,set: function(key,value) {
-		return this.map.set(key,value);
-	}
-	,__class__: Pod
-};
 var Reflect = function() { };
 $hxClasses["Reflect"] = Reflect;
 Reflect.__name__ = ["Reflect"];
@@ -2409,8 +2398,8 @@ library.map.Getter.prototype = {
 	}
 	,onInputRecieved: function(params,cb) {
 		var key = params.get("key");
-		var exists = Pod.getInstance().exists(key);
-		var value = Pod.getInstance().get(key);
+		var exists = library.map.Pod.getInstance().exists(key);
+		var value = library.map.Pod.getInstance().get(key);
 		cb((function($this) {
 			var $r;
 			var _g = new haxe.ds.StringMap();
@@ -2424,6 +2413,28 @@ library.map.Getter.prototype = {
 		return "map.Getter";
 	}
 	,__class__: library.map.Getter
+};
+library.map.Pod = function() {
+	this.map = new haxe.ds.StringMap();
+};
+$hxClasses["library.map.Pod"] = library.map.Pod;
+library.map.Pod.__name__ = ["library","map","Pod"];
+library.map.Pod.instance = null;
+library.map.Pod.getInstance = function() {
+	if(library.map.Pod.instance == null) return library.map.Pod.instance = new library.map.Pod(); else return library.map.Pod.instance;
+};
+library.map.Pod.prototype = {
+	map: null
+	,exists: function(key) {
+		return this.map.exists(key);
+	}
+	,get: function(key) {
+		return this.map.get(key);
+	}
+	,set: function(key,value) {
+		return this.map.set(key,value);
+	}
+	,__class__: library.map.Pod
 };
 library.map.Setter = function() {
 	this.name = "Setter";
@@ -2446,7 +2457,7 @@ library.map.Setter.prototype = {
 	,onInputRecieved: function(params,cb) {
 		var input1 = params.get("key");
 		var input2 = params.get("value");
-		Pod.getInstance().set(input1,input2);
+		library.map.Pod.getInstance().set(input1,input2);
 		cb((function($this) {
 			var $r;
 			var _g = new haxe.ds.StringMap();
@@ -2466,7 +2477,6 @@ library.milkclient.MilkClient = function() {
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
 	this.inputs.add("host",flower.RetroType.RNumber);
-	this.outputs.add("milkcocoa",flower.RetroType.RNumber);
 };
 $hxClasses["library.milkclient.MilkClient"] = library.milkclient.MilkClient;
 library.milkclient.MilkClient.__name__ = ["library","milkclient","MilkClient"];
@@ -2477,14 +2487,7 @@ library.milkclient.MilkClient.prototype = {
 	,outputs: null
 	,onPlay: function(params,cb) {
 		var host = params.get("host");
-		var milkcocoa = new MilkCocoa(host);
-		cb((function($this) {
-			var $r;
-			var _g = new haxe.ds.StringMap();
-			_g.set("milkcocoa",flower.Message.Msg(milkcocoa));
-			$r = _g;
-			return $r;
-		}(this)));
+		var milkcocoa1 = new MilkCocoa(host);
 	}
 	,onInputRecieved: function(params,cb) {
 	}
@@ -2578,7 +2581,7 @@ if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
 	}
 	return a1;
 };
-CompileTimeClassList.__meta__ = { obj : { classLists : [["library,true,","library.core.Add,library.core.And,library.core.Compare,library.core.Drop,library.core.Entry,library.core.Equal,library.core.Filter,library.core.Gate,library.core.Not,library.core.Or,library.core.Remainder,library.core.Through,library.core.Times,library.core.Transistor,library.map.Getter,library.map.Setter,library.milkclient.MilkClient,library.milkclient.Push"]]}};
+CompileTimeClassList.__meta__ = { obj : { classLists : [["library,true,","library.core.Add,library.core.And,library.core.Compare,library.core.Drop,library.core.Entry,library.core.Equal,library.core.Filter,library.core.Gate,library.core.Not,library.core.Or,library.core.Remainder,library.core.Through,library.core.Times,library.core.Transistor,library.map.Getter,library.map.Pod,library.map.Setter,library.milkclient.MilkClient,library.milkclient.Push"]]}};
 CompileTimeClassList.lists = null;
 haxe.ds.ObjectMap.count = 0;
 })(typeof window != "undefined" ? window : exports);

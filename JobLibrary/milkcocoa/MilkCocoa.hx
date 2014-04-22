@@ -1,6 +1,6 @@
-package ;
+package milkcocoa;
 
-extern class MilkCocoa
+@:native("MilkCocoa") extern class MilkCocoa
 {
 	/**
 	 * コンストラクタ

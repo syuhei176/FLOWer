@@ -1,4 +1,4 @@
-package ;
+package milkcocoa;
 
 extern class Query {
 

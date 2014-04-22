@@ -1,4 +1,4 @@
-package ;
+package library.map;
 
 class Pod{
     private static var instance : Pod;
