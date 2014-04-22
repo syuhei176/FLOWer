@@ -1,4 +1,4 @@
 FLOWer
 -cp src
--js browser/js/flower.js
+-js download/js/flower.js
 -D browser
