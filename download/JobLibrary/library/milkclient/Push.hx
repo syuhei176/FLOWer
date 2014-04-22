@@ -3,23 +3,25 @@ package library.milkclient;
 import milkcocoa.*;
 import flower.JobComponent;
 import externs.Inputs;
-import externs.Params;
+
 import externs.Outputs;
-import flower.Result;
+
 import flower.RetroType;
 
 class Push implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
+	public var workEvent:WorkEvent = AllRecieved;
+	public var fire : EventName -> Params -> Void;
 	
 	public function new() {
 		this.name = "Push";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("milkcocoa", RetroType.RNumber);
-		this.inputs.add("path", RetroType.RNumber);
-		this.inputs.add("value", RetroType.RNumber);
+		this.inputs.add("milkcocoa");
+		this.inputs.add("path");
+		this.inputs.add("value");
 	}
 	
 	public function onPlay(params:Params, cb : Result -> Void) : Void return;

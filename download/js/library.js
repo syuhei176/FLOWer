@@ -874,6 +874,21 @@ Type.allEnums = function(e) {
 	return e.__empty_constructs__;
 };
 var flower = {};
+flower.WorkEvent = $hxClasses["flower.WorkEvent"] = { __ename__ : ["flower","WorkEvent"], __constructs__ : ["AllRecieved","Recieved","Custom"] };
+flower.WorkEvent.AllRecieved = ["AllRecieved",0];
+flower.WorkEvent.AllRecieved.toString = $estr;
+flower.WorkEvent.AllRecieved.__enum__ = flower.WorkEvent;
+flower.WorkEvent.Recieved = ["Recieved",1];
+flower.WorkEvent.Recieved.toString = $estr;
+flower.WorkEvent.Recieved.__enum__ = flower.WorkEvent;
+flower.WorkEvent.Custom = function(name) { var $x = ["Custom",2,name]; $x.__enum__ = flower.WorkEvent; $x.toString = $estr; return $x; };
+flower.WorkEvent.__empty_constructs__ = [flower.WorkEvent.AllRecieved,flower.WorkEvent.Recieved];
+flower.Message = $hxClasses["flower.Message"] = { __ename__ : ["flower","Message"], __constructs__ : ["NoMsg","Msg"] };
+flower.Message.NoMsg = ["NoMsg",0];
+flower.Message.NoMsg.toString = $estr;
+flower.Message.NoMsg.__enum__ = flower.Message;
+flower.Message.Msg = function(i) { var $x = ["Msg",1,i]; $x.__enum__ = flower.Message; $x.toString = $estr; return $x; };
+flower.Message.__empty_constructs__ = [flower.Message.NoMsg];
 flower.JobComponent = function() { };
 $hxClasses["flower.JobComponent"] = flower.JobComponent;
 flower.JobComponent.__name__ = ["flower","JobComponent"];
@@ -881,17 +896,13 @@ flower.JobComponent.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: null
 	,work: null
 	,getModuleName: null
 	,__class__: flower.JobComponent
 };
-flower.Message = $hxClasses["flower.Message"] = { __ename__ : ["flower","Message"], __constructs__ : ["NoMsg","Msg"] };
-flower.Message.NoMsg = ["NoMsg",0];
-flower.Message.NoMsg.toString = $estr;
-flower.Message.NoMsg.__enum__ = flower.Message;
-flower.Message.Msg = function(i) { var $x = ["Msg",1,i]; $x.__enum__ = flower.Message; $x.toString = $estr; return $x; };
-flower.Message.__empty_constructs__ = [flower.Message.NoMsg];
 flower.RetroType = $hxClasses["flower.RetroType"] = { __ename__ : ["flower","RetroType"], __constructs__ : ["REmpty","RString","RNumber","RBool","RList","RTuple","RUnknown"] };
 flower.RetroType.REmpty = ["REmpty",0];
 flower.RetroType.REmpty.toString = $estr;
@@ -1855,12 +1866,13 @@ js.Boot.__cast = function(o,t) {
 var library = {};
 library.core = {};
 library.core.Add = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Add";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input1",flower.RetroType.RNumber);
-	this.inputs.add("input2",flower.RetroType.RNumber);
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.inputs.add("input1");
+	this.inputs.add("input2");
+	this.outputs.add("output");
 };
 $hxClasses["library.core.Add"] = library.core.Add;
 library.core.Add.__name__ = ["library","core","Add"];
@@ -1869,6 +1881,8 @@ library.core.Add.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -1889,12 +1903,13 @@ library.core.Add.prototype = {
 	,__class__: library.core.Add
 };
 library.core.And = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "And";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input1",flower.RetroType.RNumber);
-	this.inputs.add("input2",flower.RetroType.RNumber);
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.inputs.add("input1");
+	this.inputs.add("input2");
+	this.outputs.add("output");
 };
 $hxClasses["library.core.And"] = library.core.And;
 library.core.And.__name__ = ["library","core","And"];
@@ -1903,6 +1918,8 @@ library.core.And.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -1923,13 +1940,14 @@ library.core.And.prototype = {
 	,__class__: library.core.And
 };
 library.core.Compare = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Compare";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("value",flower.RetroType.RNumber);
-	this.inputs.add("comparison",flower.RetroType.RNumber);
-	this.inputs.add("operator",flower.RetroType.RString);
-	this.outputs.add("pass",flower.RetroType.RNumber);
+	this.inputs.add("value");
+	this.inputs.add("comparison");
+	this.inputs.add("operator");
+	this.outputs.add("pass");
 };
 $hxClasses["library.core.Compare"] = library.core.Compare;
 library.core.Compare.__name__ = ["library","core","Compare"];
@@ -1938,6 +1956,8 @@ library.core.Compare.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -1983,10 +2003,11 @@ library.core.Compare.prototype = {
 	,__class__: library.core.Compare
 };
 library.core.Drop = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Drop";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input",flower.RetroType.RNumber);
+	this.inputs.add("input");
 };
 $hxClasses["library.core.Drop"] = library.core.Drop;
 library.core.Drop.__name__ = ["library","core","Drop"];
@@ -1995,6 +2016,8 @@ library.core.Drop.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2007,10 +2030,11 @@ library.core.Drop.prototype = {
 	,__class__: library.core.Drop
 };
 library.core.Entry = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Entry";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.outputs.add("output");
 };
 $hxClasses["library.core.Entry"] = library.core.Entry;
 library.core.Entry.__name__ = ["library","core","Entry"];
@@ -2019,6 +2043,8 @@ library.core.Entry.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		cb((function($this) {
 			var $r;
@@ -2037,12 +2063,13 @@ library.core.Entry.prototype = {
 	,__class__: library.core.Entry
 };
 library.core.Equal = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Equal";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("value",flower.RetroType.RNumber);
-	this.inputs.add("comparison",flower.RetroType.RNumber);
-	this.outputs.add("result",flower.RetroType.RNumber);
+	this.inputs.add("value");
+	this.inputs.add("comparison");
+	this.outputs.add("result");
 };
 $hxClasses["library.core.Equal"] = library.core.Equal;
 library.core.Equal.__name__ = ["library","core","Equal"];
@@ -2051,6 +2078,8 @@ library.core.Equal.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2072,13 +2101,14 @@ library.core.Equal.prototype = {
 	,__class__: library.core.Equal
 };
 library.core.Filter = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Filter";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("value",flower.RetroType.RNumber);
-	this.inputs.add("comparison",flower.RetroType.RNumber);
-	this.inputs.add("operator",flower.RetroType.RString);
-	this.outputs.add("pass",flower.RetroType.RNumber);
+	this.inputs.add("value");
+	this.inputs.add("comparison");
+	this.inputs.add("operator");
+	this.outputs.add("pass");
 };
 $hxClasses["library.core.Filter"] = library.core.Filter;
 library.core.Filter.__name__ = ["library","core","Filter"];
@@ -2087,6 +2117,8 @@ library.core.Filter.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2136,13 +2168,14 @@ library.core.Filter.prototype = {
 	,__class__: library.core.Filter
 };
 library.core.Gate = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Gate";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input",flower.RetroType.RNumber);
-	this.inputs.add("gate",flower.RetroType.RNumber);
-	this.outputs.add("true",flower.RetroType.RNumber);
-	this.outputs.add("false",flower.RetroType.RNumber);
+	this.inputs.add("input");
+	this.inputs.add("gate");
+	this.outputs.add("true");
+	this.outputs.add("false");
 };
 $hxClasses["library.core.Gate"] = library.core.Gate;
 library.core.Gate.__name__ = ["library","core","Gate"];
@@ -2151,6 +2184,8 @@ library.core.Gate.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2179,11 +2214,12 @@ library.core.Gate.prototype = {
 	,__class__: library.core.Gate
 };
 library.core.Not = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Not";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input",flower.RetroType.RNumber);
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.inputs.add("input");
+	this.outputs.add("output");
 };
 $hxClasses["library.core.Not"] = library.core.Not;
 library.core.Not.__name__ = ["library","core","Not"];
@@ -2192,6 +2228,8 @@ library.core.Not.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2211,12 +2249,13 @@ library.core.Not.prototype = {
 	,__class__: library.core.Not
 };
 library.core.Or = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Or";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input1",flower.RetroType.RNumber);
-	this.inputs.add("input2",flower.RetroType.RNumber);
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.inputs.add("input1");
+	this.inputs.add("input2");
+	this.outputs.add("output");
 };
 $hxClasses["library.core.Or"] = library.core.Or;
 library.core.Or.__name__ = ["library","core","Or"];
@@ -2225,6 +2264,8 @@ library.core.Or.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2245,12 +2286,13 @@ library.core.Or.prototype = {
 	,__class__: library.core.Or
 };
 library.core.Remainder = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Remainder";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input1",flower.RetroType.RNumber);
-	this.inputs.add("input2",flower.RetroType.RNumber);
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.inputs.add("input1");
+	this.inputs.add("input2");
+	this.outputs.add("output");
 };
 $hxClasses["library.core.Remainder"] = library.core.Remainder;
 library.core.Remainder.__name__ = ["library","core","Remainder"];
@@ -2259,6 +2301,8 @@ library.core.Remainder.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2279,11 +2323,12 @@ library.core.Remainder.prototype = {
 	,__class__: library.core.Remainder
 };
 library.core.Through = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Through";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input",flower.RetroType.RNumber);
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.inputs.add("input");
+	this.outputs.add("output");
 };
 $hxClasses["library.core.Through"] = library.core.Through;
 library.core.Through.__name__ = ["library","core","Through"];
@@ -2292,6 +2337,8 @@ library.core.Through.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2311,12 +2358,13 @@ library.core.Through.prototype = {
 	,__class__: library.core.Through
 };
 library.core.Times = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Times";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("input1",flower.RetroType.RNumber);
-	this.inputs.add("input2",flower.RetroType.RNumber);
-	this.outputs.add("output",flower.RetroType.RNumber);
+	this.inputs.add("input1");
+	this.inputs.add("input2");
+	this.outputs.add("output");
 };
 $hxClasses["library.core.Times"] = library.core.Times;
 library.core.Times.__name__ = ["library","core","Times"];
@@ -2325,6 +2373,8 @@ library.core.Times.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2345,12 +2395,13 @@ library.core.Times.prototype = {
 	,__class__: library.core.Times
 };
 library.core.Transistor = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Transistor";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("emitter",flower.RetroType.RNumber);
-	this.inputs.add("base",flower.RetroType.RNumber);
-	this.outputs.add("collector",flower.RetroType.RNumber);
+	this.inputs.add("emitter");
+	this.inputs.add("base");
+	this.outputs.add("collector");
 };
 $hxClasses["library.core.Transistor"] = library.core.Transistor;
 library.core.Transistor.__name__ = ["library","core","Transistor"];
@@ -2359,6 +2410,8 @@ library.core.Transistor.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2379,12 +2432,13 @@ library.core.Transistor.prototype = {
 };
 library.map = {};
 library.map.Getter = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Getter";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("key",flower.RetroType.RNumber);
-	this.outputs.add("value",flower.RetroType.RNumber);
-	this.outputs.add("exists",flower.RetroType.RNumber);
+	this.inputs.add("key");
+	this.outputs.add("value");
+	this.outputs.add("exists");
 };
 $hxClasses["library.map.Getter"] = library.map.Getter;
 library.map.Getter.__name__ = ["library","map","Getter"];
@@ -2393,6 +2447,8 @@ library.map.Getter.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2437,12 +2493,13 @@ library.map.Pod.prototype = {
 	,__class__: library.map.Pod
 };
 library.map.Setter = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Setter";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("key",flower.RetroType.RNumber);
-	this.inputs.add("value",flower.RetroType.RNumber);
-	this.outputs.add("result",flower.RetroType.RNumber);
+	this.inputs.add("key");
+	this.inputs.add("value");
+	this.outputs.add("result");
 };
 $hxClasses["library.map.Setter"] = library.map.Setter;
 library.map.Setter.__name__ = ["library","map","Setter"];
@@ -2451,6 +2508,8 @@ library.map.Setter.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2471,12 +2530,89 @@ library.map.Setter.prototype = {
 	}
 	,__class__: library.map.Setter
 };
+library.messages = {};
+library.messages.Recieve = function() {
+	this.workEvent = flower.WorkEvent.Custom("messages");
+	this.name = "message.Recieve";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("from");
+	this.outputs.add("message");
+};
+$hxClasses["library.messages.Recieve"] = library.messages.Recieve;
+library.messages.Recieve.__name__ = ["library","messages","Recieve"];
+library.messages.Recieve.__interfaces__ = [flower.JobComponent];
+library.messages.Recieve.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,workEvent: null
+	,fire: null
+	,onPlay: function(params,cb) {
+		return;
+	}
+	,work: function(params,cb) {
+		var port = params.get("port");
+		var from = params.get("from");
+		var message = params.get("message");
+		if(from == port) cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("message",flower.Message.Msg(message));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "message.Recieve";
+	}
+	,__class__: library.messages.Recieve
+};
+library.messages.Send = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
+	this.name = "Send";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("to");
+	this.inputs.add("message");
+};
+$hxClasses["library.messages.Send"] = library.messages.Send;
+library.messages.Send.__name__ = ["library","messages","Send"];
+library.messages.Send.__interfaces__ = [flower.JobComponent];
+library.messages.Send.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,workEvent: null
+	,fire: null
+	,onPlay: function(params,cb) {
+		return;
+	}
+	,work: function(params,cb) {
+		var port = params.get("to");
+		var message = params.get("message");
+		this.fire("messages",(function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("port",port);
+			_g.set("message",message);
+			$r = _g;
+			return $r;
+		}(this)));
+		cb(null);
+	}
+	,getModuleName: function() {
+		return "message.Send";
+	}
+	,__class__: library.messages.Send
+};
 library.milkclient = {};
 library.milkclient.MilkClient = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "MlikCCocoa";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("host",flower.RetroType.RNumber);
+	this.inputs.add("host");
 };
 $hxClasses["library.milkclient.MilkClient"] = library.milkclient.MilkClient;
 library.milkclient.MilkClient.__name__ = ["library","milkclient","MilkClient"];
@@ -2485,6 +2621,8 @@ library.milkclient.MilkClient.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		var host = params.get("host");
 		var milkcocoa1 = new MilkCocoa(host);
@@ -2497,12 +2635,13 @@ library.milkclient.MilkClient.prototype = {
 	,__class__: library.milkclient.MilkClient
 };
 library.milkclient.Push = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Push";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("milkcocoa",flower.RetroType.RNumber);
-	this.inputs.add("path",flower.RetroType.RNumber);
-	this.inputs.add("value",flower.RetroType.RNumber);
+	this.inputs.add("milkcocoa");
+	this.inputs.add("path");
+	this.inputs.add("value");
 };
 $hxClasses["library.milkclient.Push"] = library.milkclient.Push;
 library.milkclient.Push.__name__ = ["library","milkclient","Push"];
@@ -2511,6 +2650,8 @@ library.milkclient.Push.prototype = {
 	name: null
 	,inputs: null
 	,outputs: null
+	,workEvent: null
+	,fire: null
 	,onPlay: function(params,cb) {
 		return;
 	}
@@ -2581,7 +2722,7 @@ if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
 	}
 	return a1;
 };
-CompileTimeClassList.__meta__ = { obj : { classLists : [["library,true,","library.core.Add,library.core.And,library.core.Compare,library.core.Drop,library.core.Entry,library.core.Equal,library.core.Filter,library.core.Gate,library.core.Not,library.core.Or,library.core.Remainder,library.core.Through,library.core.Times,library.core.Transistor,library.map.Getter,library.map.Pod,library.map.Setter,library.milkclient.MilkClient,library.milkclient.Push"]]}};
+CompileTimeClassList.__meta__ = { obj : { classLists : [["library,true,","library.core.Add,library.core.And,library.core.Compare,library.core.Drop,library.core.Entry,library.core.Equal,library.core.Filter,library.core.Gate,library.core.Not,library.core.Or,library.core.Remainder,library.core.Through,library.core.Times,library.core.Transistor,library.map.Getter,library.map.Pod,library.map.Setter,library.messages.Recieve,library.messages.Send,library.milkclient.MilkClient,library.milkclient.Push"]]}};
 CompileTimeClassList.lists = null;
 haxe.ds.ObjectMap.count = 0;
 })(typeof window != "undefined" ? window : exports);

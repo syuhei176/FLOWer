@@ -1,13 +1,11 @@
-package library.core;
+package library.messages;
 
 import flower.JobComponent;
 import externs.Inputs;
-
 import externs.Outputs;
-
 import flower.RetroType;
 
-class Through implements JobComponent{
+class Send implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
@@ -15,21 +13,25 @@ class Through implements JobComponent{
 	public var fire : EventName -> Params -> Void;
 	
 	public function new() {
-		this.name = "Through";
+		this.name = "Send";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("input");
-		this.outputs.add("output");
+		this.inputs.add("to");
+		this.inputs.add("message");
 	}
-
+	
 	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
 	public function work(params:Params, cb) {
-		var input = params.get("input");
-		cb(["output" => Msg(input)]);
+		var port = params.get("to");
+		var message = params.get("message");
+		fire("messages",["port" => port, "message" => message ]);
+		cb(null);
 	}
-
+	
 	public function getModuleName() {
-		return "core.Through";
+		return "message.Send";
 	}
+	
+
 }

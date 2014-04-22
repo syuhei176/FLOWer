@@ -24,7 +24,7 @@ class Runtime{
 	private var diagram : Diagram;
 	private var mode : Mode;
 	private var speed : String;
-
+	private var listener : Map<String, List<Job>>;
 
 	
 	public function new(diagram:Diagram) {
@@ -57,17 +57,39 @@ class Runtime{
 
 	public function play(){
 		this.mode = Play;
+		this.listener = new Map<String, List<Job>>();
+		for( job in this.diagram.getJobs() ){
+			switch (job.jobComponent.workEvent) {
+				case Custom(name): 
+				var jobs = this.listener.get(name);
+				if( jobs == null ){
+					jobs =  new List<Job>();
+				}
+				jobs.push(job);
+				this.listener.set(name, jobs);
+				default: 
+			}
+		}
+		this.diagram.getJobs().map(function(job) job.jobComponent.fire = this.fireEvent);
 		this.diagram.getJobs().map(function(job) job.jobComponent.onPlay(job.getParams(),function(result)this.sendResult(job, result)));
 	}
 
-	public function run_step_job(job : Job){
-		job.jobComponent.work(job.getParams(), function(result){
+	public function fireEvent(eventName:String, params:Params){
+		this.listener.get(eventName).map(function(job) this.run_step_job(job, params) );
+	}
+
+	public function run_step_job(job : Job, ?params : Params){
+		var workParams = job.getParams();
+		if( params != null){
+			for(key in params.keys()){
+				workParams.set(key, params.get(key));
+			}
+		}
+		job.jobComponent.work(workParams, function(result){
 			job.getInputPorts().map(function(p) this.diagram.removeValueCarrier(p.useValueCarrier()));
 			this.sendResult(job, result);
 		});
 	}
-
-	
 
 	private function sendResult(job, result){
 		job.getOutputPorts().map(function(p : OutputPort) 

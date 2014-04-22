@@ -2,24 +2,26 @@ package library.core;
 
 import flower.JobComponent;
 import externs.Inputs;
-import externs.Params;
+
 import externs.Outputs;
-import flower.Result;
+
 import flower.RetroType;
 
 class Filter implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
+	public var workEvent:WorkEvent = AllRecieved;
+	public var fire : EventName -> Params -> Void;
 	
 	public function new() {
 		this.name = "Filter";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("value", RetroType.RNumber);
-		this.inputs.add("comparison", RetroType.RNumber);
-		this.inputs.add("operator", RetroType.RString);
-		this.outputs.add("pass", RetroType.RNumber);
+		this.inputs.add("value");
+		this.inputs.add("comparison");
+		this.inputs.add("operator");
+		this.outputs.add("pass");
 	}
 
 	public function onPlay(params:Params,cb : Result -> Void) : Void return;

@@ -2,24 +2,26 @@ package library.core;
 
 import flower.JobComponent;
 import externs.Inputs;
-import externs.Params;
+
 import externs.Outputs;
-import flower.Result;
+
 import flower.RetroType;
 
 class Gate implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
+	public var workEvent:WorkEvent = AllRecieved;
+	public var fire : EventName -> Params -> Void;
 	
 	public function new() {
 		this.name = "Gate";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("input", RetroType.RNumber);
-		this.inputs.add("gate", RetroType.RNumber);
-		this.outputs.add("true", RetroType.RNumber);
-		this.outputs.add("false", RetroType.RNumber);
+		this.inputs.add("input");
+		this.inputs.add("gate");
+		this.outputs.add("true");
+		this.outputs.add("false");
 	}
 
 	public function onPlay(params:Params,cb : Result -> Void) : Void return;

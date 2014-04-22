@@ -2,23 +2,25 @@ package library.core;
 
 import flower.JobComponent;
 import externs.Inputs;
-import externs.Params;
+
 import externs.Outputs;
-import flower.Result;
+
 import flower.RetroType;
 
 class Or implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
+	public var workEvent:WorkEvent = AllRecieved;
+	public var fire : EventName -> Params -> Void;
 	
 	public function new() {
 		this.name = "Or";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("input1", RetroType.RNumber);
-		this.inputs.add("input2", RetroType.RNumber);
-		this.outputs.add("output", RetroType.RNumber);
+		this.inputs.add("input1");
+		this.inputs.add("input2");
+		this.outputs.add("output");
 	}
 
 	public function onPlay(params:Params,cb : Result -> Void) : Void return;

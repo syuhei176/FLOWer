@@ -4,7 +4,6 @@ import retro.pub.IdGenerator;
 import retro.pub.RetroType;
 import retro.pub.Point2D;
 import retro.core.JobComponent;
-import retro.core.Params;
 import retro.view.JobView;
 import snap.Snap;
 
@@ -15,7 +14,7 @@ enum Message{
 	Msg(i:Dynamic);
 }
 typedef Result = Map<String,Message>;
-
+typedef Params = Map<String, Dynamic>;
 
 class Job{
 
@@ -99,20 +98,25 @@ class Job{
 	}
 	
 	public function getParams() {
-		var params = new Params();
+		var params : Params = new Params();
 		for(p in this.inputPorts) {
 			var value = null;
 			if(p.getValue()!=null) {
-				value = p.getValue();
+				value = p.getValue().value;
 			}
-			params.add(p.getName(), value);
+			params.set(p.getName(), value);
 		}
 		return params;
 	}
 	
 	
-	public function isReady()
-		return this.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);
+	public function isReady(){
+
+		return switch (job.jobComponent.workEvent) {
+			case AllRecieved: this.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);
+			default: false;
+		}
+	}
 	
 	public function getInputPort(name:String) {
 		for(p in inputPorts) {
