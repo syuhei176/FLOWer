@@ -25,6 +25,7 @@ class Runtime{
 	private var mode : Mode;
 	private var speed : String;
 
+
 	
 	public function new(diagram:Diagram) {
 		this.diagram = diagram;
@@ -56,17 +57,17 @@ class Runtime{
 
 	public function play(){
 		this.mode = Play;
-		this.diagram.getJobs().map(function(job) job.onPlay(function(result){
-				this.sendResult(job, result);
-			}));
+		this.diagram.getJobs().map(function(job) job.jobComponent.onPlay(job.getParams(),function(result)this.sendResult(job, result)));
 	}
 
 	public function run_step_job(job : Job){
-		job.work(function(result){
+		job.jobComponent.work(job.getParams(), function(result){
 			job.getInputPorts().map(function(p) this.diagram.removeValueCarrier(p.useValueCarrier()));
 			this.sendResult(job, result);
 		});
 	}
+
+	
 
 	private function sendResult(job, result){
 		job.getOutputPorts().map(function(p : OutputPort) 

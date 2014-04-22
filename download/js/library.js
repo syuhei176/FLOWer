@@ -882,7 +882,7 @@ flower.JobComponent.prototype = {
 	,inputs: null
 	,outputs: null
 	,onPlay: null
-	,onInputRecieved: null
+	,work: null
 	,getModuleName: null
 	,__class__: flower.JobComponent
 };
@@ -1872,7 +1872,7 @@ library.core.Add.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input1 = params.get("input1");
 		var input2 = params.get("input2");
 		cb((function($this) {
@@ -1906,7 +1906,7 @@ library.core.And.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input1 = params.get("input1");
 		var input2 = params.get("input2");
 		cb((function($this) {
@@ -1941,7 +1941,7 @@ library.core.Compare.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var value = params.get("value");
 		var comparison = params.get("comparison");
 		var operator = params.get("operator");
@@ -1998,7 +1998,7 @@ library.core.Drop.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		cb(null);
 	}
 	,getModuleName: function() {
@@ -2028,7 +2028,7 @@ library.core.Entry.prototype = {
 			return $r;
 		}(this)));
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		return;
 	}
 	,getModuleName: function() {
@@ -2054,7 +2054,7 @@ library.core.Equal.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var value = params.get("value");
 		var comparison = params.get("comparison");
 		var result = new haxe.ds.StringMap();
@@ -2090,7 +2090,7 @@ library.core.Filter.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var value = params.get("value");
 		var comparison = params.get("comparison");
 		var operator = params.get("operator");
@@ -2154,7 +2154,7 @@ library.core.Gate.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input = params.get("input");
 		var gate = params.get("gate");
 		if(gate) cb((function($this) {
@@ -2195,7 +2195,7 @@ library.core.Not.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input = params.get("input");
 		cb((function($this) {
 			var $r;
@@ -2228,7 +2228,7 @@ library.core.Or.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input1 = params.get("input1");
 		var input2 = params.get("input2");
 		cb((function($this) {
@@ -2262,7 +2262,7 @@ library.core.Remainder.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input1 = params.get("input1");
 		var input2 = params.get("input2");
 		cb((function($this) {
@@ -2295,7 +2295,7 @@ library.core.Through.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input = params.get("input");
 		cb((function($this) {
 			var $r;
@@ -2328,7 +2328,7 @@ library.core.Times.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input1 = params.get("input1");
 		var input2 = params.get("input2");
 		cb((function($this) {
@@ -2362,7 +2362,7 @@ library.core.Transistor.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var emitter = params.get("emitter");
 		cb((function($this) {
 			var $r;
@@ -2396,7 +2396,7 @@ library.map.Getter.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var key = params.get("key");
 		var exists = library.map.Pod.getInstance().exists(key);
 		var value = library.map.Pod.getInstance().get(key);
@@ -2454,7 +2454,7 @@ library.map.Setter.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var input1 = params.get("key");
 		var input2 = params.get("value");
 		library.map.Pod.getInstance().set(input1,input2);
@@ -2477,7 +2477,6 @@ library.milkclient.MilkClient = function() {
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
 	this.inputs.add("host",flower.RetroType.RNumber);
-	this.outputs.add("milkcocoa",flower.RetroType.RNumber);
 };
 $hxClasses["library.milkclient.MilkClient"] = library.milkclient.MilkClient;
 library.milkclient.MilkClient.__name__ = ["library","milkclient","MilkClient"];
@@ -2488,16 +2487,9 @@ library.milkclient.MilkClient.prototype = {
 	,outputs: null
 	,onPlay: function(params,cb) {
 		var host = params.get("host");
-		var milkcocoa = new MilkCocoa(host);
-		cb((function($this) {
-			var $r;
-			var _g = new haxe.ds.StringMap();
-			_g.set("milkcocoa",flower.Message.Msg(milkcocoa));
-			$r = _g;
-			return $r;
-		}(this)));
+		var milkcocoa1 = new MilkCocoa(host);
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 	}
 	,getModuleName: function() {
 		return "milkcocoa.MilkCocoa";
@@ -2522,7 +2514,7 @@ library.milkclient.Push.prototype = {
 	,onPlay: function(params,cb) {
 		return;
 	}
-	,onInputRecieved: function(params,cb) {
+	,work: function(params,cb) {
 		var milkcocoa = params.get("milkcocoa");
 		var path = params.get("path");
 		var value = params.get("value");

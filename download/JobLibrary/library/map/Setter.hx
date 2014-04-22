@@ -23,7 +23,7 @@ class Setter implements JobComponent {
 
 	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
-	public function onInputRecieved(params:Params, cb) {
+	public function work(params:Params, cb) {
 		var input1 = params.get("key");
 		var input2 = params.get("value");
 		Pod.getInstance().set(input1, input2);

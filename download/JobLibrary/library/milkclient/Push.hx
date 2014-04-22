@@ -24,7 +24,7 @@ class Push implements JobComponent {
 	
 	public function onPlay(params:Params, cb : Result -> Void) : Void return;
 	
-	public function onInputRecieved(params:Params, cb) {
+	public function work(params:Params, cb) {
 		var milkcocoa : MilkCocoa = params.get("milkcocoa");
 		var path = params.get("path");
 		var value = params.get("value");

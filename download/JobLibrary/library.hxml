@@ -1,4 +1,4 @@
--js library.js
+-js ../js/library.js
 -dce no
 -lib compiletime
 Library

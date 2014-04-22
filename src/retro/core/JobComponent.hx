@@ -11,6 +11,6 @@ interface JobComponent{
 	var outputs:Outputs;
 	
 	function onPlay(params:Params, cb : Result -> Void ) : Void;
-	function onInputRecieved(params:Params, cb:Result->Void):Void;
+	function work(params:Params, cb:Result->Void):Void;
 	function getModuleName():String;
 }

@@ -27,7 +27,7 @@ class MilkClient implements JobComponent {
 
 	
 	
-	public function onInputRecieved(params:Params, cb) {
+	public function work(params:Params, cb) {
 	}
 	
 	public function getModuleName() {

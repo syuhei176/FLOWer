@@ -57,7 +57,7 @@ class DiagramView{
 	    			var createJobDialog = new CreateJobDialog();
 					createJobDialog.on(function(pkg, cmp, x, y) {
 						var jobComponent = this.diagramController.getModule(pkg + "." + cmp);
-						var job = this.diagramController.addSymbolicLink(jobComponent);
+						var job = this.diagramController.addJob(jobComponent);
 						job.setPos(x, y);
 					});
 					createJobDialog.open();

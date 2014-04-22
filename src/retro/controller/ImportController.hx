@@ -4,9 +4,7 @@ import retro.pub.RetroType;
 import retro.model.Project;
 import retro.model.Diagram;
 import retro.model.Job;
-import retro.model.Logic;
 import retro.model.OutputPort;
-import retro.model.SymbolicLink;
 import retro.model.Value;
 import retro.core.JobComponent;
 
@@ -49,8 +47,8 @@ class ImportController {
 	public function import_diagram(diagram:Diagram, diagram_model:Dynamic) {
 		var jobs : Array<Dynamic> = diagram_model.jobs;
 		for( j in jobs ) {
-			var jobComponent = this.getModule(j.ref);
-			var job = new SymbolicLink(j.id, jobComponent);
+			var jobComponent = this.getModule(j.name);
+			var job = new Job(j.id, jobComponent);
 			diagram.addJob(job);
 			job.setPos(j.pos.x, j.pos.y);
 		}

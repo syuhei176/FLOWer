@@ -23,7 +23,7 @@ class Getter implements JobComponent {
 
     public function onPlay(params:Params,cb : Result -> Void) : Void return;
     
-    public function onInputRecieved(params:Params, cb) {
+    public function work(params:Params, cb) {
         var key = params.get("key");
         var exists = Pod.getInstance().exists(key);
         var value = Pod.getInstance().get(key);

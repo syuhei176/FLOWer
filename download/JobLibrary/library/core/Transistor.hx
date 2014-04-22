@@ -23,7 +23,7 @@ class Transistor implements JobComponent {
 	
 	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
-	public function onInputRecieved(params:Params, cb) {
+	public function work(params:Params, cb) {
 		var emitter = params.get("emitter");
 		cb(["collector" => Msg(emitter)]);
 	}

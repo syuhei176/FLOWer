@@ -4,8 +4,6 @@ import retro.pub.Editor;
 import retro.pub.RetroType;
 import retro.model.Diagram;
 import retro.model.Job;
-import retro.model.Logic;
-import retro.model.SymbolicLink;
 import retro.model.InputPort;
 import retro.model.OutputPort;
 import retro.core.JobComponent;
@@ -40,23 +38,14 @@ class DiagramController implements Controller{
 		return diagram;
 	}
 	
-	//Jobを追加
-	public function addJob() {
+	public function addJob(jobComponent) {
 		var id = this.editor.IdGenerator.genID();
-		var job = new Job(id);
-		diagram.addJob(job);
-	}
-	public function addSymbolicLink(jobComponent) {
-		var id = this.editor.IdGenerator.genID();
-		var job = new SymbolicLink(id, jobComponent);
+		var job = new Job(id, jobComponent);
 		diagram.addJob(job);
 		return job;
 	}
 	
-	public function addLogic(id) {
-		var job = new Logic(id);
-		diagram.addJob(job);
-	}
+
 	public function removeJob(job:Job) {
 		diagram.removeJob(job);
 	}

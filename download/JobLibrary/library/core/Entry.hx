@@ -22,7 +22,7 @@ class Entry implements JobComponent{
 	public function onPlay(params:Params,cb : Result -> Void)
 		cb( ["output"=>Msg(1)] );
 	
-	public function onInputRecieved(params:Params, cb) return;
+	public function work(params:Params, cb) return;
 	
 	public function getModuleName() {
 		return "core.Entry";

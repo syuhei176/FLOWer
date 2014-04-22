@@ -4,7 +4,6 @@ import retro.pub.Editor;
 import retro.model.Project;
 import retro.model.Diagram;
 import retro.model.Job;
-import retro.model.Logic;
 import retro.model.InputPort;
 import retro.model.OutputPort;
 import retro.controller.Controller;
@@ -56,12 +55,6 @@ class ExportController implements Controller {
 		for(port in job.getOutputPorts()) {
 			job_model.outputports.push(this.export_outputport(port));
 		}
-		/*
-		for(job in diagram.getJobs()) {
-			diagram_model.jobs.push({
-				id : job.getId()
-			});
-		}*/
 		return job_model;
 	}
 	

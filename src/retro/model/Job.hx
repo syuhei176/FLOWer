@@ -32,9 +32,10 @@ class Job{
 	private var onOutputPortRemovedListeners:Array<OutputPort->Void>;
 	private var onPosChangedListeners:Array<Float->Float->Void>;
 	
-	public var customDraw : JobView -> Void;
+	public var jobComponent(default,null) : JobComponent;
 	
-	public function new(id){
+	
+	public function new(id, jobComponent : JobComponent){
 		this.id = id;
 		this.inputPorts = new Array<InputPort>();
 		this.outputPorts = new Array<OutputPort>();
@@ -44,6 +45,14 @@ class Job{
 		this.onInputPortRemovedListeners = new Array<InputPort->Void>();
 		this.onOutputPortRemovedListeners = new Array<OutputPort->Void>();
 		this.onPosChangedListeners = new Array<Float->Float->Void>();
+
+		this.jobComponent = jobComponent;
+		for(ip in jobComponent.inputs.getArray()) {
+			this.addInputPort(new InputPort(this, ip.getType(), ip.getName()));
+		}
+		for(op in jobComponent.outputs.getArray()) {
+			this.addOutputPort(new OutputPort(this, op.getType(), op.getName()));
+		}
 	}
 	
 	public function getId() {
@@ -51,7 +60,7 @@ class Job{
 	}
 	
 	public function getName() {
-		return "";
+		return this.jobComponent.getModuleName();
 	}
 	
 	public function setPos(x:Float, y:Float) {
@@ -101,8 +110,6 @@ class Job{
 		return params;
 	}
 	
-	public function work(cb : Result ->Void) : Void return;
-	public function onPlay(cb : Result -> Void) : Void return;
 	
 	public function isReady()
 		return this.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);
@@ -177,6 +184,7 @@ class Job{
 	public function getJSON() {
 		var json:Dynamic = {};
 		json.id = this.getId();
+		json.name = this.getName();
 		return json;
 	}
 }

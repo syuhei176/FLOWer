@@ -23,7 +23,7 @@ class Add implements JobComponent {
 	
 	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
-	public function onInputRecieved(params:Params, cb) {
+	public function work(params:Params, cb) {
 		var input1 = params.get("input1");
 		var input2 = params.get("input2");
 		cb(["output"=>Msg(input1 + input2)]);
