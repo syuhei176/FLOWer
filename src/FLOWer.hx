@@ -3,14 +3,24 @@ package ;
 import haxe.macro.Expr;
 import retro.pub.Editor;
 import retro.controller.DiagramController;
+import retro.view.ValueCarrierView;
 
 @:expose
 class FLOWer{
 	private var diagramController : DiagramController;
 
-	public function new(view){
-            this.diagramController = Editor.create(view);
-        }
+	public function new(svgID,view){
+		this.diagramController = Editor.create(svgID,view);
+		ValueCarrierView.speed = 1000;
+	}
+
+	public function setSpeed(s:Int){
+		ValueCarrierView.speed = s;
+	}
+
+	public function getSpeed():Int{
+		return ValueCarrierView.speed;
+	}
 
 	public function setJob(pkg, cmp, x, y){
 		var jobComponent = this.diagramController.getModule(pkg + "." + cmp);

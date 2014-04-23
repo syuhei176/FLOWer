@@ -1,14 +1,11 @@
-package library.milkclient;
+package library.io;
 
-import milkcocoa.*;
 import flower.JobComponent;
 import externs.Inputs;
-
 import externs.Outputs;
-
 import flower.RetroType;
 
-class Push implements JobComponent {
+class Print implements JobComponent {
 	public var name:String;
 	public var inputs:Inputs;
 	public var outputs:Outputs;
@@ -16,26 +13,23 @@ class Push implements JobComponent {
 	public var fire : EventName -> Params -> Void;
 	
 	public function new() {
-		this.name = "Push";
+		this.name = "io.Print";
 		this.inputs = new Inputs();
 		this.outputs = new Outputs();
-		this.inputs.add("path");
-		this.inputs.add("value");
+		this.inputs.add("print");
+		this.outputs.add("outputs");
 	}
 	
-	public function onPlay(params:Params, cb : Result -> Void) : Void return;
+	public function onPlay(params:Params,cb : Result -> Void) : Void return;
 	
 	public function work(params:Params, cb) {
-		var path = params.get("path");
-		var value = params.get("value");
-		var dataStore : DataStore = MilkClient.milkcocoa.dataStore(path);
-		dataStore.push(value);
-		cb(null);
+		var print = params.get("print");
+		var textarea  : js.html.TextAreaElement = cast js.Browser.document.getElementById("outputs");
+		textarea.textContent += print;
+		cb(["outputs" => Msg(print)]);
 	}
 	
 	public function getModuleName() {
-		return "milkcocoa.Push";
+		return "io.Print";
 	}
-	
-
 }

@@ -31,10 +31,10 @@ class Editor{
 	private var runtime:Runtime;
 	private var retroClient:RetroClient;
 	
-	public function new(?view, ?id_header, ?retroClient, ?editorkey){
-		this.width = if(view!=null) view.width else new js.JQuery("svg").width();
-		this.height = if(view!=null) view.height else new js.JQuery("svg").height();
-		this.snap = new Snap("#svg");
+	public function new(svgID, ?view, ?id_header, ?retroClient, ?editorkey){
+		this.width = if(view!=null) view.width else new js.JQuery(svgID).width();
+		this.height = if(view!=null) view.height else new js.JQuery(svgID).height();
+		this.snap = new Snap(svgID);
 		var rect = snap.rect(0, 0, this.width, this.height);
 		rect.attr({ fill: "#3498DB" });
 		snap.append(rect);
@@ -73,10 +73,10 @@ class Editor{
 	}
 	
 
-	public static function create(view){
+	public static function create(svgID,view){
 		Library.init();
 		CreateJobDialog.init();
-		var editor = new Editor(view);
+		var editor = new Editor(svgID,view);
 		editor.IdGenerator = retro.pub.IDGenerator.getInstance("codeIQ");
 		var project = new Project();
 		var projectController = new ProjectController(editor, project);

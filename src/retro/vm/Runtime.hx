@@ -57,6 +57,8 @@ class Runtime{
 
 	public function play(){
 		this.mode = Play;
+		this.diagram.getJobs().map(function(job) job.jobComponent.fire = this.fireEvent);
+		this.diagram.getJobs().map(function(job) job.jobComponent.onPlay(job.getParams(),function(result)this.sendResult(job, result)));
 		this.listener = new Map<String, List<Job>>();
 		for( job in this.diagram.getJobs() ){
 			switch (job.jobComponent.workEvent) {
@@ -70,8 +72,6 @@ class Runtime{
 				default: 
 			}
 		}
-		this.diagram.getJobs().map(function(job) job.jobComponent.fire = this.fireEvent);
-		this.diagram.getJobs().map(function(job) job.jobComponent.onPlay(job.getParams(),function(result)this.sendResult(job, result)));
 	}
 
 	public function fireEvent(eventName:String, params:Params){

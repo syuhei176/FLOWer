@@ -1863,6 +1863,64 @@ js.Boot.__instanceof = function(o,cl) {
 js.Boot.__cast = function(o,t) {
 	if(js.Boot.__instanceof(o,t)) return o; else throw "Cannot cast " + Std.string(o) + " to " + Std.string(t);
 };
+js.Browser = function() { };
+$hxClasses["js.Browser"] = js.Browser;
+js.Browser.__name__ = ["js","Browser"];
+js.Browser.__properties__ = {get_supported:"get_supported",get_navigator:"get_navigator",get_location:"get_location",get_document:"get_document",get_window:"get_window"}
+js.Browser.get_window = function() {
+	return window;
+};
+js.Browser.get_document = function() {
+	return window.document;
+};
+js.Browser.get_location = function() {
+	return window.location;
+};
+js.Browser.get_navigator = function() {
+	return window.navigator;
+};
+js.Browser.get_supported = function() {
+	return typeof window != "undefined";
+};
+js.Browser.getLocalStorage = function() {
+	try {
+		var s = window.localStorage;
+		s.getItem("");
+		return s;
+	} catch( e ) {
+		return null;
+	}
+};
+js.Browser.getSessionStorage = function() {
+	try {
+		var s = window.sessionStorage;
+		s.getItem("");
+		return s;
+	} catch( e ) {
+		return null;
+	}
+};
+js.Browser.createXMLHttpRequest = function() {
+	if(typeof XMLHttpRequest != "undefined") return new XMLHttpRequest();
+	if(typeof ActiveXObject != "undefined") return new ActiveXObject("Microsoft.XMLHTTP");
+	throw "Unable to create XMLHttpRequest object.";
+};
+js.html = {};
+js.html._CanvasElement = {};
+js.html._CanvasElement.CanvasUtil = function() { };
+$hxClasses["js.html._CanvasElement.CanvasUtil"] = js.html._CanvasElement.CanvasUtil;
+js.html._CanvasElement.CanvasUtil.__name__ = ["js","html","_CanvasElement","CanvasUtil"];
+js.html._CanvasElement.CanvasUtil.getContextWebGL = function(canvas,attribs) {
+	var _g = 0;
+	var _g1 = ["webgl","experimental-webgl"];
+	while(_g < _g1.length) {
+		var name = _g1[_g];
+		++_g;
+		var ctx = canvas.getContext(name,attribs);
+		if(ctx != null) return ctx;
+	}
+	return null;
+};
 var library = {};
 library.core = {};
 library.core.Add = function() {
@@ -2430,6 +2488,88 @@ library.core.Transistor.prototype = {
 	}
 	,__class__: library.core.Transistor
 };
+library.io = {};
+library.io.Print = function() {
+	this.workEvent = flower.WorkEvent.AllRecieved;
+	this.name = "io.Print";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("print");
+	this.outputs.add("outputs");
+};
+$hxClasses["library.io.Print"] = library.io.Print;
+library.io.Print.__name__ = ["library","io","Print"];
+library.io.Print.__interfaces__ = [flower.JobComponent];
+library.io.Print.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,workEvent: null
+	,fire: null
+	,onPlay: function(params,cb) {
+		return;
+	}
+	,work: function(params,cb) {
+		var print = params.get("print");
+		var textarea = window.document.getElementById("outputs");
+		textarea.textContent += Std.string(print);
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("outputs",flower.Message.Msg(print));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "io.Print";
+	}
+	,__class__: library.io.Print
+};
+library.io.Read = function() {
+	this.workEvent = flower.WorkEvent.Custom("io.Read");
+	this.name = "io.Read";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.outputs.add("read");
+};
+$hxClasses["library.io.Read"] = library.io.Read;
+library.io.Read.__name__ = ["library","io","Read"];
+library.io.Read.__interfaces__ = [flower.JobComponent];
+library.io.Read.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,workEvent: null
+	,fire: null
+	,onPlay: function(params,cb) {
+		var _g = this;
+		var textarea = window.document.getElementById("inputs");
+		var button = window.document.getElementById("read");
+		button.onclick = function(event) {
+			_g.fire("io.Read",(function($this) {
+				var $r;
+				var _g1 = new haxe.ds.StringMap();
+				_g1.set("read",textarea.value);
+				$r = _g1;
+				return $r;
+			}(this)));
+		};
+	}
+	,work: function(params,cb) {
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("read",flower.Message.Msg(params.get("read")));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "io.Read";
+	}
+	,__class__: library.io.Read
+};
 library.map = {};
 library.map.Getter = function() {
 	this.workEvent = flower.WorkEvent.AllRecieved;
@@ -2617,6 +2757,7 @@ library.milkclient.MilkClient = function() {
 $hxClasses["library.milkclient.MilkClient"] = library.milkclient.MilkClient;
 library.milkclient.MilkClient.__name__ = ["library","milkclient","MilkClient"];
 library.milkclient.MilkClient.__interfaces__ = [flower.JobComponent];
+library.milkclient.MilkClient.milkcocoa = null;
 library.milkclient.MilkClient.prototype = {
 	name: null
 	,inputs: null
@@ -2626,6 +2767,7 @@ library.milkclient.MilkClient.prototype = {
 	,onPlay: function(params,cb) {
 		var host = params.get("host");
 		var milkcocoa1 = new MilkCocoa(host);
+		library.milkclient.MilkClient.milkcocoa = milkcocoa1;
 	}
 	,work: function(params,cb) {
 	}
@@ -2634,12 +2776,59 @@ library.milkclient.MilkClient.prototype = {
 	}
 	,__class__: library.milkclient.MilkClient
 };
+library.milkclient.On = function() {
+	this.name = "On";
+	this.inputs = new externs.Inputs();
+	this.outputs = new externs.Outputs();
+	this.inputs.add("event");
+	this.inputs.add("path");
+	this.outputs.add("outputs");
+};
+$hxClasses["library.milkclient.On"] = library.milkclient.On;
+library.milkclient.On.__name__ = ["library","milkclient","On"];
+library.milkclient.On.__interfaces__ = [flower.JobComponent];
+library.milkclient.On.prototype = {
+	name: null
+	,inputs: null
+	,outputs: null
+	,workEvent: null
+	,fire: null
+	,onPlay: function(params,cb) {
+		var _g = this;
+		var event = this.inputs.get("event");
+		var path = this.inputs.get("path");
+		this.workEvent = flower.WorkEvent.Custom("milkcocoa.push." + event + path);
+		var dataStore = library.milkclient.MilkClient.milkcocoa.dataStore(path);
+		dataStore.on(event,function(data) {
+			_g.fire("milkcocoa.push." + event + path,(function($this) {
+				var $r;
+				var _g1 = new haxe.ds.StringMap();
+				_g1.set("outputs",data);
+				$r = _g1;
+				return $r;
+			}(this)));
+		});
+	}
+	,work: function(params,cb) {
+		var data = params.get("outpus");
+		cb((function($this) {
+			var $r;
+			var _g = new haxe.ds.StringMap();
+			_g.set("outputs",flower.Message.Msg(data));
+			$r = _g;
+			return $r;
+		}(this)));
+	}
+	,getModuleName: function() {
+		return "milkcocoa.On";
+	}
+	,__class__: library.milkclient.On
+};
 library.milkclient.Push = function() {
 	this.workEvent = flower.WorkEvent.AllRecieved;
 	this.name = "Push";
 	this.inputs = new externs.Inputs();
 	this.outputs = new externs.Outputs();
-	this.inputs.add("milkcocoa");
 	this.inputs.add("path");
 	this.inputs.add("value");
 };
@@ -2656,11 +2845,11 @@ library.milkclient.Push.prototype = {
 		return;
 	}
 	,work: function(params,cb) {
-		var milkcocoa = params.get("milkcocoa");
 		var path = params.get("path");
 		var value = params.get("value");
-		var dataStore = milkcocoa.dataStore(path);
+		var dataStore = library.milkclient.MilkClient.milkcocoa.dataStore(path);
 		dataStore.push(value);
+		cb(null);
 	}
 	,getModuleName: function() {
 		return "milkcocoa.Push";
@@ -2722,7 +2911,7 @@ if(Array.prototype.filter == null) Array.prototype.filter = function(f1) {
 	}
 	return a1;
 };
-CompileTimeClassList.__meta__ = { obj : { classLists : [["library,true,","library.core.Add,library.core.And,library.core.Compare,library.core.Drop,library.core.Entry,library.core.Equal,library.core.Filter,library.core.Gate,library.core.Not,library.core.Or,library.core.Remainder,library.core.Through,library.core.Times,library.core.Transistor,library.map.Getter,library.map.Pod,library.map.Setter,library.messages.Recieve,library.messages.Send,library.milkclient.MilkClient,library.milkclient.Push"]]}};
+CompileTimeClassList.__meta__ = { obj : { classLists : [["library,true,","library.core.Add,library.core.And,library.core.Compare,library.core.Drop,library.core.Entry,library.core.Equal,library.core.Filter,library.core.Gate,library.core.Not,library.core.Or,library.core.Remainder,library.core.Through,library.core.Times,library.core.Transistor,library.io.Print,library.io.Read,library.map.Getter,library.map.Pod,library.map.Setter,library.messages.Recieve,library.messages.Send,library.milkclient.MilkClient,library.milkclient.On,library.milkclient.Push"]]}};
 CompileTimeClassList.lists = null;
 haxe.ds.ObjectMap.count = 0;
 })(typeof window != "undefined" ? window : exports);

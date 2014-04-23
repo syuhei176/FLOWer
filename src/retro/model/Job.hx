@@ -111,8 +111,7 @@ class Job{
 	
 	
 	public function isReady(){
-
-		return switch (job.jobComponent.workEvent) {
+		return switch (this.jobComponent.workEvent) {
 			case AllRecieved: this.getInputPorts().fold(function(port, acc) return acc && port.getValue() != null, true);
 			default: false;
 		}

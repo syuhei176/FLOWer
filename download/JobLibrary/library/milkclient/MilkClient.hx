@@ -14,7 +14,8 @@ class MilkClient implements JobComponent {
 	public var outputs:Outputs;
 	public var workEvent:WorkEvent = AllRecieved;
 	public var fire : EventName -> Params -> Void;
-	
+	public static var milkcocoa : MilkCocoa;
+
 	public function new() {
 		this.name = "MlikCCocoa";
 		this.inputs = new Inputs();
@@ -25,6 +26,7 @@ class MilkClient implements JobComponent {
 	public function onPlay(params:Params, cb : Result -> Void) : Void{
 		var host = params.get("host");
 		var milkcocoa = new MilkCocoa(host);
+		MilkClient.milkcocoa = milkcocoa;
 	}
 
 	

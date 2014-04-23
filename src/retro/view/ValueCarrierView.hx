@@ -15,7 +15,7 @@ class ValueCarrierView {
 	
 	public var pos : Point2D;
 	
-	private static var speed : Int;
+	public static var speed : Int;
 	
 	public function new(editor, valueCarrier, diagramView) {
 		this.valueCarrier = valueCarrier;
@@ -102,11 +102,4 @@ class ValueCarrierView {
         this.pos.setY(y);
         this.group.transform("translate(" + this.pos.getX() + "," + this.pos.getY() + ")");
     }
-
-    public static function __init__(){
-    	speed = Std.parseInt(js.Browser.window.sessionStorage.getItem("speed"));
-		if(speed == null) {
-			speed = 1000;
-		}
-	}
 }
