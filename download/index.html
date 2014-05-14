@@ -14,8 +14,7 @@
   </head>
   <body>
   <div class="container">
-    <svg id="flower-svg" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none; width: 80%; height : 100%;
-    position : fixed"></svg>
+    <svg id="flower-svg" style="font-family:arial black; user-select: none;-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none; width: 1600px; height : 1024px;"></svg>
   </div>
    <div id="jobdiv" class="modal">
       <ul id="joblist">
@@ -36,7 +35,7 @@
   <script src="js/dialog.js"></script>
   <script src="js/flower.js"></script>
   <script>
-    var flower = new FLOWer("#flower-svg");
+    var flower = new FLOWer("#flower-svg", "#flower-svg");
     flower.setSpeed(1000);
     /*
     flower.setJob("core","Entry",300,200);

@@ -29,10 +29,11 @@ class ProjectView{
 		this.importController = importController;
 		this.mode = RunMode.Stop;
 		var snap = this.projectController.getEditor().snap;
+		var header_snap = this.projectController.getEditor().header_snap;
 		var project = this.projectController.getProject();
 		project.onDiagramAdded(this.OnDiagramAdded);
 		
-		this.control_group = snap.group();
+		this.control_group = header_snap.group();
 
     	Snap.load(#if browser "images/play.svg" #else "/images/play.svg" #end, function (f) {
     		var g:SnapElement = f.select("svg");

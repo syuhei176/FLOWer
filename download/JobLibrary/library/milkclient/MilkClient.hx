@@ -25,6 +25,7 @@ class MilkClient implements JobComponent {
 	
 	public function onPlay(params:Params, cb : Result -> Void) : Void{
 		var host = params.get("host");
+		trace(host);
 		var milkcocoa = new MilkCocoa(host);
 		MilkClient.milkcocoa = milkcocoa;
 	}

@@ -9,8 +9,8 @@ import retro.view.ValueCarrierView;
 class FLOWer{
 	private var diagramController : DiagramController;
 
-	public function new(svgID,view){
-		this.diagramController = Editor.create(svgID,view);
+	public function new(svgID,headerID,view){
+		this.diagramController = Editor.create(svgID,headerID,view);
 		ValueCarrierView.speed = 1000;
 	}
 

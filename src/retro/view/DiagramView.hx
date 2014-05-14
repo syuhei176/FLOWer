@@ -40,11 +40,13 @@ class DiagramView{
 		diagram.onValueCarrierCleared(this.OnValueCarrierCleared);
 		
 		var snap = this.diagramController.getEditor().snap;
+		var header_snap = this.diagramController.getEditor().header_snap;
+
 		this.path_group = snap.group();
 		
 		this.count = 0;
 		
-		this.control_group = snap.group();
+		this.control_group = header_snap.group();
 
 		Snap.load(#if browser "images/create.svg" #else "/images/create.svg" #end, function (f) {
     		var g:SnapElement = f.select("svg");
@@ -72,8 +74,8 @@ class DiagramView{
 		Snap.load(#if browser "images/dustbox.svg" #else "/images/dustbox.svg" #end, function (f) {
     		var g:SnapElement = f.select("g");
     		var right = this.diagramController.getEditor().width;
-    		var dustbox_group = snap.group();
-    		dustbox_group.transform("translate("+(right - Thema.dustboxRightX)+","+Thema.dustboxY+")");
+    		var dustbox_group = header_snap.group();
+    		dustbox_group.transform("translate("+(800 - Thema.dustboxRightX)+","+Thema.dustboxY+")");
         	dustbox_group.append(g);
         	Snap.load(#if browser "images/dustbox-over.svg" #else "/images/dustbox-over.svg"#end, function(f){
         		var g2:SnapElement = f.select("g");

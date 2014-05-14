@@ -27,10 +27,15 @@ CompileTimeClassList.initialise = function() {
 			++_g;
 			var array = item;
 			var listID = array[0];
-			var classes = item[1].split(",").map(function(typeName) {
-				return Type.resolveClass(typeName);
-			});
-			CompileTimeClassList.lists.set(listID,classes);
+			var list = new List();
+			var _g2 = 0;
+			var _g3 = array[1].split(",");
+			while(_g2 < _g3.length) {
+				var typeName = _g3[_g2];
+				++_g2;
+				list.push(Type.resolveClass(typeName));
+			}
+			CompileTimeClassList.lists.set(listID,list);
 		}
 	}
 };
@@ -921,6 +926,15 @@ flower.RetroType.RTuple = function(types) { var $x = ["RTuple",5,types]; $x.__en
 flower.RetroType.RUnknown = function(id) { var $x = ["RUnknown",6,id]; $x.__enum__ = flower.RetroType; $x.toString = $estr; return $x; };
 flower.RetroType.__empty_constructs__ = [flower.RetroType.REmpty,flower.RetroType.RString,flower.RetroType.RNumber,flower.RetroType.RBool];
 var haxe = {};
+haxe.Log = function() { };
+$hxClasses["haxe.Log"] = haxe.Log;
+haxe.Log.__name__ = ["haxe","Log"];
+haxe.Log.trace = function(v,infos) {
+	js.Boot.__trace(v,infos);
+};
+haxe.Log.clear = function() {
+	js.Boot.__clear_trace();
+};
 haxe.ds = {};
 haxe.ds.BalancedTree = function() {
 };
@@ -2766,6 +2780,7 @@ library.milkclient.MilkClient.prototype = {
 	,fire: null
 	,onPlay: function(params,cb) {
 		var host = params.get("host");
+		haxe.Log.trace(host,{ fileName : "MilkClient.hx", lineNumber : 28, className : "library.milkclient.MilkClient", methodName : "onPlay"});
 		var milkcocoa1 = new MilkCocoa(host);
 		library.milkclient.MilkClient.milkcocoa = milkcocoa1;
 	}
@@ -2795,15 +2810,16 @@ library.milkclient.On.prototype = {
 	,fire: null
 	,onPlay: function(params,cb) {
 		var _g = this;
-		var event = this.inputs.get("event");
-		var path = this.inputs.get("path");
-		this.workEvent = flower.WorkEvent.Custom("milkcocoa.push." + event + path);
+		var event = params.get("event");
+		var path = params.get("path");
+		haxe.Log.trace(path,{ fileName : "On.hx", lineNumber : 30, className : "library.milkclient.On", methodName : "onPlay"});
+		this.workEvent = flower.WorkEvent.Custom("milkcocoa.push." + Std.string(event) + Std.string(path));
 		var dataStore = library.milkclient.MilkClient.milkcocoa.dataStore(path);
 		dataStore.on(event,function(data) {
-			_g.fire("milkcocoa.push." + event + path,(function($this) {
+			_g.fire("milkcocoa.push." + Std.string(event) + Std.string(path),(function($this) {
 				var $r;
 				var _g1 = new haxe.ds.StringMap();
-				_g1.set("outputs",data);
+				_g1.set("outputs",data.value);
 				$r = _g1;
 				return $r;
 			}(this)));

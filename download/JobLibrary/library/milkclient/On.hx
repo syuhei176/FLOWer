@@ -25,12 +25,13 @@ class On implements JobComponent {
 	}
 	
 	public function onPlay(params:Params, cb : Result -> Void) : Void{
-		var event = this.inputs.get("event");
-		var path = this.inputs.get("path");
+		var event = params.get("event");
+		var path = params.get("path");
+		trace(path);
 		this.workEvent = Custom("milkcocoa.push." + event + path);
 		var dataStore = MilkClient.milkcocoa.dataStore(path);
 		dataStore.on(event,function(data){
-			fire("milkcocoa.push." + event + path, ["outputs" => data]);
+			fire("milkcocoa.push." + event + path, ["outputs" => data.value]);
 			});
 	};
 	

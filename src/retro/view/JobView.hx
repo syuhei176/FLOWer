@@ -96,7 +96,7 @@ class JobView{
 		var inDustBox = false;
 		var isInDustBox = function(x,y){
 			var right = this.diagramController.getEditor().width;
-			return inDustBox = (right - Thema.dustboxWidth) < x && (x < right) &&
+			return inDustBox = (800 - Thema.dustboxWidth) < x && (x < right) &&
 					y < Thema.dustboxHeight;
 		};
 		this.coll.drag(function(dx, dy, x, y){
